@@ -1,0 +1,49 @@
+\input docstrip
+
+\def\SimplePackage#1{%
+  \generate{\file{#1.bst}{\from{gost.dtx}{#1}}}}
+
+\def\mypostamble{%
+  \MetaPrefix ^^J%
+  \MetaPrefix\space End of file `\outFileName'.%
+  }
+
+\usepostamble\mypostamble
+
+\keepsilent
+
+\preamble
+
+Copyright 1996-2003 Maksym Polyakov.
+Version 2003.10.07
+                                                        
+This file may be distributed and/or modified under the
+conditions of the LaTeX Project Public License, either version 1.2
+of this license or (at your option) any later version.
+The latest version of this license is in
+  http://www.latex-project.org/lppl.txt
+and version 1.2 or later is part of all distributions of LaTeX 
+version 1999/12/01 or later.
+
+Please, send bug reports via e-mail:                          
+  polyama at auburn dot edu                                          
+
+2003.06.06 contributions by Konstantin Vorontsov:
+New ENTRY "annote" added for output annotations.
+New commands BibUrl, BibAnnote added for customize urls and annotations.
+ 
+2003.08.10 
+New command BibEmph added for customize emphasizing.
+
+2003.10.07
+Some bug fixes in names and date formatting. 
+
+
+\endpreamble
+
+\SimplePackage{gost71s}
+\SimplePackage{gost71u}
+\SimplePackage{gost780s}
+\SimplePackage{gost780u}
+
+\endbatchfile

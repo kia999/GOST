@@ -1,0 +1,35 @@
+This is README for set of BibTeX styles attempting to format 
+bibliography in English, Russian and Ukrainian according to 
+GOST 7.1-84 and GOST 7.80-00 (See
+http://www.inforeg.org.ru/common/doc.asp?/standart/stands/7_1.htm
+http://www.inforeg.org.ru/common/doc.asp?/standart/stands/7_80.htm),
+
+Four BibTeX styles are provided:
+ 
+Standard       |   Sorted          Unsorted     
+----------------------------------------------
+GOST 7.1 1984  |   gost71s.bst     gost71u.bst  
+GOST 7.80 2000 |   gost780s.bst    gost780u.bst  
+   
+To produce styles, you need to download the files `gost.ins' and 
+`gost.dtx'. Run LaTeX on gost.ins.  
+
+How to use:
+1. You need bibtex8
+2. Depending on codepage of your bibliographic database, you will
+   need one of the codepage and sorting order (CS) files:
+   ruscii.csf (AKA cp866u, cp866nav, cp1125); koi8u.csf;
+   cp1251.csf.
+3. Add field language="ukrainian" or language="russian" to the
+   bibliographic entries in Ukrainian or Russian languages;
+   English is the default language.
+4. Run LaTeX, then run bibTeX8, then run LaTeX again:
+
+   latex <my_document>
+   bibtex8 -B -c <my_codepage_file> <my_document>
+   latex <my_document>
+
+5. For details of preparing bibliographic database see
+   examples in gost780.pdf and gost71.pdf
+
+Happy BibTeXing!
