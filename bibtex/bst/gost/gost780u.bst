@@ -6,8 +6,8 @@
 %%
 %% gost.dtx  (with options: `gost780u')
 %% 
-%% Copyright 1996-2003 Maksym Polyakov.
-%% Version 2003.10.07
+%% Copyright 1996-2005 Maksym Polyakov.
+%% Version 2005.08.12
 %% 
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.2
@@ -20,6 +20,8 @@
 %% Please, send bug reports via e-mail:
 %%   polyama at auburn dot edu
 %% 
+%% 2005.08.12 Bug fix (long annote)
+%% 
 %% 2003.06.06 contributions by Konstantin Vorontsov:
 %% New ENTRY "annote" added for output annotations.
 %% New commands BibUrl, BibAnnote added for customize urls and annotations.
@@ -30,6 +32,8 @@
 %% 2003.10.07
 %% Some bug fixes in names and date formatting.
 %% 
+%% 2003.10.07
+%% Bug fix in INPROCEEDINGS.
 %% 
 %%
 %% This bibliography style attempts
@@ -113,7 +117,8 @@ FUNCTION {change.language}
 }
 
 FUNCTION {output.nonnull}
-{ 's :=
+%%%{ 's :=
+{ swap$
   output.state mid.sentence =
     { ", " * write$ }
     { output.state after.block =
@@ -147,7 +152,7 @@ FUNCTION {output.nonnull}
       mid.sentence 'output.state :=
     }
   if$
-  s
+%%%  s
 }
 
 FUNCTION {output}
@@ -540,6 +545,8 @@ FUNCTION {format.names.rev}
             { ", " * t * }
             {
               t "others" =
+      t "~others" =
+      or
                 { " " * bbl.etal * }
                 { ", " * t * }
               if$
@@ -1104,6 +1111,8 @@ FUNCTION {inproceedings}
   author.before
   new.sentence
   format.title "title" output.check
+  new.slash
+  author.after
   new.dblslash
   booktitle "booktitle" output.check
   new.slash

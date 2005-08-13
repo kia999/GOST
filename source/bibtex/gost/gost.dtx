@@ -86,7 +86,8 @@ FUNCTION {change.language}
 }
 
 FUNCTION {output.nonnull}
-{ 's :=
+%%%{ 's :=
+{ swap$
   output.state mid.sentence =
     { ", " * write$ }
     { output.state after.block =
@@ -120,7 +121,7 @@ FUNCTION {output.nonnull}
       mid.sentence 'output.state :=
     }
   if$
-  s
+%%%  s
 }
 
 FUNCTION {output}
@@ -535,7 +536,9 @@ FUNCTION {format.names}
           namesleft #1 >
             { ", " * t * }
             {
-              t "others" =
+              t "others" = 
+	      t "~others" = 
+	      or
                 { " " * bbl.etal * }
                 { ", " * t * }
               if$
@@ -580,7 +583,9 @@ FUNCTION {format.names.rev}
           namesleft #1 >
             { ", " * t * }
             {
-              t "others" =
+              t "others" = 
+	      t "~others" = 
+	      or
                 { " " * bbl.etal * }
                 { ", " * t * }
               if$
@@ -1238,6 +1243,8 @@ FUNCTION {inproceedings}
   author.before
   new.sentence
   format.title "title" output.check
+  new.slash
+  author.after
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
