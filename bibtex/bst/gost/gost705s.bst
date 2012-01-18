@@ -1,10 +1,10 @@
 %%
-%% This is file `gost71s.bst',
+%% This is file `gost705s.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% gost.dtx  (with options: `gost71s')
+%% gost.dtx  (with options: `gost705s')
 %% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
@@ -41,7 +41,7 @@
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%% GOST 7.1-84 vd970321
+%% GOST 7.0.5-2008
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -130,7 +130,6 @@ FUNCTION {output.nonnull}
         { add.period$ write$
 %%%          " " "--- " *  write$
 %%%          " \BibAcdash " write$
-          " " quote$ "--- " * *  write$
           newline$
           "\newblock " write$
         }
@@ -1052,7 +1051,7 @@ FUNCTION {format.url}
 { url empty$
     { "" }
     { after.sentence 'output.state :=
-      "\BibUrl{ " url * "}" *
+      "URL: \BibUrl{ " url * "}" *
     }
   if$
 }
@@ -1641,4 +1640,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `gost71s.bst'.
+%% End of file `gost705s.bst'.

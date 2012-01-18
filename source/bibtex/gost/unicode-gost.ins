@@ -1,7 +1,7 @@
 \input docstrip
 
 \def\SimplePackage#1{%
-  \generate{\file{#1.bst}{\from{utf8gost.dtx}{#1}}}}
+  \generate{\file{#1.bst}{\from{unicode-gost.dtx}{#1}}}}
 
 \def\mypostamble{%
   \MetaPrefix ^^J%
@@ -14,40 +14,48 @@
 
 \preamble
 
+Copyright 2012 Igor A. Kotelnikov.
+Version 2012.02.02
+
 Copyright 1996-2005 Maksym Polyakov.
 Version 2005.08.12
-                                                        
+
 This file may be distributed and/or modified under the
 conditions of the LaTeX Project Public License, either version 1.2
 of this license or (at your option) any later version.
 The latest version of this license is in
   http://www.latex-project.org/lppl.txt
-and version 1.2 or later is part of all distributions of LaTeX 
+and version 1.2 or later is part of all distributions of LaTeX
 version 1999/12/01 or later.
 
-Please, send bug reports via e-mail:                          
-  polyama at auburn dot edu                                          
+Please, send bug reports via e-mail:
+  kia999 at mail dot ru <Igor Kotelnikov>
+  polyama at yahoo dot edu  <Maksym Polyakov>
+
+2012.01.15 Added German, French, Italian languages, @online entry.
 
 2005.08.12 Bug fix (long annote)
- 
+
 2003.06.06 contributions by Konstantin Vorontsov:
-New ENTRY "annote" added for output annotations.
+New ENTRY "annote" added to output annotations.
 New commands BibUrl, BibAnnote added for customize urls and annotations.
- 
-2003.08.10 
-New command BibEmph added for customize emphasizing.
+
+2003.08.10
+New command BibEmph added to customize emphasizing.
 
 2003.10.07
-Some bug fixes in names and date formatting. 
+Some bug fixes in names and date formatting.
 
 2003.10.07
-Bug fix in INPROCEEDINGS. 
+Bug fix in INPROCEEDINGS.
 
 \endpreamble
 
-\SimplePackage{utf8gost71s}
-\SimplePackage{utf8gost71u}
-\SimplePackage{utf8gost780s}
-\SimplePackage{utf8gost780u}
+\SimplePackage{unicode-gost71s}
+\SimplePackage{unicode-gost71u}
+\SimplePackage{unicode-gost780s}
+\SimplePackage{unicode-gost780u}
+\SimplePackage{unicode-gost705s}
+\SimplePackage{unicode-gost705u}
 
 \endbatchfile
