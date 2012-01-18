@@ -55,6 +55,7 @@ ENTRY
     language
     booklanguage
     url
+    urlnote
   }
   {}
   { label }
@@ -1148,9 +1149,13 @@ FUNCTION {editor.organization.after}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { after.sentence 'output.state :=
+    {
 %<utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>      "\BibUrl{ " url * "}" *
 %<utf8gost705s|utf8gost705u>      "URL: \BibUrl{ " url * "}" *
+      urlnote empty$
+        { "" }
+        { " (" urlnote * ")" * }
+      if$ *
     }
   if$
 }
@@ -1482,24 +1487,22 @@ FUNCTION {unpublished}
   fin.entry
 }
 
-%<*utf8gost705s|utf8gost705u>
 FUNCTION {online}
 { output.bibitem
   format.authors output
   title howpublished new.sentence.checkb
-  format.btitle output
+  format.title output
   howpublished new.block.checka
   howpublished output
   new.block
   format.date output
   new.block
-  note output
-  new.sentence
   format.url output
+  new.sentence
+  note output
   format.annote output
   fin.entry
 }
-%</utf8gost705s|utf8gost705u>
 
 FUNCTION {default.type} { misc }
 
