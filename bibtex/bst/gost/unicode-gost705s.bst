@@ -1,13 +1,13 @@
 %%
-%% This is file `utf8gost71u.bst',
+%% This is file `unicode-gost705s.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% unicode-gost.dtx  (with options: `utf8gost71u')
+%% unicode-gost.dtx  (with options: `unicode-gost705s')
 %% 
-%% Copyright 2012 Igor Kotelnikov.
-%% Version 20012.01.15
+%% Copyright 2012 Igor A. Kotelnikov.
+%% Version 2012.02.02
 %% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
@@ -44,7 +44,7 @@
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%% GOST 7.1-84 vd970321
+%% GOST 7.0.5-2008
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -91,6 +91,7 @@ ENTRY
     language
     booklanguage
     url
+    urldate
   }
   {}
   { label }
@@ -133,7 +134,6 @@ FUNCTION {output.nonnull}
         { add.period$ write$
 %%%          " " "--- " *  write$
 %%%          " \BibAcdash " write$
-             " " quote$ "--- " * *  write$
           newline$
           "\newblock " write$
         }
@@ -559,6 +559,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed:"}
+     { curlanguage "ukrainian" =
+        {"дата звернення:"}
+        { curlanguage "russian" =
+           {"дата обращения:"}
+           { curlanguage "german" =
+              {"{online; abgerufen:}"}
+              {"language is not defined: " language * warning$ "urldate"}
+           if$}
+        if$}
+     if$}
+  if$
+}
 
 FUNCTION {bbl.techrep}   { "Tech. Rep." }
 FUNCTION {bbl.mthesis}   { "Master's thesis" }
@@ -1054,8 +1069,12 @@ FUNCTION {editor.organization.after}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { after.sentence 'output.state :=
-      "\BibUrl{ " url * "}" *
+    {
+      "URL: \BibUrl{" url * "}" *
+      urldate empty$
+        { "" }
+        { " (" bbl.urldate * urldate * ")" * }
+      if$ *
     }
   if$
 }
@@ -1474,6 +1493,118 @@ MACRO {tcs} {"Theoretical Computer Science"}
 READ
 
 
+FUNCTION {sortify}
+{ purify$
+%%%% Why it is commented ? %%%  "l" change.case$
+}
+
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+
+FUNCTION {sort.format.names}
+{ 's :=
+  #1 'nameptr :=
+  ""
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { nameptr #1 >
+        { "   " * }
+        'skip$
+      if$
+      s nameptr
+      "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
+      format.name$ 't :=
+      nameptr numnames = t "others" = and
+        { "et al" * }
+        { t sortify * }
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {sort.format.title}
+{ 't :=
+  "A " #2
+    "An " #3
+      "The " #4 t chop.word
+    chop.word
+  chop.word
+  sortify
+  #1 global.max$ substring$
+}
+
+FUNCTION {author.sort}
+{ author empty$
+    { key empty$
+        { "to sort, need author or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    {
+      author num.names$ #4 <
+        {author sort.format.names }
+        {title sort.format.title}
+      if$
+    }
+  if$
+}
+
+FUNCTION {author.title.sort}
+{ author empty$
+    { title empty$
+        { key empty$
+            { "to sort, need author, title, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { title sort.format.title }
+      if$
+    }
+    {
+      author num.names$ #4 <
+        {author sort.format.names }
+        {title sort.format.title}
+      if$
+     }
+  if$
+}
+
+FUNCTION {presort}
+{
+  author.title.sort
+  "   "
+  *
+  year field.or.null sortify
+  *
+  "   "
+  *
+  title field.or.null
+  sort.format.title
+  *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+
+ITERATE {presort}
+
+SORT
+
+
 STRINGS { longest.label }
 
 INTEGERS { number.label longest.label.width }
@@ -1503,15 +1634,12 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"             write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\fi"         write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\fi"      write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\fi"   write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\fi"   write$ newline$
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1532,4 +1660,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `utf8gost71u.bst'.
+%% End of file `unicode-gost705s.bst'.

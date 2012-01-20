@@ -6,6 +6,9 @@
 %%
 %% gost.dtx  (with options: `gost71u')
 %% 
+%% Copyright 2012 Igor A. Kotelnikov.
+%% Version 2012.02.02
+%% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
 %% 
@@ -88,6 +91,7 @@ ENTRY
     language
     booklanguage
     url
+    urldate
   }
   {}
   { label }
@@ -144,9 +148,9 @@ FUNCTION {output.nonnull}
                        { ": " * write$ }
                        { output.state after.semicolumn =
                            { "; " * write$ }
-                   { add.period$ " " * write$ }
+                       { add.period$ " " * write$ }
                      if$
-    }
+                       }
                     if$
                   }
                   if$
@@ -556,6 +560,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed:"}
+     { curlanguage "ukrainian" =
+        {"\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyrya:"}
+        { curlanguage "russian" =
+           {"дата обращения:"}
+           { curlanguage "german" =
+              {"{online; abgerufen:}"}
+              {"language is not defined: " language * warning$ "urldate"}
+           if$}
+        if$}
+     if$}
+  if$
+}
 
 FUNCTION {bbl.techrep}   { "Tech. Rep." }
 FUNCTION {bbl.mthesis}   { "Master's thesis" }
@@ -1048,20 +1067,15 @@ FUNCTION {editor.organization.after}
   if$
 }
 
-%FUNCTION {format.url}
-%{ url empty$
-%    { "" }
-%    { after.sentence 'output.state :=
-%      "\BibUrl{ " url * "}" *
-%    }
-%  if$
-%}
-
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { 
-      "\BibUrl{ *** " url * " *** }" *
+    {
+      "\BibUrl{ " url * "}" *
+      urldate empty$
+        { "" }
+        { " (" bbl.urldate * urldate * ")" * }
+      if$ *
     }
   if$
 }
@@ -1403,8 +1417,8 @@ FUNCTION {online}
   new.block
   format.date output
   new.block
-  format.url %%% output
-  %%% new.sentence
+  format.url output
+  new.sentence
   note output
   format.annote output
   fin.entry
@@ -1509,15 +1523,12 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"                  write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\else\fi"                  write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi"   write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi"    write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi"    write$ newline$
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }

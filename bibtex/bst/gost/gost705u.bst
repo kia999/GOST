@@ -1,13 +1,13 @@
 %%
-%% This is file `utf8gost71s.bst',
+%% This is file `gost705u.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% unicode-gost.dtx  (with options: `utf8gost71s')
+%% gost.dtx  (with options: `gost705u')
 %% 
-%% Copyright 2012 Igor Kotelnikov.
-%% Version 20012.01.15
+%% Copyright 2012 Igor A. Kotelnikov.
+%% Version 2012.02.02
 %% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
@@ -44,7 +44,7 @@
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%% GOST 7.1-84 vd970321
+%% GOST 7.0.5-2008
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -55,10 +55,10 @@
 %%
 %% See examples in gost71.pdf, gost780.pdf and gost705.pdf
 %%
-%% Requires 8-bit bibtex with switch -B.
-%% bibtex8.exe -B <your_document>
-%% or
-%% bibtex.exe <your_document>
+%%
+%%
+%% Requires 8-bit bibtex with switch -B and csf file supporting cyrillic.
+%% bibtex8 -B -c <encoding>.csf <your_document>
 %%
 
 ENTRY
@@ -91,6 +91,7 @@ ENTRY
     language
     booklanguage
     url
+    urldate
   }
   {}
   { label }
@@ -133,7 +134,6 @@ FUNCTION {output.nonnull}
         { add.period$ write$
 %%%          " " "--- " *  write$
 %%%          " \BibAcdash " write$
-             " " quote$ "--- " * *  write$
           newline$
           "\newblock " write$
         }
@@ -149,7 +149,7 @@ FUNCTION {output.nonnull}
                            { "; " * write$ }
                        { add.period$ " " * write$ }
                      if$
-               }
+                       }
                     if$
                   }
                   if$
@@ -313,9 +313,9 @@ FUNCTION {bbl.edby}    %  { "\bbledby{}" }
 {  curlanguage "english" =
     {"Ed. by "}
     { curlanguage "ukrainian" =
-        {"{Під ред. }"}
+        {"{\cyr\CYRP\cyrii\cyrd\ \cyrr\cyre\cyrd.\ }"}
         { curlanguage "russian" =
-           {"{Под ред. }"}
+           {"{\cyr\CYRP\cyro\cyrd\ \cyrr\cyre\cyrd.\ }"}
            {"language is not defined: " language  "edited by" * * warning$ "edited by"}
          if$}
       if$}
@@ -323,15 +323,15 @@ FUNCTION {bbl.edby}    %  { "\bbledby{}" }
 }
 
 FUNCTION {bbl.cmplr}
-{ curlanguage "english" =
-     {"Compiler "}
-     { curlanguage "ukrainian" =
-        {"{Укл. }"}
+{  curlanguage "english" =
+    {"Compiler "}
+    { curlanguage "ukrainian" =
+        {"{\cyr\CYRU\cyrk\cyrl.\ }"}
         { curlanguage "russian" =
-           {"{Сост. }"}
+           {"{\cyr\CYRS\cyro\cyrs\cyrt.\ }"}
            {"language is not defined: " language  "compiler" * * warning$ "compiler"}
          if$}
-     if$}
+      if$}
   if$
 }
 
@@ -339,12 +339,12 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
 { curlanguage "english" =
     {"edition"}
     { curlanguage "ukrainian" =
-      {"{вид.}"}
-        { curlanguage "russian" =
-          {"{изд.}"}
-          { curlanguage "german" =
-            {" {aus.}" }
-            {"language is not defined: " language  "edition" * * warning$ "edition"}
+      {"{\cyr\cyrv\cyri\cyrd.}"}
+      { curlanguage "russian" =
+        {"{\cyr\cyri\cyrz\cyrd.}"}
+        { curlanguage "german" =
+          {" {aus.}" }
+          {"language is not defined: " language  "edition" * * warning$ "edition"}
         if$}
       if$}
     if$}
@@ -355,7 +355,7 @@ FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
     {"Volume"}
     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"Том"}
+        {"\CYRT\cyro\cyrm"}
         { curlanguage "german" =
             {"{Volumen}"}
             {"language is not defined: " language  "Volume" * * warning$ "Volume"}
@@ -368,7 +368,7 @@ FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
     {"Vol."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"Т."}
+        {"\CYRT."}
         { curlanguage "german" =
              {"{Vol.}"}
              {"language is not defined: " language  "Vol." * * warning$ "Vol."}
@@ -379,11 +379,11 @@ FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
 
 FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
 {  curlanguage "english" =
-     {"Issue"}
-     { curlanguage "ukrainian" =
-        {"Випуск"}
+    {"Issue"}
+    { curlanguage "ukrainian" =
+        {"\CYRV\cyri\cyrp\cyru\cyrs\cyrk"}
         { curlanguage "russian" =
-           {"Выпуск"}
+           {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
            { curlanguage "german" =
               {"{Ausgabe}"}
               {"language is not defined: " language * warning$ "Issue"}
@@ -397,9 +397,9 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
 {  curlanguage "english" =
     {"Iss."}
     { curlanguage "ukrainian" =
-        {"Вип."}
+        {"\CYRV\cyri\cyrp."}
         { curlanguage "russian" =
-            {"Вып."}
+           {"\CYRV\cyrery\cyrp."}
             { curlanguage "german" =
                 {"{Aus.}"}
                 {"language is not defined: " language * warning$ "Iss"}
@@ -413,9 +413,9 @@ FUNCTION {bbl.of}      %  { "\bblof{}" }
 {  curlanguage "english" =
     {"of"}
     { curlanguage "ukrainian" =
-        {"{із}"}
+        {"{\cyr\cyrii\cyrz}"}
         { curlanguage "russian" =
-           {"{из}"}
+           {"{\cyr\cyri\cyrz}"}
            {"language is not defined: " language "of" *  * warning$ "of"}
          if$}
       if$}
@@ -426,9 +426,9 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
 {  curlanguage "english" =
     {"et~al."}
     { curlanguage "ukrainian" =
-        {"{та~ін.}"}
+        {"{\cyr\cyrt\cyra~\cyrii\cyrn.}"}
         { curlanguage "russian" =
-           {"{и~др.}"}
+           {"{\cyr\cyri~\cyrd\cyrr.}"}
            {"language is not defined: " language  "at al" * * warning$ "at al."}
          if$}
       if$}
@@ -439,7 +439,7 @@ FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 { curlanguage "english" =
      {"Number"}
      { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"Номер"}
+        {"\CYRN\cyro\cyrm\cyre\cyrr"}
         { curlanguage "german" =
            {"{Anzahl}"}
            {"language is not defined: " language  "Number" * * warning$ "Number"}
@@ -450,22 +450,22 @@ FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 
 FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 { curlanguage "english" =
-     {"number"}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{номер}"}
-        { curlanguage "german" =
-           {"{anzahl}"}
-           {"language is not defined: " language  "number" * * warning$ "number"}
-        if$}
-     if$}
+    {"number"}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
+      { curlanguage "german" =
+         {"{anzahl}"}
+         {"language is not defined: " language  "number" * * warning$ "number"}
+      if$}
+    if$}
   if$
 }
 
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 { curlanguage "english" =
-     {"no."}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{№}"}
+    {"no."}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+        {"{\cyr\textnumero}"}
         { curlanguage "german" =
            {"{an.}"}
            {"language is not defined: " language  "no." * * warning$ "no."}
@@ -476,9 +476,9 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
 
 FUNCTION {bbl.nnr}     %   { "\bblno{}" }
 { curlanguage "english" =
-     {"No."}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{№}"}
+    {"No."}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+        {"{\cyr\textnumero}"}
         { curlanguage "german" =
            {"{an.}"}
            {"language is not defined: " language  "No." * * warning$ "No."}
@@ -489,29 +489,29 @@ FUNCTION {bbl.nnr}     %   { "\bblno{}" }
 
 FUNCTION {bbl.in}    %    { "\bblin{}" }
 {  curlanguage "english" = curlanguage "german" = or
-     {"in"}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-         {"{в}"}
-         {"language is not defined: " language  "in" * * warning$ "in"}
-     if$}
+    {"in"}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"{\cyr\cyrv}"}
+           {"language is not defined: " language  "in" * * warning$ "in"}
+      if$}
   if$
 }
 
 FUNCTION {bbl.iin}  %     { "\bblIn{}" }
 { curlanguage "english" = curlanguage "german" = or
-     {"In"}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-         {"В"}
-         {"language is not defined: " language  "In" * * warning$ "In"}
-     if$}
+    {"In"}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"\CYRV"}
+           {"language is not defined: " language  "In" * * warning$ "In"}
+      if$}
   if$
 }
 
 FUNCTION {bbl.pages}    % { "\bblpp." }
 {  curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-     {"pp."}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{с.}"}
+    {"pp."}
+    { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"{\cyr\cyrs.}"}
         { curlanguage "german" =
            {"s."}
            {"language is not defined: " language  "pp." * * warning$ "pp."}
@@ -524,7 +524,7 @@ FUNCTION {bbl.page}   %   { "\bblp."
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
     {"p."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
-       {"{с.}"}
+           {"{\cyr\cyrs.}"}
        { curlanguage "german" =
           {"s."}
           {"language is not defined: " language  "p." * * warning$ "p."}
@@ -537,7 +537,7 @@ FUNCTION {bbl.ppages}%    { "\bblPp." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
     {"Pp."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
-       {"{С.}"}
+           {"{\cyr\CYRS.}"}
        { curlanguage "german" =
           {"S."}
           {"language is not defined: " language  "Pp." * * warning$ "Pp."}
@@ -550,7 +550,7 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
     {"P."}
     { curlanguage "ukrainian" = curlanguage "russian" = or
-       {"{С.}"}
+           {"{\cyr\CYRS.}"}
        { curlanguage "german" =
           {"S."}
           {"language is not defined: " language  "P." * * warning$ "P."}
@@ -559,6 +559,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed:"}
+     { curlanguage "ukrainian" =
+        {"\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyrya:"}
+        { curlanguage "russian" =
+           {"���� ���������:"}
+           { curlanguage "german" =
+              {"{online; abgerufen:}"}
+              {"language is not defined: " language * warning$ "urldate"}
+           if$}
+        if$}
+     if$}
+  if$
+}
 
 FUNCTION {bbl.techrep}   { "Tech. Rep." }
 FUNCTION {bbl.mthesis}   { "Master's thesis" }
@@ -574,7 +589,7 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-      "{vv~}{ll}{~jj}{~ff}" format.name$ 't :=
+      "{vv~}{ll}{~jj}{~f.}" format.name$ 't :=
       nameptr #1 >
         {
           nameptr #4 =
@@ -611,7 +626,7 @@ FUNCTION {format.names.rev}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-      "{ff}{~vv}{~ll}{, jj}"
+      "{f.}{~vv}{~ll}{, jj}"
       format.name$ 't :=
       nameptr #1 >
         {
@@ -688,7 +703,7 @@ FUNCTION {format.compiler.after}
 FUNCTION {format.title}
 { title empty$
     { "" }
-    { title
+    { title "t" change.case$
     }
   if$
 }
@@ -704,7 +719,7 @@ FUNCTION {format.date}
     }
     { month empty$
         'year
-        { year ". " "--- " month * * * }
+        { year ". " quote$ "--- " month * * * * }
       if$
     }
   if$
@@ -864,8 +879,8 @@ FUNCTION {format.edition}
 { edition empty$
     { "" }
     { output.state mid.sentence =
-        { convert.edition " " * bbl.edition * }
-        { convert.edition " " * bbl.edition * }
+        { convert.edition "l" change.case$ " " * bbl.edition * }
+        { convert.edition "t" change.case$ " " * bbl.edition * }
       if$
     }
   if$
@@ -965,7 +980,7 @@ FUNCTION {format.thesis.type}
 { type empty$
     'skip$
     { pop$
-      type
+      type "t" change.case$
     }
   if$
 }
@@ -976,7 +991,7 @@ FUNCTION {format.tr.number}
     'type
   if$
   number empty$
-    { "" }
+    { "t" change.case$ }
     { number tie.or.space.connect }
   if$
 }
@@ -1054,8 +1069,12 @@ FUNCTION {editor.organization.after}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { after.sentence 'output.state :=
-      "\BibUrl{ " url * "}" *
+    {
+      "URL: \BibUrl{" url * "}" *
+      urldate empty$
+        { "" }
+        { " (" bbl.urldate * urldate * ")" * }
+      if$ *
     }
   if$
 }
@@ -1072,7 +1091,7 @@ FUNCTION {format.annote}
 FUNCTION {article}
 { output.bibitem
   author.before
-  format.btitle "title" output.check
+  format.title "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -1170,7 +1189,7 @@ FUNCTION {incollection}
 { output.bibitem
   author.before
   new.sentence
-  format.btitle "title" output.check
+  format.title "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -1290,7 +1309,7 @@ FUNCTION {misc}
 { output.bibitem
   format.authors output
   title howpublished new.sentence.checkb
-  format.btitle output
+  format.title output
   howpublished new.block.checka
   howpublished output
   new.block
@@ -1474,118 +1493,6 @@ MACRO {tcs} {"Theoretical Computer Science"}
 READ
 
 
-FUNCTION {sortify}
-{ purify$
-%%%% Why it is commented ? %%%  "l" change.case$
-}
-
-INTEGERS { len }
-
-FUNCTION {chop.word}
-{ 's :=
-  'len :=
-  s #1 len substring$ =
-    { s len #1 + global.max$ substring$ }
-    's
-  if$
-}
-
-FUNCTION {sort.format.names}
-{ 's :=
-  #1 'nameptr :=
-  ""
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { nameptr #1 >
-        { "   " * }
-        'skip$
-      if$
-      s nameptr
-      "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
-      format.name$ 't :=
-      nameptr numnames = t "others" = and
-        { "et al" * }
-        { t sortify * }
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-
-FUNCTION {sort.format.title}
-{ 't :=
-  "A " #2
-    "An " #3
-      "The " #4 t chop.word
-    chop.word
-  chop.word
-  sortify
-  #1 global.max$ substring$
-}
-
-FUNCTION {author.sort}
-{ author empty$
-    { key empty$
-        { "to sort, need author or key in " cite$ * warning$
-          ""
-        }
-        { key sortify }
-      if$
-    }
-    {
-      author num.names$ #4 <
-        {author sort.format.names }
-        {title sort.format.title}
-      if$
-    }
-  if$
-}
-
-FUNCTION {author.title.sort}
-{ author empty$
-    { title empty$
-        { key empty$
-            { "to sort, need author, title, or key in " cite$ * warning$
-              ""
-            }
-            { key sortify }
-          if$
-        }
-        { title sort.format.title }
-      if$
-    }
-    {
-      author num.names$ #4 <
-        {author sort.format.names }
-        {title sort.format.title}
-      if$
-     }
-  if$
-}
-
-FUNCTION {presort}
-{
-  author.title.sort
-  "   "
-  *
-  year field.or.null sortify
-  *
-  "   "
-  *
-  title field.or.null
-  sort.format.title
-  *
-  #1 entry.max$ substring$
-  'sort.key$ :=
-}
-
-ITERATE {presort}
-
-SORT
-
-
 STRINGS { longest.label }
 
 INTEGERS { number.label longest.label.width }
@@ -1615,15 +1522,12 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"             write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\fi"         write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\fi"      write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\fi"   write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\fi"   write$ newline$
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1644,4 +1548,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `utf8gost71s.bst'.
+%% End of file `gost705u.bst'.

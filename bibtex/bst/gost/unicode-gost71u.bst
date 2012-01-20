@@ -1,13 +1,13 @@
 %%
-%% This is file `utf8gost705u.bst',
+%% This is file `unicode-gost71u.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% unicode-gost.dtx  (with options: `utf8gost705u')
+%% unicode-gost.dtx  (with options: `unicode-gost71u')
 %% 
-%% Copyright 2012 Igor Kotelnikov.
-%% Version 20012.01.15
+%% Copyright 2012 Igor A. Kotelnikov.
+%% Version 2012.02.02
 %% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
@@ -44,7 +44,7 @@
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%% GOST 7.0.5-2008
+%% GOST 7.1-84 vd970321
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -91,6 +91,7 @@ ENTRY
     language
     booklanguage
     url
+    urldate
   }
   {}
   { label }
@@ -133,6 +134,7 @@ FUNCTION {output.nonnull}
         { add.period$ write$
 %%%          " " "--- " *  write$
 %%%          " \BibAcdash " write$
+             " " quote$ "--- " * *  write$
           newline$
           "\newblock " write$
         }
@@ -558,6 +560,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed:"}
+     { curlanguage "ukrainian" =
+        {"дата звернення:"}
+        { curlanguage "russian" =
+           {"дата обращения:"}
+           { curlanguage "german" =
+              {"{online; abgerufen:}"}
+              {"language is not defined: " language * warning$ "urldate"}
+           if$}
+        if$}
+     if$}
+  if$
+}
 
 FUNCTION {bbl.techrep}   { "Tech. Rep." }
 FUNCTION {bbl.mthesis}   { "Master's thesis" }
@@ -1053,8 +1070,12 @@ FUNCTION {editor.organization.after}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { after.sentence 'output.state :=
-      "URL: \BibUrl{ " url * "}" *
+    {
+      "\BibUrl{ " url * "}" *
+      urldate empty$
+        { "" }
+        { " (" bbl.urldate * urldate * ")" * }
+      if$ *
     }
   if$
 }
@@ -1502,15 +1523,12 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"             write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\fi"         write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\fi"      write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\fi"   write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\fi"   write$ newline$
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1531,4 +1549,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `utf8gost705u.bst'.
+%% End of file `unicode-gost71u.bst'.

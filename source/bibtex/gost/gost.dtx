@@ -1,3 +1,4 @@
+% !Mode:: "DTX:UNIX"
 % \endinput
 %    \begin{macrocode}
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
@@ -55,7 +56,7 @@ ENTRY
     language
     booklanguage
     url
-    urlnote
+    urldate
   }
   {}
   { label }
@@ -97,10 +98,11 @@ FUNCTION {output.nonnull}
     { output.state after.block =
         { add.period$ write$
 %</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%%%          " " "--- " *  write$
-%%%          " \BibAcdash " write$
+%          " " "--- " *  write$
+%          " \BibAcdash " write$
 %<*gost71s|gost71u|gost780s|gost780u>
-          " " quote$ "--- " * *  write$
+%          " " quote$ "--- " * *  write$
+          " \BibDash " write$
 %</gost71s|gost71u|gost780s|gost780u>
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
           newline$
@@ -312,9 +314,15 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
       {"{\cyr\cyrv\cyri\cyrd.}"}
       { curlanguage "russian" =
         {"{\cyr\cyri\cyrz\cyrd.}"}
-        { curlanguage "german" =
-          {" {aus.}" }
-          {"language is not defined: " language  "edition" * * warning$ "edition"}
+          { curlanguage "german" =
+            {" {aus.}" }
+            { curlanguage "italian" =
+              {"edizione"}
+              { curlanguage "french" =
+                {"\'{e}dition"}
+                {"language is not defined: " language  "edition" * * warning$ "edition"}
+            if$}
+          if$}
         if$}
       if$}
     if$}
@@ -379,7 +387,6 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
   if$
 }
 
-
 FUNCTION {bbl.of}      %  { "\bblof{}" }
 {  curlanguage "english" =
     {"of"}
@@ -435,11 +442,14 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 { curlanguage "english" =
     {"no."}
-    { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{\cyr\textnumero}"}
-        { curlanguage "german" =
-           {"{an.}"}
-           {"language is not defined: " language  "no." * * warning$ "no."}
+    { curlanguage "italian" =
+        { "no" }
+        { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"{\cyr\textnumero}"}
+           { curlanguage "german" =
+              {"{an.}"}
+              {"language is not defined: " language  "no." * * warning$ "no."}
+           if$}
         if$}
      if$}
   if$
@@ -530,6 +540,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed: "}
+     { curlanguage "ukrainian" =
+        {"\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyrya:"}
+        { curlanguage "russian" =
+           {"{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya: }"}
+           { curlanguage "german" =
+              {"{online; abgerufen: }"}
+              {"language is not defined: " language * warning$ "online; accessed: "}
+           if$}
+        if$}
+     if$}
+  if$
+}
 %<*debug>
 
 \def\bblchapter{chapter}        \def\bblchap{chap.}
@@ -1151,10 +1176,10 @@ FUNCTION {format.url}
     { "" }
     {
 %<gost71s|gost71u|gost780s|gost780u>      "\BibUrl{ " url * "}" *
-%<gost705s|gost705u>      "URL: \BibUrl{ " url * "}" *
-      urlnote empty$
+%<gost705s|gost705u>      "URL: \BibUrl{" url * "}" *
+      urldate empty$
         { "" }
-        { " (" urlnote * ")" * }
+        { " (" bbl.urldate * urldate * ")" * }
       if$ *
     }
   if$
@@ -1718,18 +1743,18 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"                  write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\else\fi"                  write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi"   write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\else\fi"    write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi"    write$ newline$
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
 %</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
-%<*gost71s|gost71u|gost780s|gost780u>
-%</gost71s|gost71u|gost780s|gost780u>
+%  "\makeatletter"                                      write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+%  "\providecommand*{\@Acdash}{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+%  "\providecommand*{\BibDash}{\@Acdash}"                         write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+%  "\makeatother"                                      write$ newline$
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
   preamble$ empty$
     'skip$

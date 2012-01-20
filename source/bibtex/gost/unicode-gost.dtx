@@ -1,14 +1,15 @@
+% !Mode:: "DTX:UNIX:UTF-8"
 % \endinput
 %    \begin{macrocode}
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
+%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
-%<utf8gost71s|utf8gost71u>%% GOST 7.1-84 vd970321
-%<utf8gost780s|utf8gost780u>%% GOST 7.1-84 and GOST 7.80-00
-%<utf8gost705s|utf8gost705u>%% GOST 7.0.5-2008
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-84 vd970321
+%<unicode-gost780s|unicode-gost780u>%% GOST 7.1-84 and GOST 7.80-00
+%<unicode-gost705s|unicode-gost705u>%% GOST 7.0.5-2008
+%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -55,7 +56,7 @@ ENTRY
     language
     booklanguage
     url
-    urlnote
+    urldate
   }
   {}
   { label }
@@ -96,13 +97,14 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
-%%%          " " "--- " *  write$
-%%%          " \BibAcdash " write$
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>
-             " " quote$ "--- " * *  write$
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%          " " "--- " *  write$
+%          " \BibAcdash " write$
+%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>
+%             " " quote$ "--- " * *  write$
+          " \BibDash " write$
+%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>
+%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
           newline$
           "\newblock " write$
         }
@@ -314,7 +316,13 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
           {"{изд.}"}
           { curlanguage "german" =
             {" {aus.}" }
-            {"language is not defined: " language  "edition" * * warning$ "edition"}
+            { curlanguage "italian" =
+              {"edizione"}
+              { curlanguage "french" =
+                {"\'{e}dition"}
+                {"language is not defined: " language  "edition" * * warning$ "edition"}
+            if$}
+          if$}
         if$}
       if$}
     if$}
@@ -379,7 +387,6 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
   if$
 }
 
-
 FUNCTION {bbl.of}      %  { "\bblof{}" }
 {  curlanguage "english" =
     {"of"}
@@ -434,12 +441,15 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 { curlanguage "english" =
-     {"no."}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{№}"}
-        { curlanguage "german" =
-           {"{an.}"}
-           {"language is not defined: " language  "no." * * warning$ "no."}
+    {"no."}
+    { curlanguage "italian" =
+        { "no" }
+        { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"{№}"}
+           { curlanguage "german" =
+              {"{an.}"}
+              {"language is not defined: " language  "no." * * warning$ "no."}
+           if$}
         if$}
      if$}
   if$
@@ -530,6 +540,21 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
   if$
 }
 
+FUNCTION {bbl.urldate}
+{  curlanguage "english" =
+     {"online; accessed: "}
+     { curlanguage "ukrainian" =
+        {"дата звернення: "}
+        { curlanguage "russian" =
+           {"дата обращения: "}
+           { curlanguage "german" =
+              {"{online; abgerufen: }"}
+              {"language is not defined: " language * warning$ "online; accessed: "}
+           if$}
+        if$}
+     if$}
+  if$
+}
 %<*debug>
 
 \def\bblchapter{chapter}        \def\bblchap{chap.}
@@ -564,7 +589,7 @@ FUNCTION {bbl.phdthesis} { "Ph.D. thesis" }
 
 INTEGERS { nameptr namesleft numnames }
 
-%<*utf8gost71s|utf8gost71u|utf8gost705s|utf8gost705u>
+%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
 
 FUNCTION {format.names}
 { 's :=
@@ -602,15 +627,15 @@ FUNCTION {format.names}
   while$
 }
 
-%</utf8gost71s|utf8gost71u|utf8gost705s|utf8gost705u>
-%<*utf8gost780s|utf8gost780u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost780s|unicode-gost780u>
 
 FUNCTION {format.names}
 {
   #1 "{vv~}{ll}{~jj}{,~ff}" format.name$
 }
 
-%</utf8gost780s|utf8gost780u>
+%</unicode-gost780s|unicode-gost780u>
 
 FUNCTION {format.names.rev}
 { 's :=
@@ -1079,7 +1104,7 @@ FUNCTION {bookauthor.before}
   if$
 }
 
-%<*utf8gost71s|utf8gost71u|utf8gost705s|utf8gost705u>
+%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
 
 FUNCTION {author.after}
 {
@@ -1103,8 +1128,8 @@ FUNCTION {bookauthor.after}
     if$}
   if$
 }
-%</utf8gost71s|utf8gost71u|utf8gost705s|utf8gost705u>
-%<*utf8gost780s|utf8gost780u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost780s|unicode-gost780u>
 
 FUNCTION {author.after}
 {
@@ -1122,7 +1147,7 @@ FUNCTION {bookauthor.after}
        new.semicolumn }
   if$
 }
-%</utf8gost780s|utf8gost780u>
+%</unicode-gost780s|unicode-gost780u>
 
 FUNCTION {editor.organization.after}
 {
@@ -1150,11 +1175,11 @@ FUNCTION {format.url}
 { url empty$
     { "" }
     {
-%<utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>      "\BibUrl{ " url * "}" *
-%<utf8gost705s|utf8gost705u>      "URL: \BibUrl{ " url * "}" *
-      urlnote empty$
+%<unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>      "\BibUrl{ " url * "}" *
+%<unicode-gost705s|unicode-gost705u>      "URL: \BibUrl{" url * "}" *
+      urldate empty$
         { "" }
-        { " (" urlnote * ")" * }
+        { " (" bbl.urldate * urldate * ")" * }
       if$ *
     }
   if$
@@ -1573,7 +1598,7 @@ MACRO {tcs} {"Theoretical Computer Science"}
 
 READ
 
-%<*utf8gost71s|utf8gost780s|utf8gost705s>
+%<*unicode-gost71s|unicode-gost780s|unicode-gost705s>
 
 FUNCTION {sortify}
 { purify$
@@ -1687,7 +1712,7 @@ ITERATE {presort}
 
 SORT
 
-%</utf8gost71s|utf8gost780s|utf8gost705s>
+%</unicode-gost71s|unicode-gost780s|unicode-gost705s>
 
 STRINGS { longest.label }
 
@@ -1718,19 +1743,19 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"             write$ newline$
-  "\ifx\undefined\url\def\url#1{{\small #1}}\fi"         write$ newline$
-  "\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\fi"      write$ newline$
-  "\ifx\undefined\BibAnnote\long\def\BibAnnote#1{}\fi"   write$ newline$
-  "\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\fi"   write$ newline$
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
-%%  "\ifx\undefined\cyrdash\def\cyrdash{\hbox to.8em{--\hss--}}\fi"    write$ newline$
-%%  "\ifx\undefined\BibAcdash\makeatletter"                            write$ newline$
-%%  "  \def\BibAcdash{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi" write$ newline$
-%%  "    \cyrdash\hskip.2em\ignorespaces}\makeatother\fi"              write$ newline$
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u>
-%<*utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
+  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
+  "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
+  "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
+  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%  "\makeatletter"                                      write$ newline$
+  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+%  "\providecommand*{\@Acdash}{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+%  "\providecommand*{\BibDash}{\@Acdash}"                         write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+%  "\makeatother"                                      write$ newline$
+%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1752,5 +1777,5 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
-%</utf8gost71s|utf8gost71u|utf8gost780s|utf8gost780u|utf8gost705s|utf8gost705u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
 %    \end{macrocode}
