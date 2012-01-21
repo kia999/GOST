@@ -6,8 +6,8 @@
 %% This bibliography style attempts
 %% to format bibliography according to
 %</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-84 vd970321
-%<unicode-gost780s|unicode-gost780u>%% GOST 7.1-84 and GOST 7.80-00
+%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-2004
+%<unicode-gost780s|unicode-gost780u>%% GOST 7.1-84 (outdated)
 %<unicode-gost705s|unicode-gost705u>%% GOST 7.0.5-2008
 %<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
 %%
@@ -98,12 +98,12 @@ FUNCTION {output.nonnull}
     { output.state after.block =
         { add.period$ write$
 %</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%          " " "--- " *  write$
-%          " \BibAcdash " write$
-%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>
-%             " " quote$ "--- " * *  write$
+%<*unicode-gost780s|unicode-gost780u>
+          " " quote$ "--- " * *  write$
+%</unicode-gost780s|unicode-gost780u>
+%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
           " \BibDash " write$
-%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>
+%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
 %<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
           newline$
           "\newblock " write$
@@ -1749,12 +1749,10 @@ FUNCTION {begin.bib}
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
 %</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%  "\makeatletter"                                      write$ newline$
+%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-%  "\providecommand*{\@Acdash}{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%  "\providecommand*{\BibDash}{\@Acdash}"                         write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%  "\makeatother"                                      write$ newline$
+%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
 %<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
   preamble$ empty$
     'skip$
