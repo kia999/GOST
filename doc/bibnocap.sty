@@ -1,0 +1,25 @@
+\RequirePackage{bibunits}
+\renewcommand{\@bibunitname}{\jobname-\the\@bibunitauxcnt}
+\newcounter{qnum}\newcounter{qnuma}\setcounter{qnum}{0}
+\def\@biblabel#1{#1.\hfill}
+%\endinput
+\renewenvironment{thebibliography}[1]
+      {\list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{99}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+%            \advance\leftmargin\parindent
+            \setcounter{qnuma}{\c@enumiv}
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \setcounter{enumiv}{\theqnuma}
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}

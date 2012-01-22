@@ -6,8 +6,8 @@
 %% This bibliography style attempts
 %% to format bibliography according to
 %</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-2004
-%<unicode-gost780s|unicode-gost780u>%% GOST 7.1-84 (outdated)
+%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-2004 (superseeded)
+%<unicode-gost780s|unicode-gost780u>%% (obsolete)
 %<unicode-gost705s|unicode-gost705u>%% GOST 7.0.5-2008
 %<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
 %%
@@ -1175,8 +1175,8 @@ FUNCTION {format.url}
 { url empty$
     { "" }
     {
-%<unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u>      "\BibUrl{ " url * "}" *
-%<unicode-gost705s|unicode-gost705u>      "URL: \BibUrl{" url * "}" *
+%<unicode-gost780s|unicode-gost780u>      "\BibUrl{ " url * "}" *
+%<unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * urldate * ")" * }

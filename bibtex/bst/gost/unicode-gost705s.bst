@@ -7,18 +7,18 @@
 %% unicode-gost.dtx  (with options: `unicode-gost705s')
 %% 
 %% Copyright 2012 Igor A. Kotelnikov.
-%% Version 2012.02.02
+%% Version 2012.01.21
 %% 
 %% Copyright 1996-2005 Maksym Polyakov.
 %% Version 2005.08.12
 %% 
 %% This file may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version 1.2
+%% conditions of the LaTeX Project Public License, either version 1.3
 %% of this license or (at your option) any later version.
 %% The latest version of this license is in
 %%   http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
 %% 
 %% Please, send bug reports via e-mail:
 %%   kia999 at mail dot ru <Igor Kotelnikov>
@@ -132,8 +132,7 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%%%          " " "--- " *  write$
-%%%          " \BibAcdash " write$
+          " \BibDash " write$
           newline$
           "\newblock " write$
         }
@@ -344,7 +343,13 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
           {"{изд.}"}
           { curlanguage "german" =
             {" {aus.}" }
-            {"language is not defined: " language  "edition" * * warning$ "edition"}
+            { curlanguage "italian" =
+              {"edizione"}
+              { curlanguage "french" =
+                {"\'{e}dition"}
+                {"language is not defined: " language  "edition" * * warning$ "edition"}
+            if$}
+          if$}
         if$}
       if$}
     if$}
@@ -463,12 +468,15 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 { curlanguage "english" =
-     {"no."}
-     { curlanguage "ukrainian" = curlanguage "russian" = or
-        {"{№}"}
-        { curlanguage "german" =
-           {"{an.}"}
-           {"language is not defined: " language  "no." * * warning$ "no."}
+    {"no."}
+    { curlanguage "italian" =
+        { "no" }
+        { curlanguage "ukrainian" = curlanguage "russian" = or
+           {"{№}"}
+           { curlanguage "german" =
+              {"{an.}"}
+              {"language is not defined: " language  "no." * * warning$ "no."}
+           if$}
         if$}
      if$}
   if$
@@ -561,14 +569,14 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
 
 FUNCTION {bbl.urldate}
 {  curlanguage "english" =
-     {"online; accessed:"}
+     {"online; accessed: "}
      { curlanguage "ukrainian" =
-        {"дата звернення:"}
+        {"дата звернення: "}
         { curlanguage "russian" =
-           {"дата обращения:"}
+           {"дата обращения: "}
            { curlanguage "german" =
-              {"{online; abgerufen:}"}
-              {"language is not defined: " language * warning$ "urldate"}
+              {"{online; abgerufen: }"}
+              {"language is not defined: " language * warning$ "online; accessed: "}
            if$}
         if$}
      if$}
@@ -1640,6 +1648,7 @@ FUNCTION {begin.bib}
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }

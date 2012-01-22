@@ -6,8 +6,8 @@
 %% This bibliography style attempts
 %% to format bibliography according to
 %</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%<gost71s|gost71u>%% GOST 7.1-84 vd970321
-%<gost780s|gost780u>%% GOST 7.1-84 and GOST 7.80-00
+%<gost71s|gost71u>%% GOST 7.1-2004 (superseeded)
+%<gost780s|gost780u>%% (obsolete)
 %<gost705s|gost705u>%% GOST 7.0.5-2008
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
 %%
@@ -98,12 +98,12 @@ FUNCTION {output.nonnull}
     { output.state after.block =
         { add.period$ write$
 %</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%          " " "--- " *  write$
-%          " \BibAcdash " write$
-%<*gost71s|gost71u|gost780s|gost780u>
-%          " " quote$ "--- " * *  write$
+%<*gost780s|gost780u>
+          " " quote$ "--- " * *  write$
+%</gost780s|gost780u>
+%<*gost71s|gost71u|gost705s|gost705u>
           " \BibDash " write$
-%</gost71s|gost71u|gost780s|gost780u>
+%</gost71s|gost71u|gost705s|gost705u>
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
           newline$
           "\newblock " write$
@@ -1175,8 +1175,8 @@ FUNCTION {format.url}
 { url empty$
     { "" }
     {
-%<gost71s|gost71u|gost780s|gost780u>      "\BibUrl{ " url * "}" *
-%<gost705s|gost705u>      "URL: \BibUrl{" url * "}" *
+%<gost780s|gost780u>      "\BibUrl{ " url * "}" *
+%<gost71s|gost71u|gost705s|gost705u>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * urldate * ")" * }
@@ -1749,12 +1749,10 @@ FUNCTION {begin.bib}
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
 %</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%  "\makeatletter"                                      write$ newline$
+%<*gost71s|gost71u|gost705s|gost705u>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-%  "\providecommand*{\@Acdash}{\ifdim\lastskip>\z@\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%  "\providecommand*{\BibDash}{\@Acdash}"                         write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%  "\makeatother"                                      write$ newline$
+%</gost71s|gost71u|gost705s|gost705u>
 %<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
   preamble$ empty$
     'skip$

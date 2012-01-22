@@ -1,0 +1,89 @@
+\usepackage[ukrainian,russian]{babel}
+\usepackage{bibunits,verbatim,bibnocap,geometry}
+\usepackage{hyperref}
+\usepackage{cmap}
+
+
+\newcommand{\bibentry}[1]{
+\begin{bibunit}
+\nocite{*}
+\putbib[bib/#1]
+\nopagebreak
+\verbatiminput{bib/#1.bib}
+\end{bibunit}
+}
+
+
+\begin{document}	
+
+\title{\mytitle}
+\maketitle
+\begin{abstract}
+  \mydescription
+\end{abstract}
+
+\bibliographyunit[\section]
+\bibliographystyle{\mybibstyle}
+
+\section{Books}
+\subsection{One--three authors}
+\bibentry{ex01}
+\bibentry{ex02}
+\bibentry{ex03}
+\subsection{Four and more authors}
+\bibentry{ex04}
+\bibentry{ex05}
+\subsection{Collective author}
+\bibentry{ex06}
+\subsection{Compiler}
+\bibentry{ex06a}
+\subsection{Multiple-volume publication}
+\bibentry{ex07}
+\bibentry{ex08}
+\bibentry{ex09}
+\subsection{Translated}
+\bibentry{ex10}
+\subsection{Collections}
+\bibentry{ex12}
+\subsection{Dictionary}
+\bibentry{ex13}
+\section{Parts of}
+\subsection{Book}
+\bibentry{ex14}
+\bibentry{ex14a}
+\subsection{Collection}
+\bibentry{ex15}
+\subsection{Journal}
+\bibentry{ex16}
+\bibentry{ex17}
+\bibentry{ex17a}
+\subsection{Newspaper}
+\bibentry{ex17b}
+\subsection{Encyclop\ae dia}
+\bibentry{ex18}
+\subsection{Proceedings}
+\bibentry{ex19}
+\bibentry{ex20}
+\subsubsection{With crossreference}
+\bibentry{ex20a}
+\subsubsection{With multiple languages}
+\bibentry{ex20b}
+\section{Other}
+\subsection{Standard}
+\bibentry{ex11}
+\subsection{Dissertation}
+\bibentry{ex21}
+\subsection{Abstract}
+\bibentry{ex22}
+\subsection{Preprint}
+\bibentry{ex23}
+\subsection{Report}
+\bibentry{ex24}
+\subsection{Catalog}
+\bibentry{ex25}
+\subsection{Instruction}
+\bibentry{ex26}
+\subsection{Online}
+\bibentry{ex27}
+
+\end{document}

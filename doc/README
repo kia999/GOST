@@ -1,0 +1,144 @@
+GOST is a bundle of BibTeX styles designed to meet State Standards (GOST)
+on information, librarianship and publishing issued by Russian Federation
+and interstate committee of former USSR States.
+
+It may be distributed and/or modified under the conditions of the LaTeX
+Project Public License, either version 1.3 of this license or (at your
+option) any later version. The latest version of this license is in
+   http://www.latex-project.org/lppl.txt
+and version 1.3 or later is part of all distributions of LaTeX
+ version 2005/12/01 or later.
+
+The System of Standards includes:
+GOST 7.0.5-2008  Bibliographic reference.
+                 General requirements and rules of making.
+GOST 7.1  -2003  Bibliographic record.
+                 Bibliographic description.
+                 General requirements and rules.
+GOST 7.80 -2000  Bibliographic record.
+                 Heading. General requirements and rules.
+GOST 7.11 -2004  Bibliographic description and references.
+                 Rules for the abbreviation of words and word combinations
+                 in foreign European languages
+ect.
+
+The GOST bundle contains 8 BibTeX styles. These include 2 BibTeX styles
+for documents in 8bit encoding and 2 equivalent styles in UTF8 encoding.
+
+Encoding        |   Unsorted               Sorted
+----------------------------------------------------------------
+8bit            |   gost705.bst            gost705s.bst
+utf8            |   unicode-gost705.bst    unicode-gost705s.bst
+
+4 styles are retained for backward compatibility. They do not conform
+standards listed above.
+
+Encoding        |   Unsorted               Sorted
+----------------------------------------------------------------
+8bit            |   gost780u.bst           gost780s.bst
+utf8            |   unicode-gost780u.bst   unicode-gost780s.bst
+
+To produce 8bit styles, you need to download the files `gost.ins' and
+`gost.dtx'. Run LaTeX on gost.ins.  Similarly, to produce unicoded
+style, run LaTeX on unicode-gost.ins.
+
+Beyond that, GOST bundle contains CS files (codepage and sorting order).
+
+Encoding        |   CSF                 Sorting order
+----------------------------------------------------------------
+cp866           |   ruscii.csf          Cyrillic first, Latin
+cp1251          |   cp1251.csf          Cyrillic first, Latin
+koi8-u          |   koi8u.csf           Cyrillic first, Latin
+utf8            |   utf8cyrillic.csf    Cyrillic first, Latin
+
+In addition, BibTeX8 distribution comes with few more CSFs.
+
+Encoding        |   CSF                 Sorting order
+----------------------------------------------------------------
+cp866           |   cp866rus.csf        Latin first, Cyrillic
+
+
+How to use
+
+1. Select bibliography style by adding appropriate \bibliographystyle
+   declaration to your source file <filename>.tex, e.g.
+
+	\bibliographystyle{gost705}
+	\bibliography{dabase}
+
+2. Add the field language="ukrainian" or language="russian" to the
+   bibliographic entries in Ukrainian or Russian languages in your
+   database; English is the default language. German, Italian and
+   French are partially supported.
+
+3. To compile list of references from your database use bibtex8.exe
+   rather than bibtex.exe. Depending on the codepage of your
+   bibliographic database, indicate one of the CS files
+   listed above as option to bibtex8.exe.  Run LaTeX, then run
+   bibTeX8 and LaTeX again:
+
+   	latex <filename>.tex
+   	bibtex8 -B -c <csf_file>.csf <filename>.aux
+	latex <filename>.tex
+
+4. For details on preparing bibliographic database see
+   examples in gost*.pdf.
+
+5. Unicode-gost*.bst styles are primarily intended for use
+   with unicode compilers (xelatex and lualatex). They
+   should be preferred as well when using 8bit compilers
+   (latex and pdflatex) if source file is in utf8 encoding.
+
+
+Customization
+
+Every GOST style defines few commands to format some parts of a
+reference. You can redefine these commands prior to
+the \bibliography{<bibtex_style>} command. Initial
+definitions are listed below.
+
+	\providecommand*{\url}[1]{{\small #1}}
+	\providecommand*{\BibUrl}[1]{\url{#1}}
+	\providecommand{\BibAnnote}[1]{}
+	\providecommand*{\BibEmph}[1]{\emph{#1}}
+
+By default, gost styles separate logical parts of a bibliography
+record by a period and cyrdash (. "---). It is legitimate to drop
+that dash by overriding the command \BibDash as follows
+
+	\providecommand*{\BibDash}{}
+
+By default, \BibDash is equivalent to the shorthand "---
+introduced by the babel package with the option russian.
+It prints a so called cyrillic dash (\cyrdash), which is
+20% shorter then ordinary LaTeX dash (---), and puts
+unbreakable space before \cyrdash so that dash never appears
+in the beginning of a line.
+
+
+Where to get
+
+1. http://ctan.org/tex-archive/biblio/bibtex/contrib/gost
+2. http://ctan.org/pkg/gost
+
+
+What's new in version 2012.02.02
+
+1. Support for GOST 7.0.5-2008 is provided.
+2. @Online entry is added to format a reference to electronic
+   resource on Internet.
+3. Urldate field is added to format the date of last access to
+   Internet resource.
+
+
+Version history
+
+2. 2012.02.02
+1. 2005.08.12
+
+
+Please, send feature requests and bug reports via e-mail:
+  kia999  at mail  dot ru   <Igor A. Kotelnikov>
+  polyama at yahoo dot edu  <Maksym Polyakov>
+
+Happy BibTeXing!
