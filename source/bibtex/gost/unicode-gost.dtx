@@ -1,15 +1,14 @@
 % !Mode:: "DTX:UNIX:UTF-8"
 % \endinput
 %    \begin{macrocode}
-%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%<unicode-gost71s|unicode-gost71u>%% GOST 7.1-2004 (superseeded)
+%</unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
 %<unicode-gost780s|unicode-gost780u>%% (obsolete)
-%<unicode-gost705s|unicode-gost705u>%% GOST 7.0.5-2008
-%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%<unicode-gost08s|unicode-gost08u>%% GOST 7.0.5-2008
+%<*unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -97,14 +96,14 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
 %<*unicode-gost780s|unicode-gost780u>
           " " quote$ "--- " * *  write$
 %</unicode-gost780s|unicode-gost780u>
-%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost08s|unicode-gost08u>
           " \BibDash " write$
-%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
-%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost08s|unicode-gost08u>
+%<*unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
           newline$
           "\newblock " write$
         }
@@ -589,7 +588,7 @@ FUNCTION {bbl.phdthesis} { "Ph.D. thesis" }
 
 INTEGERS { nameptr namesleft numnames }
 
-%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost08s|unicode-gost08u>
 
 FUNCTION {format.names}
 { 's :=
@@ -627,7 +626,7 @@ FUNCTION {format.names}
   while$
 }
 
-%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost08s|unicode-gost08u>
 %<*unicode-gost780s|unicode-gost780u>
 
 FUNCTION {format.names}
@@ -1104,7 +1103,7 @@ FUNCTION {bookauthor.before}
   if$
 }
 
-%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%<*unicode-gost08s|unicode-gost08u>
 
 FUNCTION {author.after}
 {
@@ -1128,7 +1127,7 @@ FUNCTION {bookauthor.after}
     if$}
   if$
 }
-%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost08s|unicode-gost08u>
 %<*unicode-gost780s|unicode-gost780u>
 
 FUNCTION {author.after}
@@ -1176,7 +1175,7 @@ FUNCTION {format.url}
     { "" }
     {
 %<unicode-gost780s|unicode-gost780u>      "\BibUrl{ " url * "}" *
-%<unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>      "URL: \BibUrl{" url * "}" *
+%<unicode-gost08s|unicode-gost08u>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * urldate * ")" * }
@@ -1598,7 +1597,7 @@ MACRO {tcs} {"Theoretical Computer Science"}
 
 READ
 
-%<*unicode-gost71s|unicode-gost780s|unicode-gost705s>
+%<*unicode-gost780s|unicode-gost08s>
 
 FUNCTION {sortify}
 { purify$
@@ -1712,7 +1711,7 @@ ITERATE {presort}
 
 SORT
 
-%</unicode-gost71s|unicode-gost780s|unicode-gost705s>
+%</unicode-gost780s|unicode-gost08s>
 
 STRINGS { longest.label }
 
@@ -1748,12 +1747,12 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
-%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
-%<*unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
+%<*unicode-gost08s|unicode-gost08u>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%</unicode-gost71s|unicode-gost71u|unicode-gost705s|unicode-gost705u>
-%<*unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost08s|unicode-gost08u>
+%<*unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1775,5 +1774,5 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
-%</unicode-gost71s|unicode-gost71u|unicode-gost780s|unicode-gost780u|unicode-gost705s|unicode-gost705u>
+%</unicode-gost780s|unicode-gost780u|unicode-gost08s|unicode-gost08u>
 %    \end{macrocode}

@@ -15,7 +15,7 @@
 \preamble
 
 Copyright 2012 Igor A. Kotelnikov.
-Version 2012.01.21
+Version 2012.01.25
 
 Copyright 1996-2005 Maksym Polyakov.
 Version 2005.08.12
@@ -26,28 +26,47 @@ of this license or (at your option) any later version.
 The latest version of this license is in
   http://www.latex-project.org/lppl.txt
 and version 1.3 or later is part of all distributions of LaTeX
-version 2005/12/01 or later.                                                        
+version 2005/12/01 or later.
 
-Please, send bug reports via e-mail:                          
+This file has the LPPL maintenance status "maintained".
+Current Maintainer is Igor A. Kotelnikov.
+
+Download from
+  CTAN:macros/latex/contrib/gost/unicode-gost.dtx
+
+To unpack run
+   latex unicode-gost.ins
+
+TeX Directory Structure:
+   TDS:bibtex/bst/gost/*.bst
+   TDS:bibtex/csf/gost/*.csf
+   TDS:doc/latex/gost/*.pdf
+   TDS:source/bibtex/gost/*.dtx, *.ins
+
+
+Please, send bug reports via e-mail:
   kia999 at mail dot ru <Igor Kotelnikov>
-  polyama at yahoo dot edu  <Maksym Polyakov>                                         
+  polyama at yahoo dot edu  <Maksym Polyakov>
+
+2012.01.25 *gost705?.bst renamed to *gost08?.bst to avoid conflict
+           with disser package.
 
 2012.01.15 Added German, French, Italian languages, @online entry.
 
 2005.08.12 Bug fix (long annote)
- 
+
 2003.06.06 contributions by Konstantin Vorontsov:
 New ENTRY "annote" added to output annotations.
 New commands BibUrl, BibAnnote added for customize urls and annotations.
- 
-2003.08.10 
+
+2003.08.10
 New command BibEmph added to customize emphasizing.
 
 2003.10.07
-Some bug fixes in names and date formatting. 
+Some bug fixes in names and date formatting.
 
 2003.10.07
-Bug fix in INPROCEEDINGS. 
+Bug fix in INPROCEEDINGS.
 
 \endpreamble
 
@@ -55,7 +74,7 @@ Bug fix in INPROCEEDINGS.
 %\SimplePackage{gost71u}
 \SimplePackage{gost780s}
 \SimplePackage{gost780u}
-\SimplePackage{gost705s}
-\SimplePackage{gost705u}
+\SimplePackage{gost08s}
+\SimplePackage{gost08u}
 
 \endbatchfile

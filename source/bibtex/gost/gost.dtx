@@ -1,15 +1,14 @@
 % !Mode:: "DTX:UNIX"
 % \endinput
 %    \begin{macrocode}
-%<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%<*gost780s|gost780u|gost08s|gost08u>
 %%
 %% This bibliography style attempts
 %% to format bibliography according to
-%</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%<gost71s|gost71u>%% GOST 7.1-2004 (superseeded)
+%</gost780s|gost780u|gost08s|gost08u>
 %<gost780s|gost780u>%% (obsolete)
-%<gost705s|gost705u>%% GOST 7.0.5-2008
-%<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%<gost08s|gost08u>%% GOST 7.0.5-2008
+%<*gost780s|gost780u|gost08s|gost08u>
 %%
 %% For the Ukrainian|Russian bibliographic entries
 %% you need to create field
@@ -97,14 +96,14 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%</gost780s|gost780u|gost08s|gost08u>
 %<*gost780s|gost780u>
           " " quote$ "--- " * *  write$
 %</gost780s|gost780u>
-%<*gost71s|gost71u|gost705s|gost705u>
+%<*gost08s|gost08u>
           " \BibDash " write$
-%</gost71s|gost71u|gost705s|gost705u>
-%<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%</gost08s|gost08u>
+%<*gost780s|gost780u|gost08s|gost08u>
           newline$
           "\newblock " write$
         }
@@ -589,7 +588,7 @@ FUNCTION {bbl.phdthesis} { "Ph.D. thesis" }
 
 INTEGERS { nameptr namesleft numnames }
 
-%<*gost71s|gost71u|gost705s|gost705u>
+%<*gost08s|gost08u>
 
 FUNCTION {format.names}
 { 's :=
@@ -627,7 +626,7 @@ FUNCTION {format.names}
   while$
 }
 
-%</gost71s|gost71u|gost705s|gost705u>
+%</gost08s|gost08u>
 %<*gost780s|gost780u>
 
 FUNCTION {format.names}
@@ -1104,7 +1103,7 @@ FUNCTION {bookauthor.before}
   if$
 }
 
-%<*gost71s|gost71u|gost705s|gost705u>
+%<*gost08s|gost08u>
 
 FUNCTION {author.after}
 {
@@ -1128,7 +1127,7 @@ FUNCTION {bookauthor.after}
     if$}
   if$
 }
-%</gost71s|gost71u|gost705s|gost705u>
+%</gost08s|gost08u>
 %<*gost780s|gost780u>
 
 FUNCTION {author.after}
@@ -1176,7 +1175,7 @@ FUNCTION {format.url}
     { "" }
     {
 %<gost780s|gost780u>      "\BibUrl{ " url * "}" *
-%<gost71s|gost71u|gost705s|gost705u>      "URL: \BibUrl{" url * "}" *
+%<gost08s|gost08u>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * urldate * ")" * }
@@ -1598,7 +1597,7 @@ MACRO {tcs} {"Theoretical Computer Science"}
 
 READ
 
-%<*gost71s|gost780s|gost705s>
+%<*gost780s|gost08s>
 
 FUNCTION {sortify}
 { purify$
@@ -1712,7 +1711,7 @@ ITERATE {presort}
 
 SORT
 
-%</gost71s|gost780s|gost705s>
+%</gost780s|gost08s>
 
 STRINGS { longest.label }
 
@@ -1748,12 +1747,12 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
-%</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
-%<*gost71s|gost71u|gost705s|gost705u>
+%</gost780s|gost780u|gost08s|gost08u>
+%<*gost08s|gost08u>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%</gost71s|gost71u|gost705s|gost705u>
-%<*gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%</gost08s|gost08u>
+%<*gost780s|gost780u|gost08s|gost08u>
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1775,5 +1774,5 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
-%</gost71s|gost71u|gost780s|gost780u|gost705s|gost705u>
+%</gost780s|gost780u|gost08s|gost08u>
 %    \end{macrocode}
