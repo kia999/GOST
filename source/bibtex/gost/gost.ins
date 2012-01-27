@@ -1,24 +1,8 @@
 \input docstrip
 
-\def\SimplePackage#1{%
-  \generate{\file{#1.bst}{\from{gost.dtx}{#1}}}}
-
-\def\mypostamble{%
-  \MetaPrefix ^^J%
-  \MetaPrefix\space End of file `\outFileName'.%
-  }
-
-\usepostamble\mypostamble
-
 \keepsilent
 
 \preamble
-
-Copyright 2012 Igor A. Kotelnikov.
-Version 2012.01.25
-
-Copyright 1996-2005 Maksym Polyakov.
-Version 2005.08.12
 
 This file may be distributed and/or modified under the
 conditions of the LaTeX Project Public License, either version 1.3
@@ -29,52 +13,54 @@ and version 1.3 or later is part of all distributions of LaTeX
 version 2005/12/01 or later.
 
 This file has the LPPL maintenance status "maintained".
-Current Maintainer is Igor A. Kotelnikov.
+Maintained by Igor A. Kotelnikov.
+Current version: 2012.02.02
 
-Download from
-  CTAN:macros/latex/contrib/gost/unicode-gost.dtx
-
-To unpack run
-   latex unicode-gost.ins
-
-TeX Directory Structure:
-   TDS:bibtex/bst/gost/*.bst
-   TDS:bibtex/csf/gost/*.csf
-   TDS:doc/latex/gost/*.pdf
-   TDS:source/bibtex/gost/*.dtx, *.ins
-
-
-Please, send bug reports via e-mail:
+Please, send bug report via e-mail:
   kia999 at mail dot ru <Igor Kotelnikov>
+or
   polyama at yahoo dot edu  <Maksym Polyakov>
-
-2012.01.25 *gost705?.bst renamed to *gost08?.bst to avoid conflict
-           with disser package.
-
-2012.01.15 Added German, French, Italian languages, @online entry.
-
-2005.08.12 Bug fix (long annote)
-
-2003.06.06 contributions by Konstantin Vorontsov:
-New ENTRY "annote" added to output annotations.
-New commands BibUrl, BibAnnote added for customize urls and annotations.
-
-2003.08.10
-New command BibEmph added to customize emphasizing.
-
-2003.10.07
-Some bug fixes in names and date formatting.
-
-2003.10.07
-Bug fix in INPROCEEDINGS.
 
 \endpreamble
 
-%\SimplePackage{gost71s}
-%\SimplePackage{gost71u}
-\SimplePackage{gost780s}
-\SimplePackage{gost780u}
-\SimplePackage{gost08s}
-\SimplePackage{gost08u}
+\def\mypostamble{%
+  \MetaPrefix ^^J%
+  \MetaPrefix\space End of file `\outFileName'.%
+  }
+\usepostamble\mypostamble
+
+\askonceonly
+\generate{%
+%
+% BST styles that mimics GOST 7.8.0 for bibliographic *records*
+  \file{gost780.bst}             {\from{gost.dtx} {bst}}
+  \file{gost780s.bst}            {\from{gost.dtx} {bst,sorted}}
+%  \file{gost705.bst}            {\from{gost.dtx} {bst,modern,eprint,longlist}}
+%  \file{gost705s.bst}           {\from{gost.dtx} {bst,modern,eprint,longlist,sorted}}
+%
+% BST styles that mimics GOST 7.0.5 for bibliographic *references*
+  \file{gost2008.bst}            {\from{gost.dtx} {bst,modern}}
+  \file{gost2008e.bst}           {\from{gost.dtx} {bst,modern,eprint}}
+  \file{gost2008l.bst}           {\from{gost.dtx} {bst,modern,longlist}}
+  \file{gost2008el.bst}          {\from{gost.dtx} {bst,modern,eprint,longlist}}
+%
+% Same style with sorting
+  \file{gost2008s.bst}           {\from{gost.dtx} {bst,modern,sorted}}
+  \file{gost2008es.bst}          {\from{gost.dtx} {bst,modern,eprint,sorted}}
+  \file{gost2008ls.bst}          {\from{gost.dtx} {bst,modern,longlist,sorted}}
+  \file{gost2008els.bst}         {\from{gost.dtx} {bst,modern,eprint,longlist,sorted}}
+%
+%% Unicode BST styles that mimics GOST 7.0.5 for bibliographic *references*
+  \file{unicode-gost2008.bst}    {\from{gost.dtx} {bst,utf8,modern}}
+  \file{unicode-gost2008e.bst}   {\from{gost.dtx} {bst,utf8,modern,eprint}}
+  \file{unicode-gost2008l.bst}   {\from{gost.dtx} {bst,utf8,modern,longlist}}
+  \file{unicode-gost2008el.bst}  {\from{gost.dtx} {bst,utf8,modern,eprint,longlist}}
+%
+%% Same style with sorting; are disabled since bibtex cannot sort utf8
+%  \file{unicode-gost2008s.bst}  {\from{gost.dtx} {bst,utf8,modern,sorted}}
+%  \file{unicode-gost2008es.bst} {\from{gost.dtx} {bst,utf8,modern,eprint,sorted}}
+%  \file{unicode-gost2008ls.bst} {\from{gost.dtx} {bst,utf8,modern,longlist,sorted}}
+%  \file{unicode-gost2008els.bst}{\from{gost.dtx} {bst,utf8,modern,eprint,longlist,sorted}}
+}
 
 \endbatchfile

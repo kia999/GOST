@@ -1,69 +1,383 @@
-% !Mode:: "DTX:UNIX"
-%<*comment>
-%%
-%% This is the source file for the GOST package.
-%% It contains set of bibliographic style that
-%% attempt to format the bibliography according to
-%% GOST R 7.0.5-2008 with some conventional modifications.
-%%
-%% Copyright 2012 Igor A. Kotelnikov.
-%% Version 2012.01.25
-%%
-%% Copyright 1996-2005 Maksym Polyakov.
-%% Version 2005.08.12
-%%
-%% For a bibliographic entry in Russian you need
-%% to add the field
-%%     language = {russian}.
-%% Ukranian, German, French, Italian lanuages are
-%% also supported. Default language is English.
-%%
-%% Book entry should have the numpages field
-%% showing total number of pages. Optional field
-%% url will format URL (using hyperref, if loaded).
-%%
-%% See examples in gost*.pdf.
-%%
-%% Requires 8-bit bibtex with switch -B and csf file supporting cyrillic.
-%% bibtex8 -B -c <encoding>.csf <your_document>
-%%
-%%
-%% Download from
-%%  CTAN:macros/latex/contrib/gost/unicode-gost.dtx
-%%
-%% To unpack run
-%%   latex unicode-gost.ins
-%%
-%% TeX Directory Structure:
-%%
-%%   TDS:bibtex/bst/gost/*.bst
-%%   TDS:bibtex/csf/gost/*.csf
-%%   TDS:doc/latex/gost/*.pdf
-%%   TDS:source/bibtex/gost/*.dtx, *.ins
-%%
-%%
-%% Changes:
-%%
-%% 2012.01.25 *gost705?.bst renamed to *gost08?.bst to avoid conflict
-%%            with disser package.
-%%
-%% 2012.01.15 Added German, French, Italian languages, @online entry.
-%%
-%% 2005.08.12 Bug fix (long annote)
-%%
-%% 2003.06.06 contributions by Konstantin Vorontsov:
-%%            New ENTRY "annote" added to output annotations.
-%%            New commands BibUrl, BibAnnote added for customize urls
-%%            and annotations.
-%%
-%% 2003.08.10 New command BibEmph added to customize emphasizing.
-%%
-%% 2003.10.07 Some bug fixes in names and date formatting.
-%%
-%% 2003.10.07 Bug fix in INPROCEEDINGS.
-%%
-%</comment>
-% \endinput
+% \iffalse
+%
+% !Mode:: "DTX:UNIX:UTF8"
+%
+% This is the source file for the GOST package
+% to be used with BibTeX8.
+% It contains set of bibliographic style that
+% attempt to format the bibliography according to
+% GOST R 7.0.5-2008 with some conventional modifications.
+%
+% Copyright 2012 Igor A. Kotelnikov.
+% Version 2012.01.25
+%
+% Copyright 2011 Stanislav Kruchinin
+% Version 2012.01.25
+%
+% Copyright 1996-2005 Maksym Polyakov.
+% Version 2005.08.12
+%
+% For a bibliographic entry in Russian you need
+% to add the field
+%     language = {russian}.
+% Ukrainian, German, French, Italian languages are
+% also supported. Default language is English.
+%
+% Book entry should have the totalpages field
+% showing total number of pages. Optional field
+% url will format URL (using hyperref, if loaded).
+%
+% See examples in gost*.pdf.
+%
+% Requires 8-bit bibtex with switch -B and csf file supporting cyrillic.
+% bibtex8 -B -c <encoding>.csf <your_document>
+%
+%
+% Download from
+%  CTAN:macros/latex/contrib/gost/gost.dtx
+%
+% To unpack run
+%   latex unicode-gost.ins
+%
+% To produce documentation run
+%    pdflatex gost.dtx
+%    makeindex -r -s dtx.ist gost705
+%    pdflatex gost.dtx
+%    pdflatex gost.dtx
+%
+%
+% TeX Directory Structure
+%
+% Move all *.bst files       to TDS:bibtex/bst/gost
+% Move all *.csf files       to TDS:bibtex/csf/gost
+% Move all *.pdf files       to TDS:doc/latex/gost
+% Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
+%
+%
+% $Id: gost.dtx, v.20121/01/31 kia999 $
+%
+%<*driver>
+\ProvidesFile{gost.drv}%
+  [2012/01/31 Bibliography styles for GOST R 7.0.5-2008.]
+
+\documentclass{ltxdoc}
+
+\usepackage{geometry}
+\usepackage{makeidx}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+  \usepackage{cmap}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {The GOST package},
+  pdfauthor          = {Stanislav Kruchinin, Igor A. Kotelnikov},
+  pdfsubject         = {GOST},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian,english]{babel}
+
+\MakeShortVerb{\|}
+
+\def\file#1{\texttt{#1}}
+\def\pkg#1{\textsf{#1}}
+\def\cmd#1{\texttt{#1}}
+
+\newcommand\DescribeEntry[1]{%
+  \DescribeMacro{#1}\index{Entry!\texttt{#1}}%
+}
+\newcommand\DescribeFunction[1]{%
+  \DescribeMacro{#1}\index{\texttt{#1}}%
+}
+\newcommand\DescribeField[1]{%
+  \DescribeMacro{#1}\index{Field!\texttt{#1}}%
+}
+
+
+\GetFileInfo{gost.dtx}
+\EnableCrossrefs
+%\DisableCrossrefs   % Say \DisableCrossrefs if index is ready
+\RecordChanges       % Gather update information
+\CodelineIndex       % Index code by line number
+%\PageIndex           % Index code by page number
+
+\title{The GOST package\thanks{This file
+       has version number \fileversion.}}
+
+\author{
+    Igor A. Kotelnikov\thanks{\texttt{kia999@mail.ru}}
+    \\
+    Stanislav Kruchinin\thanks{\texttt{stanislav.kruchinin@gmail.com}}
+}
+
+\date{\filedate}
+
+%\makeatletter
+%  \def\IndexParms{%
+%    \parindent \z@
+%    \columnsep 15pt
+%    \parskip 0pt plus 1pt
+%    \rightskip 15pt
+%    \mathsurround \z@
+%    \parfillskip=-15pt
+%    \small
+%    \def\@idxitem{\normalfont\par\hangindent 30pt\bfseries}%
+%    \def\subitem{\normalfont\par\hangindent 30pt}%
+%    \def\subsubitem{\normalfont\par\hangindent 30pt\hspace*{15pt}}%
+%    \def\indexspace{\par\vspace{10pt plus 2pt minus 3pt}}%
+%  }
+%  \def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
+%    \columnseprule \z@  \columnsep 35\p@
+%    \twocolumn[\index@prologue]%
+%    \IndexParms \let\item\@idxitem \ignorespaces}
+%  \def\endtheindex{\if@restonecol\onecolumn\else\clearpage\fi}
+%\makeatother
+
+\makeindex
+
+\begin{document}
+  \maketitle
+  \DocInput{gost.dtx}
+  \PrintIndex
+\end{document}
+%</driver>
+% \fi
+%
+% \CheckSum{324}
+%
+% \changes{v1.0}{2012.01.27}{Added options: modern longlist, eprint}
+% \changes{v1.0}{2012.01.26}{Numpages field renamed to totalpages}
+% \changes{v1.0}{2012.01.25}{Fixed documentation}
+% \changes{v1.0}{2012.01.25}{Gost705.dtx borrowed from Disser pkg}
+% \changes{v0.4}{2012/01/15}{Added German, French, Italian languages}
+% \changes{v0.4}{2012/01/15}{Entry ONLINE}
+% \changes{v0.3}{2005/08/12}{Bug fix (long annote)}
+% \changes{v0.2}{2003/06/06}{Entry ANNOTE added}
+% \changes{v0.2}{2003/06/06}{\string\BibUrl\space added}
+% \changes{v0.2}{2003/06/06}{\string\BibAnnote\space added}
+% \changes{v0.2}{2003/08/10}{\string\BibEmph\space added}
+% \changes{v0.1}{2003/10/07}{Bug fix in names and date formatting}
+% \changes{v0.1}{2003/10/07}{Bug fix in INPROCEEDINGS}
+%
+% \DoNotIndex{\cyra,\cyrb,\cyrv,\cyrg,\cyrd,\cyre}
+% \DoNotIndex{\CYRP,\cyrii,\cyrr,\cyre,\cyro,\CYRU,\cyrk,\cyrl,\CYRS,\cyrs|}
+% \DoNotIndex{\cyrt,\cyri,\cyrz,\CYRT,\cyrm}
+% \DoNotIndex{\cyr,\cyrc,\CYRD,\cyrery,\cyrh,\CYRK,\CYRM,\CYRN,\cyrn}
+% \DoNotIndex{\cyrp,\cyrs,\cyrshch,\cyru,\CYRV,\cyrya}
+% \DoNotIndex{\z@skip,\z@}
+%
+% \begin{abstract}
+%
+%   GOST is a bundle of BibTeX styles designed to meet State Standards (GOST)
+%   on information, librarianship and publishing issued by Russian Federation
+%   and Interstate committee of former USSR States.
+%
+% \end{abstract}
+%
+% \section{Introduction}
+%   Package GOST is derived from earlier work by Maksym Polyakov under the
+%   same package name. It was later updated by Stanislav Kruchinin and Igor
+%   Kotelnikov to the present status.
+%
+%   Nowdays, GOST is a bundle of BibTeX styles designed to meet State Standards
+%   (GOST) on information, librarianship and publishing issued by
+%   Russian Federation and interstate committee of former USSR States.
+%
+%   The System of Standards includes:
+%   \begin{description}
+%   \item[GOST 7.0.5-2008]
+%                Bibliographic reference.
+%                General requirements and rules of making.
+%   \item[GOST 7.1  -2003]
+%                Bibliographic record.
+%                Bibliographic description.
+%                General requirements and rules.
+%   \item[GOST 7.80 -2000]
+%                Bibliographic record.
+%                Heading. General requirements and rules.
+%   \item[GOST 7.11 -2004]
+%                Bibliographic description and references.
+%                Rules for the abbreviation of words and word combinations
+%                in foreign European languages.
+%   \end{description}
+%   ect.
+%
+%   The GOST bundle contains 12 BibTeX styles. These include 2 BibTeX styles
+%   for documents in 8bit encoding and 2 equivalent styles in UTF8 encoding.
+%   \begin{verbatim}
+%  Encoding        |   Unsorted               Sorted
+%  ----------------------------------------------------------------
+%  8bit            |   gost2008.bst           gost2008s.bst
+%  utf8            |   unicode-gost2008.bst   unicode-gost2008s.bst
+%   \end{verbatim}
+%
+%   If number of authors exceeds 4, these styles cut the list of authors to
+%   four first persons. For backward compatibility, we provide 4 more style
+%   that print entire list no matter how large is it.
+%   \begin{verbatim}
+%  Encoding        |   Unsorted               Sorted
+%  ----------------------------------------------------------------
+%  8bit            |   gost705.bst            gost705s.bst
+%  utf8            |   unicode-gost705.bst    unicode-gost705s.bst
+%   \end{verbatim}
+%
+%   Further four styles are also retained for backward compatibility.
+%   \begin{verbatim}
+%  Encoding        |   Unsorted               Sorted
+%  ----------------------------------------------------------------
+%  8bit            |   gost780.bst            gost780s.bst
+%  utf8            |   unicode-gost780.bst    unicode-gost780s.bst
+%   \end{verbatim}
+%   They do not conform the Standard 7.0.5-2008 cited above. However they
+%   fit the Standard 7.80-2000 for bibliographic \emph{records}
+%   intended for bibliographic catalogs rather than for bibliographic
+%   \emph{references}.
+%
+%  To produce all styles for all encodings, you need to download the files
+%  `gost.ins', `gost.dtx' and run LaTeX on gost.ins.
+%
+%  Beyond that, GOST bundle contains CS files (codepage and sorting order).
+%   \begin{verbatim}
+%  Encoding        |   CSF                 Sorting order
+%  ----------------------------------------------------------------
+%  cp866           |   ruscii.csf          Cyrillic first, Latin
+%  cp1251          |   cp1251.csf          Cyrillic first, Latin
+%  koi8-u          |   koi8u.csf           Cyrillic first, Latin
+%  utf8            |   utf8cyrillic.csf    Cyrillic first, Latin
+%   \end{verbatim}
+%
+%  In addition, BibTeX8 distribution comes with few more CSFs.
+%   \begin{verbatim}
+%  Encoding        |   CSF                 Sorting order
+%  ----------------------------------------------------------------
+%  cp866           |   cp866rus.csf        Latin first, Cyrillic
+%   \end{verbatim}
+%
+%   \subsection{How to use}
+%
+%   \begin{enumerate}
+%   \item
+%   Select bibliography style by adding appropriate |\bibliographystyle|
+%   declaration to your source file \file{<filename>.tex}, e.g.
+%   \begin{verbatim}
+%   \bibliographystyle{gost2008}
+%   \bibliography{dabase}
+%   \end{verbatim}
+%
+%   \item
+%   Add the field |language="ukrainian"| or |language="russian"| to the
+%   bibliographic entries in Ukrainian or Russian languages in your
+%   database; English is the default language. German, Italian and
+%   French are partially supported.
+%
+%   \item
+%   To compile list of references from your database use \file{bibtex8.exe}
+%   rather than bibtex.exe. Depending on the codepage of your
+%   bibliographic database, indicate one of the CS files
+%   listed above as option to bibtex8.exe.  Run LaTeX, then run
+%   \file{bibTeX8} and LaTeX again:
+%   \begin{verbatim}
+%   latex <filename>.tex
+%   bibtex8 -B -c <csf_file>.csf <filename>.aux
+%   latex <filename>.tex
+%   \end{verbatim}
+
+%   \item
+%   For details on preparing bibliographic database see
+%   examples in \file{gost*.pdf}.
+
+%   \item
+%   \file{Unicode-gost*.bst} styles are primarily intended for use
+%   with unicode compilers (xelatex and lualatex). They
+%   should be preferred as well when using 8bit compilers
+%   (latex and pdflatex) if source file is in utf8 encoding.
+%   \end{enumerate}
+%
+%   \subsection{Customization}
+%
+%   Every GOST style defines few commands to format some parts of a
+%   reference. You can redefine these commands prior to
+%   the |\bibliography{<bibtex_style>}| command. Initial
+%   definitions are listed below.
+%   \begin{verbatim}
+%   \providecommand*{\url}[1]{{\small #1}}
+%   \providecommand*{\BibUrl}[1]{\url{#1}}
+%   \providecommand{\BibAnnote}[1]{}
+%   \providecommand*{\BibEmph}[1]{\emph{#1}}
+%   \end{verbatim}
+%
+%   By default, gost styles separate logical parts of a bibliography
+%   record by a period and cyrdash (|. "---|). It is legitimate to drop
+%   that dash by overriding the command |\BibDash| as follows
+%
+%   \begin{verbatim}
+%   \providecommand*{\BibDash}{}
+%   \end{verbatim}
+%
+%   By default, |\BibDash| is equivalent to the shorthand |"---|
+%   introduced by the babel package with the option russian.
+%   It prints a so called cyrillic dash (|\cyrdash|),
+%   which is 20% shorter then ordinary LaTeX dash (|---|), and puts
+%   unbreakable space before \cyrdash so that dash never appears
+%   in the beginning of a line.
+%
+%   \subsection{Where to get}
+%
+%   \begin{enumerate}
+%   \item
+%   http://ctan.org/tex-archive/biblio/bibtex/contrib/gost
+%   \item
+%   http://ctan.org/pkg/gost
+%   \end{enumerate}
+%
+%   \subsection{What's new in version 2012.02.02}
+%
+%   \begin{enumerate}
+%   \item
+%   Support for GOST 7.0.5-2008 is provided.
+%
+%   \item
+%   |@Online| entry is added to format a reference to electronic
+%      resource on Internet.
+%
+%   \item
+%   |Urldate| field is added to format the date of last access to
+%   Internet resource.
+%   \end{enumerate}
+%
+%   \subsection{Version history}
+%
+%   \begin{enumerate}
+%   \item[2012.02.02]
+%   ...
+%   \item[2005.08.12]
+%   ...
+%   \end{enumerate}
+%
+% \StopEventually
+%
+% \section{Implementation}
+%
+%   We need Russian fonts to produce documentation of the code below.
+%   Therefore we switch current language to Russian by issuing the command
+%   |\selectlanguage{russian}|.
+%
+% \selectlanguage{russian}
+%
 %    \begin{macrocode}
 %<*bst>
 %%
@@ -71,6 +385,12 @@
 %<!modern>%% GOST 7.80-2000 for bibliographic records.
 %<modern>%% GOST 7.0.5-2008 for bibliographic reference.
 
+%    \end{macrocode}
+% \subsection{Entries}
+%
+% Enlist all entry types allowed in a bibliographic database.
+% Most entries are common for many standard bst styles.
+%    \begin{macrocode}
 ENTRY
   { address
     annote
@@ -90,7 +410,6 @@ ENTRY
     number
     organization
     pages
-    numpages
     publisher
     school
     series
@@ -98,6 +417,10 @@ ENTRY
     type
     volume
     year
+%    \end{macrocode}
+%   Remaining entries are borrowed from biblatex.
+%    \begin{macrocode}
+    totalpages
     language
     booklanguage
     url
@@ -113,11 +436,14 @@ ENTRY
   { label }
 
 %    \end{macrocode}
-% First we declare variables and constants.
+% Declare internal variables and constants used in to format references.
 %    \begin{macrocode}
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
 after.dblslash after.slash after.column after.semicolumn }
 
+%    \end{macrocode}
+% \DescribeFunction{init.state.consts}%
+%    \begin{macrocode}
 FUNCTION {init.state.consts}
 { #0 'before.all :=
   #1 'mid.sentence :=
@@ -134,6 +460,10 @@ STRINGS { s t }
 STRINGS { curlanguage }
 
 %    \end{macrocode}
+%
+% \subsection{Formatting functions}
+%
+% \DescribeFunction{change.language}
 % Declare function to switch language.
 %    \begin{macrocode}
 FUNCTION {change.language}
@@ -148,7 +478,9 @@ FUNCTION {change.language}
 }
 
 %    \end{macrocode}
+%
 % Declare functions to output various parts of bibliographic record.
+% \DescribeFunction{output.nonnull}
 %    \begin{macrocode}
 FUNCTION {output.nonnull}
 {
@@ -189,6 +521,11 @@ FUNCTION {output.nonnull}
   if$
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{output}
+% \DescribeFunction{output.check}
+%    \begin{macrocode}
 FUNCTION {output}
 { duplicate$ empty$
     'pop$
@@ -204,12 +541,26 @@ FUNCTION {output.check}
   if$
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{fin.entry}
+%   |fin.entry| finalizes current entry. It writes dot, if no dot is found in
+%   stack, and starts new line.
+%    \begin{macrocode}
 FUNCTION {fin.entry}
 { add.period$
   write$
   newline$
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{new.block}%
+%   Declare family of functions to put punctuation marks  depending of current
+%   status of output stack. The just check output state and revert it another
+%   state if required. Checking output state prevents occasional doubling of
+%   punctuation marks.
+%    \begin{macrocode}
 FUNCTION {new.block}
 { output.state before.all =
     'skip$
@@ -217,6 +568,9 @@ FUNCTION {new.block}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.dblslash}%
+%    \begin{macrocode}
 FUNCTION {new.dblslash}
 { output.state before.all =
     'skip$
@@ -224,6 +578,9 @@ FUNCTION {new.dblslash}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.slash}%
+%    \begin{macrocode}
 FUNCTION {new.slash}
 { output.state before.all =
     'skip$
@@ -231,6 +588,9 @@ FUNCTION {new.slash}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.column}%
+%    \begin{macrocode}
 FUNCTION {new.column}
 { output.state before.all =
     'skip$
@@ -238,6 +598,9 @@ FUNCTION {new.column}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.semicolumn}%
+%    \begin{macrocode}
 FUNCTION {new.semicolumn}
 { output.state before.all =
     'skip$
@@ -245,6 +608,9 @@ FUNCTION {new.semicolumn}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.sentence}%
+%    \begin{macrocode}
 FUNCTION {new.sentence}
 { output.state after.block =
     'skip$
@@ -256,34 +622,54 @@ FUNCTION {new.sentence}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{add.blank}%
+%    \begin{macrocode}
 FUNCTION {add.blank}
 { " " * before.all 'output.state :=
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{not}
+%   Declare few logical functions.
+%    \begin{macrocode}
 FUNCTION {not}
 {   { #0 }
     { #1 }
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{and}
+%    \begin{macrocode}
 FUNCTION {and}
 {   'skip$
     { pop$ #0 }
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{or}
+%    \begin{macrocode}
 FUNCTION {or}
 {   { pop$ #1 }
     'skip$
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{non.stop}
+%    \begin{macrocode}
 FUNCTION {non.stop}
 { duplicate$
    "}" * add.period$
    #-1 #1 substring$ "." =
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.block.checka}
+%    \begin{macrocode}
 FUNCTION {new.block.checka}
 { empty$
     'skip$
@@ -291,6 +677,9 @@ FUNCTION {new.block.checka}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.block.checkb}
+%    \begin{macrocode}
 FUNCTION {new.block.checkb}
 { empty$
   swap$ empty$
@@ -300,6 +689,9 @@ FUNCTION {new.block.checkb}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.sentence.checka}
+%    \begin{macrocode}
 FUNCTION {new.sentence.checka}
 { empty$
     'skip$
@@ -307,6 +699,9 @@ FUNCTION {new.sentence.checka}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{new.sentence.checkb}
+%    \begin{macrocode}
 FUNCTION {new.sentence.checkb}
 { empty$
   swap$ empty$
@@ -316,6 +711,9 @@ FUNCTION {new.sentence.checkb}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{field.or.null}
+%    \begin{macrocode}
 FUNCTION {field.or.null}
 { duplicate$ empty$
     { pop$ "" }
@@ -323,6 +721,11 @@ FUNCTION {field.or.null}
   if$
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{emphasize}
+% Declare function to emphasize last string in stack.
+%    \begin{macrocode}
 FUNCTION {emphasize}
 { duplicate$ empty$
     { pop$ "" }
@@ -330,22 +733,30 @@ FUNCTION {emphasize}
   if$
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{space.word}
+% |space.word| inserts space before last string in stack.
+%    \begin{macrocode}
 FUNCTION {space.word}
 { " " swap$ * " " * }
 
-
 %    \end{macrocode}
+%
+% \subsection{Standard abbreviations}
+%
 % Declare standard abbreviations.
+% \DescribeFunction{bbl.edby}
 %    \begin{macrocode}
 FUNCTION {bbl.edby}    %  { "\bbledby{}" }
 { curlanguage "english" =
    {"Ed. by "}
    { curlanguage "ukrainian" =
 %<!utf8>      {"{\cyr\CYRP\cyrii\cyrd\ \cyrr\cyre\cyrd.\ }"}
-%<utf8>      {"{œ≥‰ Â‰.\ }"}
+%<utf8>      {"{–ü—ñ–¥ —Ä–µ–¥.\ }"}
       { curlanguage "russian" =
 %<!utf8>         {"{\cyr\CYRP\cyro\cyrd\ \cyrr\cyre\cyrd.\ }"}
-%<utf8>         {"{œÓ‰ Â‰.\ }"}
+%<utf8>         {"{–ü–æ–¥ —Ä–µ–¥.\ }"}
          { curlanguage "german" =
             { "ed. " }
             {"language is not defined: " language  "edited by" * * warning$ "edited by"}
@@ -354,6 +765,9 @@ FUNCTION {bbl.edby}    %  { "\bbledby{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.cmplr}
+%    \begin{macrocode}
 FUNCTION {bbl.cmplr}
 { curlanguage "english" =
    { "Compiler "}
@@ -361,25 +775,28 @@ FUNCTION {bbl.cmplr}
       { "Hrsg. " }
       { curlanguage "ukrainian" =
 %<!utf8>         {"{\cyr\CYRU\cyrk\cyrl.\ }"}
-%<utf8>         {"{”ÍÎ.\ }"}
+%<utf8>         {"{–£–∫–ª.\ }"}
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\CYRS\cyro\cyrs\cyrt.\ }"}
-%<utf8>            {"{—ÓÒÚ.\ }"}
+%<utf8>            {"{–°–æ—Å—Ç.\ }"}
             {"language is not defined: " language  "compiler" * * warning$ "compiler"}
          if$}
       if$}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.edition}
+%    \begin{macrocode}
 FUNCTION {bbl.edition} %  { "\bbledition{}" }
 { curlanguage "english" =
    {"edition"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"{\cyr\cyrv\cyri\cyrd.}"}
-%<utf8>      {"{‚Ë‰ }"}
+%<utf8>      {"{–≤–∏–¥.}"}
       { curlanguage "russian" =
 %<!utf8>         {"{\cyr\cyri\cyrz\cyrd.}"}
-%<utf8>         {"{ËÁ‰.}"}
+%<utf8>         {"{–∏–∑–¥.}"}
          { curlanguage "german" =
             {" {aus.}" } %%%% { "Aufl." } ??
             { curlanguage "italian" =
@@ -394,12 +811,15 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.vvolume}
+%    \begin{macrocode}
 FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"Volume"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>      {"\CYRT\cyro\cyrm"}
-%<utf8>      {"“ÓÏ"}
+%<!utf8>      { "\CYRT\cyro\cyrm" }
+%<utf8>      { "–¢–æ–º" }
       { curlanguage "german" =
          {"{Band}"} %%%% { "Volumen" }
          {"language is not defined: " language  "Volume" * * warning$ "Volume"}
@@ -407,12 +827,15 @@ FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.vvol}
+%    \begin{macrocode}
 FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"Vol."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"\CYRT."}
-%<utf8>      {"“."}
+%<utf8>      {"–¢."}
       { curlanguage "german" =
          {"{Bd.}"} %%%% { "Vol." }
          {"language is not defined: " language  "Vol." * * warning$ "Vol."}
@@ -420,15 +843,18 @@ FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.iissue}
+%    \begin{macrocode}
 FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
 { curlanguage "english" =
    {"Issue"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRV\cyri\cyrp\cyru\cyrs\cyrk"}
-%<utf8>      {"¬ËÔÛÒÍ"}
+%<utf8>      {"–í–∏–ø—É—Å–∫"}
       { curlanguage "russian" =
 %<!utf8>         {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
-%<utf8>         {"¬˚ÔÛÒÍ"}
+%<utf8>         {"–í—ã–ø—É—Å–∫"}
          { curlanguage "german" =
             {"{Heft}"} %%%% { "Ausgabe" }
             {"language is not defined: " language * warning$ "Issue"}
@@ -437,15 +863,18 @@ FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.iiss}
+%    \begin{macrocode}
 FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
 { curlanguage "english" =
    {"Iss."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRV\cyri\cyrp."}
-%<utf8>      {"¬ËÔ."}
+%<utf8>      {"–í–∏–ø."}
       { curlanguage "russian" =
 %<!utf8>         {"\CYRV\cyrery\cyrp."}
-%<utf8>         {"¬˚Ô."}
+%<utf8>         {"–í—ã–ø."}
          { curlanguage "german" =
             {"{H.}"} %%% { "Aus." }??
             {"language is not defined: " language * warning$ "Iss"}
@@ -454,23 +883,29 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.of}
+%    \begin{macrocode}
 FUNCTION {bbl.of}      %  { "\bblof{}" }
 { curlanguage "english" =
    {"of"}
    { curlanguage "german" =
       { "von" }
       { curlanguage "ukrainian" =
-%<!utf8>         {"{\cyr\cyrii\cyrz}"}
-%<utf8>         {"{≥Á}"}
+%<!utf8>         { "{\cyr\cyrii\cyrz}" }
+%<utf8>         { "{—ñ–∑}" }
          { curlanguage "russian" =
-%<!utf8>            {"{\cyr\cyri\cyrz}"}
-%<utf8>            {"{ËÁ}"}
+%<!utf8>            { "{\cyr\cyri\cyrz}" }
+%<utf8>            { "{–∏–∑}" }
             {"language is not defined: " language "of" *  * warning$ "of"}
          if$}
       if$}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.etal}
+%    \begin{macrocode}
 FUNCTION {bbl.etal}      %  { "\bblof{}" }
 { curlanguage "english" =
    {"et~al."}
@@ -478,22 +913,25 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
       { "u.~a." }
       { curlanguage "ukrainian" =
 %<!utf8>         {"{\cyr\cyrt\cyra~\cyrii\cyrn.}"}
-%<utf8>         {"{Ú‡~≥Ì.}"}
+%<utf8>         {"{—Ç–∞~—ñ–Ω.}"}
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\cyri~\cyrd\cyrr.}"}
-%<utf8>            {"{Ë~‰.}"}
+%<utf8>            {"{–∏~–¥—Ä.}"}
             {"language is not defined: " language  "at al" * * warning$ "at al."}
          if$}
       if$}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.nnumber}
+%    \begin{macrocode}
 FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 { curlanguage "english" =
    {"Number"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>      {"\CYRN\cyro\cyrm\cyre\cyrr"}
-%<utf8>      {"{ÕÓÏÂ}"}
+%<!utf8>      { "\CYRN\cyro\cyrm\cyre\cyrr" }
+%<utf8>      { "{–ù–æ–º–µ—Ä}" }
       { curlanguage "german" =
          {"{Heft}"} %%% { "Anzahl" }
          {"language is not defined: " language  "Number" * * warning$ "Number"}
@@ -501,12 +939,15 @@ FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.number}
+%    \begin{macrocode}
 FUNCTION {bbl.number}  %  { "\bblnumber{}" }
 { curlanguage "english" =
    {"number"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
-%<utf8>      {"{ÌÓÏÂ}"}
+%<utf8>      {"{–Ω–æ–º–µ—Ä}"}
       { curlanguage "german" =
          {"{Heft}"} %%% { "anzahl" }???
          {"language is not defined: " language  "number" * * warning$ "number"}
@@ -514,14 +955,17 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.nr}
+%    \begin{macrocode}
 FUNCTION {bbl.nr}     %   { "\bblno{}" }
 { curlanguage "english" =
    {"no."}
    { curlanguage "italian" =
       { "no" }
       { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>         {"{\cyr\textnumero}"}
-%<utf8>         {"{π}"}
+%<!utf8>         { "{\cyr\textnumero}" }
+%<utf8>         { "{‚Ññ}" }
          { curlanguage "german" =
             {"{H.}"} %%% { "an." }
             {"language is not defined: " language  "no." * * warning$ "no."}
@@ -530,12 +974,15 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.nnr}
+%    \begin{macrocode}
 FUNCTION {bbl.nnr}     %   { "\bblno{}" }
 { curlanguage "english" =
    {"No."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>      {"{\cyr\textnumero}"}
-%<utf8>      {"{π}"}
+%<!utf8>      { "{\cyr\textnumero}" }
+%<utf8>      { "{‚Ññ}" }
       { curlanguage "german" =
          {"{H.}"} %%% { "an." }
          {"language is not defined: " language  "No." * * warning$ "No."}
@@ -543,32 +990,41 @@ FUNCTION {bbl.nnr}     %   { "\bblno{}" }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.in}
+%    \begin{macrocode}
 FUNCTION {bbl.in}    %    { "\bblin{}" }
 { curlanguage "english" = curlanguage "german" = or
    {"in"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>      {"{\cyr\cyrv}"}
-%<utf8>      {"{‚}"}
+%<!utf8>      { "{\cyr\cyrv}" }
+%<utf8>      { "{–≤}" }
       {"language is not defined: " language  "in" * * warning$ "in"}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.iin}
+%    \begin{macrocode}
 FUNCTION {bbl.iin}  %     { "\bblIn{}" }
 { curlanguage "english" = curlanguage "german" = or
    {"In"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
-%<!utf8>      {"\CYRV"}
-%<utf8>      {"{¬}"}
+%<!utf8>      { "\CYRV" }
+%<utf8>      { "{–í}" }
       {"language is not defined: " language  "In" * * warning$ "In"}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.pages}
+%    \begin{macrocode}
 FUNCTION {bbl.pages}    % { "\bblpp." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"p."} %%% {"pp."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrs.}"}
-%<utf8>      {"{Ò.}"}
+%<utf8>      {"{—Å.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
          {"language is not defined: " language  "pp." * * warning$ "pp."}
@@ -576,12 +1032,15 @@ FUNCTION {bbl.pages}    % { "\bblpp." }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.page}
+%    \begin{macrocode}
 FUNCTION {bbl.page}   %   { "\bblp."
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"p."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrs.}"}
-%<utf8>      {"{Ò.}"}
+%<utf8>      {"{—Å.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
          {"language is not defined: " language  "p." * * warning$ "p."}
@@ -589,12 +1048,15 @@ FUNCTION {bbl.page}   %   { "\bblp."
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.ppages}
+%    \begin{macrocode}
 FUNCTION {bbl.ppages}%    { "\bblPp." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"P."} %%%% { "Pp." }
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\CYRS.}"}
-%<utf8>      {"{—.}"}
+%<utf8>      {"{–°.}"}
       { curlanguage "german" =
          {"S."}
          {"language is not defined: " language  "Pp." * * warning$ "Pp."}
@@ -602,12 +1064,15 @@ FUNCTION {bbl.ppages}%    { "\bblPp." }
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.ppage}
+%    \begin{macrocode}
 FUNCTION {bbl.ppage}  %   { "\bblP." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"P."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\CYRS.}"}
-%<utf8>      {"{—.}"}
+%<utf8>      {"{–°.}"}
       { curlanguage "german" =
          {"S."}
          {"language is not defined: " language  "P." * * warning$ "P."}
@@ -617,16 +1082,17 @@ if$}
 
 %    \end{macrocode}
 % Next function was added in version 2012.01.15.
+% \DescribeFunction{bbl.urldate}
 %    \begin{macrocode}
 FUNCTION {bbl.urldate}
 { curlanguage "english" =
    {"online; accessed: "}
    { curlanguage "ukrainian" =
 %<!utf8>      { "\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyrya:" }
-%<utf8>      { "{‰‡Ú‡ Á‚ÂÌÂÌÌˇ: }" }
+%<utf8>      { "{–¥–∞—Ç–∞ –∑–≤–µ—Ä–Ω–µ–Ω–Ω—è: }" }
       { curlanguage "russian" =
 %<!utf8>         { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya: }" }
-%<utf8>         { "{‰‡Ú‡ Ó·‡˘ÂÌËˇ: }" }
+%<utf8>         { "{–¥–∞—Ç–∞ –æ–±—Ä–∞—â–µ–Ω–∏—è: }" }
          { curlanguage "german" =
             { "{online; abgerufen: }" }
             { "language is not defined: " language * warning$ "online; accessed: " }
@@ -636,11 +1102,7 @@ FUNCTION {bbl.urldate}
 if$}
 
 %    \end{macrocode}
-% Next functions were added (modified) in version 2012.01.25.
-%
-% TechReport is similar to @report except that the \verb|type| field is optional
-% and defaults to the localized term ëtechnical reportí.
-% You may still use the type field to override that.
+% \DescribeFunction{bbl.techrep}
 %    \begin{macrocode}
 FUNCTION {bbl.techrep} % rename to bbl.techreport
 { curlanguage "english" =
@@ -649,16 +1111,14 @@ FUNCTION {bbl.techrep} % rename to bbl.techreport
       { "Tech.~Bericht" }
       { curlanguage "russian" =
 %<!utf8>         { "{\cyr\CYRT\cyre\cyrh.\ \cyrd\cyro\cyrk\cyrl\cyra\cyrd}" }
-%<utf8>         { "{“Âı.\ ‰ÓÍÎ‡‰}" }
+%<utf8>         { "{–¢–µ—Ö.\ –¥–æ–∫–ª–∞–¥}" }
          { "language is not defined: " language * warning$ "Tech.~Rep." }
       if$}
    if$}
 if$}
 
 %    \end{macrocode}
-%  MasterThesis is similar to \verb|@thesis| except that the \verb|type| field
-%  is optional and defaults to the localized term
-%  ëPhD thesisí. You may still use the type field to override that.
+% \DescribeFunction{bbl.mthesis}
 %    \begin{macrocode}
 FUNCTION {bbl.mthesis}
 { curlanguage "english" =
@@ -666,18 +1126,17 @@ FUNCTION {bbl.mthesis}
    { curlanguage "german" =
       { "Diss.~Mag." }
       { curlanguage "russian" =
-%<!utf8>        { "{\cyr\CYRM\cyra\cyrg\cyri\cyrs\cyrt\cyre\cyrr\cyrs\cyrk\cyra\cyrya\ "
-%<!utf8>          "\cyrd\cyri\cyrs\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyri\cyrya}" * }
-%<utf8>         { "{Ã‡„ËÒÚÂÒÍ‡ˇ ‰ËÒÒÂÚ‡ˆËˇ}" }
+%<!utf8>        { "{\cyr\CYRK\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
+%<!utf8>          "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
+%<!utf8>          "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
+%<utf8>         { "{–ö–≤–∞–ª–∏—Ñ–∏–∫–∞—Ü–∏–æ–Ω–Ω–∞—è —Ä–∞–±–æ—Ç–∞ –º–∞–≥–∏—Å—Ç—Ä–∞}" }
          { "language is not defined: " language * warning$ "Master's thesis" }
       if$}
    if$}
 if$}
 
 %    \end{macrocode}
-%  PhdThesis is similar to \verb|@thesis| except that the \verb|type| field
-%  is optional and defaults to the localized term
-%  ëPhD thesisí. You may still use the type field to override that.
+% \DescribeFunction{bbl.phdthesis}
 %    \begin{macrocode}
 FUNCTION {bbl.phdthesis}
 { curlanguage "english" =
@@ -685,62 +1144,62 @@ FUNCTION {bbl.phdthesis}
    { curlanguage "german" =
       { "Diss.~Ph.\,D." }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRK\cyra\cyrn\cyrd\cyri\cyrd\cyra\cyrt\cyrs\cyrk\cyra\cyrya\ "
-%<!utf8>           "\cyrd\cyri\cyrs\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyri\cyrya}" * }
-%<utf8>         { "{ ‡Ì‰Ë‰‡ÚÒÍ‡ˇ ‰ËÒÒÂÚ‡ˆËˇ}" }
+%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
+%<!utf8>           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
+%<utf8>         { "{–î–∏—Å—Å\ldot\ –∫–∞–Ω–¥–∏–¥–∞—Ç–∞ –Ω–∞—É–∫}" }
          { "language is not defined: " language * warning$ "Ph.\,D. thesis" }
       if$}
    if$}
 if$}
 
-FUNCTION {bbl.docdisser} %%% rename this to dscthesis
+%    \end{macrocode}
+% \DescribeFunction{bbl.dscithesis}
+%    \begin{macrocode}
+FUNCTION {bbl.dscithesis} %%% rename this to dscthesis
 { curlanguage "english" =
    { "Dr.\,Sci. dissertation" }
    { curlanguage "german" =
       { "Diss.~Dr." }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRD\cyro\cyrk\cyrt\cyro\cyrr\cyrs\cyrk\cyra\cyrya\ "
-%<!utf8>           "\cyrd\cyri\cyrs\cyrs\cyre\cyrr\cyrt\cyra\cyrc\cyri\cyrya}" * }
-%<utf8>         { "{ƒÓÍÚÓÒÍ‡ˇ ‰ËÒÒÂÚ‡ˆËˇ}" }
+%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
+%<!utf8>           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
+%<utf8>         { "{–î–∏—Å—Å\ldot\ –¥–æ–∫—Ç–æ—Ä–∞ –Ω–∞—É–∫}" }
          { "language is not defined: " language * warning$ "In" }
       if$}
    if$}
 if$}
 
-%<*debug>
-
-\def\bblchapter{chapter}        \def\bblchap{chap.}
-%\def\bblmthesis{Master's thesis}
-%\def\bblphdthesis{Ph.D. thesis}
-%\def\bblfirst{First}            \def\bblfirsto{1st}
-%\def\bblsecond{Second}          \def\bblsecondo{2nd}
-%\def\bblthird{Third}            \def\bblthirdo{3rd}
-%\def\bblfourth{Fourth}          \def\bblfourtho{4th}
-%\def\bblfifth{Fifth}            \def\bblfiftho{5th}
-%\def\bblst{st}  \def\bblnd{nd}  \def\bblrd{rd}
-%\def\bblth{th}
-%
-FUNCTION {bbl.chapter}   { "\bblchapter{}" }
-%FUNCTION {bbl.techreport} {"Technical Report"}
-FUNCTION {bbl.first}     { "\bblfirsto{}" }
-FUNCTION {bbl.second}    { "\bblsecondo{}" }
-FUNCTION {bbl.third}     { "\bblthirdo{}" }
-FUNCTION {bbl.fourth}    { "\bblfourtho{}" }
-FUNCTION {bbl.fifth}     { "\bblfiftho{}" }
-FUNCTION {bbl.st}        { "\bblst" }
-FUNCTION {bbl.nd}        { "\bblnd" }
-FUNCTION {bbl.rd}        { "\bblrd" }
-FUNCTION {bbl.th}        { "\bblth" }
-
-%</debug>
-
 %    \end{macrocode}
-% Declare functions to format elements of bibliographic record.
+%
+% \subsection{Formatting functions}
+%
+% Declare functions to format separate elements of bibliographic reference.
 %    \begin{macrocode}
 INTEGERS { nameptr namesleft numnames }
 
-%<*modern>
 
+%    \end{macrocode}
+%
+% \DescribeFunction{format.names}
+% Function |format.names| has 2 version.
+% First is for bibliographic records rather then for bibliographic references.
+% It is used for \file{.bst} styles compiled without the |modern| option.
+% It format every name as `LastName, F. S.'.
+% Historically, this version was used first for earlier styles included into
+% GOST bundle.
+%    \begin{macrocode}
+%<*!modern>
+FUNCTION {format.names}
+{
+  #1 "{vv~}{ll}{~jj}{,~f.}" format.name$
+}
+%</!modern>
+%    \end{macrocode}
+% Second version drops comma from output so that every name is formatted
+% as `LastName F. S.'. It also substitutes 5th and following names by
+% localized term `et al'.
+%    \begin{macrocode}
+%<*modern>
 FUNCTION {format.names}
 {
   's :=
@@ -775,17 +1234,13 @@ FUNCTION {format.names}
     }
   while$
 }
-
 %</modern>
-%<*!modern>
 
-FUNCTION {format.names}
-{
-  #1 "{vv~}{ll}{~jj}{,~f.}" format.name$
-}
-
-%</!modern>
-
+%    \end{macrocode}
+% \DescribeFunction{format.names.rev}
+% Declare function to format names for authors list after title and etc.
+% Note that |format.names.rev| cuts list of names to at most 4 persons.
+%    \begin{macrocode}
 FUNCTION {format.names.rev}
 {
   's :=
@@ -821,6 +1276,9 @@ FUNCTION {format.names.rev}
   while$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.authors}
+%    \begin{macrocode}
 FUNCTION {format.authors}
 { author empty$
     { "" }
@@ -828,6 +1286,9 @@ FUNCTION {format.authors}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.bookauthors}
+%    \begin{macrocode}
 FUNCTION {format.bookauthors}
 { bookauthor empty$
     { "" }
@@ -835,6 +1296,9 @@ FUNCTION {format.bookauthors}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.authors.after}
+%    \begin{macrocode}
 FUNCTION {format.authors.after}
 { author empty$
     { "" }
@@ -842,6 +1306,9 @@ FUNCTION {format.authors.after}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.bookauthors.after}
+%    \begin{macrocode}
 FUNCTION {format.bookauthors.after}
 { bookauthor empty$
     { "" }
@@ -849,6 +1316,9 @@ FUNCTION {format.bookauthors.after}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.editors.after}
+%    \begin{macrocode}
 FUNCTION {format.editors.after}
 { editor empty$
     { "" }
@@ -857,6 +1327,9 @@ FUNCTION {format.editors.after}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.compiler.after}
+%    \begin{macrocode}
 FUNCTION {format.compiler.after}
 { compiler empty$
     { "" }
@@ -865,6 +1338,9 @@ FUNCTION {format.compiler.after}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.title}
+%    \begin{macrocode}
 FUNCTION {format.title}
 { title empty$
     { "" }
@@ -873,6 +1349,9 @@ FUNCTION {format.title}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.date}
+%    \begin{macrocode}
 FUNCTION {format.date}
 { year empty$
     { month empty$
@@ -890,6 +1369,9 @@ FUNCTION {format.date}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.address.publisher.date}
+%    \begin{macrocode}
 FUNCTION {output.address.publisher.date}
 {
   address empty$
@@ -905,6 +1387,9 @@ FUNCTION {output.address.publisher.date}
   format.date output
 }
 
+%    \end{macrocode}
+% \DescribeFunction{output.bibitem}
+%    \begin{macrocode}
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem{" write$
@@ -922,6 +1407,9 @@ FUNCTION {output.bibitem}
   before.all 'output.state :=
 }
 
+%    \end{macrocode}
+% \DescribeFunction{n.dashify}
+%    \begin{macrocode}
 FUNCTION {n.dashify}
 { 't :=
   ""
@@ -947,14 +1435,23 @@ FUNCTION {n.dashify}
   while$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{word.in}
+%    \begin{macrocode}
 FUNCTION {word.in}
 { bbl.iin
   " " * }
 
+%    \end{macrocode}
+% \DescribeFunction{format.btitle}
+%    \begin{macrocode}
 FUNCTION {format.btitle}
 { title
 }
 
+%    \end{macrocode}
+% \DescribeFunction{tie.or.space.connect}
+%    \begin{macrocode}
 FUNCTION {tie.or.space.connect}
 { duplicate$ text.length$ #3 <
     { "~" }
@@ -963,12 +1460,19 @@ FUNCTION {tie.or.space.connect}
   swap$ * *
 }
 
+%    \end{macrocode}
+% \DescribeFunction{tie.connect}
+% Declare function to insert unbreakable space before last word in stack.
+%    \begin{macrocode}
 FUNCTION {tie.connect}
  {"~"
   swap$ * *
  }
 
 
+%    \end{macrocode}
+% \DescribeFunction{either.or.chec}
+%    \begin{macrocode}
 FUNCTION {either.or.check}
 { empty$
     'pop$
@@ -976,6 +1480,9 @@ FUNCTION {either.or.check}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.bvolume}
+%    \begin{macrocode}
 FUNCTION {format.bvolume}
 { volume empty$
     { "" }
@@ -989,6 +1496,9 @@ FUNCTION {format.bvolume}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.number.series}
+%    \begin{macrocode}
 FUNCTION {format.number.series}
 { volume empty$
     { number empty$
@@ -1011,12 +1521,18 @@ FUNCTION {format.number.series}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{is.num}
+%    \begin{macrocode}
 FUNCTION {is.num}
 { chr.to.int$
   duplicate$ "0" chr.to.int$ < not
   swap$ "9" chr.to.int$ > not and
 }
 
+%    \end{macrocode}
+% \DescribeFunction{extract.num}
+%    \begin{macrocode}
 FUNCTION {extract.num}
 { duplicate$ 't :=
   "" 's :=
@@ -1036,6 +1552,9 @@ FUNCTION {extract.num}
 }
 
 %<*debug>
+%    \end{macrocode}
+% \DescribeFunction{eng.ord}
+%    \begin{macrocode}
 FUNCTION {eng.ord}
 { duplicate$ "1" swap$ *
   #-2 #1 substring$ "1" =
@@ -1058,6 +1577,9 @@ FUNCTION {eng.ord}
 }
 %</debug>
 
+%    \end{macrocode}
+% \DescribeFunction{convert.edition}
+%    \begin{macrocode}
 FUNCTION {convert.edition}
 { edition
 % edition extract.num "l" change.case$ 's :=
@@ -1088,6 +1610,9 @@ FUNCTION {convert.edition}
 %  t
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.edition}
+%    \begin{macrocode}
 FUNCTION {format.edition}
 { edition empty$
     { "" }
@@ -1101,6 +1626,9 @@ FUNCTION {format.edition}
 
 INTEGERS { multiresult }
 
+%    \end{macrocode}
+% \DescribeFunction{multi.page.check}
+%    \begin{macrocode}
 FUNCTION {multi.page.check}
 { 't :=
   #0 'multiresult :=
@@ -1121,6 +1649,9 @@ FUNCTION {multi.page.check}
   multiresult
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.pages}
+%    \begin{macrocode}
 FUNCTION {format.pages}
 { pages empty$
     { "" }
@@ -1132,16 +1663,22 @@ FUNCTION {format.pages}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.pages.page}
+%    \begin{macrocode}
 FUNCTION {format.pages.page}
 { pages empty$
-    { numpages empty$
+    { totalpages empty$
       { "" }
-      { numpages bbl.pages tie.connect }
+      { totalpages bbl.pages tie.connect }
     if$}
     { format.pages}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.vol.num.pages}
+%    \begin{macrocode}
 FUNCTION {format.vol.num.pages}
 { volume field.or.null
   number empty$
@@ -1164,6 +1701,9 @@ FUNCTION {format.vol.num.pages}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.volume}
+%    \begin{macrocode}
 FUNCTION {format.volume}
 { volume empty$
     { "" }
@@ -1171,6 +1711,9 @@ FUNCTION {format.volume}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.number}
+%    \begin{macrocode}
 FUNCTION {format.number}
 { number empty$
     { "" }
@@ -1179,6 +1722,9 @@ FUNCTION {format.number}
 }
 
 %<*debug>
+%    \end{macrocode}
+% \DescribeFunction{format.chapter.pages}
+%    \begin{macrocode}
 FUNCTION {format.chapter.pages}
 { chapter empty$
     'format.pages
@@ -1196,6 +1742,9 @@ FUNCTION {format.chapter.pages}
 }
 %</debug>
 
+%    \end{macrocode}
+% \DescribeFunction{empty.misc.check}
+%    \begin{macrocode}
 FUNCTION {empty.misc.check}
 { author empty$ title empty$ howpublished empty$
   month empty$ year empty$ note empty$
@@ -1206,6 +1755,9 @@ FUNCTION {empty.misc.check}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.thesis.type}
+%    \begin{macrocode}
 FUNCTION {format.thesis.type}
 { type empty$
     'skip$
@@ -1215,6 +1767,9 @@ FUNCTION {format.thesis.type}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.tr.number}
+%    \begin{macrocode}
 FUNCTION {format.tr.number}
 { type empty$
     { bbl.techrep }
@@ -1227,12 +1782,22 @@ FUNCTION {format.tr.number}
 }
 
 %    \end{macrocode}
-% Declare the function \verb|author.before| to format list
-% of authors in heading of a bibliographis record.
-% If number of authors is 4 or larger, some styles skip
+%
+% Declare the function |author.before| to format list
+% of authors in heading of a bibliographic record.
+% If the number of authors is 4 or larger, some styles skip
 % the list of authors in the beginning of the bibliographic
 % record, while other styles always print that list.
-% So, we need two version of \verb|author.before|.
+% So, we need two version of |author.before|.
+%
+% First version is used if \file{.bst} style is compiled without option
+% |longlist|. It skips authors if their number is greater than or equal to 4
+% or if the author field is empty. Note that GOST requires for the author
+% list to be reduced. Hence the first version is preferable.
+% Note also that |format.names|  cuts list of names
+% to 4 person at most in case if |modern| option is used. and |format.authors|
+% just emphasizes |format.names|.
+% \DescribeFunction{author.before}
 %    \begin{macrocode}
 %<*!longlist>
 FUNCTION {author.before}
@@ -1247,6 +1812,11 @@ FUNCTION {author.before}
   if$
 }
 %</!longlist>
+%    \end{macrocode}
+% Second version is used if \file{.bst} style is compiled with the option
+% |longlist|. It skips only if the author field is empty.
+% \DescribeFunction{author.before}
+%    \begin{macrocode}
 %<*longlist>
 FUNCTION {author.before}
 {
@@ -1259,7 +1829,11 @@ FUNCTION {author.before}
 }
 %</longlist>
 
-
+%    \end{macrocode}
+% \DescribeFunction{bookauthor.before}
+% There are also 2 version of the function |bookauthor.before|.
+%    \begin{macrocode}
+%<*!longlist>
 FUNCTION {bookauthor.before}
 {
   bookauthor empty$
@@ -1271,9 +1845,43 @@ FUNCTION {bookauthor.before}
     if$}
   if$
 }
+%</!longlist>
+%<*longlist>
+FUNCTION {bookauthor.before}
+{
+  bookauthor empty$
+    'skip$
+    { format.bookauthors output
+      new.sentence
+    }
+  if$
+}
+%</longlist>
 
+%    \end{macrocode}
+%
+% \DescribeFunction{author.after}
+% Functions |author.after| and |bookauthor.after| also have by 2 versions.
+% They are used to write authors list after the title followed by a slash.
+% In modern styles, compiled with option |modern|, the list of authors is
+% always cut to at most 4 persons. The cut is performed first by
+% |format.names.rev|, which is called by |format.authors.after|. For old styles,
+% |author.after| just outputs formatted string whereas for new style it
+% skips the string if the number of authors exceeds 3 (and author list is not
+% printed before the title).
+%    \begin{macrocode}
+%<*!modern>
+FUNCTION {author.after}
+{
+  author empty$
+    'skip$
+    {format.authors.after output
+       new.semicolumn }
+  if$
+}
+%</!modern>
 %<*modern>
-
+%<*!longlist>
 FUNCTION {author.after}
 {
   author empty$
@@ -1285,6 +1893,27 @@ FUNCTION {author.after}
     if$}
   if$
 }
+%</!longlist>
+%<*longlist>
+FUNCTION {author.after} { }
+%</longlist>
+%</modern>
+
+%    \end{macrocode}
+% \DescribeFunction{bookauthor.after}
+%    \begin{macrocode}
+%<*!modern>
+FUNCTION {bookauthor.after}
+{
+  bookauthor empty$
+    'skip$
+    {format.bookauthors.after output
+       new.semicolumn }
+  if$
+}
+%</!modern>
+%<*modern>
+%<*!longlist>
 FUNCTION {bookauthor.after}
 {
   bookauthor empty$
@@ -1296,27 +1925,15 @@ FUNCTION {bookauthor.after}
     if$}
   if$
 }
+%</!longlist>
+%<*longlist>
+FUNCTION {bookauthor.after} { }
+%</longlist>
 %</modern>
-%<*!modern>
 
-FUNCTION {author.after}
-{
-  author empty$
-    'skip$
-    {format.authors.after output
-       new.semicolumn }
-  if$
-}
-FUNCTION {bookauthor.after}
-{
-  bookauthor empty$
-    'skip$
-    {format.bookauthors.after output
-       new.semicolumn }
-  if$
-}
-%</!modern>
-
+%    \end{macrocode}
+% \DescribeFunction{editor.organization.after}
+%    \begin{macrocode}
 FUNCTION {editor.organization.after}
 {
   compiler empty$
@@ -1339,12 +1956,15 @@ FUNCTION {editor.organization.after}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.url}
+%    \begin{macrocode}
 FUNCTION {format.url}
 { url empty$
     { "" }
     {
-%<!modern>      "*** \BibUrl{ " url * "}" *
-%<modern>      "**** URL: \BibUrl{" url * "}" *
+%<!modern>      "\BibUrl{ " url * "}" *
+%<modern>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * urldate * ")" * }
@@ -1353,6 +1973,9 @@ FUNCTION {format.url}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.annote}
+%    \begin{macrocode}
 FUNCTION {format.annote}
 { annote empty$
     { "" }
@@ -1362,14 +1985,100 @@ FUNCTION {format.annote}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{format.isbn}
+% Do we really need to provide electronic search for ISNB?
+%    \begin{macrocode}
+FUNCTION {format.isbn}
+{
+  isbn empty$
+    { "" }
+    { "ISBN:~\href{http://isbndb.com/search-all.html?kw=" isbn *
+      "}{" * isbn * "}" *
+    }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{add.doi}
+% Do we really need to provide electronic search for doi?
+%    \begin{macrocode}
+FUNCTION {add.doi}
+{ duplicate$ empty$
+    'skip$
+    { doi empty$
+        'skip$
+        { "\href{http://dx.doi.org/" doi * "}{" * swap$ * "}" * }
+      if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.eprint}
+%    \begin{macrocode}
+FUNCTION {format.eprint}
+{ eprint empty$
+   { "" }
+   { primaryClass empty$
+      { " \href{http://arxiv.org/abs/" eprint * "}" * "{" * eprint * "}" * }
+      { archivePrefix empty$
+         { " \href{http://arxiv.org/abs/" eprint * "}" *
+      	   "{" * primaryClass * "/" * eprint * "}" *
+         }
+         { " \href{http://arxiv.org/abs/" eprint * "}" *
+      	   "{" * archivePrefix * ":" * primaryClass * "/" * eprint * "}" *
+         }
+      if$}
+   if$}
+if$}
+
+
+%    \end{macrocode}
+%
+% \subsection{Entries}
+%
+% Text below in this section is borrowed from biblatex manual.
+%
+% The lists below indicate the fields supported by each entry type.
+% Note that the mapping of fields to an entry type is ultimately at the
+% discretion of the bibliography style. The lists below therefore serve
+% two purposes. They indicate the fields supported by the standard styles
+% which ship with this package and they also serve as a model for custom
+% styles. Note that the ‚Äòrequired‚Äô fields are not strictly required
+% in all cases. The fields marked as ‚Äòoptional‚Äô
+% are optional in a technical sense. Bibliographical formatting rules
+% usually require more than just the ‚Äòrequired‚Äô fields. The standard
+% styles will generally not perform any formal validity checks, but
+% custom styles may do so. Generic fields like abstract and annotation
+% or label and shorthand are not included in the lists below because they
+% are independent of the entry type. Not every field listed below is actually
+% supported by GOST styles. So description below should be considered as a goal
+% or a feature request.
+%
+% \DescribeFunction{article}
+%  An article in a journal, magazine, newspaper, or other periodical which forms a
+%  self-contained unit with its own title. The title of the periodical is given in the
+%  journaltitle field. If the issue has its own title in addition to the main title of
+%  the periodical, it goes in the issuetitle field. Note that editor and related fields
+%  refer to the journal while translator and related fields refer to the article.
+%  Required fields: author, title, journaltitle, year/date
+%  Optional fields: translator, annotator, commentator, subtitle, titleaddon,
+%  editor, editora, editorb, editorc, journalsubtitle, issuetitle,
+%  issuesubtitle, language, origlanguage, series, volume, number, eid, issue,
+%  month, pages, version, note, issn, addendum, pubstate, doi, eprint,
+%  eprintclass, eprinttype, url, urldate.
+%    \begin{macrocode}
 FUNCTION {article}
-{ output.bibitem
+{
+  output.bibitem
   author.before
   format.title "title" output.check
   new.slash
   author.after
   new.dblslash
-  journal emphasize "journal" output.check
+%<!eprint>  journal emphasize "journal" output.check
+%<eprint>  journal emphasize add.doi "journal" output.check % new in v.2
   new.block
   format.date output
   new.block
@@ -1380,15 +2089,34 @@ FUNCTION {article}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{book}
+% A single-volume book with one or more authors where the authors share credit for
+% the work as a whole. In biblatex, this entry type also covers the function
+% of the |@inbook| type of traditional BibTeX.
+%
+% Required fields: author, title, year/date.
+%
+% Optional fields: editor, editora, editorb, editorc, translator, annotator,
+% commentator, introduction, foreword, afterword, subtitle, titleaddon,
+% maintitle, mainsubtitle, maintitleaddon, language, origlanguage, volume,
+% part, edition, volumes, series, number, note, publisher, location, isbn,
+% chapter, pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
+% eprinttype, url, urldate.
+%    \begin{macrocode}
 FUNCTION {book}
-{ output.bibitem
+{
+  output.bibitem
   author.before
-  format.btitle "title" output.check
+%<!eprint>  format.btitle "title" output.check
+%<eprint>  format.btitle add.doi "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -1405,13 +2133,20 @@ FUNCTION {book}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{booklet}
+% Is |doi| field ignored here?
+%    \begin{macrocode}
 FUNCTION {booklet}
-{ output.bibitem
+{
+  output.bibitem
   author.before
   format.title "title" output.check
   new.slash
@@ -1424,15 +2159,33 @@ FUNCTION {booklet}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{inbook}
+% A part of a book which forms a self-contained unit with its own title.
+% Note that the profile of this entry type is diVerent from standard BibTeX.
+%
+% Required fields: author, title, booktitle, year/date.
+%
+% Optional fields: bookauthor, editor, editora, editorb, editorc, translator,
+% annotator, commentator, introduction, foreword, afterword, subtitle,
+% titleaddon, maintitle, mainsubtitle, maintitleaddon, booksubtitle,
+% booktitleaddon, language, origlanguage, volume, part, edition, volumes,
+% series, number, note, publisher, location, isbn, chapter, pages, addendum,
+% pubstate, doi, eprint, eprintclass, eprinttype, url, urldate
+%    \begin{macrocode}
 FUNCTION {inbook}
-{ output.bibitem
+{
+  output.bibitem
   author.before
-  format.btitle "title" output.check
+%<!eprint>  format.btitle "title" output.check
+%<eprint>  format.btitle add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -1453,17 +2206,24 @@ FUNCTION {inbook}
   format.pages.page output
   new.block
   note output
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   new.sentence
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{incollection}
+%    \begin{macrocode}
 FUNCTION {incollection}
-{ output.bibitem
+{
+  output.bibitem
   author.before
   new.sentence
-  format.title "title" output.check
+%<!eprint>  format.title "title" output.check
+%<!eprint>  format.title add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -1480,16 +2240,22 @@ FUNCTION {incollection}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{inproceedings}
+%    \begin{macrocode}
 FUNCTION {inproceedings}
 { output.bibitem
   author.before
   new.sentence
-  format.title "title" output.check
+%<!eprint>  format.title "title" output.check
+%<!eprint>  format.title add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -1515,13 +2281,21 @@ FUNCTION {inproceedings}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{conference}
+%    \begin{macrocode}
 FUNCTION {conference} { inproceedings }
 
+%    \end{macrocode}
+% \DescribeFunction{manual}
+%    \begin{macrocode}
 FUNCTION {manual}
 { output.bibitem
   author empty$
@@ -1556,16 +2330,23 @@ FUNCTION {manual}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{mastersthesis}
+%    \begin{macrocode}
 FUNCTION {mastersthesis}
-{ output.bibitem
+{
+  output.bibitem
   format.authors "author" output.check
   new.block
-  format.btitle "title" output.check
+%<!eprint>  format.btitle "title" output.check
+%<eprint>  format.btitle add.doi "title" output.check
   new.block
   bbl.mthesis format.thesis.type output.nonnull
   school "school" output.check
@@ -1574,11 +2355,16 @@ FUNCTION {mastersthesis}
   new.block
   note output
   new.block
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{misc}
+%    \begin{macrocode}
 FUNCTION {misc}
 { output.bibitem
   format.authors output
@@ -1591,16 +2377,22 @@ FUNCTION {misc}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{phdthesis}
+%    \begin{macrocode}
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
-  format.btitle "title" output.check
+%<!eprint>  format.btitle "title" output.check
+%<!eprint>  format.btitle add.doi "title" output.check
   new.column
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
@@ -1611,14 +2403,48 @@ FUNCTION {phdthesis}
   format.pages.page output
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{dscithesis}
+%    \begin{macrocode}
+FUNCTION {dscithesis}
+{
+  output.bibitem
+  format.authors "author" output.check
+  new.sentence
+%<!eprint>  format.btitle "title" output.check
+%<eprint>  format.btitle add.doi "title" output.check
+  new.column
+  bbl.dscithesis format.thesis.type output.nonnull
+  new.slash
+  school "school" output.check
+  new.block
+  output.address.publisher.date
+  new.block
+  format.pages.page output
+  note output
+  new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
+  format.url output
+  format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+% \DescribeFunction{proceedings}
+%    \begin{macrocode}
 FUNCTION {proceedings}
-{ output.bibitem
-  format.btitle "title" output.check
+{
+  output.bibitem
+%<!eprint>  format.btitle "title" output.check
+%<!eprint>  format.btitle add.doi "title" output.check
   new.slash
   editor.organization.after
   new.block
@@ -1637,16 +2463,27 @@ FUNCTION {proceedings}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{techreport}
+% TechReport is similar to |@report except| that the |type| field is optional
+% and defaults to the localized term `technical report'.
+% You may still use the type field to override that.
+%    \begin{macrocode}
 FUNCTION {techreport}
-{ output.bibitem
+{
+  output.bibitem
   author.before
   new.sentence
-  format.title "title" output.check
+%<!eprint>  format.title "title" output.check
+%<!eprint>  format.title add.doi "title" output.check
   new.column
   format.tr.number output.nonnull
   new.slash
@@ -1660,11 +2497,16 @@ FUNCTION {techreport}
   new.block
   note output
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{unpublished}
+%    \begin{macrocode}
 FUNCTION {unpublished}
 { output.bibitem
   author.before
@@ -1675,11 +2517,16 @@ FUNCTION {unpublished}
   new.block
   note "note" output.check
   new.sentence
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   format.annote output
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{online}
+%    \begin{macrocode}
 FUNCTION {online}
 { output.bibitem
   format.authors output
@@ -1690,6 +2537,8 @@ FUNCTION {online}
   new.block
   format.date output
   new.block
+%<eprint>  format.eprint output % new in v.2
+%<eprint>  new.block            % new in v.2
   format.url output
   new.sentence
   note output
@@ -1697,77 +2546,190 @@ FUNCTION {online}
   fin.entry
 }
 
+%    \end{macrocode}
+% \DescribeFunction{default.type}
+%    \begin{macrocode}
 FUNCTION {default.type} { misc }
 
+%    \end{macrocode}
+%
+% \subsection{Month Abbreviations}
+%
+%    \begin{macrocode}
 MACRO {jan} {"\bbljan{}"}
-
 MACRO {feb} {"\bblfeb{}"}
-
 MACRO {mar} {"\bblmar{}"}
-
 MACRO {apr} {"\bblapr{}"}
-
 MACRO {may} {"\bblmay{}"}
-
 MACRO {jun} {"\bbljun{}"}
-
 MACRO {jul} {"\bbljul{}"}
-
 MACRO {aug} {"\bblaug{}"}
-
 MACRO {sep} {"\bblsep{}"}
-
 MACRO {oct} {"\bbloct{}"}
-
 MACRO {nov} {"\bblnov{}"}
-
 MACRO {dec} {"\bbldec{}"}
 
-MACRO {acmcs} {"ACM Computing Surveys"}
+%    \end{macrocode}
+%
+% \subsection{Journal Abbreviations}
+%
+%    \begin{macrocode}
 
-MACRO {acta} {"Acta Informatica"}
+%    \end{macrocode}
+% \subsection{Journal abbreviations}
+% \subsubsection{Physics and astronomy}
+% Borrowed from \file{physjour.mbs} of package \pkg{custom-bib}.
+%    \begin{macrocode}
+MACRO {aa}{"Astron. \& Astrophys."}
+MACRO {aasup}{"Astron. \& Astrophys. Suppl. Ser."}
+MACRO {aj} {"Astron. J."}
+MACRO {aph} {"Acta Phys."}
+MACRO {advp} {"Adv. Phys."}
+MACRO {ajp} {"Amer. J. Phys."}
+MACRO {ajm} {"Amer. J. Math."}
+MACRO {amsci} {"Amer. Sci."}
+MACRO {anofd} {"Ann. Fluid Dyn."}
+MACRO {am} {"Ann. Math."}
+MACRO {ap} {"Ann. Phys. (NY)"}
+MACRO {adp} {"Ann. Phys. (Leipzig)"}
+MACRO {ao} {"Appl. Opt."}
+MACRO {apl} {"Appl. Phys. Lett."}
+MACRO {app} {"Astroparticle Phys."}
+MACRO {apj} {"Astrophys. J."}
+MACRO {apjsup} {"Astrophys. J. Suppl."}
+MACRO {apss} {"Astrophys. Space Sci."}
+MACRO {araa} {"Ann. Rev. Astron. Astrophys."}
+MACRO {baas} {"Bull. Amer. Astron. Soc."}
+MACRO {baps} {"Bull. Amer. Phys. Soc."}
+MACRO {cmp} {"Comm. Math. Phys."}
+MACRO {cpam} {"Commun. Pure Appl. Math."}
+MACRO {cppcf} {"Comm. Plasma Phys. \& Controlled Fusion"}
+MACRO {cpc} {"Comp. Phys. Comm."}
+MACRO {cqg} {"Class. Quant. Grav."}
+MACRO {cra} {"C. R. Acad. Sci. A"}
+MACRO {fed} {"Fusion Eng. \& Design"}
+MACRO {ft} {"Fusion Tech."}
+MACRO {grg} {"Gen. Relativ. Gravit."}
+MACRO {ieeens} {"IEEE Trans. Nucl. Sci."}
+MACRO {ieeeps} {"IEEE Trans. Plasma Sci."}
+MACRO {ijimw} {"Interntl. J. Infrared \& Millimeter Waves"}
+MACRO {ip} {"Infrared Phys."}
+MACRO {irp} {"Infrared Phys."}
+MACRO {jap} {"J. Appl. Phys."}
+MACRO {jasa} {"J. Acoust. Soc. America"}
+MACRO {jcp} {"J. Comp. Phys."}
+MACRO {jchp} {"J. Chem. Phys."}
+MACRO {jetp} {"Sov. Phys.--JETP"}
+MACRO {jfe} {"J. Fusion Energy"}
+MACRO {jfm} {"J. Fluid Mech."}
+MACRO {jmp} {"J. Math. Phys."}
+MACRO {jne} {"J. Nucl. Energy"}
+MACRO {jnec} {"J. Nucl. Energy, C: Plasma Phys., Accelerators, Thermonucl. Res."}
+MACRO {jnm} {"J. Nucl. Mat."}
+MACRO {jpc} {"J. Phys. Chem."}
+MACRO {jpp} {"J. Plasma Phys."}
+MACRO {jpsj} {"J. Phys. Soc. Japan"}
+MACRO {jsi} {"J. Sci. Instrum."}
+MACRO {jvst} {"J. Vac. Sci. \& Tech."}
+MACRO {nat} {"Nature"}
+MACRO {nature} {"Nature"}
+MACRO {nedf} {"Nucl. Eng. \& Design/Fusion"}
+MACRO {nf} {"Nucl. Fusion"}
+MACRO {nim} {"Nucl. Inst. \& Meth."}
+MACRO {nimpr} {"Nucl. Inst. \& Meth. in Phys. Res."}
+MACRO {np} {"Nucl. Phys."}
+MACRO {npb} {"Nucl. Phys. B"}
+MACRO {nt/f} {"Nucl. Tech./Fusion"}
+MACRO {npbpc} {"Nucl. Phys. B (Proc. Suppl.)"}
+MACRO {inc} {"Nuovo Cimento"}
+MACRO {nc} {"Nuovo Cimento"}
+MACRO {pf} {"Phys. Fluids"}
+MACRO {pfa} {"Phys. Fluids A: Fluid Dyn."}
+MACRO {pfb} {"Phys. Fluids B: Plasma Phys."}
+MACRO {pl} {"Phys. Lett."}
+MACRO {pla} {"Phys. Lett. A"}
+MACRO {plb} {"Phys. Lett. B"}
+MACRO {prep} {"Phys. Rep."}
+MACRO {pnas} {"Proc. Nat. Acad. Sci. USA"}
+MACRO {pp} {"Phys. Plasmas"}
+MACRO {ppcf} {"Plasma Phys. \& Controlled Fusion"}
+MACRO {phitrsl} {"Philos. Trans. Roy. Soc. London"}
+MACRO {prl} {"Phys. Rev. Lett."}
+MACRO {pr} {"Phys. Rev."}
+MACRO {physrev} {"Phys. Rev."}
+MACRO {pra} {"Phys. Rev. A"}
+MACRO {prb} {"Phys. Rev. B"}
+MACRO {prc} {"Phys. Rev. C"}
+MACRO {prd} {"Phys. Rev. D"}
+MACRO {pre} {"Phys. Rev. E"}
+MACRO {ps} {"Phys. Scripta"}
+MACRO {procrsl} {"Proc. Roy. Soc. London"}
+MACRO {rmp} {"Rev. Mod. Phys."}
+MACRO {rsi} {"Rev. Sci. Inst."}
+MACRO {science} {"Science"}
+MACRO {sciam} {"Sci. Am."}
+MACRO {sam} {"Stud. Appl. Math."}
+MACRO {sjpp} {"Sov. J. Plasma Phys."}
+MACRO {spd} {"Sov. Phys.--Doklady"}
+MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
+MACRO {spu} {"Sov. Phys.--Uspekhi"}
+MACRO {st} {"Sky and Telesc."}
 
-MACRO {cacm} {"Communications of the ACM"}
-
-MACRO {ibmjrd} {"IBM Journal of Research and Development"}
-
-MACRO {ibmsj} {"IBM Systems Journal"}
-
-MACRO {ieeese} {"IEEE Transactions on Software Engineering"}
-
-MACRO {ieeetc} {"IEEE Transactions on Computers"}
-
-MACRO {ieeetcad}
- {"IEEE Transactions on Computer-Aided Design of Integrated Circuits"}
-
-MACRO {ipl} {"Information Processing Letters"}
-
-MACRO {jacm} {"Journal of the ACM"}
-
-MACRO {jcss} {"Journal of Computer and System Sciences"}
-
-MACRO {scp} {"Science of Computer Programming"}
-
-MACRO {sicomp} {"SIAM Journal on Computing"}
-
-MACRO {tocs} {"ACM Transactions on Computer Systems"}
-
-MACRO {tods} {"ACM Transactions on Database Systems"}
-
-MACRO {tog} {"ACM Transactions on Graphics"}
-
-MACRO {toms} {"ACM Transactions on Mathematical Software"}
-
-MACRO {toois} {"ACM Transactions on Office Information Systems"}
-
-MACRO {toplas} {"ACM Transactions on Programming Languages and Systems"}
-
-MACRO {tcs} {"Theoretical Computer Science"}
+%    \end{macrocode}
+%
+% \subsubsection{Optics}
+%
+% Borrowed from \file{photjour.mbs}.
+%    \begin{macrocode}
+MACRO {appopt} {"Appl. Opt."}
+MACRO {bell}   {"Bell Syst. Tech. J."}
+MACRO {ell}    {"Electron. Lett."}
+MACRO {jasp}   {"J. Appl. Spectr."}
+MACRO {jqe}    {"IEEE J. Quantum Electron."}
+MACRO {jlwt}   {"J. Lightwave Technol."}
+MACRO {jmo}    {"J. Mod. Opt."}
+MACRO {josa}   {"J. Opt. Soc. America"}
+MACRO {josaa}  {"J. Opt. Soc. Amer.~A"}
+MACRO {josab}  {"J. Opt. Soc. Amer.~B"}
+MACRO {jdp}    {"J. Phys. (Paris)"}
+MACRO {oc}     {"Opt. Commun."}
+MACRO {ol}     {"Opt. Lett."}
+MACRO {os}     {"Opt. Spectrosc."}
+MACRO {phtl}   {"IEEE Photon. Technol. Lett."}
+MACRO {pspie}  {"Proc. Soc. Photo-Opt. Instrum. Eng."}
+MACRO {sjot}   {"Sov. J. Opt. Technol."}
+MACRO {sjqe}   {"Sov. J. Quantum Electron."}
+MACRO {sleb}   {"Sov. Phys.--Leb. Inst. Rep."}
+MACRO {stph}   {"Sov. Phys.--Techn. Phys."}
+MACRO {stphl}  {"Sov. Techn. Phys. Lett."}
+MACRO {vr}     {"Vision Res."}
+MACRO {zph}    {"Z. f. Physik"}
+MACRO {zphb}   {"Z. f. Physik~B"}
+MACRO {zphd}   {"Z. f. Physik~D"}
+%    \end{macrocode}
+%
+% \subsubsection{Physics of condensed Matter}
+%
+%    \begin{macrocode}
+MACRO {sse} {"Solid-State Electron."}
+MACRO {pss} {"Phys. Sol. State"}
+MACRO {sst} {"Semicond. Sci. Tech."}
+MACRO {nl}  {"Nano Lett."}
 
 READ
 
+%    \end{macrocode}
+%
+% \subsection{Sorting}
+%
+% Next chunk of code governs sorting reference list by authors' names and
+% titles.
+%    \begin{macrocode}
 %<*sorted>
 
+%    \end{macrocode}
+% \DescribeFunction{sortify}
+%    \begin{macrocode}
 FUNCTION {sortify}
 { purify$
   "l" change.case$
@@ -1775,6 +2737,9 @@ FUNCTION {sortify}
 
 INTEGERS { len }
 
+%    \end{macrocode}
+% \DescribeFunction{chop.word}
+%    \begin{macrocode}
 FUNCTION {chop.word}
 { 's :=
   'len :=
@@ -1784,6 +2749,9 @@ FUNCTION {chop.word}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{sort.format.names}
+%    \begin{macrocode}
 FUNCTION {sort.format.names}
 { 's :=
   #1 'nameptr :=
@@ -1808,6 +2776,9 @@ FUNCTION {sort.format.names}
   while$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{sort.format.title}
+%    \begin{macrocode}
 FUNCTION {sort.format.title}
 { 't :=
   "A " #2
@@ -1819,6 +2790,9 @@ FUNCTION {sort.format.title}
   #1 global.max$ substring$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{author.sort}
+%    \begin{macrocode}
 FUNCTION {author.sort}
 { author empty$
     { key empty$
@@ -1837,6 +2811,9 @@ FUNCTION {author.sort}
   if$
 }
 
+%    \end{macrocode}
+% \DescribeFunction{author.title.sort}
+%    \begin{macrocode}
 FUNCTION {author.title.sort}
 { author empty$
     { title empty$
@@ -1860,6 +2837,9 @@ FUNCTION {author.title.sort}
 }
 
 
+%    \end{macrocode}
+% \DescribeFunction{presort}
+%    \begin{macrocode}
 FUNCTION {presort}
 {
   author.title.sort
@@ -1886,12 +2866,22 @@ STRINGS { longest.label }
 
 INTEGERS { number.label longest.label.width }
 
+%    \end{macrocode}
+%
+% \subsection{Bibliography list}
+%
+% \DescribeFunction{initialize.longest.label}
+% Declare functions to computer argument of |thebibliography| environment.
+%    \begin{macrocode}
 FUNCTION {initialize.longest.label}
 { "" 'longest.label :=
   #1 'number.label :=
   #0 'longest.label.width :=
 }
 
+%    \end{macrocode}
+% \DescribeFunction{longest.label.pass}
+%    \begin{macrocode}
 FUNCTION {longest.label.pass}
 { number.label int.to.str$ 'label :=
   number.label #1 + 'number.label :=
@@ -1907,11 +2897,17 @@ EXECUTE {initialize.longest.label}
 
 ITERATE {longest.label.pass}
 
+%    \end{macrocode}
+% \DescribeFunction{begin.bib}
+% Within |thebibliography| environment we define few formatting macros
+% for user to customize how the reference list is formatted.
+%    \begin{macrocode}
 FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
   "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\providecommand*{\href}[2]{{\small #2}}"          write$ newline$
   "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
@@ -1935,6 +2931,9 @@ EXECUTE {init.state.consts}
 
 ITERATE {call.type$}
 
+%    \end{macrocode}
+% \DescribeFunction{end.bib}
+%    \begin{macrocode}
 FUNCTION {end.bib}
 { newline$
 %  "\catcode`\/=11"        write$ newline$
@@ -1945,3 +2944,10 @@ EXECUTE {end.bib}
 
 %</bst>
 %    \end{macrocode}
+%
+% That's all, Folks!
+%
+% \PrintChanges
+% \Finale
+%
+% \endinput
