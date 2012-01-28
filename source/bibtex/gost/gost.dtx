@@ -1,6 +1,5 @@
 % \iffalse
-%
-% !Mode:: "DTX:UNIX:UTF8"
+% !Mode:: "DTX:UNIX:UTF-8"
 %
 % This is the source file for the GOST package
 % to be used with BibTeX8.
@@ -380,7 +379,15 @@
 %   \item[2005.08.12] First version uploaded to CTAN.
 %   \end{enumerate}
 %
-% \StopEventually
+% \StopEventually{
+%   \IndexPrologue{\section{Index}
+%       Numbers written in dark blue refer to the page where the corresponding
+%       entry is described; numbers in black roman refer to the code lines where
+%       the entry is used.
+%   }
+%   \PrintChanges
+%   \PrintIndex
+% }
 %
 % \section{Implementation}
 %
@@ -771,7 +778,7 @@ FUNCTION {bbl.edby}    %  { "\bbledby{}" }
 %<utf8>         {"{Под ред.\ }"}
          { curlanguage "german" =
             { "ed. " }
-            {"language is not defined: " language  "edited by" * * warning$ "edited by"}
+            {"language is not defined: " language "edby" * * warning$ "Ed. by "}
          if$}
       if$}
    if$}
@@ -791,7 +798,7 @@ FUNCTION {bbl.cmplr}
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\CYRS\cyro\cyrs\cyrt.\ }"}
 %<utf8>            {"{Сост.\ }"}
-            {"language is not defined: " language  "compiler" * * warning$ "compiler"}
+            {"language is not defined: " language  "cmplr" * * warning$ "Compiler "}
          if$}
       if$}
    if$}
@@ -834,7 +841,7 @@ FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
 %<utf8>      { "Том" }
       { curlanguage "german" =
          {"{Band}"} %%%% { "Volumen" }
-         {"language is not defined: " language  "Volume" * * warning$ "Volume"}
+         {"language is not defined: " language  "vvolume" * * warning$ "Volume"}
       if$}
    if$}
 if$}
@@ -850,7 +857,7 @@ FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
 %<utf8>      {"Т."}
       { curlanguage "german" =
          {"{Bd.}"} %%%% { "Vol." }
-         {"language is not defined: " language  "Vol." * * warning$ "Vol."}
+         {"language is not defined: " language  "vvol" * * warning$ "Vol."}
       if$}
    if$}
 if$}
@@ -869,7 +876,7 @@ FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
 %<utf8>         {"Выпуск"}
          { curlanguage "german" =
             {"{Heft}"} %%%% { "Ausgabe" }
-            {"language is not defined: " language * warning$ "Issue"}
+            {"language is not defined: " language "iissue" * * warning$ "Issue"}
          if$}
       if$}
    if$}
@@ -888,8 +895,8 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
 %<!utf8>         {"\CYRV\cyrery\cyrp."}
 %<utf8>         {"Вып."}
          { curlanguage "german" =
-            {"{H.}"} %%% { "Aus." }??
-            {"language is not defined: " language * warning$ "Iss"}
+            {"{H.}"} 
+            {"language is not defined: " language "iiss" * * warning$ "Iss."}
          if$}
       if$}
    if$}
@@ -909,7 +916,7 @@ FUNCTION {bbl.of}      %  { "\bblof{}" }
          { curlanguage "russian" =
 %<!utf8>            { "{\cyr\cyri\cyrz}" }
 %<utf8>            { "{из}" }
-            {"language is not defined: " language "of" *  * warning$ "of"}
+            {"language is not defined: " language "of" * * warning$ "of"}
          if$}
       if$}
    if$}
@@ -929,7 +936,7 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\cyri~\cyrd\cyrr.}"}
 %<utf8>            {"{и~др.}"}
-            {"language is not defined: " language  "at al" * * warning$ "at al."}
+            {"language is not defined: " language  "etal" * * warning$ "et~al."}
          if$}
       if$}
    if$}
@@ -946,7 +953,7 @@ FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 %<utf8>      { "{Номер}" }
       { curlanguage "german" =
          {"{Heft}"} %%% { "Anzahl" }
-         {"language is not defined: " language  "Number" * * warning$ "Number"}
+         {"language is not defined: " language  "nnumber" * * warning$ "Number"}
       if$}
    if$}
 if$}
@@ -980,7 +987,7 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
 %<utf8>         { "{№}" }
          { curlanguage "german" =
             {"{H.}"} %%% { "an." }
-            {"language is not defined: " language  "no." * * warning$ "no."}
+            {"language is not defined: " language "nr" * * warning$ "no."}
          if$}
       if$}
    if$}
@@ -997,7 +1004,7 @@ FUNCTION {bbl.nnr}     %   { "\bblno{}" }
 %<utf8>      { "{№}" }
       { curlanguage "german" =
          {"{H.}"} %%% { "an." }
-         {"language is not defined: " language  "No." * * warning$ "No."}
+         {"language is not defined: " language  "nnr" * * warning$ "No."}
       if$}
    if$}
 if$}
@@ -1024,7 +1031,7 @@ FUNCTION {bbl.iin}  %     { "\bblIn{}" }
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      { "\CYRV" }
 %<utf8>      { "{В}" }
-      {"language is not defined: " language  "In" * * warning$ "In"}
+      {"language is not defined: " language  "iin" * * warning$ "In"}
    if$}
 if$}
 
@@ -1039,7 +1046,7 @@ FUNCTION {bbl.pages}    % { "\bblpp." }
 %<utf8>      {"{с.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
-         {"language is not defined: " language  "pp." * * warning$ "pp."}
+         {"language is not defined: " language  "pages" * * warning$ "p."}
       if$}
    if$}
 if$}
@@ -1055,7 +1062,7 @@ FUNCTION {bbl.page}   %   { "\bblp."
 %<utf8>      {"{с.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
-         {"language is not defined: " language  "p." * * warning$ "p."}
+         {"language is not defined: " language  "page" * * warning$ "p."}
       if$}
    if$}
 if$}
@@ -1071,7 +1078,7 @@ FUNCTION {bbl.ppages}%    { "\bblPp." }
 %<utf8>      {"{С.}"}
       { curlanguage "german" =
          {"S."}
-         {"language is not defined: " language  "Pp." * * warning$ "Pp."}
+         {"language is not defined: " language "ppages" * * warning$ "P."}
       if$}
    if$}
 if$}
@@ -1087,7 +1094,7 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
 %<utf8>      {"{С.}"}
       { curlanguage "german" =
          {"S."}
-         {"language is not defined: " language  "P." * * warning$ "P."}
+         {"language is not defined: " language  "ppage" * * warning$ "P."}
       if$}
    if$}
 if$}
@@ -1107,7 +1114,7 @@ FUNCTION {bbl.urldate}
 %<utf8>         { "{дата обращения: }" }
          { curlanguage "german" =
             { "{online; abgerufen: }" }
-            { "language is not defined: " language * warning$ "online; accessed: " }
+            { "language is not defined: " language "urldate" * * warning$ "online; accessed: " }
          if$}
       if$}
    if$}
@@ -1124,7 +1131,7 @@ FUNCTION {bbl.techrep} % rename to bbl.techreport
       { curlanguage "russian" =
 %<!utf8>         { "{\cyr\CYRT\cyre\cyrh.\ \cyrd\cyro\cyrk\cyrl\cyra\cyrd}" }
 %<utf8>         { "{Тех.\ доклад}" }
-         { "language is not defined: " language * warning$ "Tech.~Rep." }
+         { "language is not defined: " language "techrep" * * warning$ "Tech.~Rep." }
       if$}
    if$}
 if$}
@@ -1142,7 +1149,7 @@ FUNCTION {bbl.mthesis}
 %<!utf8>          "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
 %<!utf8>          "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
 %<utf8>         { "{Квалификационная работа магистра}" }
-         { "language is not defined: " language * warning$ "Master's thesis" }
+         { "language is not defined: " language "mthesis" * * warning$ "Master's thesis" }
       if$}
    if$}
 if$}
@@ -1159,7 +1166,7 @@ FUNCTION {bbl.phdthesis}
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
 %<!utf8>           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
 %<utf8>         { "{Дисс\ldot\ кандидата наук}" }
-         { "language is not defined: " language * warning$ "Ph.\,D. thesis" }
+         { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
       if$}
    if$}
 if$}
@@ -1176,7 +1183,7 @@ FUNCTION {bbl.dscithesis} %%% rename this to dscthesis
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
 %<!utf8>           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
 %<utf8>         { "{Дисс\ldot\ доктора наук}" }
-         { "language is not defined: " language * warning$ "In" }
+         { "language is not defined: " language "dscithesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
 if$}
