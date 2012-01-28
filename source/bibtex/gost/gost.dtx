@@ -54,7 +54,7 @@
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2012/01/31 v.2012.02.02 Bibliography styles for GOST R 7.0.5-2008.]
+  [2012/02/02 v.1.2 Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -124,27 +124,26 @@
 \begin{document}
   \maketitle
   \DocInput{gost.dtx}
-  \PrintChanges
-  \PrintIndex
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{327}
+% \CheckSum{329}
 %
-% \changes{v1.0}{2012.01.27}{Added options: modern longlist, eprint}
-% \changes{v1.0}{2012.01.26}{Numpages field renamed to numpages}
-% \changes{v1.0}{2012.01.25}{Fixed documentation}
-% \changes{v1.0}{2012.01.25}{Gost705.dtx borrowed from Disser pkg}
-% \changes{v0.4}{2012/01/15}{Added German, French, Italian languages}
-% \changes{v0.4}{2012/01/15}{Entry ONLINE}
-% \changes{v0.3}{2005/08/12}{Bug fix (long annote)}
-% \changes{v0.2}{2003/06/06}{Entry ANNOTE added}
-% \changes{v0.2}{2003/06/06}{\string\BibUrl\space added}
-% \changes{v0.2}{2003/06/06}{\string\BibAnnote\space added}
-% \changes{v0.2}{2003/08/10}{\string\BibEmph\space added}
-% \changes{v0.1}{2003/10/07}{Bug fix in names and date formatting}
-% \changes{v0.1}{2003/10/07}{Bug fix in INPROCEEDINGS}
+% \changes{v1.1}{27 Jan 2012}{Documentation}
+% \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
+% \changes{v1.2}{26 Jan 2012}{Added options: modern longlist, eprint}
+% \changes{v1.1}{25 Jan 2012}{Gost705.dtx borrowed from Disser pkg}
+% \changes{v1.1}{21 Jan 2012}{Upload to CTAN}
+% \changes{v1.1}{15 Jan 2012}{Added German, French, Italian languages}
+% \changes{v1.1}{15 Jan 2012}{Entry ONLINE}
+% \changes{v1.0}{12 Aug 2005}{Bug fix (long annote)}
+% \changes{v0.9}{07 Oct 2003}{Bug fix in names and date formatting}
+% \changes{v0.9}{07 Oct 2003}{Bug fix in INPROCEEDINGS}
+% \changes{v0.8}{10 Aug 2003}{\cs{BibEmph} added}
+% \changes{v0.8}{06 Jun 2003}{Entry ANNOTE added}
+% \changes{v0.8}{06 Jun 2003}{\cs{BibUrl} added}
+% \changes{v0.8}{06 Jun 2003}{\cs{BibAnnote} added}
 %
 % \DoNotIndex{\cyra,\cyrb,\cyrv,\cyrg,\cyrd,\cyre}
 % \DoNotIndex{\CYRP,\cyrii,\cyrr,\cyre,\cyro,\CYRU,\cyrk,\cyrl,\CYRS,\cyrs|}
@@ -377,6 +376,7 @@
 %   \begin{enumerate}
 %   \item[2012.02.02] Adaptation to GOST 7.0.5, electronic publishing.
 %   \item[2005.08.12] First version uploaded to CTAN.
+%   \item[2003.06.06] First public version.
 %   \end{enumerate}
 %
 % \StopEventually{
@@ -895,7 +895,7 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
 %<!utf8>         {"\CYRV\cyrery\cyrp."}
 %<utf8>         {"Вып."}
          { curlanguage "german" =
-            {"{H.}"} 
+            {"{H.}"}
             {"language is not defined: " language "iiss" * * warning$ "Iss."}
          if$}
       if$}
@@ -1166,7 +1166,10 @@ FUNCTION {bbl.phdthesis}
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
 %<!utf8>           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
 %<utf8>         { "{Дисс\ldot\ кандидата наук}" }
-         { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
+         { curlanguage "french" =
+           { "Th\`{e}se de doctorat" }
+           { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
+         if$}
       if$}
    if$}
 if$}
