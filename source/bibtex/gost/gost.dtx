@@ -9,10 +9,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012 Igor A. Kotelnikov.
-% Version 2012.01.25
-%
-% Copyright 2011 Stanislav Kruchinin
-% Version 2012.01.25
+% Version 2012.02.02
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -23,7 +20,7 @@
 % Ukrainian, German, French, Italian languages are
 % also supported. Default language is English.
 %
-% Book entry should have the totalpages field
+% Book entry should have the numpages field
 % showing total number of pages. Optional field
 % url will format URL (using hyperref, if loaded).
 %
@@ -57,8 +54,8 @@
 % $Id: gost.dtx, v.20121/01/31 kia999 $
 %
 %<*driver>
-\ProvidesFile{gost.drv}%
-  [2012/01/31 Bibliography styles for GOST R 7.0.5-2008.]
+\ProvidesFile{gost.dtx}%
+  [2012/01/31 v.2012.02.02 Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -74,8 +71,8 @@
 \definecolor{darkblue}{rgb}{0,0,.6}
 \hypersetup{
   pdftitle           = {The GOST package},
-  pdfauthor          = {Stanislav Kruchinin, Igor A. Kotelnikov},
-  pdfsubject         = {GOST},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {BibTeX, GOST},
   pdfstartview       = {FitH},
 %  pdfborder          = {0 0 0},
 %  bookmarksopen      = true,
@@ -115,52 +112,29 @@
 \CodelineIndex       % Index code by line number
 %\PageIndex           % Index code by page number
 
-\title{The GOST package\thanks{This file
-       has version number \fileversion.}}
+\title{The GOST package}
 
 \author{
     Igor A. Kotelnikov\thanks{\texttt{kia999@mail.ru}}
-    \\
-    Stanislav Kruchinin\thanks{\texttt{stanislav.kruchinin@gmail.com}}
 }
 
-\date{\filedate}
-
-%\makeatletter
-%  \def\IndexParms{%
-%    \parindent \z@
-%    \columnsep 15pt
-%    \parskip 0pt plus 1pt
-%    \rightskip 15pt
-%    \mathsurround \z@
-%    \parfillskip=-15pt
-%    \small
-%    \def\@idxitem{\normalfont\par\hangindent 30pt\bfseries}%
-%    \def\subitem{\normalfont\par\hangindent 30pt}%
-%    \def\subsubitem{\normalfont\par\hangindent 30pt\hspace*{15pt}}%
-%    \def\indexspace{\par\vspace{10pt plus 2pt minus 3pt}}%
-%  }
-%  \def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
-%    \columnseprule \z@  \columnsep 35\p@
-%    \twocolumn[\index@prologue]%
-%    \IndexParms \let\item\@idxitem \ignorespaces}
-%  \def\endtheindex{\if@restonecol\onecolumn\else\clearpage\fi}
-%\makeatother
+\date{\filedate, v.\fileversion}
 
 \makeindex
 
 \begin{document}
   \maketitle
   \DocInput{gost.dtx}
+  \PrintChanges
   \PrintIndex
 \end{document}
 %</driver>
 % \fi
 %
-% \CheckSum{324}
+% \CheckSum{327}
 %
 % \changes{v1.0}{2012.01.27}{Added options: modern longlist, eprint}
-% \changes{v1.0}{2012.01.26}{Numpages field renamed to totalpages}
+% \changes{v1.0}{2012.01.26}{Numpages field renamed to numpages}
 % \changes{v1.0}{2012.01.25}{Fixed documentation}
 % \changes{v1.0}{2012.01.25}{Gost705.dtx borrowed from Disser pkg}
 % \changes{v0.4}{2012/01/15}{Added German, French, Italian languages}
@@ -182,16 +156,25 @@
 %
 % \begin{abstract}
 %
-%   GOST is a bundle of BibTeX styles designed to meet State Standards (GOST)
-%   on information, librarianship and publishing issued by Russian Federation
-%   and Interstate committee of former USSR States.
+% GOST is a bundle of BibTeX styles designed to meet State Standards (GOST)
+% on information, librarianship and publishing issued by Russian Federation
+% and interstate committee of former USSR States.
+
+% It comprises 8 BibTeX styles to format bibliography in English, Russian and
+% Ukrainian according to GOST 7.0.5-2008, GOST 7.1-2003, GOST 7.80-2000 and
+% GOST 7.11-2004. Both 8-bit and Unicode (UTF-8) versions of each BibTeX
+% style, in each case offering a choice of sorted and unsorted.
+%
+% Further, a set of 4 styles (which do not conform to current
+% standards) are retained for backwards compatibility.
 %
 % \end{abstract}
 %
 % \section{Introduction}
 %   Package GOST is derived from earlier work by Maksym Polyakov under the
-%   same package name. It was later updated by Stanislav Kruchinin and Igor
-%   Kotelnikov to the present status.
+%   same package name. It was later updated by Igor Kotelnikov to the present
+%   status with some code borrowed from \pkg{disser} package developed by %
+%   Stanislav Kruchinin.
 %
 %   Nowdays, GOST is a bundle of BibTeX styles designed to meet State Standards
 %   (GOST) on information, librarianship and publishing issued by
@@ -216,39 +199,54 @@
 %   \end{description}
 %   ect.
 %
-%   The GOST bundle contains 12 BibTeX styles. These include 2 BibTeX styles
-%   for documents in 8bit encoding and 2 equivalent styles in UTF8 encoding.
+%   All BibTeX styles in the GOST bundle are derived from same \file{gost.dtx}
+%   source by applying different set of options as shown in the table below.
 %   \begin{verbatim}
-%  Encoding        |   Unsorted               Sorted
 %  ----------------------------------------------------------------
-%  8bit            |   gost2008.bst           gost2008s.bst
-%  utf8            |   unicode-gost2008.bst   unicode-gost2008s.bst
+%  Style               | utf8 | moderm | eprint | longlist | sort
+%  ----------------------------------------------------------------
+%  gost780             |      |        |        |          |
+%  gost780s            |      |        |        |          |   +
+%  gost2008            |      |   +    |        |          |
+%  gost2008e           |      |   +    |    +   |          |
+%  gost2008el          |      |   +    |    +   |     +    |
+%  gost2008s           |      |   +    |        |          |   +
+%  gost2008es          |      |   +    |    +   |          |   +
+%  gost2008els         |      |   +    |    +   |     +    |   +
+%  unicode-gost2008    |  +   |   +    |        |          |
+%  unicode-gost2008e   |  +   |   +    |    +   |          |
+%  unicode-gost2008s   |  +   |   +    |        |          |   +
+%  unicode-gost2008es  |  +   |   +    |    +   |          |   +
+%  ----------------------------------------------------------------
+%  Style               | utf8 | moderm | eprint | longlist | sort
+%  ----------------------------------------------------------------
 %   \end{verbatim}
 %
-%   If number of authors exceeds 4, these styles cut the list of authors to
-%   four first persons. For backward compatibility, we provide 4 more style
-%   that print entire list no matter how large is it.
-%   \begin{verbatim}
-%  Encoding        |   Unsorted               Sorted
-%  ----------------------------------------------------------------
-%  8bit            |   gost705.bst            gost705s.bst
-%  utf8            |   unicode-gost705.bst    unicode-gost705s.bst
-%   \end{verbatim}
+%  Two styles \file{gost780} and \file{gost780s}, compiled without |modern|
+%  option, are retained for backward compatibility. They do not conform
+%  the Standard 7.0.5-2008 cited above. However they conform the Standard
+%  7.80-2000 for bibliographic \emph{records} intended for bibliographic
+%  catalogs rather than for bibliographic \emph{references}.
 %
-%   Further four styles are also retained for backward compatibility.
-%   \begin{verbatim}
-%  Encoding        |   Unsorted               Sorted
-%  ----------------------------------------------------------------
-%  8bit            |   gost780.bst            gost780s.bst
-%  utf8            |   unicode-gost780.bst    unicode-gost780s.bst
-%   \end{verbatim}
-%   They do not conform the Standard 7.0.5-2008 cited above. However they
-%   fit the Standard 7.80-2000 for bibliographic \emph{records}
-%   intended for bibliographic catalogs rather than for bibliographic
-%   \emph{references}.
+%  If the number of authors exceeds 4, modern styles cut the list of authors
+%  to at most four persons. Option |longlist| overrides this rule to
+%  provide backward compatibility with the package \pkg{disser} developed by
+%  Stanislab Kruchinin. Two styles, \file{gost2008el} and \file{gost2008els},
+%  compiled with the option |longlist| mimic behavior of the styles
+%  \file{gost705} and \file{gost705s} from the \pkg{disser} package. Major
+%  effect of of the |longlist| option is that the list of authors always
+%  precedes book or article title no matter how long is the list of authors.
+%  Modem styles compiled without |longlist| place long list of authors behind
+%  the title.
 %
-%  To produce all styles for all encodings, you need to download the files
-%  `gost.ins', `gost.dtx' and run LaTeX on gost.ins.
+%  The |eprint| option enables experimental features on formatting
+%  electronic publications. In particular, it enables |eprint|, |eprinttype|
+%  and |eprintclass| fields for a bibliographic entry.
+%
+%  The |sort| option enables sorting bibliographic references by author names
+%  and references titles. Finally, the |utf8| option produces bibliographic
+%  styles in unicode rather that in 8-bit encodings. Recommended styles are
+%  \file{gost2008} and \file{unicode-gost2008}. They fit most needs.
 %
 %  Beyond that, GOST bundle contains CS files (codepage and sorting order).
 %   \begin{verbatim}
@@ -275,7 +273,7 @@
 %   declaration to your source file \file{<filename>.tex}, e.g.
 %   \begin{verbatim}
 %   \bibliographystyle{gost2008}
-%   \bibliography{dabase}
+%   \bibliography{database}
 %   \end{verbatim}
 %
 %   \item
@@ -286,9 +284,9 @@
 %
 %   \item
 %   To compile list of references from your database use \file{bibtex8.exe}
-%   rather than bibtex.exe. Depending on the codepage of your
+%   rather than \file{bibtex.exe}. Depending on the codepage of your
 %   bibliographic database, indicate one of the CS files
-%   listed above as option to bibtex8.exe.  Run LaTeX, then run
+%   listed above as option to \file{bibtex8.exe}.  Run LaTeX, then run
 %   \file{bibTeX8} and LaTeX again:
 %   \begin{verbatim}
 %   latex <filename>.tex
@@ -297,14 +295,22 @@
 %   \end{verbatim}
 
 %   \item
-%   For details on preparing bibliographic database see
-%   examples in \file{gost*.pdf}.
+%   For details on preparing bibliographic database see examples in
+%   \file{gost*.pdf}.
 
 %   \item
-%   \file{Unicode-gost*.bst} styles are primarily intended for use
-%   with unicode compilers (xelatex and lualatex). They
+%   \file{Unicode-gost*} styles are primarily intended for use
+%   with unicode compilers (\file{xelatex} and \file{lualatex}). They
 %   should be preferred as well when using 8bit compilers
-%   (latex and pdflatex) if source file is in utf8 encoding.
+%   (\file{latex} and \file{pdflatex}) if source file is in utf8 encoding.
+%
+%   \item
+%   Note that neither \file{bitex.exe} nor \file{bitex8.exe} provides
+%   correct sorting order of unicode text. It means that using
+%   \file{unicode-gost2008s} or any other style ended with \file{s} in
+%   its name may produce unexpected result for documents in
+%   \texttt{utf8} encoding.
+%
 %   \end{enumerate}
 %
 %   \subsection{Customization}
@@ -317,7 +323,7 @@
 %   \providecommand*{\url}[1]{{\small #1}}
 %   \providecommand*{\BibUrl}[1]{\url{#1}}
 %   \providecommand{\BibAnnote}[1]{}
-%   \providecommand*{\BibEmph}[1]{\emph{#1}}
+%   \providecommand*{\BibEmph}[1]{#1}
 %   \end{verbatim}
 %
 %   By default, gost styles separate logical parts of a bibliography
@@ -329,19 +335,21 @@
 %   \end{verbatim}
 %
 %   By default, |\BibDash| is equivalent to the shorthand |"---|
-%   introduced by the babel package with the option russian.
-%   It prints a so called cyrillic dash (|\cyrdash|),
+%   defined by the babel package with the option |russian|.
+%   It prints a so called Cyrillic dash (|\cyrdash|),
 %   which is 20% shorter then ordinary LaTeX dash (|---|), and puts
-%   unbreakable space before \cyrdash so that dash never appears
+%   unbreakable space before |\cyrdash| so that dash never appears
 %   in the beginning of a line.
 %
 %   \subsection{Where to get}
 %
 %   \begin{enumerate}
 %   \item
-%   http://ctan.org/tex-archive/biblio/bibtex/contrib/gost
+%   \href{http://ctan.org/tex-archive/biblio/bibtex/contrib/gost}
+%       {CTAN:biblio/bibtex/contrib/gost}.
 %   \item
-%   http://ctan.org/pkg/gost
+%   \href{http://ctan.org/pkg/gost}
+%       {CTAN:pkg/gost}.
 %   \end{enumerate}
 %
 %   \subsection{What's new in version 2012.02.02}
@@ -355,17 +363,21 @@
 %      resource on Internet.
 %
 %   \item
-%   |Urldate| field is added to format the date of last access to
-%   Internet resource.
+%   |@MastersThesis| entry is added to format a reference to master's thesis.
+%
+%   \item
+%   |@DSciThesis| entry is added to format a reference to doctor of
+%   sciences thesis.
+
+%   \item
+%   |Urldate|, |eprint|, |eprintclass|, |eprinttype| fields are added.
 %   \end{enumerate}
 %
 %   \subsection{Version history}
 %
 %   \begin{enumerate}
-%   \item[2012.02.02]
-%   ...
-%   \item[2005.08.12]
-%   ...
+%   \item[2012.02.02] Adaptation to GOST 7.0.5, electronic publishing.
+%   \item[2005.08.12] First version uploaded to CTAN.
 %   \end{enumerate}
 %
 % \StopEventually
@@ -386,7 +398,7 @@
 %<modern>%% GOST 7.0.5-2008 for bibliographic reference.
 
 %    \end{macrocode}
-% \subsection{Entries}
+% \subsection{Fields}
 %
 % Enlist all entry types allowed in a bibliographic database.
 % Most entries are common for many standard bst styles.
@@ -417,19 +429,19 @@ ENTRY
     type
     volume
     year
+    language
+    booklanguage
 %    \end{macrocode}
 %   Remaining entries are borrowed from biblatex.
 %    \begin{macrocode}
-    totalpages
-    language
-    booklanguage
+    numpages
     url
     urldate
     isbn
     doi
-    archive
-    archivePrefix
-    primaryClass
+%    archive
+    eprinttype   % = archivePrefix
+    eprintclass  % = primaryClass
     eprint
   }
   {}
@@ -1668,9 +1680,9 @@ FUNCTION {format.pages}
 %    \begin{macrocode}
 FUNCTION {format.pages.page}
 { pages empty$
-    { totalpages empty$
+    { numpages empty$
       { "" }
-      { totalpages bbl.pages tie.connect }
+      { numpages bbl.pages tie.connect }
     if$}
     { format.pages}
   if$
@@ -2001,8 +2013,17 @@ FUNCTION {format.isbn}
 
 %    \end{macrocode}
 % \DescribeFunction{add.doi}
-% Do we really need to provide electronic search for doi?
+% The Digital Object Identifier (DOI) System is for identifying content
+% objects in the digital environment. DOI names are assigned to any entity
+% for use on digital networks. They are used to provide current information,
+% including where they (or information about them) can be found on the
+% Internet. Information about a digital object may change over time,
+% including where to find it, but its DOI name will not change.
+%
+% Function |add.doi| embraces last string in stack into hyperlink
+% that links it to specified |doi| identificator at http://dx.doi.org/ web-site.
 %    \begin{macrocode}
+%<*eprint>
 FUNCTION {add.doi}
 { duplicate$ empty$
     'skip$
@@ -2013,48 +2034,138 @@ FUNCTION {add.doi}
     }
   if$
 }
+%</eprint>
+%    \end{macrocode}
+% If \file{.bst} style is compiled without |eprint| option, we just ignore
+% |doi| field.
+%    \begin{macrocode}
+%<*!eprint>
+FUNCTION {add.doi} { }
+%</!eprint>
 
 %    \end{macrocode}
+%
+% \subsection{Electronic Publishing Information}
+%
+% The biblatex package provides three fields for electronic publishing
+% information: |eprint|, |eprinttype|, and |eprintclass|. The |eprint| field
+% is a verbatim field similar to |doi| which holds the identifier of the item.
+% The |eprinttype| field holds the resource name, i. e., the name of the
+% site or electronic archive. The optional |eprintclass| field is intended
+% for additional information specific to the resource indicated by the
+% |eprinttype| field. This could be a section, a path, classification
+% information, etc. If the |eprinttype| field is available, the standard styles
+% will use it as a literal label. In the following example, they would print
+% ``Resource: identifier'' rather than the generic ``eprint: identifier'':
+% \begin{verbatim}
+% eprint = {identifier},
+% eprinttype = {Resource},
+% \end{verbatim}
+%
 % \DescribeFunction{format.eprint}
+% The electronic identifier of an online publication.
+% This is roughly comparable to a |doi| but specific to a certain archive,
+% repository, service, or system.
+% Also see eprinttype and eprintclass.
+%
+% This function should use url. TO BE DONE YET.
 %    \begin{macrocode}
+%<*eprint>
+%FUNCTION {format.eprint}
+%{ eprint empty$
+%   { "" }
+%   { eprintclass empty$
+%      { " \href{http://arxiv.org/abs/" eprint * "}" * "{" * eprint * "}" * }
+%      { eprinttype empty$
+%         { " \href{http://arxiv.org/abs/" eprint * "}" *
+%      	   "{" * eprintclass * "/" * eprint * "}" *
+%         }
+%         { " \href{http://arxiv.org/abs/" eprint * "}" *
+%      	   "{" * eprinttype * ":" * eprintclass * "/" * eprint * "}" *
+%         }
+%      if$}
+%   if$}
+%if$}
+
+%FUNCTION {format.eprint}
+%{ eprint empty$
+%   { "" }
+%   { eprinttype empty$
+%       { "" }
+%       { eprinttype "~: " *}
+%     if$
+%     eprintclass empty$
+%       { }
+%       { eprintclass * "/" *}
+%    if$
+%    eprint *
+%   }
+%  if$
+%  url empty$
+%    { }
+%    { "\href{" url * "}{" * swap$ * "}" *}
+%  if$
+%}
+
 FUNCTION {format.eprint}
 { eprint empty$
    { "" }
-   { primaryClass empty$
-      { " \href{http://arxiv.org/abs/" eprint * "}" * "{" * eprint * "}" * }
-      { archivePrefix empty$
-         { " \href{http://arxiv.org/abs/" eprint * "}" *
-      	   "{" * primaryClass * "/" * eprint * "}" *
-         }
-         { " \href{http://arxiv.org/abs/" eprint * "}" *
-      	   "{" * archivePrefix * ":" * primaryClass * "/" * eprint * "}" *
-         }
-      if$}
-   if$}
-if$}
+   { eprinttype empty$
+       { "" }
+       { eprinttype "~: " *}
+     if$
+     eprintclass empty$
+       { }
+       { eprintclass * "/" *}
+     if$
+     url empty$
+      { eprint * }
+      { "\href{" * url * "}{" * eprint * "}" *}
+    if$
+   }
+  if$
+}
 
+FUNCTION {output.eprint.url}
+{
+  eprint empty$
+    { format.url output }
+    { format.eprint output }
+  if$
+}
+
+%</eprint>
+
+%<*!eprint>
+FUNCTION {output.eprint.url}
+{
+    format.url output
+}
+%</!eprint>
 
 %    \end{macrocode}
 %
-% \subsection{Entries}
+% \subsection{Entry types}
 %
-% Text below in this section is borrowed from biblatex manual.
+% Text below in this section is borrowed from biblatex manual. Not every
+% field listed below is actually supported by GOST styles. So description
+% below should be considered as a goal or a feature request.
 %
 % The lists below indicate the fields supported by each entry type.
 % Note that the mapping of fields to an entry type is ultimately at the
 % discretion of the bibliography style. The lists below therefore serve
 % two purposes. They indicate the fields supported by the standard styles
 % which ship with this package and they also serve as a model for custom
-% styles. Note that the ‘required’ fields are not strictly required
-% in all cases. The fields marked as ‘optional’
+% styles. Note that the required fields are not strictly required
+% in all cases. The fields marked as optional
 % are optional in a technical sense. Bibliographical formatting rules
-% usually require more than just the ‘required’ fields. The standard
+% usually require more than just the required fields. The standard
 % styles will generally not perform any formal validity checks, but
 % custom styles may do so. Generic fields like abstract and annotation
 % or label and shorthand are not included in the lists below because they
-% are independent of the entry type. Not every field listed below is actually
-% supported by GOST styles. So description below should be considered as a goal
-% or a feature request.
+% are independent of the entry type.
+%
+% \subsubsection{Regular Types}
 %
 % \DescribeFunction{article}
 %  An article in a journal, magazine, newspaper, or other periodical which forms a
@@ -2062,7 +2173,9 @@ if$}
 %  journaltitle field. If the issue has its own title in addition to the main title of
 %  the periodical, it goes in the issuetitle field. Note that editor and related fields
 %  refer to the journal while translator and related fields refer to the article.
-%  Required fields: author, title, journaltitle, year/date
+%
+%  Required fields: author, title, journaltitle, year/date.
+%
 %  Optional fields: translator, annotator, commentator, subtitle, titleaddon,
 %  editor, editora, editorb, editorc, journalsubtitle, issuetitle,
 %  issuesubtitle, language, origlanguage, series, volume, number, eid, issue,
@@ -2077,8 +2190,7 @@ FUNCTION {article}
   new.slash
   author.after
   new.dblslash
-%<!eprint>  journal emphasize "journal" output.check
-%<eprint>  journal emphasize add.doi "journal" output.check % new in v.2
+  journal emphasize add.doi "journal" output.check % new in v.2
   new.block
   format.date output
   new.block
@@ -2089,9 +2201,8 @@ FUNCTION {article}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
@@ -2115,8 +2226,7 @@ FUNCTION {book}
 {
   output.bibitem
   author.before
-%<!eprint>  format.btitle "title" output.check
-%<eprint>  format.btitle add.doi "title" output.check
+  format.btitle add.doi "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -2131,24 +2241,34 @@ FUNCTION {book}
   new.block
   format.pages.page output
   new.block
+%<eprint>  format.isbn output
+%<eprint>  new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
 % \DescribeFunction{booklet}
-% Is |doi| field ignored here?
+% A book-like work without a formal publisher or sponsoring institution. Use the
+% field howpublished to supply publishing information in free format, if applicable.
+% The field type may be useful as well.
+%
+% Required fields: author/editor, title, year/date.
+%
+% Optional fields: subtitle, titleaddon, language, howpublished, type, note,
+% location, chapter, pages, pagetotal, addendum, pubstate, doi, eprint,
+% eprintclass, eprinttype, url, urldate.
+%
 %    \begin{macrocode}
 FUNCTION {booklet}
 {
   output.bibitem
   author.before
-  format.title "title" output.check
+  format.title add.doi "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -2159,9 +2279,8 @@ FUNCTION {booklet}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
@@ -2169,7 +2288,7 @@ FUNCTION {booklet}
 %    \end{macrocode}
 % \DescribeFunction{inbook}
 % A part of a book which forms a self-contained unit with its own title.
-% Note that the profile of this entry type is diVerent from standard BibTeX.
+% Note that the profile of this entry type is different from standard BibTeX.
 %
 % Required fields: author, title, booktitle, year/date.
 %
@@ -2178,14 +2297,13 @@ FUNCTION {booklet}
 % titleaddon, maintitle, mainsubtitle, maintitleaddon, booksubtitle,
 % booktitleaddon, language, origlanguage, volume, part, edition, volumes,
 % series, number, note, publisher, location, isbn, chapter, pages, addendum,
-% pubstate, doi, eprint, eprintclass, eprinttype, url, urldate
+% pubstate, doi, eprint, eprintclass, eprinttype, url, urldate.
 %    \begin{macrocode}
 FUNCTION {inbook}
 {
   output.bibitem
   author.before
-%<!eprint>  format.btitle "title" output.check
-%<eprint>  format.btitle add.doi "title" output.check
+  format.btitle add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -2205,25 +2323,37 @@ FUNCTION {inbook}
   new.block
   format.pages.page output
   new.block
+%<eprint>  format.isbn output
+%<eprint>  new.block
   note output
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
   new.sentence
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
 % \DescribeFunction{incollection}
+% A contribution to a collection which forms a self-contained unit with a distinct
+% author and title. The author refers to the title, the editor to the booktitle,
+% i. e., the title of the collection.
+%
+% Required fields: author, editor, title, booktitle, year/date.
+%
+% Optional fields: editora, editorb, editorc, translator, annotator,
+% commentator, introduction, foreword, afterword, subtitle, titleaddon,
+% maintitle, mainsubtitle, maintitleaddon, booksubtitle, booktitleaddon,
+% language, origlanguage, volume, part, edition, volumes, series, number,
+% note, publisher, location, isbn, chapter, pages, addendum, pubstate, doi,
+% eprint, eprintclass, eprinttype, url, urldate.
 %    \begin{macrocode}
 FUNCTION {incollection}
 {
   output.bibitem
   author.before
   new.sentence
-%<!eprint>  format.title "title" output.check
-%<!eprint>  format.title add.doi "title" output.check
+  format.title add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -2240,22 +2370,73 @@ FUNCTION {incollection}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
+  format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{proceedings}
+% A single-volume conference proceedings. This type is very similar to @collection.
+% It supports an optional organization field which holds the sponsoring institution.
+% The editor is omissible.
+%
+% Required fields: editor, title, year/date.
+%
+% Optional fields: subtitle, titleaddon, maintitle, mainsubtitle,
+% maintitleaddon, eventtitle, eventdate, venue, language, volume, part,
+% volumes, series, number, note, organization, publisher, location, month,
+% isbn, chapter, pages, pagetotal, addendum, pubstate, doi, eprint,
+% eprintclass, eprinttype, url, urldate.
+%    \begin{macrocode}
+FUNCTION {proceedings}
+{
+  output.bibitem
+  format.btitle add.doi "title" output.check
+  new.slash
+  editor.organization.after
+  new.block
+  format.bvolume output
+  format.number.series output
+  address empty$
+    { publisher output
+      format.date "year" output.check
+    }
+    { address output.nonnull
+      format.date "year" output.check
+      new.sentence
+      publisher output
+    }
+  if$
+  new.block
+  note output
+  new.sentence
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
 % \DescribeFunction{inproceedings}
+% An article in a conference proceedings. This type is similar to @incollection. It
+% supports an optional organization field.
+%
+% Required fields: author, editor, title, booktitle, year/date.
+%
+% Optional fields: subtitle, titleaddon, maintitle, mainsubtitle,
+% maintitleaddon, booksubtitle, booktitleaddon, eventtitle, eventdate,
+% venue, language, volume, part, volumes, series, number, note, organization,
+% publisher, location, month, isbn, chapter, pages, addendum, pubstate, doi,
+% eprint, eprintclass, eprinttype, url, urldate.
 %    \begin{macrocode}
 FUNCTION {inproceedings}
 { output.bibitem
   author.before
   new.sentence
-%<!eprint>  format.title "title" output.check
-%<!eprint>  format.title add.doi "title" output.check
+  format.title add.doi "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -2281,20 +2462,23 @@ FUNCTION {inproceedings}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
-% \DescribeFunction{conference}
-%    \begin{macrocode}
-FUNCTION {conference} { inproceedings }
-
-%    \end{macrocode}
 % \DescribeFunction{manual}
+% Technical or other documentation, not necessarily in printed form. The author or
+% editor is omissible.
+%
+% Required fields: author/editor, title, year/date.
+%
+% Optional fields: subtitle, titleaddon, language, edition, type, series,
+% number, version, note, organization, publisher, location, isbn, chapter,
+% pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
+% eprinttype, url, urldate.
 %    \begin{macrocode}
 FUNCTION {manual}
 { output.bibitem
@@ -2309,7 +2493,7 @@ FUNCTION {manual}
     { format.authors output.nonnull }
   if$
   new.block
-  format.btitle "title" output.check
+  format.btitle add.doi "title" output.check
   author empty$
     { organization empty$
     {
@@ -2330,40 +2514,19 @@ FUNCTION {manual}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
-  format.annote output
-  fin.entry
-}
-
-%    \end{macrocode}
-% \DescribeFunction{mastersthesis}
-%    \begin{macrocode}
-FUNCTION {mastersthesis}
-{
-  output.bibitem
-  format.authors "author" output.check
-  new.block
-%<!eprint>  format.btitle "title" output.check
-%<eprint>  format.btitle add.doi "title" output.check
-  new.block
-  bbl.mthesis format.thesis.type output.nonnull
-  school "school" output.check
-  address output
-  format.date "year" output.check
-  new.block
-  note output
-  new.block
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
 % \DescribeFunction{misc}
+% A fallback type for entries which do not fit into any other category. Use the field
+% howpublished to supply publishing information in free format, if applicable. The
+% field type may be useful as well. author, editor, and year are omissible.
+%
+% Required fields: author/editor, title, year/date.
 %    \begin{macrocode}
 FUNCTION {misc}
 { output.bibitem
@@ -2377,22 +2540,162 @@ FUNCTION {misc}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
+% \DescribeFunction{unpublished}
+% A work with an author and a title which has not been formally published, such
+% as a manuscript or the script of a talk. Use the fields howpublished and note to
+% supply additional information in free format, if applicable.
+%
+% Required fields: author, title, year/date.
+%
+% Optional fields: subtitle, titleaddon, language, howpublished, note,
+% location, isbn, date, month, year, addendum, pubstate, url, urldate
+%    \begin{macrocode}
+FUNCTION {unpublished}
+{ output.bibitem
+  author.before
+  format.btitle "title" output.check
+  new.slash
+  author.after
+  editor.organization.after
+  new.block
+  note "note" output.check
+  new.sentence
+%  format.url output
+  output.eprint.url
+  format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+% \DescribeFunction{online}
+% An online resource. author, editor, and year are omissible.
+% This entry type is intended for sources such as web sites which are intrinsically
+% online resources. Note that all entry types support the url field. For example,
+% when adding an article from an online journal, it may be preferable to use the
+% |@article| type and its url field.
+%
+% Required fields: author/editor, title, year/date, url.
+%
+% Optional fields: subtitle, titleaddon, language, version, note,
+% organization, date, month, year, addendum, pubstate, urldate.
+%    \begin{macrocode}
+FUNCTION {online}
+{ output.bibitem
+  format.authors output
+  title howpublished new.sentence.checkb
+  format.title output
+  howpublished new.block.checka
+  howpublished output
+  new.block
+  format.date output
+  new.block
+%  format.url output
+  output.eprint.url
+  new.sentence
+  note output
+  format.annote output
+  fin.entry
+}
+%    \end{macrocode}
+%
+% \DescribeFunction{thesis}
+% New in version 2012.02.02.
+%
+% A thesis written for an educational institution to satisfy the requirements for a
+% degree. Use the type field to specify the type of thesis.
+%
+% Required fields: author, title, type, institution, year/date.
+%
+% Optional fields: subtitle, titleaddon, language, note, location, month, isbn,
+% chapter, pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
+% eprinttype, url, urldate
+%
+%    \begin{macrocode}
+FUNCTION {thesis}
+{ output.bibitem
+  format.authors "author" output.check
+  new.sentence
+  format.btitle add.doi "title" output.check
+  new.column
+  bbl.phdthesis format.thesis.type "type" output.check output.nonnull
+  new.slash
+  school "school" output.check
+  new.block
+  output.address.publisher.date
+  new.block
+  format.pages.page output
+  note output
+  new.sentence
+%  format.url output
+  output.eprint.url
+  format.annote output
+  fin.entry
+}
+
+% \DescribeFunction{report}
+% New in version 2012.02.02.
+%
+% A technical report, research report, or white paper published by a university or
+% some other institution. Use the type field to specify the type of report. The sponsoring
+% institution goes in the institution field.
+%
+% Required fields: author, title, type, institution, year/date.
+%
+% Optional fields: subtitle, titleaddon, language, number, version, note,
+% location, month, isrn, chapter, pages, pagetotal, addendum, pubstate, doi,
+% eprint, eprintclass, eprinttype, url, urldate.
+%    \begin{macrocode}
+FUNCTION {report}
+{
+  output.bibitem
+  author.before
+  new.sentence
+  format.title add.doi "title" output.check
+  new.column
+%  format.tr.number output.nonnull
+  type "type" output.check
+  new.slash
+  author.after
+  editor.organization.after
+  new.block
+  address output
+  new.column
+  institution "institution" output.check
+  format.date "year" output.check
+  new.block
+  note output
+  new.sentence
+%  format.url output
+  output.eprint.url
+  format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+%
+% \subsubsection{Type Aliases}
+%
+% The entry types listed in this section are provided for backwards compatibility
+% with traditional BibTeX styles. These aliases are resolved by BibTeX as the data is
+% exported. Bibliography styles will see the entry type the alias points to, not the
+% alias name. All unknown entry types are generally exported as @misc.
+%
 % \DescribeFunction{phdthesis}
+% Similar to @thesis except that the type field is optional and defaults to the localized
+% term `PhD thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
-%<!eprint>  format.btitle "title" output.check
-%<!eprint>  format.btitle add.doi "title" output.check
+  format.btitle add.doi "title" output.check
   new.column
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
@@ -2403,23 +2706,48 @@ FUNCTION {phdthesis}
   format.pages.page output
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
+  format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+% \DescribeFunction{mastersthesis}
+% Similar to |@thesis| except that the type field is optional and defaults to the localized
+% term `Master's thesis'. You may still use the type field to override that.
+%    \begin{macrocode}
+FUNCTION {mastersthesis}
+{
+  output.bibitem
+  format.authors "author" output.check
+  new.block
+  format.btitle add.doi "title" output.check
+  new.block
+  bbl.mthesis format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  format.date "year" output.check
+  new.block
+  note output
+  new.block
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
 % \DescribeFunction{dscithesis}
+% Similar to |@thesis| except that the type field is optional and defaults to the localized
+% term `Doctor's of sciences thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
 FUNCTION {dscithesis}
 {
   output.bibitem
   format.authors "author" output.check
   new.sentence
-%<!eprint>  format.btitle "title" output.check
-%<eprint>  format.btitle add.doi "title" output.check
+  format.btitle add.doi "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
   new.slash
@@ -2430,50 +2758,21 @@ FUNCTION {dscithesis}
   format.pages.page output
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
 %    \end{macrocode}
-% \DescribeFunction{proceedings}
+% \DescribeFunction{conference}
 %    \begin{macrocode}
-FUNCTION {proceedings}
-{
-  output.bibitem
-%<!eprint>  format.btitle "title" output.check
-%<!eprint>  format.btitle add.doi "title" output.check
-  new.slash
-  editor.organization.after
-  new.block
-  format.bvolume output
-  format.number.series output
-  address empty$
-    { publisher output
-      format.date "year" output.check
-    }
-    { address output.nonnull
-      format.date "year" output.check
-      new.sentence
-      publisher output
-    }
-  if$
-  new.block
-  note output
-  new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
-  format.annote output
-  fin.entry
-}
+FUNCTION {conference} { inproceedings }
 
 %    \end{macrocode}
 %
 % \DescribeFunction{techreport}
-% TechReport is similar to |@report except| that the |type| field is optional
+% TechReport is similar to |@report| except that the |type| field is optional
 % and defaults to the localized term `technical report'.
 % You may still use the type field to override that.
 %    \begin{macrocode}
@@ -2482,8 +2781,7 @@ FUNCTION {techreport}
   output.bibitem
   author.before
   new.sentence
-%<!eprint>  format.title "title" output.check
-%<!eprint>  format.title add.doi "title" output.check
+  format.title add.doi "title" output.check
   new.column
   format.tr.number output.nonnull
   new.slash
@@ -2497,54 +2795,12 @@ FUNCTION {techreport}
   new.block
   note output
   new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
+%  format.url output
+  output.eprint.url
   format.annote output
   fin.entry
 }
 
-%    \end{macrocode}
-% \DescribeFunction{unpublished}
-%    \begin{macrocode}
-FUNCTION {unpublished}
-{ output.bibitem
-  author.before
-  format.btitle "title" output.check
-  new.slash
-  author.after
-  editor.organization.after
-  new.block
-  note "note" output.check
-  new.sentence
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
-  format.annote output
-  fin.entry
-}
-
-%    \end{macrocode}
-% \DescribeFunction{online}
-%    \begin{macrocode}
-FUNCTION {online}
-{ output.bibitem
-  format.authors output
-  title howpublished new.sentence.checkb
-  format.title output
-  howpublished new.block.checka
-  howpublished output
-  new.block
-  format.date output
-  new.block
-%<eprint>  format.eprint output % new in v.2
-%<eprint>  new.block            % new in v.2
-  format.url output
-  new.sentence
-  note output
-  format.annote output
-  fin.entry
-}
 
 %    \end{macrocode}
 % \DescribeFunction{default.type}
@@ -2911,7 +3167,7 @@ FUNCTION {begin.bib}
   "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
-  "\providecommand*{\BibEmph}[1]{\emph{#1}}"         write$ newline$
+  "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
 %<*bst>
 %<*modern>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
