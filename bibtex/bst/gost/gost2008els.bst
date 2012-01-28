@@ -1,10 +1,10 @@
 %%
-%% This is file `gost2008es.bst',
+%% This is file `gost2008els.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% gost.dtx  (with options: `bst,modern,eprint,sorted')
+%% gost.dtx  (with options: `bst,modern,eprint,longlist,sorted')
 %% 
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -1016,11 +1016,9 @@ FUNCTION {author.before}
 {
   author empty$
     'skip$
-    {author num.names$ #4 <
-      {format.authors output
-       new.sentence}
-      'skip$
-    if$}
+    { format.authors output
+      new.sentence
+    }
   if$
 }
 
@@ -1028,37 +1026,15 @@ FUNCTION {bookauthor.before}
 {
   bookauthor empty$
     'skip$
-    {bookauthor num.names$ #4 <
-      {format.bookauthors output
-       new.sentence}
-      'skip$
-    if$}
+    { format.bookauthors output
+      new.sentence
+    }
   if$
 }
 
-FUNCTION {author.after}
-{
-  author empty$
-    'skip$
-    {author num.names$ #3 >
-      {format.authors.after output
-       new.semicolumn }
-      'skip$
-    if$}
-  if$
-}
+FUNCTION {author.after} { }
 
-FUNCTION {bookauthor.after}
-{
-  bookauthor empty$
-    'skip$
-    {bookauthor num.names$ #3 >
-      {format.bookauthors.after output
-       new.semicolumn }
-      'skip$
-    if$}
-  if$
-}
+FUNCTION {bookauthor.after} { }
 
 FUNCTION {editor.organization.after}
 {
@@ -1880,4 +1856,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `gost2008es.bst'.
+%% End of file `gost2008els.bst'.

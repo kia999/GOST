@@ -22,28 +22,62 @@ GOST 7.11 -2004  Bibliographic description and references.
                  in foreign European languages
 ect.
 
-The GOST bundle contains 8 BibTeX styles. These include 2 BibTeX styles
-for documents in 8bit encoding and 2 equivalent styles in UTF8 encoding.
+GOST comprises 8 BibTeX styles to format bibliography in English, Russian and
+Ukrainian according to GOST 7.0.5-2008, GOST 7.1-2003, GOST 7.80-2000 and
+GOST 7.11-2004. Both 8-bit and Unicode (UTF-8) versions of each BibTeX
+style, in each case offering a choice of sorted and unsorted.
 
-Encoding        |   Unsorted               Sorted
-----------------------------------------------------------------
-8bit            |   gost705.bst            gost705s.bst
-utf8            |   unicode-gost705.bst    unicode-gost705s.bst
+Further, a set of 4 styles (which do not conform to current
+standards) are retained for backwards compatibility.
+                                                                            
+All BibTeX styles in the GOST bundle are derived from same \file{gost.dtx}
+source by applying different set of options as shown in the table below.
 
-4 styles are retained for backward compatibility. They do not conform
-standards listed above.
+ ----------------------------------------------------------------
+ Style               | utf8 | moderm | eprint | longlist | sort
+ ----------------------------------------------------------------
+ gost780             |      |        |        |          |
+ gost780s            |      |        |        |          |   +
+ gost2008            |      |   +    |        |          |
+ gost2008e           |      |   +    |    +   |          |
+ gost2008el          |      |   +    |    +   |     +    |
+ gost2008s           |      |   +    |        |          |   +
+ gost2008es          |      |   +    |    +   |          |   +
+ gost2008els         |      |   +    |    +   |     +    |   +
+ unicode-gost2008    |  +   |   +    |        |          |
+ unicode-gost2008e   |  +   |   +    |    +   |          |
+ unicode-gost2008s   |  +   |   +    |        |          |   +
+ unicode-gost2008es  |  +   |   +    |    +   |          |   +
+ ----------------------------------------------------------------
+ Style               | utf8 | moderm | eprint | longlist | sort
+ ----------------------------------------------------------------  
+ 
+Two styles gost780 and gost780s, compiled without |modern|
+option, are retained for backward compatibility. They do not conform
+the Standard 7.0.5-2008 cited above. 
 
-Encoding        |   Unsorted               Sorted
-----------------------------------------------------------------
-8bit            |   gost780u.bst           gost780s.bst
-utf8            |   unicode-gost780u.bst   unicode-gost780s.bst
+If the number of authors exceeds 4, modern styles cut the list of authors
+to at most 4 persons. Option |longlist| overrides this rule to
+provide backward compatibility with the package disser developed by
+Stanislab Kruchinin. Two styles, gost2008el and gost2008els,
+compiled with the option |longlist| mimic behavior of the styles
+gost705 and gost705s from the disser package. Major
+effect of of the |longlist| option is that the list of authors always
+precedes book or article title no matter how long is it.
+Modem styles compiled without |longlist| place long list of authors behind
+the title.
 
-To produce 8bit styles, you need to download the files `gost.ins' and
-`gost.dtx'. Run LaTeX on gost.ins.  Similarly, to produce unicoded
-style, run LaTeX on unicode-gost.ins.
+The |eprint| option enables experimental features on formatting
+electronic publications. In particular, it enables |eprint|, |eprinttype|
+and |eprintclass| fields for a bibliographic entry.
 
-Beyond that, GOST bundle contains CS files (codepage and sorting order).
+The |sort| option enables sorting bibliographic references by author names
+and references titles. Finally, the |utf8| option produces bibliographic
+styles in unicode rather that in 8-bit encodings. Recommended styles are
+gost2008 and unicode-gost2008. They fit most needs.
 
+Beyond that, GOST bundle contains CS files (codepage and sorting order).    
+ 
 Encoding        |   CSF                 Sorting order
 ----------------------------------------------------------------
 cp866           |   ruscii.csf          Cyrillic first, Latin
@@ -63,8 +97,8 @@ How to use
 1. Select bibliography style by adding appropriate \bibliographystyle
    declaration to your source file <filename>.tex, e.g.
 
-	\bibliographystyle{gost705}
-	\bibliography{dabase}
+	\bibliographystyle{gost2008}
+	\bibliography{database}
 
 2. Add the field language="ukrainian" or language="russian" to the
    bibliographic entries in Ukrainian or Russian languages in your
@@ -88,6 +122,12 @@ How to use
    with unicode compilers (xelatex and lualatex). They
    should be preferred as well when using 8bit compilers
    (latex and pdflatex) if source file is in utf8 encoding.
+   
+6. Note that neither bitex.exe nor bitex8.exe provides
+   correct sorting order of unicode text. It means that using
+   unicode-gost2008s or any other style ended with `s' in
+   its name may produce unexpected result for documents in
+   utf8 encoding.
 
 
 Customization
@@ -100,7 +140,7 @@ definitions are listed below.
 	\providecommand*{\url}[1]{{\small #1}}
 	\providecommand*{\BibUrl}[1]{\url{#1}}
 	\providecommand{\BibAnnote}[1]{}
-	\providecommand*{\BibEmph}[1]{\emph{#1}}
+	\providecommand*{\BibEmph}[1]{#1}
 
 By default, gost styles separate logical parts of a bibliography
 record by a period and cyrdash (. "---). It is legitimate to drop
@@ -127,18 +167,22 @@ What's new in version 2012.02.02
 1. Support for GOST 7.0.5-2008 is provided.
 2. @Online entry is added to format a reference to electronic
    resource on Internet.
-3. Urldate field is added to format the date of last access to
-   Internet resource.
+3. @MastersThesis entry is added to format a reference to master's thesis.
+4. @DSciThesis entry is added to format a reference to doctor of
+   sciences thesis.
+5. Urldate|, |eprint|, |eprintclass|, |eprinttype| fields are added.   
 
 
 Version history
 
-2. 2012.02.02
-1. 2005.08.12
+2012.02.02 Electronic publishing (thanks to S. Kruchinin).
+2012.01.21 Adaptation to GOST 7.0.5-2008.
+2005.08.12 First version uploaded to CTAN.
 
 
 Please, send feature requests and bug reports via e-mail:
   kia999  at mail  dot ru   <Igor A. Kotelnikov>
+or
   polyama at yahoo dot edu  <Maksym Polyakov>
 
 Happy BibTeXing!

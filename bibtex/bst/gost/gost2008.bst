@@ -1,10 +1,10 @@
 %%
-%% This is file `gost2008es.bst',
+%% This is file `gost2008.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% gost.dtx  (with options: `bst,modern,eprint,sorted')
+%% gost.dtx  (with options: `bst,modern')
 %% 
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -1114,47 +1114,13 @@ FUNCTION {format.isbn}
   if$
 }
 
-FUNCTION {add.doi}
-{ duplicate$ empty$
-    'skip$
-    { doi empty$
-        'skip$
-        { "\href{http://dx.doi.org/" doi * "}{" * swap$ * "}" * }
-      if$
-    }
-  if$
-}
+FUNCTION {add.doi} { }
 
-
-
-FUNCTION {format.eprint}
-{ eprint empty$
-   { "" }
-   { eprinttype empty$
-       { "" }
-       { eprinttype "~: " *}
-     if$
-     eprintclass empty$
-       { }
-       { eprintclass * "/" *}
-     if$
-     url empty$
-      { eprint * }
-      { "\href{" * url * "}{" * eprint * "}" *}
-    if$
-   }
-  if$
-}
 
 FUNCTION {output.eprint.url}
 {
-  eprint empty$
-    { format.url output }
-    { format.eprint output }
-  if$
+    format.url output
 }
-
-
 
 FUNCTION {article}
 {
@@ -1198,8 +1164,6 @@ FUNCTION {book}
   format.bvolume output
   new.block
   format.pages.page output
-  new.block
-  format.isbn output
   new.block
   note output
   new.sentence
@@ -1251,8 +1215,6 @@ FUNCTION {inbook}
   format.bvolume output
   new.block
   format.pages.page output
-  new.block
-  format.isbn output
   new.block
   note output
   new.sentence
@@ -1711,118 +1673,6 @@ MACRO {nl}  {"Nano Lett."}
 READ
 
 
-FUNCTION {sortify}
-{ purify$
-  "l" change.case$
-}
-
-INTEGERS { len }
-
-FUNCTION {chop.word}
-{ 's :=
-  'len :=
-  s #1 len substring$ =
-    { s len #1 + global.max$ substring$ }
-    's
-  if$
-}
-
-FUNCTION {sort.format.names}
-{ 's :=
-  #1 'nameptr :=
-  ""
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { nameptr #1 >
-        { "   " * }
-        'skip$
-      if$
-      s nameptr
-      "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
-      format.name$ 't :=
-      nameptr numnames = t "others" = and
-        { "et al" * }
-        { t sortify * }
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-
-FUNCTION {sort.format.title}
-{ 't :=
-  "A " #2
-    "An " #3
-      "The " #4 t chop.word
-    chop.word
-  chop.word
-  sortify
-  #1 global.max$ substring$
-}
-
-FUNCTION {author.sort}
-{ author empty$
-    { key empty$
-        { "to sort, need author or key in " cite$ * warning$
-          ""
-        }
-        { key sortify }
-      if$
-    }
-    {
-      author num.names$ #4 <
-        {author sort.format.names }
-        {title sort.format.title}
-      if$
-    }
-  if$
-}
-
-FUNCTION {author.title.sort}
-{ author empty$
-    { title empty$
-        { key empty$
-            { "to sort, need author, title, or key in " cite$ * warning$
-              ""
-            }
-            { key sortify }
-          if$
-        }
-        { title sort.format.title }
-      if$
-    }
-    {
-      author num.names$ #4 <
-        {author sort.format.names }
-        {title sort.format.title}
-      if$
-     }
-  if$
-}
-
-FUNCTION {presort}
-{
-  author.title.sort
-  "   "
-  *
-  year field.or.null sortify
-  *
-  "   "
-  *
-  title field.or.null
-  sort.format.title
-  *
-  #1 entry.max$ substring$
-  'sort.key$ :=
-}
-
-ITERATE {presort}
-
-SORT
-
-
 STRINGS { longest.label }
 
 INTEGERS { number.label longest.label.width }
@@ -1880,4 +1730,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `gost2008es.bst'.
+%% End of file `gost2008.bst'.

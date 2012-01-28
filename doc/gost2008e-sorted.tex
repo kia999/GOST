@@ -1,0 +1,42 @@
+\newcommand{\mytitle}{The GOST package: sorting}
+% !Mode:: "TeX:UTF-8"
+\documentclass[a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[ukrainian,russian]{babel}
+\usepackage{geometry,ifpdf}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+  \usepackage{cmap}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {\mytitle},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {GOST, BibTeX},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother		
+		
+\begin{document}
+
+\nocite{*}
+
+\bibliographystyle{gost2008es}  
+\bibliography{bib/examples}     
+
+
+\end{document} 

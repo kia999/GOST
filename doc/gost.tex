@@ -1,8 +1,32 @@
-\usepackage[ukrainian,russian]{babel}
-\usepackage{bibunits,verbatim,bibnocap,geometry}
-\usepackage{hyperref}
-\usepackage{cmap}
+\documentclass[a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{bibunits,verbatim,bibnocap,geometry,ifpdf}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+  \usepackage{cmap}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {\mytitle},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {GOST, BibTeX},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
 
+
+\begin{document}	
 
 \newcommand{\bibentry}[1]{
 \begin{bibunit}
@@ -12,9 +36,6 @@
 \verbatiminput{bib/#1.bib}
 \end{bibunit}
 }
-
-
-\begin{document}	
 
 \title{\mytitle}
 \maketitle
@@ -71,19 +92,30 @@
 \section{Other}
 \subsection{Standard}
 \bibentry{ex11}
-\subsection{Dissertation}
+\subsection{Ph.D. Thesis / Dissertation}
 \bibentry{ex21}
-\subsection{Abstract}
+\bibentry{ex21a}
+\subsection{Synopsis}
 \bibentry{ex22}
 \subsection{Preprint}
 \bibentry{ex23}
 \subsection{Report}
 \bibentry{ex24}
+\bibentry{ex24a}
+\bibentry{ex24b}
 \subsection{Catalog}
 \bibentry{ex25}
 \subsection{Instruction}
 \bibentry{ex26}
-\subsection{Online}
-\bibentry{ex27}
+\section{Electronic Publishing}
+\subsection{Online Entry}
+\bibentry{ex27a}
+\bibentry{ex27b}
+\subsection{Url Field}
+\bibentry{ex27c}
+\subsection{Eprint \& Url Fields}
+\bibentry{ex28}
+\subsection{Doi Field}
+\bibentry{ex29}
 
-\end{document}
+\end{document} 

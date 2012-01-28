@@ -1,0 +1,18 @@
+\edef\mybibstyle{gost2008e}
+\newcommand*{\mytitle}{The GOST bundle: customization}
+\newcommand{\mydescription}{
+   This is an example of list of references formatted using the bibstyle
+   \texttt{\mybibstyle.bst}.
+   Customization is applied.
+%   \protect\verb|\providecommand*{\BibEmph}[1]{#1}|\\
+%   \protect\verb|\providecommand*{\BibDash}{}|
+
+   Пример оформления списка литературы с помощью стиля 
+   \texttt{\mybibstyle.bst}.
+   Применены команды форматирования.
+%   \protect\verb|\providecommand*{\BibEmph}[1]{\#1}|\\
+%   \protect\verb|\providecommand*{\BibDash}{}|
+}
+\providecommand*{\BibEmph}[1]{\textbf{#1}}
+\providecommand*{\BibDash}{}
+\input gost
