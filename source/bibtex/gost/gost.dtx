@@ -1165,7 +1165,7 @@ FUNCTION {bbl.phdthesis}
       { curlanguage "russian" =
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
 %<!utf8>           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
-%<utf8>         { "{Дисс\ldot\ кандидата наук}" }
+%<utf8>         { "{Дисс\ldots\ кандидата наук}" }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
            { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
@@ -1185,7 +1185,7 @@ FUNCTION {bbl.dscithesis} %%% rename this to dscthesis
       { curlanguage "russian" =
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
 %<!utf8>           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
-%<utf8>         { "{Дисс\ldot\ доктора наук}" }
+%<utf8>         { "{Дисс\ldots\ доктора наук}" }
          { "language is not defined: " language "dscithesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
@@ -1213,7 +1213,8 @@ INTEGERS { nameptr namesleft numnames }
 %<*!modern>
 FUNCTION {format.names}
 {
-  #1 "{vv~}{ll}{~jj}{,~f.}" format.name$
+%  #1 "{vv~}{ll}{~jj}{,~f.}" format.name$
+  #1 "{vv~}{ll}{~jj}{,~ff}" format.name$
 }
 %</!modern>
 %    \end{macrocode}
@@ -1230,7 +1231,8 @@ FUNCTION {format.names}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-      "{vv~}{ll}{~jj}{~f.}" format.name$ 't :=
+%      "{vv~}{ll}{~jj}{~f.}" format.name$ 't :=
+      "{vv~}{ll}{~jj}{~ff}" format.name$ 't :=
       nameptr #1 >
         { nameptr #4 =
           numnames #4 > and
@@ -1271,7 +1273,8 @@ FUNCTION {format.names.rev}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-      "{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+%      "{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
       nameptr #1 >
         { nameptr #4 =
           numnames #4 > and
