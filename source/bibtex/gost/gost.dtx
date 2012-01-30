@@ -128,7 +128,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{325}
+% \CheckSum{346}
 %
 % \changes{v1.1}{27 Jan 2012}{Documentation}
 % \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
@@ -531,9 +531,11 @@ FUNCTION {output.nonnull}
                 { output.state after.slash =
                     { "~/ " * write$ }
                     { output.state after.column =
-                        { ": " * write$ }
+%<!strict>                        { ": " * write$ }
+%<strict>                        { "~: " * write$ }
                         { output.state after.semicolumn =
-                            { "; " * write$ }
+%<!strict>                            { "; " * write$ }
+%<strict>                            { "~; " * write$ }
 	                        { add.period$ " " * write$ }
     	                  if$
                         }
@@ -762,6 +764,21 @@ FUNCTION {emphasize}
     { "\BibEmph{" swap$ * "}" * }
   if$
 }
+
+%    \end{macrocode}
+%
+% \DescribeFunction{enclose.square.brackets}
+% New in v.2.
+% Declare function to enclose last word in square brackets.
+%    \begin{macrocode}
+%<*strict>
+FUNCTION {enclose.square.brackets}
+{ duplicate$ empty$
+    { pop$ "" }
+    { "[" swap$ * "]" * }
+  if$
+}
+%</strict>
 
 %    \end{macrocode}
 %
@@ -1188,7 +1205,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.dscithesis}
 %    \begin{macrocode}
-FUNCTION {bbl.dscithesis} %%% rename this to dscthesis
+FUNCTION {bbl.dscithesis}
 { curlanguage "english" =
    { "Dr.\,Sci. dissertation" }
    { curlanguage "german" =
@@ -1201,6 +1218,46 @@ FUNCTION {bbl.dscithesis} %%% rename this to dscthesis
       if$}
    if$}
 if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.nnoaddress}
+%    \begin{macrocode}
+FUNCTION {bbl.nnoaddress}
+{ curlanguage "english" =
+   { "S.\ l." }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\CYRB.\ \cyrm.}" }
+%<utf8>      { "{Б.\ м.}" }
+      { "language is not defined: " language "nnoaddress" * * warning$ "S.\ l." }
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.nopublisher}
+%    \begin{macrocode}
+FUNCTION {bbl.nopublisher}
+{ curlanguage "english" =
+   { "s.\ n." }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\cyrb.\ \cyri.}" }
+%<utf8>      { "{б.\ и.}" }
+      { "language is not defined: " language "nnopublisher" * * warning$ "s.\ n." }
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.nnopublisher}
+%    \begin{macrocode}
+FUNCTION {bbl.nnopublisher}
+{ curlanguage "english" =
+   { "S.\ n." }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\CYRB.\ \cyri.}" }
+%<utf8>      { "{Б.\ и.}" }
+      { "language is not defined: " language "nnopublisher" * * warning$ "S.\ n." }
+   if$}
+if$}
+
 
 %    \end{macrocode}
 %
@@ -1263,7 +1320,8 @@ FUNCTION {format.names}
             { t "others" =
 	          t "~others" =
 	          or
-                { " " * bbl.etal * }
+%<!strict>                { " " * bbl.etal * }
+%<strict>                { " " * bbl.etal enclose.square.brackets *}
                 { ", " * t * }
               if$
             }
@@ -1305,7 +1363,8 @@ FUNCTION {format.names.rev}
             { t "others" =
 	          t "~others" =
 	          or
-                { " " * bbl.etal * }
+%<!strict>                { " " * bbl.etal * }
+%<strict>                { " " * bbl.etal enclose.square.brackets * }
                 { ", " * t * }
               if$
             }
@@ -1422,6 +1481,7 @@ FUNCTION {format.date}
 %    \end{macrocode}
 % \DescribeFunction{format.address.publisher.date}
 %    \begin{macrocode}
+%<*!strict>
 FUNCTION {output.address.publisher.date}
 {
   address empty$
@@ -1436,6 +1496,32 @@ FUNCTION {output.address.publisher.date}
   publisher output
   format.date output
 }
+%</!strict>
+%<*strict>
+FUNCTION {output.address.publisher.date}
+{
+  address empty$
+    {
+      bbl.nnoaddress
+      publisher empty$
+        { " : " * bbl.nopublisher *  }
+        { }
+      if$
+      enclose.square.brackets
+    }
+    {
+      address output
+      new.column
+      publisher empty$
+        { bbl.nopublisher enclose.square.brackets }
+        { publisher }
+      if$
+    }
+  if$
+  output
+  format.date output
+}
+%</strict>
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
