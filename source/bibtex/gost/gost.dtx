@@ -128,9 +128,10 @@
 %</driver>
 % \fi
 %
-% \CheckSum{346}
+% \CheckSum{411}
 %
-% \changes{v1.1}{27 Jan 2012}{Documentation}
+% \changes{v1.2}{30 Jan 2012}{Added strict option}
+% \changes{v1.2}{29 Jan 2012}{Refactoring, Documentation}
 % \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
 % \changes{v1.2}{26 Jan 2012}{Added options: modern longlist, eprint}
 % \changes{v1.1}{25 Jan 2012}{Gost705.dtx borrowed from Disser pkg}
@@ -444,6 +445,7 @@ ENTRY
     school
     series
     title
+    medium % new in v.2.
     type
     volume
     year
@@ -531,11 +533,11 @@ FUNCTION {output.nonnull}
                 { output.state after.slash =
                     { "~/ " * write$ }
                     { output.state after.column =
-%<!strict>                        { ": " * write$ }
-%<strict>                        { "~: " * write$ }
+%<!(strict|modern)>                        { ": " * write$ }
+%<strict|modern>                        { "~: " * write$ }
                         { output.state after.semicolumn =
-%<!strict>                            { "; " * write$ }
-%<strict>                            { "~; " * write$ }
+%<!(strict|modern)>                            { "; " * write$ }
+%<strict|modern>                            { "~; " * write$ }
 	                        { add.period$ " " * write$ }
     	                  if$
                         }
@@ -817,16 +819,16 @@ if$}
 %    \begin{macrocode}
 FUNCTION {bbl.cmplr}
 { curlanguage "english" =
-   { "Compiler "}
+   { "Compiler"}
    { curlanguage "german" =
-      { "Hrsg. " }
+      { "Hrsg." }
       { curlanguage "ukrainian" =
 %<!utf8>         {"{\cyr\CYRU\cyrk\cyrl.}"}
 %<utf8>         {"{Укл.}"}
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\CYRS\cyro\cyrs\cyrt.}"}
 %<utf8>            {"{Сост.}"}
-            {"language is not defined: " language  "cmplr" * * warning$ "Compiler "}
+            {"language is not defined: " language  "cmplr" * * warning$ "Compiler"}
          if$}
       if$}
    if$}
@@ -1149,17 +1151,17 @@ FUNCTION {bbl.urldate}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.techrep}
+% \DescribeFunction{bbl.techreport}
 %    \begin{macrocode}
-FUNCTION {bbl.techrep} % rename to bbl.techreport
+FUNCTION {bbl.techreport} % rename to bbl.techreport
 { curlanguage "english" =
-   { "Tech.~Rep." }
+   { "Rep." }
    { curlanguage "german" =
-      { "Tech.~Bericht" }
+      { "Bericht" }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRT\cyre\cyrh.\ \cyrd\cyro\cyrk\cyrl\cyra\cyrd}" }
-%<utf8>         { "{Тех.\ доклад}" }
-         { "language is not defined: " language "techrep" * * warning$ "Tech.~Rep." }
+%<!utf8>         { "{\cyr\CYRO\cyrt\cyrch\cyre\cyrt}" }
+%<utf8>         { "{Отчет}" }
+         { "language is not defined: " language "techrep" * * warning$ "Rep." }
       if$}
    if$}
 if$}
@@ -1258,6 +1260,79 @@ FUNCTION {bbl.nnopublisher}
    if$}
 if$}
 
+%    \end{macrocode}
+% \DescribeFunction{bbl.medium.text}
+%    \begin{macrocode}
+FUNCTION {bbl.medium.text}
+{ curlanguage "english" =
+   { "Text" }
+   { curlanguage "russian" = curlanguage "ukrainian" = or
+%<!utf8>      { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
+%<utf8>      { "{Текст}" }
+      { "language is not defined: " language "medium" * * warning$ "Text" }
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.medium.elres}
+%    \begin{macrocode}
+FUNCTION {bbl.medium.elres}
+{ curlanguage "english" =
+   { "Electronic resource" }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+%<utf8>      { "{Электронный ресурс}" }
+      { curlanguage "ukrainian" =
+%<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+%<utf8>        { "{Електронний ресурс}" }
+        { "language is not defined: " language "medium" * * warning$ "Electronic resource" }
+      if$}
+   if$}
+if$}
+
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.chief}
+%    \begin{macrocode}
+FUNCTION {bbl.chief}
+{ curlanguage "english" =
+   { "chief" }
+   { curlanguage "russian" =
+%<!utf8>      { "\cyrr\cyru\cyrk." }
+%<utf8>      { "{рук.}" }
+      { curlanguage "ukrainian" =
+%<!utf8>        { "\cyrr\cyru\cyrk." }
+%<utf8>        { "{рук.}" }
+        { "language is not defined: " language "chief" * * warning$ "chief" }
+      if$}
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.executor}
+%    \begin{macrocode}
+FUNCTION {bbl.executor}
+{ curlanguage "english" =
+   { "Executor" }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\cyri\cyrs\cyrp\cyro\cyrl\cyrn.}" }
+%<utf8>      { "{исполн.}" }
+      { curlanguage "ukrainian" =
+%<!utf8>        { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
+%<utf8>        { "{виконавець}" }
+        { "language is not defined: " language "medium" * * warning$ "Executor" }
+      if$}
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.medium}
+%    \begin{macrocode}
+FUNCTION {bbl.medium}
+{ type$ "online" =
+   { bbl.medium.elres }
+   { bbl.medium.text  }
+if$}
 
 %    \end{macrocode}
 %
@@ -1294,7 +1369,7 @@ FUNCTION {format.names}
 %</!modern>
 %    \end{macrocode}
 % Second version drops comma from output so that every name is formatted
-% as `LastName F. S.'. It also substitutes 5th and following names by
+% as `LastName F. S.'. It also substitutes 4th and following names by
 % localized term `et al'.
 %    \begin{macrocode}
 %<*modern>
@@ -1338,8 +1413,9 @@ FUNCTION {format.names}
 
 %    \end{macrocode}
 % \DescribeFunction{format.names.rev}
-% Declare function to format names for authors list after title and etc.
+% Declare function to format names for authors/bookauthors list after title and etc.
 % Note that |format.names.rev| cuts list of names to at most 4 persons.
+% We do not cut names to initials in this list.
 %    \begin{macrocode}
 FUNCTION {format.names.rev}
 {
@@ -1349,7 +1425,8 @@ FUNCTION {format.names.rev}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-%<!utf8>      "{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+%<!utf8>      %"{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+%<!utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
 %<utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
       nameptr #1 >
         { nameptr #4 =
@@ -1390,6 +1467,8 @@ FUNCTION {format.authors}
 
 %    \end{macrocode}
 % \DescribeFunction{format.bookauthors}
+% This function is used only once, in |bookauthor.before|, and the latter is
+% used only in |inbook| entry.
 %    \begin{macrocode}
 FUNCTION {format.bookauthors}
 { bookauthor empty$
@@ -1414,7 +1493,7 @@ FUNCTION {format.authors.after}
 FUNCTION {format.bookauthors.after}
 { bookauthor empty$
     { "" }
-    { bookauthor format.names.rev}
+    { bookauthor format.names.rev}% always cuts to 4 persons
   if$
 }
 
@@ -1424,8 +1503,27 @@ FUNCTION {format.bookauthors.after}
 FUNCTION {format.editors.after}
 { editor empty$
     { "" }
-%    { bbl.edby editor format.names.rev * }
     { bbl.edby "\ " * editor format.names.rev * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.chief.after}
+%    \begin{macrocode}
+FUNCTION {format.chief.after}
+{ editor empty$
+    { "" }
+    { bbl.chief "\ " * editor format.names.rev * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.executor.after}
+%    \begin{macrocode}
+FUNCTION {format.executor.after}
+{ author empty$
+    { "" }
+    { bbl.executor "\ : " * author format.names.rev * }
   if$
 }
 
@@ -1435,8 +1533,7 @@ FUNCTION {format.editors.after}
 FUNCTION {format.compiler.after}
 { compiler empty$
     { "" }
-    { bbl.cmplr compiler format.names.rev *
-    }
+    { bbl.cmplr "\ " * compiler format.names.rev * }
   if$
 }
 
@@ -1479,10 +1576,11 @@ FUNCTION {format.date}
 }
 
 %    \end{macrocode}
+% \DescribeFunction{format.address.publisher}
 % \DescribeFunction{format.address.publisher.date}
 %    \begin{macrocode}
 %<*!strict>
-FUNCTION {output.address.publisher.date}
+FUNCTION {output.address.publisher}
 {
   address empty$
     'skip$
@@ -1494,11 +1592,10 @@ FUNCTION {output.address.publisher.date}
     }
   if$
   publisher output
-  format.date output
 }
 %</!strict>
 %<*strict>
-FUNCTION {output.address.publisher.date}
+FUNCTION {output.address.publisher}
 {
   address empty$
     {
@@ -1519,9 +1616,14 @@ FUNCTION {output.address.publisher.date}
     }
   if$
   output
-  format.date output
 }
 %</strict>
+
+%FUNCTION {output.address.publisher.date}
+%{
+%  output.address.publisher
+%  format.date output
+%}
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
@@ -1907,22 +2009,31 @@ FUNCTION {format.thesis.type}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.tr.number}
+% \DescribeFunction{format.techrep.type.number}
+% Function to format report type and number.
 %    \begin{macrocode}
-FUNCTION {format.tr.number}
+%FUNCTION {format.techrep.type.number}
+%{ type empty$
+%    { bbl.techreport }
+%    'type
+%  if$
+%  number empty$
+%%<!utf8>    { "t" change.case$ }
+%%<utf8>    { "" }
+%    { number tie.or.space.connect }
+%  if$
+%}
+
+FUNCTION {format.techreport.type}
 { type empty$
-    { bbl.techrep }
-    'type
-  if$
-  number empty$
-%<!utf8>    { "t" change.case$ }
-%<utf8>    { "" }
-    { number tie.or.space.connect }
+   { bbl.techreport }
+   'type
   if$
 }
 
 %    \end{macrocode}
 %
+% \DescribeFunction{author.before}
 % Declare the function |author.before| to format list
 % of authors in heading of a bibliographic record.
 % If the number of authors is 4 or larger, some styles skip
@@ -1932,12 +2043,11 @@ FUNCTION {format.tr.number}
 %
 % First version is used if \file{.bst} style is compiled without option
 % |longlist|. It skips authors if their number is greater than or equal to 4
-% or if the author field is empty. Note that GOST requires for the author
-% list to be reduced. Hence the first version is preferable.
+% or if the author field is empty. Note that GOST requires for a long list of
+% authors to be reduced. Hence this first version is preferable.
 % Note also that |format.names|  cuts list of names
 % to 4 person at most in case if |modern| option is used. and |format.authors|
 % just emphasizes |format.names|.
-% \DescribeFunction{author.before}
 %    \begin{macrocode}
 %<*!longlist>
 FUNCTION {author.before}
@@ -1955,7 +2065,6 @@ FUNCTION {author.before}
 %    \end{macrocode}
 % Second version is used if \file{.bst} style is compiled with the option
 % |longlist|. It skips only if the author field is empty.
-% \DescribeFunction{author.before}
 %    \begin{macrocode}
 %<*longlist>
 FUNCTION {author.before}
@@ -1972,31 +2081,32 @@ FUNCTION {author.before}
 %    \end{macrocode}
 % \DescribeFunction{bookauthor.before}
 % There are also 2 version of the function |bookauthor.before|.
+% Not used anymore!
 %    \begin{macrocode}
-%<*!longlist>
-FUNCTION {bookauthor.before}
-{
-  bookauthor empty$
-    'skip$
-    {bookauthor num.names$ #4 <
-      {format.bookauthors output
-       new.sentence}
-      'skip$
-    if$}
-  if$
-}
-%</!longlist>
-%<*longlist>
-FUNCTION {bookauthor.before}
-{
-  bookauthor empty$
-    'skip$
-    { format.bookauthors output
-      new.sentence
-    }
-  if$
-}
-%</longlist>
+%%<*!longlist>
+%%FUNCTION {bookauthor.before}
+%%{
+%%  bookauthor empty$
+%%    'skip$
+%%    {bookauthor num.names$ #4 <
+%%      {format.bookauthors output
+%%       new.sentence}
+%%      'skip$
+%%    if$}
+%%  if$
+%%}
+%%</!longlist>
+%%<*longlist>
+%%FUNCTION {bookauthor.before}
+%%{
+%%  bookauthor empty$
+%%    'skip$
+%%    { format.bookauthors output
+%%      new.sentence
+%%    }
+%%  if$
+%%}
+%%</longlist>
 
 %    \end{macrocode}
 %
@@ -2041,8 +2151,9 @@ FUNCTION {author.after} { }
 
 %    \end{macrocode}
 % \DescribeFunction{bookauthor.after}
+% This function is used only in |inbook| entry. It always cuts list to 4 persons
+% since |format.bookauthors.after| does that.
 %    \begin{macrocode}
-%<*!modern>
 FUNCTION {bookauthor.after}
 {
   bookauthor empty$
@@ -2051,25 +2162,6 @@ FUNCTION {bookauthor.after}
        new.semicolumn }
   if$
 }
-%</!modern>
-%<*modern>
-%<*!longlist>
-FUNCTION {bookauthor.after}
-{
-  bookauthor empty$
-    'skip$
-    {bookauthor num.names$ #3 >
-      {format.bookauthors.after output
-       new.semicolumn }
-      'skip$
-    if$}
-  if$
-}
-%</!longlist>
-%<*longlist>
-FUNCTION {bookauthor.after} { }
-%</longlist>
-%</modern>
 
 %    \end{macrocode}
 % \DescribeFunction{editor.organization.after}
@@ -2170,6 +2262,28 @@ FUNCTION {add.doi}
 %<*!eprint>
 FUNCTION {add.doi} { }
 %</!eprint>
+
+%    \end{macrocode}
+% \DescribeFunction{add.medium}
+% New in version 2.
+%    \begin{macrocode}
+%<*!strict>
+FUNCTION {add.medium} { }
+%</!strict>
+%<*strict>
+FUNCTION {add.medium}
+{ duplicate$ empty$
+    'skip$
+    { medium empty$
+        { " " * bbl.medium enclose.square.brackets * }
+        { " " * medium enclose.square.brackets * }
+%%        { bbl.medium enclose.square.brackets * }
+%%        { medium enclose.square.brackets * }
+      if$
+    }
+  if$
+}
+%</strict>
 
 %    \end{macrocode}
 %
@@ -2314,13 +2428,13 @@ FUNCTION {article}
 {
   output.bibitem
   author.before
-  format.title "title" output.check
+  format.title add.medium "title" output.check
   new.slash
   author.after
   new.dblslash
   journal emphasize add.doi "journal" output.check % new in v.2
   new.block
-  format.date output
+  format.date "year" output.check
   new.block
   format.volume output
   format.number output
@@ -2354,7 +2468,7 @@ FUNCTION {book}
 {
   output.bibitem
   author.before
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -2363,7 +2477,8 @@ FUNCTION {book}
   new.block
   format.edition output
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.bvolume output
   new.block
@@ -2396,14 +2511,14 @@ FUNCTION {booklet}
 {
   output.bibitem
   author.before
-  format.title add.doi "title" output.check
+  format.title add.doi add.medium "title" output.check
   new.slash
   author.after
   editor.organization.after
   new.block
   howpublished output
   address output
-  format.date output
+  format.date "year" output.check
   new.block
   note output
   new.sentence
@@ -2431,11 +2546,11 @@ FUNCTION {inbook}
 {
   output.bibitem
   author.before
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
   new.dblslash
-  bookauthor.before
+%  bookauthor.before
   booktitle "booktitle" output.check
   new.slash
   bookauthor.after
@@ -2445,7 +2560,8 @@ FUNCTION {inbook}
   new.block
   format.number.series output
   new.sentence
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.bvolume output
   new.block
@@ -2481,7 +2597,7 @@ FUNCTION {incollection}
   output.bibitem
   author.before
   new.sentence
-  format.title add.doi "title" output.check
+  format.title add.doi add.medium "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -2489,7 +2605,8 @@ FUNCTION {incollection}
   new.slash
   editor.organization.after
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.bvolume output
   format.number.series output
@@ -2522,22 +2639,24 @@ FUNCTION {incollection}
 FUNCTION {proceedings}
 {
   output.bibitem
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.slash
   editor.organization.after
   new.block
   format.bvolume output
   format.number.series output
-  address empty$
-    { publisher output
-      format.date "year" output.check
-    }
-    { address output.nonnull
-      format.date "year" output.check
-      new.sentence
-      publisher output
-    }
-  if$
+%  address empty$
+%    { publisher output
+%      format.date "year" output.check
+%    }
+%    { address output.nonnull
+%      format.date "year" output.check
+%      new.sentence
+%      publisher output
+%    }
+%  if$
+  output.address.publisher
+  format.date "year" output.check
   new.block
   note output
   new.sentence
@@ -2564,7 +2683,7 @@ FUNCTION {inproceedings}
 { output.bibitem
   author.before
   new.sentence
-  format.title add.doi "title" output.check
+  format.title add.doi add.medium "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -2575,16 +2694,18 @@ FUNCTION {inproceedings}
   format.bvolume output
   format.number.series output
   new.block
-  address empty$
-    { publisher output
-      format.date "year" output.check
-    }
-    { address output.nonnull
-      new.column
-      publisher output
-      format.date "year" output.check
-    }
-  if$
+%  address empty$
+%    { publisher output
+%      format.date "year" output.check
+%    }
+%    { address output.nonnull
+%      new.column
+%      publisher output
+%      format.date "year" output.check
+%    }
+%  if$
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.pages.page output
   new.block
@@ -2621,7 +2742,7 @@ FUNCTION {manual}
     { format.authors output.nonnull }
   if$
   new.block
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   author empty$
     { organization empty$
     {
@@ -2638,7 +2759,7 @@ FUNCTION {manual}
     }
   if$
   format.edition output
-  format.date output
+  format.date "year" output.check
   new.block
   note output
   new.sentence
@@ -2660,11 +2781,11 @@ FUNCTION {misc}
 { output.bibitem
   format.authors output
   title howpublished new.sentence.checkb
-  format.title output
+  format.title add.medium output
   howpublished new.block.checka
   howpublished output
   new.block
-  format.date output
+  format.date "year" output.check
   new.block
   note output
   new.sentence
@@ -2693,6 +2814,8 @@ FUNCTION {unpublished}
   author.after
   editor.organization.after
   new.block
+  format.date "year" output.check
+  new.block
   note "note" output.check
   new.sentence
 %  format.url output
@@ -2718,11 +2841,11 @@ FUNCTION {online}
 { output.bibitem
   format.authors output
   title howpublished new.sentence.checkb
-  format.title output
+  format.title add.medium output
   howpublished new.block.checka
   howpublished output
   new.block
-  format.date output
+  format.date "year" output.check
   new.block
 %  format.url output
   output.eprint.url
@@ -2750,13 +2873,14 @@ FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.phdthesis format.thesis.type "type" output.check output.nonnull
   new.slash
   school "school" output.check
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.pages.page output
   note output
@@ -2780,28 +2904,63 @@ FUNCTION {thesis}
 % location, month, isrn, chapter, pages, pagetotal, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
 %    \begin{macrocode}
+%FUNCTION {report}
+%{
+%  output.bibitem
+%  author.before
+%  new.sentence
+%  format.title add.doi add.medium "title" output.check
+%  new.column
+%%  format.techrep.type.number output.nonnull
+%  type "type" output.check
+%  new.slash
+%  author.after
+%  editor.organization.after
+%  new.block
+%  address output
+%  new.column
+%  institution "institution" output.check
+%  format.date "year" output.check
+%  new.block
+%  note output
+%  new.block                % v.2
+%  format.pages.page output % v.2
+%  new.sentence
+%%  format.url output
+%  output.eprint.url
+%  format.annote output
+%  fin.entry
+%}
 FUNCTION {report}
 {
   output.bibitem
-  author.before
-  new.sentence
-  format.title add.doi "title" output.check
+%  author.before
+%  new.sentence
+  format.title add.doi add.medium "title" output.check
   new.column
-%  format.tr.number output.nonnull
+%  format.techrep.type.number output.nonnull
+%  type "type" output.check
+%  format.report.type.number "type" output.check
   type "type" output.check
+  new.column
+  number output
   new.slash
-  author.after
-  editor.organization.after
+  institution "institution" output.check
+  new.semicolumn
+  format.chief.after output % from editor field
+  new.semicolumn
+  format.executor.after output % from author field
   new.block
   address output
   new.column
-  institution "institution" output.check
+  organization output
   format.date "year" output.check
+  new.block                % v.2
+  format.pages.page output % v.2
+  new.sentence % или new.block ?
+  output.eprint.url
   new.block
   note output
-  new.sentence
-%  format.url output
-  output.eprint.url
   format.annote output
   fin.entry
 }
@@ -2823,13 +2982,14 @@ FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.pages.page output
   note output
@@ -2850,12 +3010,14 @@ FUNCTION {mastersthesis}
   output.bibitem
   format.authors "author" output.check
   new.block
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.block
   bbl.mthesis format.thesis.type output.nonnull
   school "school" output.check
   address output
   format.date "year" output.check
+  new.block
+  format.pages.page output
   new.block
   note output
   new.block
@@ -2875,15 +3037,17 @@ FUNCTION {dscithesis}
   output.bibitem
   format.authors "author" output.check
   new.sentence
-  format.btitle add.doi "title" output.check
+  format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.pages.page output
+  new.block
   note output
   new.sentence
 %  format.url output
@@ -2904,27 +3068,64 @@ FUNCTION {conference} { inproceedings }
 % and defaults to the localized term `technical report'.
 % You may still use the type field to override that.
 %    \begin{macrocode}
+%FUNCTION {techreport}
+%{
+%  output.bibitem
+%  author.before
+%  new.sentence
+%  format.title add.doi add.medium "title" output.check
+%  new.column
+%  format.techrep.type.number output.nonnull
+%  new.slash
+%  author.after
+%  editor.organization.after
+%  new.block
+%  address output
+%  new.column
+%  institution "institution" output.check
+%  format.date "year" output.check
+%  new.block
+%  note output
+%  new.block                % v.2
+%  format.pages.page output % v.2
+%  new.sentence
+%%  format.url output
+%  output.eprint.url
+%  format.annote output
+%  fin.entry
+%}
+
 FUNCTION {techreport}
 {
   output.bibitem
-  author.before
-  new.sentence
-  format.title add.doi "title" output.check
+%  author.before
+%  new.sentence
+  format.title add.doi add.medium "title" output.check
   new.column
-  format.tr.number output.nonnull
+%  format.techrep.type.number output.nonnull
+%  type "type" output.check
+%  format.report.type.number "type" output.check
+%  type output
+  format.techreport.type output
+  new.column
+  number output
   new.slash
-  author.after
-  editor.organization.after
+  institution "institution" output.check
+  new.semicolumn
+  format.chief.after output % from editor field
+  new.semicolumn
+  format.executor.after output % from author field
   new.block
   address output
   new.column
-  institution "institution" output.check
+  organization output
   format.date "year" output.check
+  new.block                % v.2
+  format.pages.page output % v.2
+  new.sentence % или new.block ?
+  output.eprint.url
   new.block
   note output
-  new.sentence
-%  format.url output
-  output.eprint.url
   format.annote output
   fin.entry
 }
