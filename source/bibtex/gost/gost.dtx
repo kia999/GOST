@@ -3068,47 +3068,48 @@ FUNCTION {phdthesis}
 % term `Master's thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
 %<*!(modern|strict)>
-FUNCTION {mastersthesis}
-{
-  output.bibitem
+FUNCTION {masterthesis}
+{ output.bibitem
   format.authors "author" output.check
-  new.block
+  new.sentence
   format.btitle "title" output.check
-  new.block
+  new.column
   bbl.mthesis format.thesis.type output.nonnull
+  new.slash
   school "school" output.check
-  address output
-  format.date "year" output.check
+  new.block
+  output.address.publisher.date
   new.block
   format.pages.page output
-  new.block
   note output
-  new.block
+  new.sentence
   format.url output
-%  output.eprint.url
   format.annote output
   fin.entry
 }
 %</!(modern|strict)>
 %<*modern|strict>
-FUNCTION {mastersthesis}
-{
-  output.bibitem
+FUNCTION {masterthesis}
+{ output.bibitem
   format.authors "author" output.check
-  new.block
+  new.sentence
   format.btitle add.doi add.medium "title" output.check
-  new.block
+  new.column
   bbl.mthesis format.thesis.type output.nonnull
   new.column
   number output
+  new.slash
+  format.authors.after output
+  new.semicolumn
   school "school" output.check
-  address output
+  new.block
+  output.address.publisher
   format.date "year" output.check
   new.block
   format.pages.page output
   new.block
   note output
-  new.block
+  new.sentence
 %  format.url output
   output.eprint.url
   format.annote output
@@ -3123,41 +3124,38 @@ FUNCTION {mastersthesis}
 %    \begin{macrocode}
 %<*!(modern|strict)>
 FUNCTION {dscithesis}
-{
-  output.bibitem
+{ output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
-  new.column
-  number output
   new.slash
   school "school" output.check
   new.block
-  output.address.publisher
-  format.date "year" output.check
+  output.address.publisher.date
   new.block
   format.pages.page output
-  new.block
   note output
   new.sentence
   format.url output
-%  output.eprint.url
   format.annote output
   fin.entry
 }
 %</!(modern|strict)>
 %<*modern|strict>
 FUNCTION {dscithesis}
-{
-  output.bibitem
+{ output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
+  new.column
+  number output
   new.slash
+  format.authors.after output
+  new.semicolumn
   school "school" output.check
   new.block
   output.address.publisher
