@@ -128,7 +128,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{321}
+% \CheckSum{325}
 %
 % \changes{v1.1}{27 Jan 2012}{Documentation}
 % \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
@@ -232,7 +232,7 @@
 %  Stanislab Kruchinin. Two styles, \file{gost2008el} and \file{gost2008els},
 %  compiled with the option |longlist| mimic behavior of the styles
 %  \file{gost705} and \file{gost705s} from the \pkg{disser} package. Major
-%  effect of of the |longlist| option is that the list of authors always
+%  effect of the |longlist| option is that the list of authors always
 %  precedes book or article title no matter how long is the list of authors.
 %  Modem styles compiled without |longlist| place long list of authors behind
 %  the title.
@@ -780,16 +780,16 @@ FUNCTION {space.word}
 %    \begin{macrocode}
 FUNCTION {bbl.edby}    %  { "\bbledby{}" }
 { curlanguage "english" =
-   {"Ed. by"}
+   {"Ed.\ by"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"{\cyr\CYRP\cyrii\cyrd\ \cyrr\cyre\cyrd.}"}
-%<utf8>      {"{Під ред.}"}
+%<utf8>      {"Під ред."}
       { curlanguage "russian" =
 %<!utf8>         {"{\cyr\CYRP\cyro\cyrd\ \cyrr\cyre\cyrd.}"}
-%<utf8>         {"{Под ред.}"}
+%<utf8>         {"Под ред."}
          { curlanguage "german" =
-            { "ed. " }
-            {"language is not defined: " language "edby" * * warning$ "Ed. by "}
+            { "ed." }
+            {"language is not defined: " language "edby" * * warning$ "Ed.\ by"}
          if$}
       if$}
    if$}
@@ -1365,8 +1365,8 @@ FUNCTION {format.bookauthors.after}
 FUNCTION {format.editors.after}
 { editor empty$
     { "" }
-    { bbl.edby editor format.names.rev *
-    }
+%    { bbl.edby editor format.names.rev * }
+    { bbl.edby "\ " * editor format.names.rev * }
   if$
 }
 
@@ -1412,7 +1412,8 @@ FUNCTION {format.date}
     }
     { month empty$
         'year
-        { year ". " quote$ "--- " month * * * * }
+%<!modern>        { year ". " quote$ "--- " month * * * * }
+%<modern>        { year ". \BibDash " month * * }
       if$
     }
   if$
