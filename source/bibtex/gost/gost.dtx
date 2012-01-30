@@ -1619,11 +1619,18 @@ FUNCTION {output.address.publisher}
 }
 %</strict>
 
-%FUNCTION {output.address.publisher.date}
-%{
-%  output.address.publisher
-%  format.date output
-%}
+%    \end{macrocode}
+% \DescribeFunction{output.address.publisher.date}
+% |Otput.address.publisher.date| is used in old styles.
+% New styles use |output.address.publisher|.
+%    \begin{macrocode}
+%<*!(modern|dtrict)>
+FUNCTION {output.address.publisher.date}
+{
+  output.address.publisher
+  format.date output
+}
+%</!(modern|dtrict)>
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
@@ -2869,13 +2876,38 @@ FUNCTION {online}
 % eprinttype, url, urldate
 %
 %    \begin{macrocode}
+%<*!(modern|strict)>
+FUNCTION {thesis}
+{ output.bibitem
+  format.authors "author" output.check
+  new.sentence
+  format.btitle "title" output.check
+  new.column
+  bbl.phdthesis format.thesis.type output.nonnull
+  new.slash
+  school "school" output.check
+  new.block
+  output.address.publisher.date
+  new.block
+  format.pages.page output
+  note output
+  new.sentence
+  format.url output
+  format.annote output
+  fin.entry
+}
+%</!(modern|strict)>
+%<*modern|strict>
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
+%  bbl.phdthesis format.thesis.type output.nonnull
   bbl.phdthesis format.thesis.type "type" output.check output.nonnull
+  new.column
+  number output
   new.slash
   school "school" output.check
   new.block
@@ -2883,6 +2915,7 @@ FUNCTION {thesis}
   format.date "year" output.check
   new.block
   format.pages.page output
+  new.block
   note output
   new.sentence
 %  format.url output
@@ -2890,6 +2923,7 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
+%</modern|strict>
 
 % \DescribeFunction{report}
 % New in version 2012.02.02.
@@ -2978,6 +3012,28 @@ FUNCTION {report}
 % Similar to @thesis except that the type field is optional and defaults to the localized
 % term `PhD thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
+%<*!(modern|strict)>
+FUNCTION {phdthesis}
+{ output.bibitem
+  format.authors "author" output.check
+  new.sentence
+  format.btitle "title" output.check
+  new.column
+  bbl.phdthesis format.thesis.type output.nonnull
+  new.slash
+  school "school" output.check
+  new.block
+  output.address.publisher.date
+  new.block
+  format.pages.page output
+  note output
+  new.sentence
+  format.url output
+  format.annote output
+  fin.entry
+}
+%</!(modern|strict)>
+%<*modern|strict>
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -2985,13 +3041,18 @@ FUNCTION {phdthesis}
   format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.phdthesis format.thesis.type output.nonnull
+  new.column
+  number output
   new.slash
+  format.authors.after output
+  new.semicolumn
   school "school" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
   new.block
   format.pages.page output
+  new.block
   note output
   new.sentence
 %  format.url output
@@ -2999,12 +3060,37 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
+%</modern|strict>
 
 %    \end{macrocode}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Master's thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
+%<*!(modern|strict)>
+FUNCTION {mastersthesis}
+{
+  output.bibitem
+  format.authors "author" output.check
+  new.block
+  format.btitle "title" output.check
+  new.block
+  bbl.mthesis format.thesis.type output.nonnull
+  school "school" output.check
+  address output
+  format.date "year" output.check
+  new.block
+  format.pages.page output
+  new.block
+  note output
+  new.block
+  format.url output
+%  output.eprint.url
+  format.annote output
+  fin.entry
+}
+%</!(modern|strict)>
+%<*modern|strict>
 FUNCTION {mastersthesis}
 {
   output.bibitem
@@ -3013,6 +3099,8 @@ FUNCTION {mastersthesis}
   format.btitle add.doi add.medium "title" output.check
   new.block
   bbl.mthesis format.thesis.type output.nonnull
+  new.column
+  number output
   school "school" output.check
   address output
   format.date "year" output.check
@@ -3026,12 +3114,41 @@ FUNCTION {mastersthesis}
   format.annote output
   fin.entry
 }
+%</modern|strict>
 
 %    \end{macrocode}
 % \DescribeFunction{dscithesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
+%<*!(modern|strict)>
+FUNCTION {dscithesis}
+{
+  output.bibitem
+  format.authors "author" output.check
+  new.sentence
+  format.btitle "title" output.check
+  new.column
+  bbl.dscithesis format.thesis.type output.nonnull
+  new.column
+  number output
+  new.slash
+  school "school" output.check
+  new.block
+  output.address.publisher
+  format.date "year" output.check
+  new.block
+  format.pages.page output
+  new.block
+  note output
+  new.sentence
+  format.url output
+%  output.eprint.url
+  format.annote output
+  fin.entry
+}
+%</!(modern|strict)>
+%<*modern|strict>
 FUNCTION {dscithesis}
 {
   output.bibitem
@@ -3055,6 +3172,7 @@ FUNCTION {dscithesis}
   format.annote output
   fin.entry
 }
+%</modern|strict>
 
 %    \end{macrocode}
 % \DescribeFunction{conference}
