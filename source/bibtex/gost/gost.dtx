@@ -128,12 +128,14 @@
 %</driver>
 % \fi
 %
-% \CheckSum{411}
+% \CheckSum{410}
 %
-% \changes{v1.2}{30 Jan 2012}{Added strict option}
+% \changes{v1.2}{02 Feb 2012}{Thesis entry, report entry}
+% \changes{v1.2}{01 Feb 2012}{Medium field}
+% \changes{v1.2}{30 Jan 2012}{Strict option}
 % \changes{v1.2}{29 Jan 2012}{Refactoring, Documentation}
 % \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
-% \changes{v1.2}{26 Jan 2012}{Added options: modern longlist, eprint}
+% \changes{v1.2}{26 Jan 2012}{Options modern longlist, eprint}
 % \changes{v1.1}{25 Jan 2012}{Gost705.dtx borrowed from Disser pkg}
 % \changes{v1.1}{21 Jan 2012}{Upload to CTAN}
 % \changes{v1.1}{15 Jan 2012}{Added German, French, Italian languages}
@@ -184,17 +186,19 @@
 %   \item[GOST 7.0.5-2008]
 %                Bibliographic reference.
 %                General requirements and rules of making.
-%   \item[GOST 7.1  -2003]
+%   \item[GOST 7.1-2003]
 %                Bibliographic record.
 %                Bibliographic description.
 %                General requirements and rules.
-%   \item[GOST 7.80 -2000]
+%   \item[GOST 7.80-2000]
 %                Bibliographic record.
 %                Heading. General requirements and rules.
-%   \item[GOST 7.11 -2004]
+%   \item[GOST 7.11-2004]
 %                Bibliographic description and references.
 %                Rules for the abbreviation of words and word combinations
 %                in foreign European languages.
+%   \item[GOST 7.83-2001]
+%                Electronic editions. Basic types and imprint.
 %   \end{description}
 %   ect.
 %
@@ -1523,7 +1527,7 @@ FUNCTION {format.chief.after}
 FUNCTION {format.executor.after}
 { author empty$
     { "" }
-    { bbl.executor "\ : " * author format.names.rev * }
+    { bbl.executor ": " * author format.names.rev * }
   if$
 }
 
@@ -1624,13 +1628,13 @@ FUNCTION {output.address.publisher}
 % |Otput.address.publisher.date| is used in old styles.
 % New styles use |output.address.publisher|.
 %    \begin{macrocode}
-%<*!(modern|dtrict)>
+%<*!modern>
 FUNCTION {output.address.publisher.date}
 {
   output.address.publisher
   format.date output
 }
-%</!(modern|dtrict)>
+%</!modern>
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
@@ -2016,27 +2020,33 @@ FUNCTION {format.thesis.type}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.techrep.type.number}
-% Function to format report type and number.
+% \DescribeFunction{format.techreport.type.number}
+% \DescribeFunction{format.techreport.type}
+% Functions to format report type and number.
+% |Format.techreport.type.number| is used in old styles, and
+% |Format.techreport.type| is doe modern styles.
 %    \begin{macrocode}
-%FUNCTION {format.techrep.type.number}
-%{ type empty$
-%    { bbl.techreport }
-%    'type
-%  if$
-%  number empty$
-%%<!utf8>    { "t" change.case$ }
-%%<utf8>    { "" }
-%    { number tie.or.space.connect }
-%  if$
-%}
-
+%<*!modern>
+FUNCTION {format.techreport.type.number}
+{ type empty$
+    { bbl.techreport }
+    'type
+  if$
+  number empty$
+%<!utf8>    { "t" change.case$ }
+%<utf8>    { "" }
+    { number tie.or.space.connect }
+  if$
+}
+%</!modern>
+%<*modern>
 FUNCTION {format.techreport.type}
 { type empty$
    { bbl.techreport }
    'type
   if$
 }
+%</modern>
 
 %    \end{macrocode}
 %
@@ -2873,10 +2883,10 @@ FUNCTION {online}
 %
 % Optional fields: subtitle, titleaddon, language, note, location, month, isbn,
 % chapter, pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
-% eprinttype, url, urldate
+% eprinttype, url, urldate.
 %
 %    \begin{macrocode}
-%<*!(modern|strict)>
+%<*!modern>
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
@@ -2896,8 +2906,8 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
-%</!(modern|strict)>
-%<*modern|strict>
+%</!modern>
+%<*modern>
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
@@ -2923,7 +2933,7 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
+%</modern>
 
 % \DescribeFunction{report}
 % New in version 2012.02.02.
@@ -2937,34 +2947,35 @@ FUNCTION {thesis}
 % Optional fields: subtitle, titleaddon, language, number, version, note,
 % location, month, isrn, chapter, pages, pagetotal, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
+%
+% For old styles compiled without |modern| option, |report| is alias for
+% |techreport|, since |report| entry is introduced in v.2.
 %    \begin{macrocode}
-%FUNCTION {report}
-%{
-%  output.bibitem
-%  author.before
-%  new.sentence
-%  format.title add.doi add.medium "title" output.check
-%  new.column
-%%  format.techrep.type.number output.nonnull
-%  type "type" output.check
-%  new.slash
-%  author.after
-%  editor.organization.after
-%  new.block
-%  address output
-%  new.column
-%  institution "institution" output.check
-%  format.date "year" output.check
-%  new.block
-%  note output
-%  new.block                % v.2
-%  format.pages.page output % v.2
-%  new.sentence
-%%  format.url output
-%  output.eprint.url
-%  format.annote output
-%  fin.entry
-%}
+%<*!modern>
+FUNCTION {report}
+{ output.bibitem
+  author.before
+  new.sentence
+  format.title "title" output.check
+  new.column
+  format.techreport.type.number output.nonnull
+  new.slash
+  author.after
+  editor.organization.after
+  new.block
+  address output
+  new.column
+  institution "institution" output.check
+  format.date "year" output.check
+  new.block
+  note output
+  new.sentence
+  format.url output
+  format.annote output
+  fin.entry
+}
+%</!modern>
+%<*modern>
 FUNCTION {report}
 {
   output.bibitem
@@ -2972,9 +2983,6 @@ FUNCTION {report}
 %  new.sentence
   format.title add.doi add.medium "title" output.check
   new.column
-%  format.techrep.type.number output.nonnull
-%  type "type" output.check
-%  format.report.type.number "type" output.check
   type "type" output.check
   new.column
   number output
@@ -2991,13 +2999,14 @@ FUNCTION {report}
   format.date "year" output.check
   new.block                % v.2
   format.pages.page output % v.2
-  new.sentence % или new.block ?
-  output.eprint.url
   new.block
   note output
+  new.sentence
+  output.eprint.url
   format.annote output
   fin.entry
 }
+%</modern>
 
 %    \end{macrocode}
 %
@@ -3009,10 +3018,10 @@ FUNCTION {report}
 % alias name. All unknown entry types are generally exported as @misc.
 %
 % \DescribeFunction{phdthesis}
-% Similar to @thesis except that the type field is optional and defaults to the localized
+% Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `PhD thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
-%<*!(modern|strict)>
+%<*!modern>
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -3032,8 +3041,8 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
-%</!(modern|strict)>
-%<*modern|strict>
+%</!modern>
+%<*modern>
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -3060,102 +3069,104 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
+%</modern>
 
 %    \end{macrocode}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Master's thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {masterthesis}
-{ output.bibitem
+%<*!modern>
+FUNCTION {mastersthesis}
+{
+  output.bibitem
   format.authors "author" output.check
-  new.sentence
+  new.block
   format.btitle "title" output.check
-  new.column
+  new.block
   bbl.mthesis format.thesis.type output.nonnull
-  new.slash
   school "school" output.check
-  new.block
-  output.address.publisher.date
-  new.block
-  format.pages.page output
-  note output
-  new.sentence
-  format.url output
-  format.annote output
-  fin.entry
-}
-%</!(modern|strict)>
-%<*modern|strict>
-FUNCTION {masterthesis}
-{ output.bibitem
-  format.authors "author" output.check
-  new.sentence
-  format.btitle add.doi add.medium "title" output.check
-  new.column
-  bbl.mthesis format.thesis.type output.nonnull
-  new.column
-  number output
-  new.slash
-  format.authors.after output
-  new.semicolumn
-  school "school" output.check
-  new.block
-  output.address.publisher
+  address output
   format.date "year" output.check
   new.block
   format.pages.page output
   new.block
   note output
-  new.sentence
+  new.block
+  format.url output
+%  output.eprint.url
+  format.annote output
+  fin.entry
+}
+%</!modern>
+%<*modern>
+FUNCTION {mastersthesis}
+{
+  output.bibitem
+  format.authors "author" output.check
+  new.block
+  format.btitle add.doi add.medium "title" output.check
+  new.block
+  bbl.mthesis format.thesis.type output.nonnull
+  new.column
+  number output
+  school "school" output.check
+  address output
+  format.date "year" output.check
+  new.block
+  format.pages.page output
+  new.block
+  note output
+  new.block
 %  format.url output
   output.eprint.url
   format.annote output
   fin.entry
 }
-%</modern|strict>
+%</modern>
 
 %    \end{macrocode}
 % \DescribeFunction{dscithesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
-%<*!(modern|strict)>
+%<*!modern>
 FUNCTION {dscithesis}
-{ output.bibitem
+{
+  output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
+  new.column
+  number output
   new.slash
   school "school" output.check
   new.block
-  output.address.publisher.date
+  output.address.publisher
+  format.date "year" output.check
   new.block
   format.pages.page output
+  new.block
   note output
   new.sentence
   format.url output
+%  output.eprint.url
   format.annote output
   fin.entry
 }
-%</!(modern|strict)>
-%<*modern|strict>
+%</!modern>
+%<*modern>
 FUNCTION {dscithesis}
-{ output.bibitem
+{
+  output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
   bbl.dscithesis format.thesis.type output.nonnull
-  new.column
-  number output
   new.slash
-  format.authors.after output
-  new.semicolumn
   school "school" output.check
   new.block
   output.address.publisher
@@ -3170,7 +3181,7 @@ FUNCTION {dscithesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
+%</modern>
 
 %    \end{macrocode}
 % \DescribeFunction{conference}
@@ -3180,37 +3191,15 @@ FUNCTION {conference} { inproceedings }
 %    \end{macrocode}
 %
 % \DescribeFunction{techreport}
-% TechReport is similar to |@report| except that the |type| field is optional
-% and defaults to the localized term `technical report'.
+% For old styles, |TechReport| is alias to |@report|.
+% For modern styles, |TechReport| is similar to |@report| except that the |type|
+% field is optional and defaults to the localized term `technical report'.
 % You may still use the type field to override that.
 %    \begin{macrocode}
-%FUNCTION {techreport}
-%{
-%  output.bibitem
-%  author.before
-%  new.sentence
-%  format.title add.doi add.medium "title" output.check
-%  new.column
-%  format.techrep.type.number output.nonnull
-%  new.slash
-%  author.after
-%  editor.organization.after
-%  new.block
-%  address output
-%  new.column
-%  institution "institution" output.check
-%  format.date "year" output.check
-%  new.block
-%  note output
-%  new.block                % v.2
-%  format.pages.page output % v.2
-%  new.sentence
-%%  format.url output
-%  output.eprint.url
-%  format.annote output
-%  fin.entry
-%}
-
+%<*!modern>
+FUNCTION {techreport} { report }
+%</!modern>
+%<*modern>
 FUNCTION {techreport}
 {
   output.bibitem
@@ -3238,13 +3227,14 @@ FUNCTION {techreport}
   format.date "year" output.check
   new.block                % v.2
   format.pages.page output % v.2
-  new.sentence % или new.block ?
-  output.eprint.url
   new.block
   note output
+  new.sentence
+  output.eprint.url
   format.annote output
   fin.entry
 }
+%</modern>
 
 
 %    \end{macrocode}
