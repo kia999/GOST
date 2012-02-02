@@ -716,6 +716,17 @@ FUNCTION {new.block.checka}
 }
 
 %    \end{macrocode}
+% \DescribeFunction{new.dblslash.checka}
+% For |online| entry.
+%    \begin{macrocode}
+FUNCTION {new.dblslash.checka}
+{ empty$
+    'skip$
+    'new.dblslash
+  if$
+}
+
+%    \end{macrocode}
 % \DescribeFunction{new.block.checkb}
 %    \begin{macrocode}
 FUNCTION {new.block.checkb}
@@ -777,6 +788,9 @@ FUNCTION {emphasize}
 % New in v.2.
 % Declare function to enclose last word in square brackets.
 %    \begin{macrocode}
+%<*!strict>
+FUNCTION {enclose.square.brackets} { }
+%</!strict>
 %<*strict>
 FUNCTION {enclose.square.brackets}
 { duplicate$ empty$
@@ -2858,9 +2872,10 @@ FUNCTION {online}
 { output.bibitem
   format.authors output
   title howpublished new.sentence.checkb
-  format.title add.medium output
-  howpublished new.block.checka
-  howpublished output
+  format.title add.doi add.medium "title" output.check
+%  howpublished new.block.checka
+  howpublished new.dblslash.checka
+  howpublished enclose.square.brackets output
   new.block
   format.date "year" output.check
   new.block
