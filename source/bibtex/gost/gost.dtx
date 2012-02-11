@@ -128,8 +128,9 @@
 %</driver>
 % \fi
 %
-% \CheckSum{410}
+% \CheckSum{430}
 %
+% \changes{v1.2}{11 Feb 2012}{Support for natbib package}
 % \changes{v1.2}{02 Feb 2012}{Thesis entry, report entry}
 % \changes{v1.2}{01 Feb 2012}{Medium field}
 % \changes{v1.2}{30 Jan 2012}{Strict option}
@@ -417,6 +418,34 @@
 %% This bibstyle attempts to format bibliography according to
 %<!modern>%% GOST 7.80-2000 for bibliographic records.
 %<modern>%% GOST 7.0.5-2008 for bibliographic reference.
+%<*natbib>%%
+%%-------------------------------------------------------------------
+%% This is an author-year citation style bibliography.
+%% It requires a special package file to function properly
+%% such as natbib.sty by Patrick W. Daly.
+%% The form of the \bibitem entries is
+%%   \bibitem[Jones et al.(1990)]{key}...
+%%   \bibitem[Jones et al.(1990)Jones, Baker, and Smith]{key}...
+%% where the label part (in brackets) consists of the author names,
+%% as they should appear in the citation, with the year in parentheses following.
+%% There must be no space before the opening parenthesis!
+%% A full list of authors may also follow the year.
+%% In natbib.sty, it is possible to define the type of enclosures that is
+%% really wanted (brackets or parentheses), but in either case, there must
+%% be parentheses in the label.
+%% The \cite command functions as follows:
+%%   \citet{key}              => Jones et al. (1990)
+%%   \citet*{key}             => Jones, Baker, and Smith (1990)
+%%   \citep{key}              => (Jones et al., 1990)
+%%   \citep*{key}             => (Jones, Baker, and Smith, 1990)
+%%   \citep[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
+%%   \citep[e.g.][]{key}      => (e.g. Jones et al., 1990)
+%%   \citep[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \citeauthor{key}         => Jones et al.
+%%   \citeauthor*{key}        => Jones, Baker, and Smith
+%%   \citeyear{key}           => 1990
+%%---------------------------------------------------------------------
+%</natbib>
 
 %    \end{macrocode}
 % \subsection{Fields}
@@ -467,7 +496,8 @@ ENTRY
     eprint
   }
   {}
-  { label }
+%  { label }
+  { label extra.label sort.label short.list }
 
 %    \end{macrocode}
 % Declare internal variables and constants used in to format references.
@@ -797,6 +827,33 @@ FUNCTION {enclose.square.brackets}
   if$
 }
 %</strict>
+
+
+% \DescribeFunction{bracify}
+% \DescribeFunction{bracketise}
+% \DescribeFunction{parenthesify}
+% New in v.2. Borrowed from apsrev4-1.bst.
+% Declare function to enclose last word in braces.
+%    \begin{macrocode}
+FUNCTION {bracify}
+{ duplicate$ empty$
+    { pop$ "{}" }
+    { "{" swap$ * "}" * }
+  if$
+}
+FUNCTION {bracketise}
+{ duplicate$ empty$
+    { pop$ "[]" }
+    { "[" swap$ * "]" * }
+  if$
+}
+FUNCTION {parenthesify}
+{ duplicate$ empty$
+    { pop$ "()" }
+    { "(" swap$ * ")" * }
+  if$
+}
+
 
 %    \end{macrocode}
 %
@@ -1428,6 +1485,45 @@ FUNCTION {format.names}
 %</modern>
 
 %    \end{macrocode}
+% \DescribeFunction{format.names.one}
+% Declare function to go to optional argument of |\bibitem| in
+% the styles generated with the option |natbib|.
+%    \begin{macrocode}
+%<*natbib>
+FUNCTION {format.names.one}
+{
+  's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    % begin while$
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        { nameptr #2 = numnames #2 > and
+            { "others" 't :=
+              #1 'namesleft := }
+            'skip$
+          if$
+          namesleft #1 >
+            { ", " * t * }
+            { t "others" = t "~others" = or
+                { " " * bbl.etal * }
+                { ", " * t * }
+              if$
+             }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+%</natbib>
+
+%    \end{macrocode}
 % \DescribeFunction{format.names.rev}
 % Declare function to format names for authors/bookauthors list after title and etc.
 % Note that |format.names.rev| cuts list of names to at most 4 persons.
@@ -1480,6 +1576,18 @@ FUNCTION {format.authors}
     { author format.names emphasize}
   if$
 }
+
+%    \end{macrocode}
+% \DescribeFunction{format.authors.one}
+%    \begin{macrocode}
+%<*natbib>
+FUNCTION {format.authors.one}
+{ author empty$
+    { "" }
+    { author format.names.one }
+  if$
+}
+%</natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{format.bookauthors}
@@ -1589,6 +1697,7 @@ FUNCTION {format.date}
       if$
     }
   if$
+  extra.label * % new in v.1.2
 }
 
 %    \end{macrocode}
@@ -1673,22 +1782,41 @@ FUNCTION {output.address.publisher.date}
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
 %    \begin{macrocode}
+%<*!natbib>
 FUNCTION {output.bibitem}
 { newline$
-  "\bibitem{" write$
-  cite$ write$
-  "}" write$
+  "\bibitem" write$
+  cite$ bracify write$
   newline$
   language empty$
-    {"english" 'curlanguage :=}
-    {language  'curlanguage :=}
+    { "english" 'curlanguage := }
+    { language  'curlanguage := }
   if$
-  "\selectlanguageifdefined{" write$
-  curlanguage write$
-  "}" write$ newline$
+  "\selectlanguageifdefined" curlanguage bracify * write$
+  newline$
   ""
   before.all 'output.state :=
 }
+%</!natbib>
+%<*natbib>
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem" write$
+  format.authors.one
+  year parenthesify *
+  bracketise write$
+  cite$ bracify write$
+  newline$
+  language empty$
+    { "english" 'curlanguage := }
+    {language  'curlanguage := }
+  if$
+  "\selectlanguageifdefined" curlanguage bracify * write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+%</natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{n.dashify}
