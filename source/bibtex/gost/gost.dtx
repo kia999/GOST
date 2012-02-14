@@ -8,7 +8,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012 Igor A. Kotelnikov.
-% Version 2012.02.02
+% Version 2012.02.13
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -33,28 +33,26 @@
 %  CTAN:macros/latex/contrib/gost/gost.dtx
 %
 % To unpack run
-%   latex unicode-gost.ins
+%   latex gost.ins
 %
 % To produce documentation run
 %    pdflatex gost.dtx
-%    makeindex -r -s dtx.ist gost705
+%    makeindex -r -s gind.ist gost
+%    makeindex -r -s gglo.ist -o gost.gls gost.glo
 %    pdflatex gost.dtx
-%    pdflatex gost.dtx
-%
 %
 % TeX Directory Structure
 %
 % Move all *.bst files       to TDS:bibtex/bst/gost
 % Move all *.csf files       to TDS:bibtex/csf/gost
-% Move all *.pdf files       to TDS:doc/latex/gost
+% Move all *.pdf files       to TDS:doc/bibtex/gost
 % Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
 %
-%
-% $Id: gost.dtx, v.20121/01/31 kia999 $
+% $Id: gost.dtx, v.2012/01/31 kia999 $
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2012/02/02 v.1.2 Bibliography styles for GOST R 7.0.5-2008.]
+  [2012/02/13 v.1.2 Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -117,7 +115,7 @@
     Igor A. Kotelnikov\thanks{\texttt{kia999@mail.ru}}
 }
 
-\date{\filedate, v.\fileversion}
+\date{\filedate, \fileversion}
 
 \makeindex
 
@@ -128,15 +126,16 @@
 %</driver>
 % \fi
 %
-% \CheckSum{430}
+% \CheckSum{431}
 %
+% \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
 % \changes{v1.2}{11 Feb 2012}{Support for natbib package}
 % \changes{v1.2}{02 Feb 2012}{Thesis entry, report entry}
 % \changes{v1.2}{01 Feb 2012}{Medium field}
 % \changes{v1.2}{30 Jan 2012}{Strict option}
 % \changes{v1.2}{29 Jan 2012}{Refactoring, Documentation}
 % \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
-% \changes{v1.2}{26 Jan 2012}{Options modern longlist, eprint}
+% \changes{v1.2}{26 Jan 2012}{Options modern, long, eprint}
 % \changes{v1.1}{25 Jan 2012}{Gost705.dtx borrowed from Disser pkg}
 % \changes{v1.1}{21 Jan 2012}{Upload to CTAN}
 % \changes{v1.1}{15 Jan 2012}{Added German, French, Italian languages}
@@ -162,12 +161,13 @@
 % on information, librarianship and publishing issued by Russian Federation
 % and interstate committee of former USSR States.
 
-% It comprises 8 BibTeX styles to format bibliography in English, Russian and
-% Ukrainian according to GOST 7.0.5-2008, GOST 7.1-2003, GOST 7.80-2000 and
-% GOST 7.11-2004. Both 8-bit and Unicode (UTF-8) versions of each BibTeX
+% It comprises few BibTeX styles to format bibliography in Russian, Ukrainian,
+% English, German, French, and Italian according to GOST 7.0.5-2008,
+% GOST 7.1-2003, GOST 7.80-2000, GOST 7.11-2004 and GOST 7.83-2001.
+% Both 8-bit and Unicode (UTF-8) versions of each BibTeX
 % style, in each case offering a choice of sorted and unsorted.
 %
-% Further, a set of 4 styles (which do not conform to current
+% Further, a number of styles (which do not conform to current
 % standards) are retained for backwards compatibility.
 %
 % \end{abstract}
@@ -198,73 +198,121 @@
 %                Bibliographic description and references.
 %                Rules for the abbreviation of words and word combinations
 %                in foreign European languages.
+%   \item[GOST 7.83 -2001]
+%                Electronic editions. Basic types and imprint.
 %   \end{description}
 %   ect.
 %
-%   All BibTeX styles in the GOST bundle are derived from same \file{gost.dtx}
-%   source by applying different set of options as shown in the table below.
+%   All BibTeX styles in the GOST bundle are derived from same master
+%   source file \file{gost.dtx} by applying different set of options as shown
+%   in the table below.
 %   \begin{verbatim}
-%  ----------------------------------------------------------------
-%  Style               | utf8 | moderm | eprint | longlist | sort
-%  ----------------------------------------------------------------
-%  gost780             |      |        |        |          |
-%  gost780s            |      |        |        |          |   +
-%  gost2008            |      |   +    |        |          |
-%  gost2008e           |      |   +    |    +   |          |
-%  gost2008el          |      |   +    |    +   |     +    |
-%  gost2008s           |      |   +    |        |          |   +
-%  gost2008es          |      |   +    |    +   |          |   +
-%  gost2008els         |      |   +    |    +   |     +    |   +
-%  unicode-gost2008    |  +   |   +    |        |          |
-%  unicode-gost2008e   |  +   |   +    |    +   |          |
-%  unicode-gost2008s   |  +   |   +    |        |          |   +
-%  unicode-gost2008es  |  +   |   +    |    +   |          |   +
-%  ----------------------------------------------------------------
-%  Style               | utf8 | moderm | eprint | longlist | sort
-%  ----------------------------------------------------------------
+% -----------------------------------------------------------------------
+% Style         | utf8 | strict | modern | eprint | long | sort | natbib
+% -----------------------------------------------------------------------
+% gost780       |      |        |        |        |      |      |
+% gost780s      |      |        |        |        |      |   +  |
+% gost2003e     |      |   +    |        |        |      |      |
+% gost2003es    |      |   +    |        |        |      |   +  |
+% gost2008      |      |        |   +    |        |      |      |
+% gost2008e     |      |        |   +    |    +   |      |      |
+% gost2008ne    |      |        |   +    |    +   |      |      |   +
+% gost2008el    |      |        |   +    |    +   |   +  |      |
+% gost2008s     |      |        |   +    |        |      |   +  |
+% gost2008es    |      |        |   +    |    +   |      |   +  |
+% gost2008nes   |      |        |   +    |    +   |      |   +  |   +
+% gost2008els   |      |        |   +    |    +   |   +  |   +  |
+% -----------------------------------------------------------------------
+% ugost780      |  +   |        |        |        |      |      |
+% ugost780s     |  +   |        |        |        |      |   +  |
+% ugost2003e    |  +   |   +    |        |        |      |      |
+% ugost2003es   |  +   |   +    |        |        |      |   +  |
+% ugost2008     |  +   |        |   +    |        |      |      |
+% ugost2008e    |  +   |        |   +    |    +   |      |      |
+% ugost2008ne   |  +   |        |   +    |    +   |      |      |   +
+% ugost2008el   |  +   |        |   +    |    +   |   +  |      |
+% ugost2008s    |  +   |        |   +    |        |      |   +  |
+% ugost2008es   |  +   |        |   +    |    +   |      |   +  |
+% ugost2008nes  |  +   |        |   +    |    +   |      |   +  |   +
+% ugost2008els  |  +   |        |   +    |    +   |   +  |   +  |
+% -----------------------------------------------------------------------
+% Style         | utf8 | strict | modern | eprint | long | sort | natbib
+% -----------------------------------------------------------------------
 %   \end{verbatim}
 %
-%  Two styles \file{gost780} and \file{gost780s}, compiled without |modern|
-%  option, are retained for backward compatibility. They do not conform
-%  the Standard 7.0.5-2008 cited above. However they conform the Standard
-%  7.80-2000 for bibliographic \emph{records} intended for bibliographic
-%  catalogs rather than for bibliographic \emph{references}.
+% |Gost2008| style is recommended for most applications. It corresponds to the
+% currently effective Standard 7.0.5-2008. Librarians should use the style
+% |gost2003| instead of |gost2008| to compile a library catalog to meet the
+% Standard 7.1-2003. Use of other styles is best explained through
+% the meaning of options used to compile those styles from the master source.
 %
-%  If the number of authors exceeds 4, modern styles cut the list of authors
-%  to at most four persons. Option |longlist| overrides this rule to
-%  provide backward compatibility with the package \pkg{disser} developed by
-%  Stanislab Kruchinin. Two styles, \file{gost2008el} and \file{gost2008els},
-%  compiled with the option |longlist| mimic behavior of the styles
-%  \file{gost705} and \file{gost705s} from the \pkg{disser} package. Major
-%  effect of the |longlist| option is that the list of authors always
-%  precedes book or article title no matter how long is the list of authors.
-%  Modem styles compiled without |longlist| place long list of authors behind
-%  the title.
+% Two styles |gost780| and |gost780s|, compiled without |modern| and |strict|
+% options, are retained for backward compatibility. They do not conform
+% the Standards 7.0.5-2008 and 7.1-2003 cited above.
 %
-%  The |eprint| option enables experimental features on formatting
-%  electronic publications. In particular, it enables |eprint|, |eprinttype|
-%  and |eprintclass| fields for a bibliographic entry.
+% The |strict| option provides conformance to the Standard 7.1-2003. The
+% styles compiled with that option bear the name gost2003 with possible
+% suffixes |e|, |s|, |l| as explained below.
 %
-%  The |sort| option enables sorting bibliographic references by author names
-%  and references titles. Finally, the |utf8| option produces bibliographic
-%  styles in unicode rather that in 8-bit encodings. Recommended styles are
-%  \file{gost2008} and \file{unicode-gost2008}. They fit most needs.
+% The |modern| option meets the Standard 7.0.5-2008 which can be thought
+% off as relaxed version of the Standards 7.1-2003. The styles compiled with
+% that option bear the name gost2008 with possible suffixes |e|, |s|, |l|.
+% The |strict| option  has precedence over |modern| so that a style compiled
+% with both options will resemble mainly the |gost2003| style rather than
+% |gost2008|.
 %
-%  Beyond that, GOST bundle contains CS files (codepage and sorting order).
+% If the number of authors exceeds 4, modern styles cut the list of authors
+% to at most 4 persons in accordance to effective Standards. The option
+% |long| overrides this rule to provide backward compatibility with the
+% package disser developed by Stanislab Kruchinin. Two styles, |gost2008el| and
+% |gost2008els|, compiled with the option |long| mimic behavior of the styles
+% |gost705| and |gost705s| from the disser package. Major
+% effect of the |long| option is that the list of authors always
+% precedes book or article title no matter how long is it.
+% Modern styles compiled without |long| place long list of authors behind
+% the title. The names of styles compiled with the option |long| bear the
+% suffix |l|. Note that those styles do not conform effective Standards and
+% their use is discouraged.
+%
+% The |eprint| option enables experimental features on formatting
+% electronic publications. In particular, it enables |eprint|, |eprinttype|
+% and |eprintclass| fields for a bibliographic entry. The names of styles
+% compiled with the option |eprint| bear the suffix |e|.  The styles without
+% the suffix |e| just ignore the fields |eprint|, |eprinttype| and
+% |eprintclass|.
+%
+% The |natbib| option provides compatibility with the |natbib| package. The names
+% of styles compiled with the option |natbib| bear the suffix `nat'. Currently
+% 4 styles with that option are available for beta testing.
+%
+% The |sort| option enables sorting bibliographic references by author names
+% and references titles. The names of styles compiled with the option |sort|
+% bear the suffix |s|.
+%
+% Finally, the |utf8| option produces bibliographic styles in unicode rather
+% that in 8-bit encodings. Names of those styles bear the prefix |unicode|.
+%
+%
+% Beyond bibliographic style, GOST bundle contains CS files (codepage and
+% sorting order).
 %   \begin{verbatim}
+%  ----------------------------------------------------------------
 %  Encoding        |   CSF                 Sorting order
 %  ----------------------------------------------------------------
 %  cp866           |   ruscii.csf          Cyrillic first, Latin
 %  cp1251          |   cp1251.csf          Cyrillic first, Latin
 %  koi8-u          |   koi8u.csf           Cyrillic first, Latin
 %  utf8            |   utf8cyrillic.csf    Cyrillic first, Latin
+%  ----------------------------------------------------------------
 %   \end{verbatim}
 %
 %  In addition, BibTeX8 distribution comes with few more CSFs.
 %   \begin{verbatim}
+%  ----------------------------------------------------------------
 %  Encoding        |   CSF                 Sorting order
 %  ----------------------------------------------------------------
 %  cp866           |   cp866rus.csf        Latin first, Cyrillic
+%  ----------------------------------------------------------------
 %   \end{verbatim}
 %
 %   \subsection{How to use}
@@ -301,7 +349,7 @@
 %   \file{gost*.pdf}.
 
 %   \item
-%   \file{Unicode-gost*} styles are primarily intended for use
+%   \file{ugost*} styles are primarily intended for use
 %   with unicode compilers (\file{xelatex} and \file{lualatex}). They
 %   should be preferred as well when using 8bit compilers
 %   (\file{latex} and \file{pdflatex}) if source file is in utf8 encoding.
@@ -309,19 +357,19 @@
 %   \item
 %   Neither \file{bitex.exe} nor \file{bitex8.exe} provides
 %   correct sorting order of unicode text. It means that using
-%   \file{unicode-gost2008s} or any other style ended with \file{s} in
+%   \file{ugost2008s} or any other style ended with \file{s} in
 %   its name may produce unexpected result for documents in
 %   \texttt{utf8} encoding.
 %
 %   \item
 %   \file{Bibtex8} fails to change case of a string if it contains Cyrillic
-%   letter. Therefore \file{unicode-gost2008*} styles do not change case of
+%   letter in unicode. Therefore \file{ugost2008*} styles do not change case of
 %   titles and other parts of bibliographic record while 8-bit styles
 %   do the case change where appropriate.
 %
 %   \item
 %   Either \file{bibtex8} or \file{Bibtex8} fail to cut Cyrillic names to
-%   initials. Therefore \file{unicode-gost2008*} styles do not modify name of
+%   initials. Therefore \file{ugost2008*} styles do not modify name of
 %   authors.
 %
 %   \end{enumerate}
@@ -365,11 +413,11 @@
 %       {CTAN:pkg/gost}.
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 2012.02.02}
+%   \subsection{What's new in version 2012.02.13}
 %
 %   \begin{enumerate}
 %   \item
-%   Support for GOST 7.0.5-2008 is provided.
+%   Support for GOST 7.0.5-2008 and GOST 7.1-2003 is provided.
 %
 %   \item
 %   |@Online| entry is added to format a reference to electronic
@@ -384,6 +432,10 @@
 
 %   \item
 %   |Urldate|, |eprint|, |eprintclass|, |eprinttype| fields are added.
+%
+%   \item
+%   Partial support for |natbib| package (beta testing).
+%
 %   \end{enumerate}
 %
 %   \subsection{Version history}
@@ -1210,14 +1262,14 @@ FUNCTION {bbl.urldate}
 { curlanguage "english" =
    {"online; accessed: "}
    { curlanguage "ukrainian" =
-%<!utf8>      { "\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyre\cyrn\cyrn\cyrya:" }
-%<utf8>      { "{дата звернення: }" }
+%<!utf8>      { "{\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyrn\cyre\cyrn\cyrn\cyrya}" }
+%<utf8>      { "{дата звернення}" }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya: }" }
-%<utf8>         { "{дата обращения: }" }
+%<!utf8>         { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya}" }
+%<utf8>         { "{дата обращения}" }
          { curlanguage "german" =
-            { "{online; abgerufen: }" }
-            { "language is not defined: " language "urldate" * * warning$ "online; accessed: " }
+            { "{online; abgerufen}" }
+            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
          if$}
       if$}
    if$}
@@ -2215,14 +2267,14 @@ FUNCTION {format.techreport.type}
 % So, we need two version of |author.before|.
 %
 % First version is used if \file{.bst} style is compiled without option
-% |longlist|. It skips authors if their number is greater than or equal to 4
+% |long|. It skips authors if their number is greater than or equal to 4
 % or if the author field is empty. Note that GOST requires for a long list of
 % authors to be reduced. Hence this first version is preferable.
 % Note also that |format.names|  cuts list of names
 % to 4 person at most in case if |modern| option is used. and |format.authors|
 % just emphasizes |format.names|.
 %    \begin{macrocode}
-%<*!longlist>
+%<*!long>
 FUNCTION {author.before}
 {
   author empty$
@@ -2234,12 +2286,12 @@ FUNCTION {author.before}
     if$}
   if$
 }
-%</!longlist>
+%</!long>
 %    \end{macrocode}
 % Second version is used if \file{.bst} style is compiled with the option
-% |longlist|. It skips only if the author field is empty.
+% |long|. It skips only if the author field is empty.
 %    \begin{macrocode}
-%<*longlist>
+%<*long>
 FUNCTION {author.before}
 {
   author empty$
@@ -2249,14 +2301,14 @@ FUNCTION {author.before}
     }
   if$
 }
-%</longlist>
+%</long>
 
 %    \end{macrocode}
 % \DescribeFunction{bookauthor.before}
 % There are also 2 version of the function |bookauthor.before|.
 % Not used anymore!
 %    \begin{macrocode}
-%%<*!longlist>
+%%<*!long>
 %%FUNCTION {bookauthor.before}
 %%{
 %%  bookauthor empty$
@@ -2268,8 +2320,8 @@ FUNCTION {author.before}
 %%    if$}
 %%  if$
 %%}
-%%</!longlist>
-%%<*longlist>
+%%</!long>
+%%<*long>
 %%FUNCTION {bookauthor.before}
 %%{
 %%  bookauthor empty$
@@ -2279,7 +2331,7 @@ FUNCTION {author.before}
 %%    }
 %%  if$
 %%}
-%%</longlist>
+%%</long>
 
 %    \end{macrocode}
 %
@@ -2304,7 +2356,7 @@ FUNCTION {author.after}
 }
 %</!modern>
 %<*modern>
-%<*!longlist>
+%<*!long>
 FUNCTION {author.after}
 {
   author empty$
@@ -2316,10 +2368,10 @@ FUNCTION {author.after}
     if$}
   if$
 }
-%</!longlist>
-%<*longlist>
+%</!long>
+%<*long>
 FUNCTION {author.after} { }
-%</longlist>
+%</long>
 %</modern>
 
 %    \end{macrocode}
@@ -2372,7 +2424,7 @@ FUNCTION {format.url}
 %<modern|strict>      "URL: \BibUrl{" url * "}" *
       urldate empty$
         { "" }
-        { " (" bbl.urldate * urldate * ")" * }
+        { " (" bbl.urldate * ": " * urldate * ")" * }
       if$ *
     }
   if$
@@ -3598,7 +3650,7 @@ READ
 % Next chunk of code governs sorting reference list by authors' names and
 % titles.
 %    \begin{macrocode}
-%<*sorted>
+%<*sort>
 
 %    \end{macrocode}
 % \DescribeFunction{sortify}
@@ -3733,7 +3785,7 @@ ITERATE {presort}
 
 SORT
 
-%</sorted>
+%</sort>
 
 STRINGS { longest.label }
 
@@ -3788,7 +3840,8 @@ FUNCTION {begin.bib}
 %<*bst>
 %<*modern>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
+  "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
 %</modern>
 %<*bst>
   preamble$ empty$
