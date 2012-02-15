@@ -3127,7 +3127,8 @@ FUNCTION {thesis}
   format.btitle add.doi add.medium "title" output.check
   new.column
 %  bbl.phdthesis format.thesis.type output.nonnull
-  bbl.phdthesis format.thesis.type "type" output.check output.nonnull
+%  bbl.phdthesis format.thesis.type "type" output.check output.nonnull
+  type "type" output.check %%% output.nonnull
   new.column
   number output
   new.slash
