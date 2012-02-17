@@ -203,86 +203,91 @@
 %   \end{description}
 %   ect.
 %
-%   All BibTeX styles in the GOST bundle are derived from same master
-%   source file \file{gost.dtx} by applying different set of options as shown
-%   in the table below.
+%   GOST comprises 16 BibTeX styles to format bibliography in English, Russian
+%   and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit
+%   and Unicode (UTF-8) versions of each BibTeX style, in each case offering
+%   a choice of sorted and unsorted.
+%
+%   Further, |gost780| and |gost780s| styles (which do not conform to
+%   effective standards) are retained for backwards compatibility.
+%
+%   All BibTeX styles in the GOST bundle are derived from same master file
+%   gost.dtx by applying different set of options as shown in the table below.
+%
 %   \begin{verbatim}
-% -----------------------------------------------------------------------
+%------------------------------------------------------------------------
 % Style         | utf8 | strict | modern | eprint | long | sort | natbib
-% -----------------------------------------------------------------------
+%------------------------------------------------------------------------
 % gost780       |      |        |        |        |      |      |
 % gost780s      |      |        |        |        |      |   +  |
-% gost2003e     |      |   +    |        |        |      |      |
-% gost2003es    |      |   +    |        |        |      |   +  |
-% gost2008      |      |        |   +    |        |      |      |
-% gost2008e     |      |        |   +    |    +   |      |      |
-% gost2008ne    |      |        |   +    |    +   |      |      |   +
-% gost2008el    |      |        |   +    |    +   |   +  |      |
-% gost2008s     |      |        |   +    |        |      |   +  |
-% gost2008es    |      |        |   +    |    +   |      |   +  |
-% gost2008nes   |      |        |   +    |    +   |      |   +  |   +
-% gost2008els   |      |        |   +    |    +   |   +  |   +  |
-% -----------------------------------------------------------------------
-% ugost780      |  +   |        |        |        |      |      |
-% ugost780s     |  +   |        |        |        |      |   +  |
-% ugost2003e    |  +   |   +    |        |        |      |      |
-% ugost2003es   |  +   |   +    |        |        |      |   +  |
-% ugost2008     |  +   |        |   +    |        |      |      |
-% ugost2008e    |  +   |        |   +    |    +   |      |      |
-% ugost2008ne   |  +   |        |   +    |    +   |      |      |   +
-% ugost2008el   |  +   |        |   +    |    +   |   +  |      |
-% ugost2008s    |  +   |        |   +    |        |      |   +  |
-% ugost2008es   |  +   |        |   +    |    +   |      |   +  |
-% ugost2008nes  |  +   |        |   +    |    +   |      |   +  |   +
-% ugost2008els  |  +   |        |   +    |    +   |   +  |   +  |
-% -----------------------------------------------------------------------
+%------------------------------------------------------------------------
+% gost2003      |      |   +    |        |    +   |      |      |
+% gost2003s     |      |   +    |        |    +   |      |   +  |
+% gost2008      |      |        |   +    |    +   |      |      |
+% gost2008n     |      |        |   +    |    +   |      |      |   +
+% gost2008l     |      |        |   +    |    +   |   +  |      |
+% gost2008s     |      |        |   +    |    +   |      |   +  |
+% gost2008ns    |      |        |   +    |    +   |      |   +  |   +
+% gost2008ls    |      |        |   +    |    +   |   +  |   +  |
+%------------------------------------------------------------------------
+% ugost2003     |  +   |   +    |        |    +   |      |      |
+% ugost2003s    |  +   |   +    |        |    +   |      |   +  |
+% ugost2008     |  +   |        |   +    |    +   |      |      |
+% ugost2008n    |  +   |        |   +    |    +   |      |      |   +
+% ugost2008l    |  +   |        |   +    |    +   |   +  |      |
+% ugost2008s    |  +   |        |   +    |    +   |      |   +  |
+% ugost2008ns   |  +   |        |   +    |    +   |      |   +  |   +
+% ugost2008ls   |  +   |        |   +    |    +   |   +  |   +  |
+%------------------------------------------------------------------------
 % Style         | utf8 | strict | modern | eprint | long | sort | natbib
-% -----------------------------------------------------------------------
+%------------------------------------------------------------------------
 %   \end{verbatim}
 %
 % |Gost2008| style is recommended for most applications. It corresponds to the
 % currently effective Standard 7.0.5-2008. Librarians should use the style
-% |gost2003| instead of |gost2008| to compile a library catalog to meet the
+% gost2003 instead of gost2008 to compile a library catalog to meet the
 % Standard 7.1-2003. Use of other styles is best explained through
 % the meaning of options used to compile those styles from the master source.
 %
-% Two styles |gost780| and |gost780s|, compiled without |modern| and |strict|
+% Two styles, |gost780| and |gost780s|, compiled without |modern| and |strict|
 % options, are retained for backward compatibility. They do not conform
 % the Standards 7.0.5-2008 and 7.1-2003 cited above.
 %
 % The |strict| option provides conformance to the Standard 7.1-2003. The
 % styles compiled with that option bear the name gost2003 with possible
-% suffixes |e|, |s|, |l| as explained below.
+% suffixes |s|, |l|, |n| as explained below.
 %
 % The |modern| option meets the Standard 7.0.5-2008 which can be thought
-% off as relaxed version of the Standards 7.1-2003. The styles compiled with
-% that option bear the name gost2008 with possible suffixes |e|, |s|, |l|.
+% off as a relaxed version of the Standards 7.1-2003. The styles compiled with
+% that option bear the name gost2008 with possible suffixes |s|, |l|, |n|.
 % The |strict| option  has precedence over |modern| so that a style compiled
 % with both options will resemble mainly the |gost2003| style rather than
 % |gost2008|.
 %
 % If the number of authors exceeds 4, modern styles cut the list of authors
-% to at most 4 persons in accordance to effective Standards. The option
+% to at most 4 persons as prescibed by the Standards. The option
 % |long| overrides this rule to provide backward compatibility with the
-% package disser developed by Stanislab Kruchinin. Two styles, |gost2008el| and
-% |gost2008els|, compiled with the option |long| mimic behavior of the styles
+% package disser by Stanislab Kruchinin. Two styles, |gost2008l| and
+% |gost2008ls|, compiled with the option |long| mimic behavior of the styles
 % |gost705| and |gost705s| from the disser package. Major
 % effect of the |long| option is that the list of authors always
 % precedes book or article title no matter how long is it.
 % Modern styles compiled without |long| place long list of authors behind
-% the title. The names of styles compiled with the option |long| bear the
-% suffix |l|. Note that those styles do not conform effective Standards and
+% the title. The names of styles compiled with the option |long| has the
+% suffix |l|. Recall that those styles do not conform effective Standards and
 % their use is discouraged.
 %
-% The |eprint| option enables experimental features on formatting
-% electronic publications. In particular, it enables |eprint|, |eprinttype|
-% and |eprintclass| fields for a bibliographic entry. The names of styles
-% compiled with the option |eprint| bear the suffix |e|.  The styles without
-% the suffix |e| just ignore the fields |eprint|, |eprinttype| and
-% |eprintclass|.
+% The |eprint| option enables formatting electronic publications. In particular,
+% it enables |eprint|, |eprinttype| and |eprintclass| fields for a bibliographic
+% entry. The styles generated without |eprint| options,
+% ignore the fields |eprint|, |eprinttype| and |eprintclass|. Starting from the
+% version 1.2 of the GOST package, all modern styles are compiled with this
+% option included. Therefore the suffix |e| which designated
+% this option in earlier  versions is not appended to the name of style
+% any more.
 %
 % The |natbib| option provides compatibility with the |natbib| package. The names
-% of styles compiled with the option |natbib| bear the suffix `nat'. Currently
+% of styles compiled with the option |natbib| bear the suffix |n|. Currently
 % 4 styles with that option are available for beta testing.
 %
 % The |sort| option enables sorting bibliographic references by author names
@@ -290,7 +295,7 @@
 % bear the suffix |s|.
 %
 % Finally, the |utf8| option produces bibliographic styles in unicode rather
-% that in 8-bit encodings. Names of those styles bear the prefix |unicode|.
+% that in 8-bit encoding. Names of those styles bear the prefix |u|.
 %
 %
 % Beyond bibliographic style, GOST bundle contains CS files (codepage and
@@ -441,6 +446,7 @@
 %   \subsection{Version history}
 %
 %   \begin{enumerate}
+%   \item[2012.02.17] Support for |natbib| package.
 %   \item[2012.02.02] Adaptation to GOST 7.0.5, electronic publishing.
 %   \item[2005.08.12] First version uploaded to CTAN.
 %   \item[2003.06.06] First public version.
@@ -548,8 +554,8 @@ ENTRY
     eprint
   }
   {}
-%  { label }
-  { label extra.label sort.label short.list }
+%<!natbib>  { label }
+%<natbib>  { label extra.label sort.label short.list }
 
 %    \end{macrocode}
 % Declare internal variables and constants used in to format references.
@@ -3083,6 +3089,19 @@ FUNCTION {online}
   format.annote output
   fin.entry
 }
+
+%    \end{macrocode}
+%
+% \DescribeFunction{internet}
+% \DescribeFunction{www}
+% \DescribeFunction{webpage}
+% \DescribeFunction{ielectronic}
+% New in version 2012.02.15.
+%    \begin{macrocode}
+FUNCTION {internet}   {online}
+FUNCTION {www}        {online}
+FUNCTION {webpage}    {online}
+FUNCTION {electronic} {online}
 %    \end{macrocode}
 %
 % \DescribeFunction{thesis}
@@ -3127,8 +3146,7 @@ FUNCTION {thesis}
   format.btitle add.doi add.medium "title" output.check
   new.column
 %  bbl.phdthesis format.thesis.type output.nonnull
-%  bbl.phdthesis format.thesis.type "type" output.check output.nonnull
-  type "type" output.check %%% output.nonnull
+  type "type" output.check
   new.column
   number output
   new.slash
