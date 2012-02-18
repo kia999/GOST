@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{432}
+% \CheckSum{438}
 %
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
 % \changes{v1.2}{11 Feb 2012}{Support for natbib package}
@@ -1120,6 +1120,28 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
 if$}
 
 %    \end{macrocode}
+% \DescribeFunction{bbl.and}
+%    \begin{macrocode}
+%<*natbib>
+FUNCTION {bbl.and}      %  { "\bblof{}" }
+{ curlanguage "english" =
+   {"and"}
+   { curlanguage "german" =
+      { "und" }
+      { curlanguage "ukrainian" =
+%<!utf8>         {"{\cyrii}"}
+%<utf8>         {"і"}
+         { curlanguage "russian" =
+%<!utf8>            {"{\cyri}"}
+%<utf8>            {"и"}
+            {"language is not defined: " language  "and" * * warning$ "and"}
+         if$}
+      if$}
+   if$}
+if$}
+%</natbib>
+
+%    \end{macrocode}
 % \DescribeFunction{bbl.nnumber}
 %    \begin{macrocode}
 FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
@@ -1995,7 +2017,9 @@ FUNCTION {format.full.names}
               if$
               t "others" =
                 { " et~al." * }
+                %{ " " bbl.etal * * }
                 { " and " * t * }
+                %{ " " bbl.and " " * * * t * }
               if$
             }
           if$
@@ -2066,9 +2090,10 @@ FUNCTION {output.bibitem}
 { newline$
   "\bibitem" write$
   author.key.label
-  year parenthesify *
-  "; lbl:" label * *
-  "; mfn:"  make.full.names * *
+%  year parenthesify *
+%  "; lbl:" label * *
+  label
+  ")"  make.full.names * *
   bracketise write$
   cite$ bracify write$
   newline$
@@ -3908,7 +3933,8 @@ FUNCTION {sort.format.names}
       "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
       format.name$ 't :=
       nameptr numnames = t "others" = and
-        { "et al" * }
+        %{ "et al" * }
+        { bbl.etal * }
         { t sortify * }
       if$
       nameptr #1 + 'nameptr :=
@@ -4032,26 +4058,41 @@ SORT
 
 %</sort|natbib>
 
-STRINGS { longest.label }
+%<!natbib>STRINGS { longest.label }
+%<natbib>STRINGS { longest.label last.label next.extra }
 
-INTEGERS { number.label longest.label.width }
+%<!natbib>INTEGERS { number.label longest.label.width }
+%<natbib>INTEGERS { number.label longest.label.width last.extra.num  }
 
 %    \end{macrocode}
 %
 % \subsection{Bibliography list}
 %
 % \DescribeFunction{initialize.longest.label}
-% Declare functions to computer argument of |thebibliography| environment.
+% Declare functions to compute argument of |thebibliography| environment.
 %    \begin{macrocode}
+%<*!natbib>
 FUNCTION {initialize.longest.label}
 { "" 'longest.label :=
   #1 'number.label :=
   #0 'longest.label.width :=
 }
+%</!natbib>
+%<*natbib>
+FUNCTION {initialize.longest.label}
+{ "" 'longest.label :=
+  #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
+  #0 'longest.label.width :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
+}
+%</natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{longest.label.pass}
 %    \begin{macrocode}
+%<*!natbib>
 FUNCTION {longest.label.pass}
 { number.label int.to.str$ 'label :=
   number.label #1 + 'number.label :=
@@ -4066,6 +4107,54 @@ FUNCTION {longest.label.pass}
 EXECUTE {initialize.longest.label}
 
 ITERATE {longest.label.pass}
+%</!natbib>
+
+%    \end{macrocode}
+% \DescribeFunction{forward.pass}
+%    \begin{macrocode}
+%<*natbib>
+FUNCTION {forward.pass}
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
+    }
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
+  if$
+  number.label #1 + 'number.label :=
+}
+
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  extra.label 'next.extra :=
+  extra.label
+  duplicate$ empty$
+    'skip$
+    { "{\natexlab{" swap$ * "}}" * }
+  if$
+  'extra.label :=
+  label extra.label * 'label :=
+}
+
+EXECUTE {initialize.longest.label}
+
+ITERATE {forward.pass}
+
+REVERSE {reverse.pass}
+
+FUNCTION {bib.sort.order}
+{ sort.label  'sort.key$ :=
+}
+
+ITERATE {bib.sort.order}
+
+SORT
+%</natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{begin.bib}
