@@ -1304,7 +1304,7 @@ if$}
 %    \begin{macrocode}
 FUNCTION {bbl.urldate}
 { curlanguage "english" =
-   {"online; accessed: "}
+   {"online; accessed"}
    { curlanguage "ukrainian" =
 %<!utf8>      { "{\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyrn\cyre\cyrn\cyrn\cyrya}" }
 %<utf8>      { "{дата звернення}" }
@@ -4084,6 +4084,17 @@ SORT
 
 %</sort|natbib>
 
+%    \end{macrocode}
+%
+% \subsection{Bibliography list}
+%
+% We need to find longest label to put in into the argument of
+% the |thebibliography| environment. In case of |natbib| options
+% we also need to compute extra suffix for the |year| field if there two or
+% more entries for given label (=author/editor/organization) in that year.
+%
+% Declare global (external) strings used in calculation of the longest label.
+%    \begin{macrocode}
 %<!natbib>STRINGS { longest.label }
 %<natbib>STRINGS { longest.label last.label next.extra }
 
@@ -4092,10 +4103,8 @@ SORT
 
 %    \end{macrocode}
 %
-% \subsection{Bibliography list}
-%
 % \DescribeFunction{initialize.longest.label}
-% Declare functions to compute argument of |thebibliography| environment.
+% Initialize those string.
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {initialize.longest.label}
@@ -4115,8 +4124,15 @@ FUNCTION {initialize.longest.label}
 }
 %</natbib>
 
+EXECUTE {initialize.longest.label}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{initialize.longest.label}
+% Iterate though the list of entries to compute those string.
+%    \begin{macrocode}
 %<*!natbib>
-FUNCTION {longest.label.pass}
+FUNCTION {forward.pass}
 { number.label int.to.str$ 'label :=
   number.label #1 + 'number.label :=
   label width$ longest.label.width >
@@ -4126,15 +4142,7 @@ FUNCTION {longest.label.pass}
     'skip$
   if$
 }
-
-EXECUTE {initialize.longest.label}
-
-ITERATE {longest.label.pass}
 %</!natbib>
-
-%    \end{macrocode}
-% \DescribeFunction{forward.pass}
-%    \begin{macrocode}
 %<*natbib>
 FUNCTION {forward.pass}
 { last.label label =
@@ -4148,7 +4156,16 @@ FUNCTION {forward.pass}
   if$
   number.label #1 + 'number.label :=
 }
+%</natbib>
 
+ITERATE {forward.pass}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{reverse.pass}
+% |Natbib| styles require reverse iteration over all entries.
+%    \begin{macrocode}
+%<*natbib>
 FUNCTION {reverse.pass}
 { next.extra "b" =
     { "a" 'extra.label := }
@@ -4163,10 +4180,6 @@ FUNCTION {reverse.pass}
   'extra.label :=
   label extra.label * 'label :=
 }
-
-EXECUTE {initialize.longest.label}
-
-ITERATE {forward.pass}
 
 REVERSE {reverse.pass}
 
