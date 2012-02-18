@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{431}
+% \CheckSum{432}
 %
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
 % \changes{v1.2}{11 Feb 2012}{Support for natbib package}
@@ -781,6 +781,22 @@ FUNCTION {or}
     'skip$
   if$
 }
+
+%    \end{macrocode}
+% \DescribeFunction{chop.word}
+%    \begin{macrocode}
+%<*sort|natbib>
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
+%</sort|natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{non.stop}
@@ -1543,12 +1559,12 @@ FUNCTION {format.names}
 %</modern>
 
 %    \end{macrocode}
-% \DescribeFunction{format.names.one}
+% \DescribeFunction{format.lab.names}
 % Declare function to go to optional argument of |\bibitem| in
 % the styles generated with the option |natbib|.
 %    \begin{macrocode}
 %<*natbib>
-FUNCTION {format.names.one}
+FUNCTION {format.lab.names}
 {
   's :=
   #1 'nameptr :=
@@ -1626,6 +1642,21 @@ FUNCTION {format.names.rev}
 }
 
 %    \end{macrocode}
+% \DescribeFunction{format.key}
+% Function to substitute empty author name with |key| field.
+%    \begin{macrocode}
+%<*natbib>
+% v1.5 =============================
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
+% v1.5 =============================
+%</natbib>
+
+%    \end{macrocode}
 % \DescribeFunction{format.authors}
 %    \begin{macrocode}
 FUNCTION {format.authors}
@@ -1636,15 +1667,103 @@ FUNCTION {format.authors}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.authors.one}
+% \DescribeFunction{author.key.label}
 %    \begin{macrocode}
 %<*natbib>
-FUNCTION {format.authors.one}
+%FUNCTION {author.key.label}
+%{ author empty$
+%    { "" }
+%    { author format.lab.names }
+%  if$
+%}
+FUNCTION {author.key.label}
 { author empty$
-    { "" }
-    { author format.names.one }
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.lab.names }
   if$
 }
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            'key
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ "" }
+     'skip$
+  if$
+  *
+  'label :=
+}
+
 %</natbib>
 
 %    \end{macrocode}
@@ -1755,7 +1874,7 @@ FUNCTION {format.date}
       if$
     }
   if$
-  extra.label * % new in v.1.2
+%<natbib>  extra.label * % new in v.1.2
 }
 
 %    \end{macrocode}
@@ -1857,11 +1976,99 @@ FUNCTION {output.bibitem}
 }
 %</!natbib>
 %<*natbib>
+FUNCTION {format.full.names}
+{'s :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { " et~al." * }
+                { " and " * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {author.editor.full}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {author.full}
+{ author empty$
+    { "" }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {editor.full}
+{ editor empty$
+    { "" }
+    { editor format.full.names }
+  if$
+}
+
+FUNCTION {make.full.names}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.full
+    { type$ "proceedings" =
+        'editor.full
+        'author.full
+      if$
+    }
+  if$
+}
+
+%FUNCTION {output.bibitem}
+%{ newline$
+%  "\bibitem[" write$
+%  label write$
+%  ")" make.full.names duplicate$ short.list =
+%     { pop$ }
+%     { * }
+%   if$
+%  "]{" * write$
+%  cite$ write$
+%  "}" write$
+%  newline$
+%  ""
+%  before.all 'output.state :=
+%}
+% =======================================
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem" write$
-  format.authors.one
+  author.key.label
   year parenthesify *
+  "; lbl:" label * *
+  "; mfn:"  make.full.names * *
   bracketise write$
   cite$ bracify write$
   newline$
@@ -1874,6 +2081,7 @@ FUNCTION {output.bibitem}
   ""
   before.all 'output.state :=
 }
+% =======================================
 %</natbib>
 
 %    \end{macrocode}
@@ -2659,6 +2867,7 @@ FUNCTION {article}
 {
   output.bibitem
   author.before
+%<natbib>  author format.key output
   format.title add.medium "title" output.check
   new.slash
   author.after
@@ -3669,7 +3878,7 @@ READ
 % Next chunk of code governs sorting reference list by authors' names and
 % titles.
 %    \begin{macrocode}
-%<*sort>
+%<*sort|natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{sortify}
@@ -3678,24 +3887,12 @@ FUNCTION {sortify}
 { purify$
 %<!utf8>  "l" change.case$
 }
-
-INTEGERS { len }
-
-%    \end{macrocode}
-% \DescribeFunction{chop.word}
-%    \begin{macrocode}
-FUNCTION {chop.word}
-{ 's :=
-  'len :=
-  s #1 len substring$ =
-    { s len #1 + global.max$ substring$ }
-    's
-  if$
-}
+%</sort|natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{sort.format.names}
 %    \begin{macrocode}
+%<*sort>
 FUNCTION {sort.format.names}
 { 's :=
   #1 'nameptr :=
@@ -3799,12 +3996,41 @@ FUNCTION {presort}
   #1 entry.max$ substring$
   'sort.key$ :=
 }
+%</sort>
 
+%<*natbib>
+INTEGERS { seq.num }
+
+FUNCTION {init.seq}
+{ #0 'seq.num :=}
+
+EXECUTE {init.seq}
+
+FUNCTION {int.to.fix}
+{ "000000000" swap$ int.to.str$ *
+  #-1 #10 substring$
+}
+
+FUNCTION {presort}
+{ calc.label
+  label sortify
+  "    "
+  *
+  seq.num #1 + 'seq.num :=
+  seq.num  int.to.fix
+  'sort.label :=
+  sort.label *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+%</natbib>
+
+%<*sort|natbib>
 ITERATE {presort}
 
 SORT
 
-%</sort>
+%</sort|natbib>
 
 STRINGS { longest.label }
 
@@ -3856,13 +4082,12 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
-%<*bst>
 %<*modern>
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
   "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
 %</modern>
-%<*bst>
+%<natbib>  "\providecommand{\natexlab}[1]{#1}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
