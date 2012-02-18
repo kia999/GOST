@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{438}
+% \CheckSum{439}
 %
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
 % \changes{v1.2}{11 Feb 2012}{Support for natbib package}
@@ -1113,7 +1113,7 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
          { curlanguage "russian" =
 %<!utf8>            {"{\cyr\cyri~\cyrd\cyrr.}"}
 %<utf8>            {"и~др."}
-            {"language is not defined: " language  "etal" * * warning$ "et~al."}
+            {"language is not defined: " language  "et~al" * * warning$ "et~al."}
          if$}
       if$}
    if$}
@@ -1586,36 +1586,55 @@ FUNCTION {format.names}
 % the styles generated with the option |natbib|.
 %    \begin{macrocode}
 %<*natbib>
+%FUNCTION {format.lab.names}
+%{
+%  's :=
+%  #1 'nameptr :=
+%  s num.names$ 'numnames :=
+%  numnames 'namesleft :=
+%    % begin while$
+%    { namesleft #0 > }
+%    { s nameptr "{vv~}{ll}" format.name$ 't :=
+%      nameptr #1 >
+%        { nameptr #2 = numnames #2 > and
+%            { "others" 't :=
+%              #1 'namesleft := }
+%            'skip$
+%          if$
+%          namesleft #1 >
+%            { ", " * t * }
+%            { t "others" = t "~others" = or
+%                { " " * bbl.etal * }
+%                { ", " * t * }
+%              if$
+%             }
+%          if$
+%        }
+%        't
+%      if$
+%      nameptr #1 + 'nameptr :=
+%      namesleft #1 - 'namesleft :=
+%    }
+%  while$
+%}
 FUNCTION {format.lab.names}
-{
-  's :=
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    % begin while$
-    { namesleft #0 > }
-    { s nameptr "{vv~}{ll}" format.name$ 't :=
-      nameptr #1 >
-        { nameptr #2 = numnames #2 > and
-            { "others" 't :=
-              #1 'namesleft := }
-            'skip$
-          if$
-          namesleft #1 >
-            { ", " * t * }
-            { t "others" = t "~others" = or
-                { " " * bbl.etal * }
-                { ", " * t * }
-              if$
-             }
+{ 's :=
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ " et~al." * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " et~al." * }
+            %{ " " bbl.etal * * }
+            { " and " * s #2 "{vv~}{ll}" format.name$ * }
+            %{ " " bbl.and * * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
-        't
       if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
     }
-  while$
+  if$
 }
 %</natbib>
 
@@ -2070,33 +2089,18 @@ FUNCTION {make.full.names}
   if$
 }
 
-%FUNCTION {output.bibitem}
-%{ newline$
-%  "\bibitem[" write$
-%  label write$
-%  ")" make.full.names duplicate$ short.list =
-%     { pop$ }
-%     { * }
-%   if$
-%  "]{" * write$
-%  cite$ write$
-%  "}" write$
-%  newline$
-%  ""
-%  before.all 'output.state :=
-%}
 % =======================================
 FUNCTION {output.bibitem}
 { newline$
-  "\bibitem" write$
-  author.key.label
-%  year parenthesify *
-%  "; lbl:" label * *
-  label
-  ")"  make.full.names * *
-  bracketise write$
-  cite$ bracify write$
-  newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.full.names duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
   language empty$
     { "english" 'curlanguage := }
     {language  'curlanguage := }
@@ -2106,6 +2110,28 @@ FUNCTION {output.bibitem}
   ""
   before.all 'output.state :=
 }
+% =======================================
+%FUNCTION {output.bibitem}
+%{ newline$
+%  "\bibitem" write$
+%%  author.key.label
+%%  year parenthesify *
+%%  "; lbl:" label * *
+%%  "; mfn:"  make.full.names * *
+%  label
+%  make.full.names *
+%  bracketise write$
+%  cite$ bracify write$
+%  newline$
+%  language empty$
+%    { "english" 'curlanguage := }
+%    {language  'curlanguage := }
+%  if$
+%  "\selectlanguageifdefined" curlanguage bracify * write$
+%  newline$
+%  ""
+%  before.all 'output.state :=
+%}
 % =======================================
 %</natbib>
 
@@ -3933,8 +3959,8 @@ FUNCTION {sort.format.names}
       "{vv{ } }{ll{ }}{  f{ }}{  jj{ }}"
       format.name$ 't :=
       nameptr numnames = t "others" = and
-        %{ "et al" * }
-        { bbl.etal * }
+        { "et al" * }
+        %{ bbl.etal * }
         { t sortify * }
       if$
       nameptr #1 + 'nameptr :=
@@ -4089,9 +4115,6 @@ FUNCTION {initialize.longest.label}
 }
 %</natbib>
 
-%    \end{macrocode}
-% \DescribeFunction{longest.label.pass}
-%    \begin{macrocode}
 %<*!natbib>
 FUNCTION {longest.label.pass}
 { number.label int.to.str$ 'label :=
