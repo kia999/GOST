@@ -784,6 +784,9 @@ FUNCTION {or}
 
 %    \end{macrocode}
 % \DescribeFunction{chop.word}
+% |substr len str chop.word| removes given substring
+% |substr| of length |len| from the beginning of the string
+% |dtr|.
 %    \begin{macrocode}
 %<*sort|natbib>
 INTEGERS { len }
@@ -1732,7 +1735,8 @@ FUNCTION {author.editor.key.label}
     { editor empty$
         { key empty$
             { cite$ #1 #3 substring$ }
-            'key
+            %'key          %% causes lost of year
+            { "{}" key * } %% Bug in bibtex8 ??
           if$
         }
         { editor format.lab.names }
@@ -3979,8 +3983,8 @@ FUNCTION {sortify}
 %    \begin{macrocode}
 %<*sort>
 %% =====================================
-%% This version from old gost package
-%<*!natbib>
+%% This version from old Gost package
+%%<*!natbib>
 FUNCTION {sort.format.names}
 { 's :=
   #1 'nameptr :=
@@ -4005,40 +4009,40 @@ FUNCTION {sort.format.names}
     }
   while$
 }
-%</!natbib>
+%%</!natbib>
 %% This version from plainnat.bst
 %% It ignores second and subsequent authors but include year.
-%<*natbib>
-FUNCTION {sort.format.names}
-{ 's :=
-  #1 'nameptr :=
-  ""
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    {
-      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
-      nameptr #1 >
-        {
-          "   "  *
-          namesleft #1 = t "others" = and
-            { "zzzzz" * }
-            { numnames #2 > nameptr #2 = and
-                { "zz" * year field.or.null * "   " * }
-                'skip$
-              if$
-              t sortify *
-            }
-          if$
-        }
-        { t sortify * }
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-%</natbib>
+%%<*natbib>
+%FUNCTION {sort.format.names}
+%{ 's :=
+%  #1 'nameptr :=
+%  ""
+%  s num.names$ 'numnames :=
+%  numnames 'namesleft :=
+%    { namesleft #0 > }
+%    {
+%      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
+%      nameptr #1 >
+%        {
+%          "   "  *
+%          namesleft #1 = t "others" = and
+%            { "zzzzz" * }
+%            { numnames #2 > nameptr #2 = and
+%                { "zz" * year field.or.null * "   " * }
+%                'skip$
+%              if$
+%              t sortify *
+%            }
+%          if$
+%        }
+%        { t sortify * }
+%      if$
+%      nameptr #1 + 'nameptr :=
+%      namesleft #1 - 'namesleft :=
+%    }
+%  while$
+%}
+%%</natbib>
 %% =====================================
 
 %    \end{macrocode}
@@ -4048,9 +4052,9 @@ FUNCTION {sort.format.title}
 { 't :=
   "A " #2
     "An " #3
-      "The " #4 t chop.word
-    chop.word
-  chop.word
+      "The " #4 t chop.word % Removes "The " if any
+    chop.word               % Removes "An " if any
+  chop.word                 % Removes "A " if any
   sortify
   #1 global.max$ substring$
 }
@@ -4100,7 +4104,7 @@ FUNCTION {author.sort}
 %    \end{macrocode}
 % \DescribeFunction{author.title.sort}
 %    \begin{macrocode}
-%<*!natbib>
+%<*!natbib|natbib>
 FUNCTION {author.title.sort}
 { author empty$
     { title empty$
@@ -4122,8 +4126,8 @@ FUNCTION {author.title.sort}
      }  	
   if$
 }
-%</!natbib>
-%<*natbib>
+%</!natbib|natbib>
+%<*natbib|natbib>
 FUNCTION {author.editor.sort}
 { author empty$
     { editor empty$
@@ -4174,12 +4178,13 @@ FUNCTION {editor.organization.sort}
     { editor sort.format.names }
   if$
 }
-%</natbib>
+%</natbib|natbib>
 
 
 %    \end{macrocode}
 % \DescribeFunction{presort}
 % Function to compute |sort.key$|.
+% What is the space string \verb*|"   "| for?
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {presort}%#1
@@ -4202,33 +4207,38 @@ FUNCTION {presort}%#1
 FUNCTION {presort}%#2
 { calc.label
   label sortify
+  %author.title.sort
   "    "
   *
-  type$ "book" =
-  type$ "inbook" =
-  or
-    'author.editor.sort
-    { type$ "proceedings" =
-        'editor.organization.sort
-        { type$ "manual" =
-            'author.organization.sort
-            'author.sort
-          if$
-        }
-      if$
-    }
-  if$
+  % ========= plainnat.bst =========
+%  type$ "book" =
+%  type$ "inbook" =
+%  or
+%    'author.editor.sort
+%    { type$ "proceedings" =
+%        'editor.organization.sort
+%        { type$ "manual" =
+%            'author.organization.sort
+%            'author.sort
+%          if$
+%        }
+%      if$
+%    }
+%  if$
+  author.title.sort
   "    "
   *
   year field.or.null sortify
   *
   "    "
   *
-  cite$
+  %cite$
+  title field.or.null sort.format.title
   *
   #1 entry.max$ substring$
   'sort.label :=
   sort.label *
+  % ================================
   #1 entry.max$ substring$
   'sort.key$ :=
 }
@@ -4251,16 +4261,16 @@ FUNCTION {int.to.fix}
 
 FUNCTION {presort}%#3
 {
-  calc.label
-  label sortify
+  calc.label               % computes label
+  label sortify            % initiates sort.label
   "    "
   *
-  seq.num #1 + 'seq.num :=
-  seq.num  int.to.fix
-  'sort.label :=
-  sort.label *
-  #1 entry.max$ substring$
-  'sort.key$ :=
+  seq.num #1 + 'seq.num := % advance seq.num
+  seq.num  int.to.fix      % prepend seq.num with 0s
+  'sort.label :=           % set sort.label to seq.num
+  sort.label *             % append seq.num to label
+  #1 entry.max$ substring$ % cut if too long
+  'sort.key$ :=            % set sort.key$
 }
 %</natbib>
 %</!sort>
@@ -4317,7 +4327,7 @@ EXECUTE {initialize.longest.label}
 %    \end{macrocode}
 %
 % \DescribeFunction{initialize.longest.label}
-% Iterate though the list of entries to compute those string.
+% Iterate though the list of entries to compute |label|.
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {forward.pass}
