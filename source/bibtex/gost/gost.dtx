@@ -1690,6 +1690,19 @@ FUNCTION {format.names.rev}
 }
 
 %    \end{macrocode}
+% \DescribeFunction{format.key}
+% Function to substitute empty field (usually, author name) with the |key| field.
+%    \begin{macrocode}
+%<*natbib>
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
+%</natbib>
+
+%    \end{macrocode}
 % \DescribeFunction{format.authors}
 %    \begin{macrocode}
 FUNCTION {format.authors}
@@ -1698,21 +1711,6 @@ FUNCTION {format.authors}
     { author format.names emphasize}
   if$
 }
-
-%    \end{macrocode}
-% \DescribeFunction{format.key}
-% Function to substitute empty field (usually, author name) with the |key| field.
-%    \begin{macrocode}
-%<*natbib>
-% v1.5 =============================
-FUNCTION {format.key}
-{ empty$
-    { key field.or.null }
-    { "" }
-  if$
-}
-% v1.5 =============================
-%</natbib>
 
 %    \end{macrocode}
 % \DescribeFunction{author.key.label}
@@ -3980,6 +3978,9 @@ FUNCTION {sortify}
 % \DescribeFunction{sort.format.names}
 %    \begin{macrocode}
 %<*sort>
+%% =====================================
+%% This version from old gost package
+%<*!natbib>
 FUNCTION {sort.format.names}
 { 's :=
   #1 'nameptr :=
@@ -4004,6 +4005,41 @@ FUNCTION {sort.format.names}
     }
   while$
 }
+%</!natbib>
+%% This version from plainnat.bst
+%% It ignores second and subsequent authors but include year.
+%<*natbib>
+FUNCTION {sort.format.names}
+{ 's :=
+  #1 'nameptr :=
+  ""
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    {
+      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
+      nameptr #1 >
+        {
+          "   "  *
+          namesleft #1 = t "others" = and
+            { "zzzzz" * }
+            { numnames #2 > nameptr #2 = and
+                { "zz" * year field.or.null * "   " * }
+                'skip$
+              if$
+              t sortify *
+            }
+          if$
+        }
+        { t sortify * }
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+%</natbib>
+%% =====================================
 
 %    \end{macrocode}
 % \DescribeFunction{sort.format.title}
@@ -4022,6 +4058,10 @@ FUNCTION {sort.format.title}
 %    \end{macrocode}
 % \DescribeFunction{author.sort}
 %    \begin{macrocode}
+%% =====================================
+%% This version from old gost package.
+%%
+%<*!natbib>
 FUNCTION {author.sort}
 { author empty$
     { key empty$
@@ -4039,10 +4079,28 @@ FUNCTION {author.sort}
     }
   if$
 }
+%</!natbib>
+%% This version from plainnat.bst
+%<*natbib>
+FUNCTION {author.sort}
+{ author empty$
+    { key empty$
+        { "to sort, need author or key in " cite$ * warning$
+          ""
+        }
+        { key sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+%</natbib>
+%% =====================================
 
 %    \end{macrocode}
 % \DescribeFunction{author.title.sort}
 %    \begin{macrocode}
+%<*!natbib>
 FUNCTION {author.title.sort}
 { author empty$
     { title empty$
@@ -4064,13 +4122,67 @@ FUNCTION {author.title.sort}
      }  	
   if$
 }
+%</!natbib>
+%<*natbib>
+FUNCTION {author.editor.sort}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { "to sort, need author, editor, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { editor sort.format.names }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {author.organization.sort}
+{ author empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need author, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { author sort.format.names }
+  if$
+}
+
+FUNCTION {editor.organization.sort}
+{ editor empty$
+    { organization empty$
+        { key empty$
+            { "to sort, need editor, organization, or key in " cite$ * warning$
+              ""
+            }
+            { key sortify }
+          if$
+        }
+        { "The " #4 organization chop.word sortify }
+      if$
+    }
+    { editor sort.format.names }
+  if$
+}
+%</natbib>
 
 
 %    \end{macrocode}
 % \DescribeFunction{presort}
 % Function to compute |sort.key$|.
 %    \begin{macrocode}
-FUNCTION {presort}
+%<*!natbib>
+FUNCTION {presort}%#1
 {
   author.title.sort
   "   "
@@ -4085,8 +4197,45 @@ FUNCTION {presort}
   #1 entry.max$ substring$
   'sort.key$ :=
 }
+%</!natbib>
+%<*natbib>
+FUNCTION {presort}%#2
+{ calc.label
+  label sortify
+  "    "
+  *
+  type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.sort
+    { type$ "proceedings" =
+        'editor.organization.sort
+        { type$ "manual" =
+            'author.organization.sort
+            'author.sort
+          if$
+        }
+      if$
+    }
+  if$
+  "    "
+  *
+  year field.or.null sortify
+  *
+  "    "
+  *
+  cite$
+  *
+  #1 entry.max$ substring$
+  'sort.label :=
+  sort.label *
+  #1 entry.max$ substring$
+  'sort.key$ :=
+}
+%</natbib>
 %</sort>
 
+%<*!sort>
 %<*natbib>
 INTEGERS { seq.num }
 
@@ -4100,12 +4249,8 @@ FUNCTION {int.to.fix}
   #-1 #10 substring$
 }
 
-FUNCTION {presort}
+FUNCTION {presort}%#3
 {
-%  language empty$
-%    { "english" 'curlanguage := }
-%    { language  'curlanguage := }
-%  if$
   calc.label
   label sortify
   "    "
@@ -4118,6 +4263,7 @@ FUNCTION {presort}
   'sort.key$ :=
 }
 %</natbib>
+%</!sort>
 
 %<*sort|natbib>
 ITERATE {presort}
