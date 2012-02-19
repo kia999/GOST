@@ -1603,7 +1603,9 @@ FUNCTION {format.names}
 %          if$
 %          namesleft #1 >
 %            { ", " * t * }
-%            { t "others" = t "~others" = or
+%            { t "others" =
+%              t "~others" =
+%              or
 %                { " " * bbl.etal * }
 %                { ", " * t * }
 %              if$
@@ -1619,14 +1621,15 @@ FUNCTION {format.names}
 %}
 FUNCTION {format.lab.names}
 { 's :=
-%  language empty$
-%    { "english" 'curlanguage := }
-%    { language  'curlanguage := }
-%  if$
+  language empty$
+    { "english" 'curlanguage := }
+    { language  'curlanguage := }
+  if$
   s #1 "{vv~}{ll}" format.name$
   s num.names$ duplicate$
   #2 >
-    { pop$ " et~al." * }
+    %{ pop$ " et~al." * }
+    { pop$ " " bbl.etal * * }
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
@@ -1987,13 +1990,13 @@ FUNCTION {output.address.publisher}
 % |Otput.address.publisher.date| is used in old styles.
 % New styles use |output.address.publisher|.
 %    \begin{macrocode}
-%<*!(modern|dtrict)>
+%<*!(modern|strict)>
 FUNCTION {output.address.publisher.date}
 {
   output.address.publisher
   format.date output
 }
-%</!(modern|dtrict)>
+%</!(modern|strict)>
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
@@ -2014,9 +2017,23 @@ FUNCTION {output.bibitem}
   before.all 'output.state :=
 }
 %</!natbib>
+%    \end{macrocode}
+% \DescribeFunction{format.full.names}
+% \DescribeFunction{author.full}
+% \DescribeFunction{editor.full}
+% \DescribeFunction{author.editor.full}
+% \DescribeFunction{make.full.names}
+% \DescribeFunction{output.bibitem}
+% In case of |natbib| option, we need |make.full.names| to compose
+% |output.bibitem|, and the latter in its turn requires some more functions.
+%    \begin{macrocode}
 %<*natbib>
 FUNCTION {format.full.names}
 {'s :=
+  language empty$
+    { "english" 'curlanguage := }
+    { language  'curlanguage := }
+  if$
   #1 'nameptr :=
   s num.names$ 'numnames :=
   numnames 'namesleft :=
@@ -2033,6 +2050,8 @@ FUNCTION {format.full.names}
                 'skip$
               if$
               t "others" =
+	          %t "~others" =
+	          %or
                 %{ " et~al." * }
                 { " " bbl.etal * * }
                 %{ " and " * t * }
@@ -2049,17 +2068,6 @@ FUNCTION {format.full.names}
   while$
 }
 
-FUNCTION {author.editor.full}
-{ author empty$
-    { editor empty$
-        { "" }
-        { editor format.full.names }
-      if$
-    }
-    { author format.full.names }
-  if$
-}
-
 FUNCTION {author.full}
 { author empty$
     { "" }
@@ -2071,6 +2079,17 @@ FUNCTION {editor.full}
 { editor empty$
     { "" }
     { editor format.full.names }
+  if$
+}
+
+FUNCTION {author.editor.full}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
   if$
 }
 
@@ -2957,6 +2976,7 @@ FUNCTION {book}
 {
   output.bibitem
   author.before
+%<natbib>  author format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -3000,6 +3020,7 @@ FUNCTION {booklet}
 {
   output.bibitem
   author.before
+%<natbib>  author format.key output
   format.title add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -3035,6 +3056,7 @@ FUNCTION {inbook}
 {
   output.bibitem
   author.before
+%<natbib>  author format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -3085,6 +3107,7 @@ FUNCTION {incollection}
 {
   output.bibitem
   author.before
+%<natbib>  author format.key output
   new.sentence
   format.title add.doi add.medium "title" output.check
   new.slash
@@ -3128,6 +3151,7 @@ FUNCTION {incollection}
 FUNCTION {proceedings}
 {
   output.bibitem
+%<natbib>  editor format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   editor.organization.after
@@ -3171,6 +3195,7 @@ FUNCTION {proceedings}
 FUNCTION {inproceedings}
 { output.bibitem
   author.before
+%<natbib>  author format.key output
   new.sentence
   format.title add.doi add.medium "title" output.check
   new.slash
@@ -3230,6 +3255,7 @@ FUNCTION {manual}
     }
     { format.authors output.nonnull }
   if$
+%<natbib>  author format.key output
   new.block
   format.btitle add.doi add.medium "title" output.check
   author empty$
@@ -3269,6 +3295,7 @@ FUNCTION {manual}
 FUNCTION {misc}
 { output.bibitem
   format.authors output
+%<natbib>  author format.key output
   title howpublished new.sentence.checkb
   format.title add.medium output
   howpublished new.block.checka
@@ -3298,6 +3325,7 @@ FUNCTION {misc}
 FUNCTION {unpublished}
 { output.bibitem
   author.before
+%<natbib>  author format.key output
   format.btitle "title" output.check
   new.slash
   author.after
@@ -3329,6 +3357,7 @@ FUNCTION {unpublished}
 FUNCTION {online}
 { output.bibitem
   format.authors output
+%<natbib>  author format.key output
   title howpublished new.sentence.checkb
   format.title add.doi add.medium "title" output.check
 %  howpublished new.block.checka
@@ -3379,6 +3408,7 @@ FUNCTION {electronic} {online}
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
   new.column
@@ -3400,6 +3430,7 @@ FUNCTION {thesis}
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -3472,6 +3503,7 @@ FUNCTION {report}
 %  author.before
 %  new.sentence
   format.title add.doi add.medium "title" output.check
+%<natbib>  title format.key output
   new.column
 %  format.techrep.type.number output.nonnull
 %  type "type" output.check
@@ -3538,6 +3570,7 @@ FUNCTION {phdthesis}
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -3572,6 +3605,7 @@ FUNCTION {phdthesis}
 FUNCTION {masterthesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
   new.column
@@ -3593,6 +3627,7 @@ FUNCTION {masterthesis}
 FUNCTION {masterthesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -3627,6 +3662,7 @@ FUNCTION {masterthesis}
 FUNCTION {dscithesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
   new.column
@@ -3648,6 +3684,7 @@ FUNCTION {dscithesis}
 FUNCTION {dscithesis}
 { output.bibitem
   format.authors "author" output.check
+%<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -3718,6 +3755,7 @@ FUNCTION {techreport}
 %  author.before
 %  new.sentence
   format.title add.doi add.medium "title" output.check
+%<natbib>  title format.key output
   new.column
 %  format.techrep.type.number output.nonnull
 %  type "type" output.check
@@ -4064,10 +4102,10 @@ FUNCTION {int.to.fix}
 
 FUNCTION {presort}
 {
-  language empty$
-    { "english" 'curlanguage := }
-    { language  'curlanguage := }
-  if$
+%  language empty$
+%    { "english" 'curlanguage := }
+%    { language  'curlanguage := }
+%  if$
   calc.label
   label sortify
   "    "
