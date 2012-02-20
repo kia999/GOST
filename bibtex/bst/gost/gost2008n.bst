@@ -1,10 +1,10 @@
 %%
-%% This is file `gost2008.bst',
+%% This is file `gost2008n.bst',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% gost.dtx  (with options: `bst,modern,eprint')
+%% gost.dtx  (with options: `bst,modern,natbib,eprint')
 %% 
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -29,6 +29,32 @@
 %%
 %% This bibstyle attempts to format bibliography according to
 %% GOST 7.0.5-2008 for bibliographic reference.
+%%-------------------------------------------------------------------
+%% This is an author-year citation style bibliography.
+%% It requires a special package file to function properly
+%% such as natbib.sty by Patrick W. Daly.
+%% The form of the \bibitem entries is
+%%   \bibitem[Jones et al.(1990)]{key}...
+%%   \bibitem[Jones et al.(1990)Jones, Baker, and Smith]{key}...
+%% where the label part (in brackets) consists of the author names,
+%% as they should appear in the citation, with the year in parentheses following.
+%% There must be no space before the opening parenthesis!
+%% A full list of authors may also follow the year.
+%% In natbib.sty, it is possible to define the type of enclosures that is
+%% really wanted (brackets or parentheses), but in either case, there must
+%% be parentheses in the label.
+%% The \cite command functions as follows:
+%%   \citet{key}              => Jones et al. (1990)
+%%   \citet*{key}             => Jones, Baker, and Smith (1990)
+%%   \citep{key}              => (Jones et al., 1990)
+%%   \citep*{key}             => (Jones, Baker, and Smith, 1990)
+%%   \citep[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
+%%   \citep[e.g.][]{key}      => (e.g. Jones et al., 1990)
+%%   \citep[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \citeauthor{key}         => Jones et al.
+%%   \citeauthor*{key}        => Jones, Baker, and Smith
+%%   \citeyear{key}           => 1990
+%%---------------------------------------------------------------------
 
 ENTRY
   { address
@@ -69,7 +95,7 @@ ENTRY
     eprint
   }
   {}
-  { label }
+  { label extra.label sort.label short.list }
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
 after.dblslash after.slash after.column after.semicolumn }
@@ -227,6 +253,16 @@ FUNCTION {or}
   if$
 }
 
+INTEGERS { len }
+
+FUNCTION {chop.word}
+{ 's :=
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
+  if$
+}
 
 FUNCTION {non.stop}
 { duplicate$
@@ -446,6 +482,20 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
    if$}
 if$}
 
+FUNCTION {bbl.and}      %  { "\bbland{}" }
+{ curlanguage "english" =
+   {"and"}
+   { curlanguage "german" =
+      { "und" }
+      { curlanguage "ukrainian" =
+         {"{\cyrii}"}
+         { curlanguage "russian" =
+            {"{\cyri}"}
+            {"language is not defined: " language  "and" * * warning$ "and"}
+         if$}
+      if$}
+   if$}
+if$}
 
 FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 { curlanguage "english" =
@@ -750,6 +800,30 @@ FUNCTION {format.names}
   while$
 }
 
+FUNCTION {format.lab.names}
+{ 's :=
+  language empty$
+    { "english" 'curlanguage := }
+    { language  'curlanguage := }
+  if$
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    %{ pop$ " et~al." * }
+    { pop$ " " bbl.etal * * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            %{ " et~al." * }
+            { " " bbl.etal * * }
+            %{ " and " * s #2 "{vv~}{ll}" format.name$ * }
+            { " " bbl.and " " * * * s #2 "{vv~}{ll}" format.name$ * }
+          if$
+        }
+      if$
+    }
+  if$
+}
 
 FUNCTION {format.names.rev}
 {
@@ -787,12 +861,107 @@ FUNCTION {format.names.rev}
   while$
 }
 
+FUNCTION {format.key}
+{ empty$
+    { key field.or.null }
+    { "" }
+  if$
+}
 
 FUNCTION {format.authors}
 { author empty$
     { "" }
     { author format.names emphasize}
   if$
+}
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            %'key          %% causes lost of year
+            { "{}" key * } %% Bug in bibtex8 ??
+          if$
+        }
+        { editor format.lab.names }
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.lab.names }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.lab.names }
+  if$
+}
+
+FUNCTION {calc.short.authors}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.authors
+  short.list
+  "("
+  *
+  year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ "" }
+     'skip$
+  if$
+  *
+  'label :=
 }
 
 
@@ -867,6 +1036,7 @@ FUNCTION {format.date}
       if$
     }
   if$
+  extra.label * % new in v.1.2
 }
 
 FUNCTION {output.address.publisher}
@@ -884,20 +1054,110 @@ FUNCTION {output.address.publisher}
 }
 
 
-FUNCTION {output.bibitem}
-{ newline$
-  "\bibitem" write$
-  cite$ bracify write$
-  newline$
+FUNCTION {format.full.names}
+{'s :=
   language empty$
     { "english" 'curlanguage := }
     { language  'curlanguage := }
+  if$
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+              curlanguage "english" =
+              and
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+          %t "~others" =
+          %or
+                %{ " et~al." * }
+                { " " bbl.etal * * }
+                %{ " and " * t * }
+                { " " bbl.and " " * * * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {author.full}
+{ author empty$
+    { "" }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {editor.full}
+{ editor empty$
+    { "" }
+    { editor format.full.names }
+  if$
+}
+
+FUNCTION {author.editor.full}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.full.names }
+      if$
+    }
+    { author format.full.names }
+  if$
+}
+
+FUNCTION {make.full.names}
+{ type$ "book" =
+  type$ "inbook" =
+  or
+    'author.editor.full
+    { type$ "proceedings" =
+        'editor.full
+        'author.full
+      if$
+    }
+  if$
+}
+
+FUNCTION {output.bibitem}
+{ newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.full.names duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
+  language empty$
+    { "english" 'curlanguage := }
+    {language  'curlanguage := }
   if$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
   ""
   before.all 'output.state :=
 }
+%%  author.key.label
+%%  year parenthesify *
+%%  "; lbl:" label * *
+%%  "; mfn:"  make.full.names * *
 
 FUNCTION {n.dashify}
 { 't :=
@@ -1296,6 +1556,7 @@ FUNCTION {article}
 {
   output.bibitem
   author.before
+  author format.key output
   format.title add.medium "title" output.check
   new.slash
   author.after
@@ -1320,6 +1581,7 @@ FUNCTION {book}
 {
   output.bibitem
   author.before
+  author format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -1349,6 +1611,7 @@ FUNCTION {booklet}
 {
   output.bibitem
   author.before
+  author format.key output
   format.title add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -1369,6 +1632,7 @@ FUNCTION {inbook}
 {
   output.bibitem
   author.before
+  author format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   author.after
@@ -1402,6 +1666,7 @@ FUNCTION {incollection}
 {
   output.bibitem
   author.before
+  author format.key output
   new.sentence
   format.title add.doi add.medium "title" output.check
   new.slash
@@ -1429,6 +1694,7 @@ FUNCTION {incollection}
 FUNCTION {proceedings}
 {
   output.bibitem
+  editor format.key output
   format.btitle add.doi add.medium "title" output.check
   new.slash
   editor.organization.after
@@ -1448,6 +1714,7 @@ FUNCTION {proceedings}
 FUNCTION {inproceedings}
 { output.bibitem
   author.before
+  author format.key output
   new.sentence
   format.title add.doi add.medium "title" output.check
   new.slash
@@ -1484,6 +1751,7 @@ FUNCTION {manual}
     }
     { format.authors output.nonnull }
   if$
+  author format.key output
   new.block
   format.btitle add.doi add.medium "title" output.check
   author empty$
@@ -1514,6 +1782,7 @@ FUNCTION {manual}
 FUNCTION {misc}
 { output.bibitem
   format.authors output
+  author format.key output
   title howpublished new.sentence.checkb
   format.title add.medium output
   howpublished new.block.checka
@@ -1531,6 +1800,7 @@ FUNCTION {misc}
 FUNCTION {unpublished}
 { output.bibitem
   author.before
+  author format.key output
   format.btitle "title" output.check
   new.slash
   author.after
@@ -1548,6 +1818,7 @@ FUNCTION {unpublished}
 FUNCTION {online}
 { output.bibitem
   format.authors output
+  author format.key output
   title howpublished new.sentence.checkb
   format.title add.doi add.medium "title" output.check
   howpublished new.dblslash.checka
@@ -1572,6 +1843,7 @@ FUNCTION {electronic} {online}
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
+  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -1601,6 +1873,7 @@ FUNCTION {report}
 {
   output.bibitem
   format.title add.doi add.medium "title" output.check
+  title format.key output
   new.column
   type "type" output.check
   new.column
@@ -1629,6 +1902,7 @@ FUNCTION {report}
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
+  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -1655,6 +1929,7 @@ FUNCTION {phdthesis}
 FUNCTION {masterthesis}
 { output.bibitem
   format.authors "author" output.check
+  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -1681,6 +1956,7 @@ FUNCTION {masterthesis}
 FUNCTION {dscithesis}
 { output.bibitem
   format.authors "author" output.check
+  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
   new.column
@@ -1712,6 +1988,7 @@ FUNCTION {techreport}
 {
   output.bibitem
   format.title add.doi add.medium "title" output.check
+  title format.key output
   new.column
   format.techreport.type output
   new.column
@@ -1881,34 +2158,97 @@ MACRO {nl}  {"Nano Lett."}
 READ
 
 
+FUNCTION {sortify}
+{ purify$
+  "l" change.case$
+}
 
 
+INTEGERS { seq.num }
 
-STRINGS { longest.label }
+FUNCTION {init.seq}
+{ #0 'seq.num :=}
 
-INTEGERS { number.label longest.label.width }
+EXECUTE {init.seq}
+
+FUNCTION {int.to.fix}
+{ "000000000" swap$ int.to.str$ *
+  #-1 #10 substring$
+}
+
+FUNCTION {presort}%#3
+{
+  calc.label               % computes label
+  label sortify            % initiates sort.label
+  "    "
+  *
+  seq.num #1 + 'seq.num := % advance seq.num
+  seq.num  int.to.fix      % prepend seq.num with 0s
+  'sort.label :=           % set sort.label to seq.num
+  sort.label *             % append seq.num to label
+  #1 entry.max$ substring$ % cut if too long
+  'sort.key$ :=            % set sort.key$
+}
+
+ITERATE {presort}
+
+SORT
+
+
+STRINGS { longest.label last.label next.extra }
+
+INTEGERS { number.label longest.label.width last.extra.num  }
 
 FUNCTION {initialize.longest.label}
 { "" 'longest.label :=
-  #1 'number.label :=
+  #0 int.to.chr$ 'last.label :=
+  "" 'next.extra :=
   #0 'longest.label.width :=
+  #0 'last.extra.num :=
+  #0 'number.label :=
 }
 
 EXECUTE {initialize.longest.label}
 
 FUNCTION {forward.pass}
-{ number.label int.to.str$ 'label :=
-  number.label #1 + 'number.label :=
-  label width$ longest.label.width >
-    { label 'longest.label :=
-      label width$ 'longest.label.width :=
+{ last.label label =
+    { last.extra.num #1 + 'last.extra.num :=
+      last.extra.num int.to.chr$ 'extra.label :=
     }
-    'skip$
+    { "a" chr.to.int$ 'last.extra.num :=
+      "" 'extra.label :=
+      label 'last.label :=
+    }
   if$
+  number.label #1 + 'number.label :=
 }
 
 ITERATE {forward.pass}
 
+FUNCTION {reverse.pass}
+{ next.extra "b" =
+    { "a" 'extra.label := }
+    'skip$
+  if$
+  extra.label 'next.extra :=
+  extra.label
+  duplicate$ empty$
+    'skip$
+    { "{\natexlab{" swap$ * "}}" * }
+  if$
+  'extra.label :=
+  label extra.label * 'label :=
+}
+
+REVERSE {reverse.pass}
+
+FUNCTION {bib.sort.order}
+{ sort.label  'sort.key$ :=
+}
+
+ITERATE {bib.sort.order}
+
+SORT
 
 FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
@@ -1923,6 +2263,7 @@ FUNCTION {begin.bib}
   "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
   "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+  "\providecommand{\natexlab}[1]{#1}" write$ newline$
   preamble$ empty$
     'skip$
     { preamble$ write$ newline$ }
@@ -1943,4 +2284,4 @@ FUNCTION {end.bib}
 EXECUTE {end.bib}
 
 %%
-%% End of file `gost2008.bst'.
+%% End of file `gost2008n.bst'.

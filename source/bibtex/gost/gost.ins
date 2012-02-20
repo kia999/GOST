@@ -28,7 +28,6 @@ or
   \MetaPrefix\space End of file `\outFileName'.%
   }
 \usepostamble\mypostamble
-
 \askonceonly
 \generate{%
 %
@@ -36,55 +35,46 @@ or
   \file{gost780.bst}             {\from{gost.dtx} {bst}}
 %
 % BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
-% \file{gost2003.bst}            {\from{gost.dtx} {bst,strict}}
-  \file{gost2003e.bst}           {\from{gost.dtx} {bst,strict,eprint}}
+  \file{gost2003.bst}            {\from{gost.dtx} {bst,strict,eprint}}
 %
 % BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
-  \file{gost2008.bst}            {\from{gost.dtx} {bst,modern}}
-  \file{gost2008e.bst}           {\from{gost.dtx} {bst,modern,eprint}}
-  \file{gost2008el.bst}          {\from{gost.dtx} {bst,modern,eprint,long}}
+  \file{gost2008.bst}            {\from{gost.dtx} {bst,modern,eprint}}
+  \file{gost2008l.bst}           {\from{gost.dtx} {bst,modern,eprint,long}}
 %
 % Same style with sorting
   \file{gost780s.bst}            {\from{gost.dtx} {bst,sort}}
 %
-% \file{gost2003s.bst}           {\from{gost.dtx} {bst,strict,sort}}
-  \file{gost2003es.bst}          {\from{gost.dtx} {bst,strict,eprint,sort}}
+  \file{gost2003s.bst}           {\from{gost.dtx} {bst,strict,eprint,sort}}
 %
-  \file{gost2008s.bst}           {\from{gost.dtx} {bst,modern,sort}}
-  \file{gost2008es.bst}          {\from{gost.dtx} {bst,modern,eprint,sort}}
-  \file{gost2008els.bst}         {\from{gost.dtx} {bst,modern,eprint,longlist,sort}}
+  \file{gost2008s.bst}           {\from{gost.dtx} {bst,modern,eprint,sort}}
+  \file{gost2008ls.bst}          {\from{gost.dtx} {bst,modern,eprint,long,sort}}
 %
 % -----------------------------------------------------------------------------------------
-% Unicode BST styles that mimics obsoleate version of GOST 7.8.0 for bibliographic *records*
-  \file{ugost780.bst}            {\from{gost.dtx} {bst,utf8}}
+% Unicode BST styles that mimics obsolete version of GOST 7.8.0 for bibliographic *records*
+%  \file{ugost780.bst}            {\from{gost.dtx} {bst,utf8}}
 %
 % Unicode BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
-% \file{ugost2003.bst}           {\from{gost.dtx} {bst,utf8,strict}}
-  \file{ugost2003e.bst}          {\from{gost.dtx} {bst,utf8,strict,eprint}}
+  \file{ugost2003.bst}           {\from{gost.dtx} {bst,utf8,strict,eprint}}
 %
 % Unicode BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
-  \file{ugost2008.bst}           {\from{gost.dtx} {bst,utf8,modern}}
-  \file{ugost2008e.bst}          {\from{gost.dtx} {bst,utf8,modern,eprint}}
-  \file{ugost2008el.bst}         {\from{gost.dtx} {bst,utf8,modern,eprint,long}}
+  \file{ugost2008.bst}           {\from{gost.dtx} {bst,utf8,modern,eprint}}
+  \file{ugost2008l.bst}          {\from{gost.dtx} {bst,utf8,modern,eprint,long}}
 %
 % Same style with sorting
-  \file{ugost780s.bst}           {\from{gost.dtx} {bst,utf8,sort}}
+%  \file{ugost780s.bst}           {\from{gost.dtx} {bst,utf8,sort}}
 %
-% \file{ugost2003s.bst}          {\from{gost.dtx} {bst,utf8,strict,sort}}
-  \file{ugost2003es.bst}         {\from{gost.dtx} {bst,utf8,strict,eprint,sort}}
+  \file{ugost2003s.bst}          {\from{gost.dtx} {bst,utf8,strict,eprint,sort}}
 %
-  \file{ugost2008s.bst}          {\from{gost.dtx} {bst,utf8,modern,sort}}
-  \file{ugost2008es.bst}         {\from{gost.dtx} {bst,utf8,modern,eprint,sort}}
-  \file{ugost2008els.bst}        {\from{gost.dtx} {bst,utf8,modern,eprint,longlist,sort}}
+  \file{ugost2008s.bst}          {\from{gost.dtx} {bst,utf8,modern,eprint,sort}}
+  \file{ugost2008ls.bst}         {\from{gost.dtx} {bst,utf8,modern,eprint,longlist,sort}}
 %
 % -----------------------------------------------------------------------------------------
 % Experimental style compatible with natbib package.
 %
-  \file{gost2008ne.bst}          {\from{gost.dtx} {bst,modern,natbib,eprint}}
-  \file{gost2008nes.bst}         {\from{gost.dtx} {bst,modern,natbib,eprint,sort}}
+  \file{gost2008n.bst}           {\from{gost.dtx} {bst,modern,natbib,eprint}}
+  \file{gost2008ns.bst}          {\from{gost.dtx} {bst,modern,natbib,eprint,sort}}
 %
-  \file{ugost2008ne.bst}         {\from{gost.dtx} {bst,utf8,modern,natbib,eprint}}
-  \file{ugost2008nes.bst}        {\from{gost.dtx} {bst,utf8,modern,natbib,eprint,sort}}
+  \file{ugost2008n.bst}          {\from{gost.dtx} {bst,utf8,modern,natbib,eprint}}
+  \file{ugost2008ns.bst}         {\from{gost.dtx} {bst,utf8,modern,natbib,eprint,sort}}
 }
-
 \endbatchfile

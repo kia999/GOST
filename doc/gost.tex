@@ -3,9 +3,9 @@
 \usepackage[cp1251]{inputenc}
 \usepackage[russian]{babel}
 \usepackage{bibunits,verbatim,bibnocap,geometry,ifpdf}
+\usepackage{cmap}
 \ifpdf
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
-  \usepackage{cmap}
 \else
   \usepackage[hypertex]{hyperref}
 \fi
@@ -108,14 +108,13 @@
 \subsection{Instruction}
 \bibentry{ex26}
 \section{Electronic Publishing}
+\subsection{Common Fields}
+\verb|Url|, \verb|eprint|, \verb|doi| and \verb|medium| fields can be assigned to any entry.
+\bibentry{ex27c}
+\bibentry{ex28}
+\bibentry{ex29}
 \subsection{Online Entry}
 \bibentry{ex27a}
 \bibentry{ex27b}
-\subsection{Url Field}
-\bibentry{ex27c}
-\subsection{Eprint \& Url Fields}
-\bibentry{ex28}
-\subsection{Doi Field}
-\bibentry{ex29}
 
 \end{document} 

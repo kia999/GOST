@@ -1,0 +1,106 @@
+% !Mode:: "TeX:UTF-8"
+\newcommand*{\mybibstyle}{gost2008s}
+
+\RequirePackage[cp1251]{inputenc}
+
+\newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
+\newcommand{\mydescription}{
+   Example of a bibliography using the style \texttt{\mybibstyle.bst}. 
+   No customization is applied.
+
+   Пример оформления списка литературы с помощью стиля 
+   \texttt{\mybibstyle.bst}.
+   Команды форматирования не изменены.
+}
+
+\documentclass[a4paper]{article}
+\usepackage[cp1251]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[ukrainian,russian]{babel}
+%\usepackage{natbib}
+\usepackage{geometry,ifpdf}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+  \usepackage{cmap}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {\mytitle},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {GOST, BibTeX},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother		
+		
+\begin{document}
+
+\title{\mytitle}
+\maketitle
+\begin{abstract}
+  \mydescription
+\end{abstract}
+
+\newcommand{\allrefs}{Vasylenko92,
+Afanasyev92,
+Makilov91,
+Ponomarenko86,
+Belousova81,
+BibOp91,
+Poems82,
+HistLit82,
+Landau:eldin,
+BRLS94,
+Grosse80,
+GOST7184,
+ObchTech93,
+Bibdelo86,
+Ponomarenko79,
+Zeyts70,
+Ponoomarenko76,
+Malikov92,
+Ponomarenko86a,
+dixit.pindyck:options,
+RosGaz-article,
+Dolmatovskiy88,
+Ponomarenko88,
+Melikov95,
+Gojchuk98,
+Polyakov98a,
+TranskSpivrob99:Purich,
+Luus82,
+KIA95-default,
+KIA85-autoref,
+Ponomarenko76,
+Report81-rep,
+Report81b-rep-notype,
+Report81-techrep,
+CatalogMamals81,
+Instr86,
+wiki:latex,
+wiki:latex-2,
+phys:moodle,
+EXFOR,
+IsaacNewton,
+IsaacNewton-sl:sn,
+PhysRevLett.101.085006}
+
+\nocite{*}
+\cite{\allrefs}
+
+\bibliographystyle{\mybibstyle}  
+\bibliography{bib/examples}     
+
+\end{document} 
