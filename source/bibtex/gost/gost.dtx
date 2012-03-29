@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{439}
+% \CheckSum{440}
 %
 % \changes{v1.2}{20 Feb 2012}{Support for natbib package}
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
@@ -430,9 +430,6 @@
 %   \item
 %   Support for GOST-7.1-2003. The field |medium| is added to reflect type
 %   of material. For most entry types |medium| defaults to |text|.
-%
-%   \item
-%   Support for |natbib| package.
 %
 %   \item
 %   Support for |natbib| package.
@@ -3451,6 +3448,8 @@ FUNCTION {thesis}
 }
 %</modern|strict>
 
+%    \end{macrocode}
+%
 % \DescribeFunction{report}
 % New in version 2012.02.02.
 %
@@ -4391,7 +4390,8 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+%  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+  "\else\selectlanguage{#1}\fi}"                     write$ newline$
   "\providecommand*{\href}[2]{{\small #2}}"          write$ newline$
   "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
