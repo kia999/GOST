@@ -8,7 +8,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012 Igor A. Kotelnikov.
-% Version 1.2
+% Version 1.2a
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -48,11 +48,11 @@
 % Move all *.pdf files       to TDS:doc/bibtex/gost
 % Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
 %
-% $Id: gost.dtx, v.2012/01/31 kia999 $
+% $Id: gost.dtx, v.2012/08/31 kia999 $
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2012/02/13 v.1.2 Bibliography styles for GOST R 7.0.5-2008.]
+  [2012/08/31 v.1.2a Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -128,6 +128,7 @@
 %
 % \CheckSum{440}
 %
+% \changes{v1.2a}{31 Aug 2012}{Default for \cs{cyrdash} added}
 % \changes{v1.2}{20 Feb 2012}{Support for natbib package}
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
 % \changes{v1.2}{02 Feb 2012}{Thesis entry, report entry}
@@ -4398,7 +4399,7 @@ FUNCTION {begin.bib}
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
 %<*modern>
-  "\providecommand*{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+  "\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
   "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
 %</modern>

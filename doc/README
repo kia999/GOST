@@ -76,7 +76,7 @@ suffixes |s|, |l|, |n| as explained below. These styles are intended
 primarily for the librarians who compose a library catalog.
 
 The |modern| option meets the Standard 7.0.5-2008 which can be thought
-off as a relaxed version of the Standards 7.1-2003. The styles compiled with
+off as a relaxed version of the Standard 7.1-2003. The styles compiled with
 that option bear the name |gost2008| with possible suffixes |s|, |l|, |n|.
 The |strict| option  has precedence over |modern| so that a style compiled
 with both options will resemble mainly the |gost2003| style rather than 
@@ -149,13 +149,13 @@ How to use
 2. Add the field language="ukrainian" or language="russian" to the
    bibliographic entries in Ukrainian or Russian languages in your
    database; English is the default language. German, Italian and
-   French are partially supported.
+   French are also supported.
 
 3. To compile list of references from your database use bibtex8.exe
    rather than bibtex.exe. Depending on the codepage of your
    bibliographic database, indicate one of the CS files
    listed above as option to bibtex8.exe.  Run LaTeX, then run
-   bibTeX8 and LaTeX again:
+   bibTeX8 and again LaTeX:
 
    	latex <filename>.tex
    	bibtex8 -B -c <csf_file>.csf <filename>.aux
@@ -208,9 +208,9 @@ that dash by overriding the command \BibDash as follows
 By default, \BibDash is equivalent to the shorthand "---
 introduced by the babel package with the option russian.
 It prints a so called Cyrillic dash (\cyrdash), which is
-20% shorter then ordinary LaTeX dash (---), and puts
-unbreakable space before \cyrdash so that dash never appears
-in the beginning of a line.
+20% shorter than ordinary LaTeX dash (---), and puts
+unbreakable space before \cyrdash so that the dash never 
+appears at the beginning of a line.
 
 
 Where to get
@@ -218,6 +218,9 @@ Where to get
 1. http://ctan.org/tex-archive/biblio/bibtex/contrib/gost
 2. http://ctan.org/pkg/gost
 
+What's new in version 1.2a (2012.08.31)
+
+1. \cyrdash is now defined via \ProvideTextCommand rather than \providecommand.
 
 What's new in version 1.2 (2012.02.22)
 
@@ -225,11 +228,10 @@ What's new in version 1.2 (2012.02.22)
 2. Support for GOST-7.1-2003. The field |medium| is added to reflect type
    of material. For most entry types |medium| defaults to |text|.
 3. Support for |natbib| package.
-4. Support for |natbib| package.
-5. All modern styles are now compiled with the |eprint| option.
+4. All modern styles are now compiled with the |eprint| option.
 
 
-What's new in version 1.1 (2012.01.21)}
+What's new in version 1.1 (2012.01.21)
 
 1. Support for GOST 7.0.5-2008 and GOST 7.1-2003 is provided.
 2. |@Online| entry is added to format a reference to electronic
@@ -242,6 +244,7 @@ What's new in version 1.1 (2012.01.21)}
 
 Version history
 
+2012.08.31 \cyrdash is now defined via \ProvideTextCommand.
 2012.02.22 Support for |natbib| package.
 2012.02.02 Adaptation to GOST 7.0.5, electronic publishing.
 2005.08.12 First version uploaded to CTAN.
