@@ -7,8 +7,8 @@
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
-% Copyright 2012 Igor A. Kotelnikov.
-% Version 1.2a
+% Copyright 2012-2014 Igor A. Kotelnikov.
+% Version 1.2b
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -19,7 +19,7 @@
 % Ukrainian, German, French, Italian languages are
 % also supported. Default language is English.
 %
-% Book entry should have the numpages field
+% Book entry should have the pagetotal field
 % showing total number of pages. Optional field
 % url will format URL (using hyperref, if loaded).
 %
@@ -52,7 +52,7 @@
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2012/08/31 v.1.2a Bibliography styles for GOST R 7.0.5-2008.]
+  [2014/01/19 v.1.2b Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -128,6 +128,7 @@
 %
 % \CheckSum{440}
 %
+% \changes{v1.2b}{19 Jan 2014}{numpages renamed to pagetotal}
 % \changes{v1.2a}{31 Aug 2012}{Default for \cs{cyrdash} added}
 % \changes{v1.2}{20 Feb 2012}{Support for natbib package}
 % \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
@@ -563,7 +564,7 @@ ENTRY
 %    \end{macrocode}
 %   Remaining entries are borrowed from biblatex.
 %    \begin{macrocode}
-    numpages
+    pagetotal
     url
     urldate
     isbn
@@ -2407,9 +2408,9 @@ FUNCTION {format.pages}
 %    \begin{macrocode}
 FUNCTION {format.pages.page}
 { pages empty$
-    { numpages empty$
+    { pagetotal empty$
       { "" }
-      { numpages bbl.pages tie.connect }
+      { pagetotal bbl.pages tie.connect }
     if$}
     { format.pages}
   if$
