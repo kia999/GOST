@@ -7,8 +7,8 @@
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
-% Copyright 2012-2014 Igor A. Kotelnikov.
-% Version 1.2b
+% Copyright 2012-2015 Igor A. Kotelnikov.
+% Version 1.2c
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -52,7 +52,7 @@
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2014/01/19 v.1.2b Bibliography styles for GOST R 7.0.5-2008.]
+  [2015/01/17 v.1.2c Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -126,8 +126,11 @@
 %</driver>
 % \fi
 %
-% \CheckSum{440}
+% \CheckSum{464}
 %
+% \changes{v1.2c}{18 Jan 2015}{langid field added}
+% \changes{v1.2c}{18 Jan 2015}{eid field added}
+% \changes{v1.2c}{17 Jan 2015}{fix Gost2003: "--- replaced by \cs{BibDash}}
 % \changes{v1.2b}{19 Jan 2014}{numpages renamed to pagetotal}
 % \changes{v1.2a}{31 Aug 2012}{Default for \cs{cyrdash} added}
 % \changes{v1.2}{20 Feb 2012}{Support for natbib package}
@@ -408,7 +411,7 @@
 %   By default, |\BibDash| is equivalent to the shorthand |"---|
 %   defined by the babel package with the option |russian|.
 %   It prints a so called Cyrillic dash (|\cyrdash|),
-%   which is 20% shorter then ordinary LaTeX dash (|---|), and puts
+%   which is 20\% shorter then ordinary LaTeX dash (|---|), and puts
 %   unbreakable space before |\cyrdash| so that dash never appears
 %   in the beginning of a line.
 %
@@ -421,6 +424,33 @@
 %   \item
 %   \href{http://ctan.org/pkg/gost}
 %       {CTAN:pkg/gost}.
+%   \end{enumerate}
+%
+%   \subsection{What's new in version 1.2c (2015.01.10)}
+%
+%   \begin{enumerate}
+%   \item
+%   |langid| field is added. It has same meaning as |language| which is now
+%   obsolete but is still supported for backward compatibility; |langid| has
+%   priority over |language|.
+%
+%   \item
+%   |eid| field is added. It has priority over |pages|.
+%
+%   \item
+%   The ligature |"---| has been substituted with |\BibDash| for \texttt{.bst}
+%   styles compiled without |modern| options (\texttt{gost2003.bst} and
+%   \texttt{gost2003s.bst}). For modern styles this was done in earlier versions.
+%
+%   \item
+%   Spacing around |\BibDash| has been improved.
+%
+%   \item
+%   |\BibDash| now typeset short em-dash (|\cyrdahs|) only for |russian| and
+%   |ukrainian| languages.  In earlier versions, it produces short em-dash for
+%   all languages.
+%
+%
 %   \end{enumerate}
 %
 %   \subsection{What's new in version 1.2 (2012.02.22)}
@@ -551,15 +581,17 @@ ENTRY
     number
     organization
     pages
+    eid % new in v1.2c
     publisher
     school
     series
     title
-    medium % new in v.2.
+    medium % new in v1.2.
     type
     volume
     year
     language
+    langid % new in v1.2c
     booklanguage
 %    \end{macrocode}
 %   Remaining entries are borrowed from biblatex.
@@ -632,7 +664,7 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%<!modern>          " " quote$ "--- " * *  write$
+%<!modern>          " \BibDash " write$ %%" " quote$ "--- " * *  write$ % since v1.2c
 %<modern>          " \BibDash " write$
           newline$
           "\newblock " write$
@@ -1902,7 +1934,7 @@ FUNCTION {format.date}
     }
     { month empty$
         'year
-%<!modern>        { year ". " quote$ "--- " month * * * * }
+%<!modern>        { year ". \BibDash " month * * }%%{ year ". " quote$ "--- " month * * * * }
 %<modern>        { year ". \BibDash " month * * }
       if$
     }
@@ -1993,20 +2025,39 @@ FUNCTION {output.address.publisher.date}
 % \DescribeFunction{output.bibitem}
 %    \begin{macrocode}
 %<*!natbib>
+%%FUNCTION {output.bibitem}
+%%{ newline$
+%%  "\bibitem" write$
+%%  cite$ bracify write$
+%%  newline$
+%%  language empty$
+%%    { "english" 'curlanguage := }
+%%    { language  'curlanguage := }
+%%  if$
+%%  "\selectlanguageifdefined" curlanguage bracify * write$
+%%  newline$
+%%  ""
+%%  before.all 'output.state :=
+%%}
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem" write$
   cite$ bracify write$
   newline$
-  language empty$
-    { "english" 'curlanguage := }
-    { language  'curlanguage := }
+  langid empty$
+    { language empty$
+        { "english" 'curlanguage := }
+        { language  'curlanguage := }
+      if$
+    }
+    { langid  'curlanguage := }
   if$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
   ""
   before.all 'output.state :=
 }
+
 %</!natbib>
 %    \end{macrocode}
 % \DescribeFunction{format.full.names}
@@ -2111,9 +2162,17 @@ FUNCTION {output.bibitem}
   "]{" * write$
   cite$ write$
   "}" write$
-  language empty$
-    { "english" 'curlanguage := }
-    {language  'curlanguage := }
+%%  language empty$
+%%    { "english" 'curlanguage := }
+%%    {language  'curlanguage := }
+%%  if$
+  langid empty$
+    { language empty$
+        { "english" 'curlanguage := }
+        { language  'curlanguage := }
+      if$
+    }
+    { langid  'curlanguage := }
   if$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
@@ -2392,12 +2451,31 @@ FUNCTION {multi.page.check}
 %    \end{macrocode}
 % \DescribeFunction{format.pages}
 %    \begin{macrocode}
+%%FUNCTION {format.pages}
+%%{ pages empty$
+%%    { "" }
+%%    { pages multi.page.check
+%%        { bbl.ppages pages n.dashify tie.connect }
+%%        { bbl.ppage pages tie.connect }
+%%      if$
+%%    }
+%%  if$
+%%}
 FUNCTION {format.pages}
-{ pages empty$
-    { "" }
-    { pages multi.page.check
-        { bbl.ppages pages n.dashify tie.connect }
-        { bbl.ppage pages tie.connect }
+{ eid empty$
+    {
+      pages empty$
+        { "" }
+        { pages multi.page.check
+            { bbl.ppages pages n.dashify tie.connect }
+            { bbl.ppage pages tie.connect }
+          if$
+        }
+      if$
+    }
+    { eid multi.page.check
+        { bbl.ppages eid n.dashify tie.connect }
+        { bbl.ppage eid tie.connect }
       if$
     }
   if$
@@ -2406,13 +2484,27 @@ FUNCTION {format.pages}
 %    \end{macrocode}
 % \DescribeFunction{format.pages.page}
 %    \begin{macrocode}
+%%FUNCTION {format.pages.page}
+%%{ pages empty$
+%%    { pagetotal empty$
+%%      { "" }
+%%      { pagetotal bbl.pages tie.connect }
+%%    if$}
+%%    { format.pages}
+%%  if$
+%%}
 FUNCTION {format.pages.page}
-{ pages empty$
-    { pagetotal empty$
-      { "" }
-      { pagetotal bbl.pages tie.connect }
-    if$}
-    { format.pages}
+{ eid empty$
+    { pages empty$
+        { pagetotal empty$
+            { "" }
+            { pagetotal bbl.pages tie.connect }
+          if$
+        }
+        { format.pages}
+      if$
+    }
+    { format.pages }
   if$
 }
 
@@ -4399,11 +4491,18 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
-%<*modern>
+%<*modern|!modern>
+  %"\ProvideTextCommandDefault{\cyrdash}{---}" write$ newline$
+  %\DeclareUTFcharacter[\UTFencname]{x2014}{\cyrdash}
+  %"\let\cyrdash\textemdash" write$ newline$
   "\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
-  "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
-%</modern>
+  %%"\ProvideTextCommandDefault{\cyrdash}{%"  write$ newline$
+  %%"  \iflanguage{russian}{\hbox to.8em{--\hss--}}{%" write$ newline$
+  %%"    \iflanguage{ukrainian}{\hbox to.8em{--\hss--}}{\textemdash}}}"  write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em plus 0.1em\fi" write$ newline$
+  "\cyrdash\hskip.2em plus 0.1em\ignorespaces}" write$ newline$
+  "\renewcommand{\newblock}{\ignorespaces}" write$ newline$
+%</modern|!modern>
 %<natbib>  "\providecommand{\natexlab}[1]{#1}" write$ newline$
   preamble$ empty$
     'skip$
