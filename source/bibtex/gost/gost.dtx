@@ -7,8 +7,8 @@
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
-% Copyright 2012-2015 Igor A. Kotelnikov.
-% Version 1.2c
+% Copyright 2012-2016 Igor A. Kotelnikov.
+% Version 1.2d
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -52,7 +52,7 @@
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2015/01/17 v.1.2c Bibliography styles for GOST R 7.0.5-2008.]
+  [2016/02/18 v.1.2d Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -126,8 +126,9 @@
 %</driver>
 % \fi
 %
-% \CheckSum{464}
+% \CheckSum{453}
 %
+% \changes{v1.2d}{18 Feb 2016}{\cs{bbljan} e.t.c. macros removed}
 % \changes{v1.2c}{18 Jan 2015}{langid field added}
 % \changes{v1.2c}{18 Jan 2015}{eid field added}
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: "--- replaced by \cs{BibDash}}
@@ -430,6 +431,13 @@
 %
 %   \begin{enumerate}
 %   \item
+%   jan, feb, e.t.c. macros fixed.
+%   \end{enumerate}
+%
+%   \subsection{What's new in version 1.2c (2015.01.10)}
+%
+%   \begin{enumerate}
+%   \item
 %   |langid| field is added. It has same meaning as |language| which is now
 %   obsolete but is still supported for backward compatibility; |langid| has
 %   priority over |language|.
@@ -450,6 +458,15 @@
 %   |ukrainian| languages.  In earlier versions, it produces short em-dash for
 %   all languages.
 %
+%   \end{enumerate}
+%
+%   \subsection{What's new in version 1.2a (2012.08.31)}
+%
+%   \begin{enumerate}
+%
+%   \item
+%   |\cyrdash| is now defined via |\ProvideTextCommand| rather than
+%   |\providecommand|.
 %
 %   \end{enumerate}
 %
@@ -3881,30 +3898,28 @@ FUNCTION {default.type} { misc }
 %    \end{macrocode}
 %
 % \subsection{Month Abbreviations}
-%
+%  Borrowed from \file{merlin.mbs} of package \pkg{custom-bib}. This is done for
+%  backward compatibility with standard .bst styles which are designed for Englsih.
+%  We did not try to substitute this abbreviations with language-sensitive macros.
 %    \begin{macrocode}
-MACRO {jan} {"\bbljan{}"}
-MACRO {feb} {"\bblfeb{}"}
-MACRO {mar} {"\bblmar{}"}
-MACRO {apr} {"\bblapr{}"}
-MACRO {may} {"\bblmay{}"}
-MACRO {jun} {"\bbljun{}"}
-MACRO {jul} {"\bbljul{}"}
-MACRO {aug} {"\bblaug{}"}
-MACRO {sep} {"\bblsep{}"}
-MACRO {oct} {"\bbloct{}"}
-MACRO {nov} {"\bblnov{}"}
-MACRO {dec} {"\bbldec{}"}
-
+MACRO {jan} {"Jan."}
+MACRO {feb} {"Feb."}
+MACRO {mar} {"Mar."}
+MACRO {apr} {"Apr."}
+MACRO {may} {"May"}
+MACRO {jun} {"Jun."}
+MACRO {jul} {"Jul."}
+MACRO {aug} {"Aug."}
+MACRO {sep} {"Sep."}
+MACRO {oct} {"Oct."}
+MACRO {nov} {"Nov."}
+MACRO {dec} {"Dec."}
 %    \end{macrocode}
 %
 % \subsection{Journal Abbreviations}
 %
-%    \begin{macrocode}
-
-%    \end{macrocode}
-% \subsection{Journal abbreviations}
 % \subsubsection{Physics and astronomy}
+%
 % Borrowed from \file{physjour.mbs} of package \pkg{custom-bib}.
 %    \begin{macrocode}
 MACRO {aa}{"Astron. \& Astrophys."}
@@ -3979,6 +3994,7 @@ MACRO {plb} {"Phys. Lett. B"}
 MACRO {prep} {"Phys. Rep."}
 MACRO {pnas} {"Proc. Nat. Acad. Sci. USA"}
 MACRO {pp} {"Phys. Plasmas"}
+MACRO {pop} {"Phys. Plasmas"}
 MACRO {ppcf} {"Plasma Phys. \& Controlled Fusion"}
 MACRO {phitrsl} {"Philos. Trans. Roy. Soc. London"}
 MACRO {prl} {"Phys. Rev. Lett."}
@@ -3996,12 +4012,49 @@ MACRO {rsi} {"Rev. Sci. Inst."}
 MACRO {science} {"Science"}
 MACRO {sciam} {"Sci. Am."}
 MACRO {sam} {"Stud. Appl. Math."}
-MACRO {sjpp} {"Sov. J. Plasma Phys."}
-MACRO {spd} {"Sov. Phys.--Doklady"}
-MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
-MACRO {spu} {"Sov. Phys.--Uspekhi"}
 MACRO {st} {"Sky and Telesc."}
 
+MACRO {cjp} {"Czech. J. Phys."}
+MACRO {el} {"Europhys. Lett."}
+MACRO {en} {"Europhys. News"}
+MACRO {fujitsustj} {"FUJITSU Sci. Tech. J."}
+MACRO {ieeeed} {"IEEE Trans. Electron Devices"}
+MACRO {ieeeim} {"IEEE Trans. Instrum. Meas."}
+MACRO {ieeejqe} {"IEEE J. Quantum Electron."}
+MACRO {ieeem} {"IEEE Trans. Magn."}
+MACRO {ieeeptl} {"IEEE Photonic Technol. Lett."}
+MACRO {ieeeuffc} {"IEEE Trans. Ultrason., Ferroelect., Freq. Cont."}
+MACRO {jem} {"J. Electron. Mater."}
+MACRO {jes} {"J. Electrochem. Soc."}
+MACRO {jetplett} {"JETP Lett."}
+MACRO {jjap} {"Japan. J. Appl. Phys."}
+MACRO {jpha} {"J. Phys. A: Math. Gen."}
+MACRO {jphb} {"J. Phys. B: At. Mol. Opt. Phys."}
+MACRO {jphbold} {"J. Phys. B: At. Mol. Phys."}
+MACRO {jphc} {"J. Phys.: Condens. Matter"}
+MACRO {jphcold} {"J. Phys. C: Solid State Phys."}
+MACRO {jphd} {"J. Phys. D: Appl. Phys."}
+MACRO {jvsta} {"J. Vac. Sci. Technol. A"}
+MACRO {jvstb} {"J. Vac. Sci. Technol. B"}
+MACRO {me} {"Microelectron. Eng."}
+MACRO {necrd} {"NEC Res.{\&} Develop."}
+MACRO {pa} {"Physica A"}
+MACRO {pb} {"Physica B"}
+MACRO {pc} {"Physica C"}
+MACRO {pd} {"Physica D"}
+MACRO {procieee} {"Proc. IEEE"}
+MACRO {procspie} {"Proc. SPIE"}
+MACRO {pssa} {"Phys. Stat. Sol. A"}
+MACRO {pssb} {"Phys. Stat. Sol. B"}
+MACRO {rpp} {"Rep. Progr. Phys."}
+MACRO {sm} {"Synthet. Metal"}
+MACRO {sost} {"Solid State Technol."}
+MACRO {ss} {"Surf. Sci."}
+MACRO {ssc} {"Solid State Commun."}
+MACRO {sst} {"Semicond. Sci. Technol."}
+MACRO {suplatt} {"Superlatt. Microstr."}
+MACRO {sust} {"Supercond. Sci. Technol."}
+MACRO {znat} {"Z. Naturforsch."}
 %    \end{macrocode}
 %
 % \subsubsection{Optics}
@@ -4040,8 +4093,22 @@ MACRO {zphd}   {"Z. f. Physik~D"}
 %    \begin{macrocode}
 MACRO {sse} {"Solid-State Electron."}
 MACRO {pss} {"Phys. Sol. State"}
-MACRO {sst} {"Semicond. Sci. Tech."}
 MACRO {nl}  {"Nano Lett."}
+%    \end{macrocode}
+%
+% \subsubsection{Soviet and Russian journals}
+%  To be extended.
+%    \begin{macrocode}
+MACRO {sjpp} {"Sov. J. Plasma Phys."}
+MACRO {spd} {"Sov. Phys.--Doklady"}
+MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
+MACRO {spu} {"Sov. Phys.--Uspekhi"}
+MACRO {ufn} {"Phys.--Uspekhi"}
+%    \end{macrocode}
+%
+% \section{Main cycle}
+%
+%    \begin{macrocode}
 
 READ
 
