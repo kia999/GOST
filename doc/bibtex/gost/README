@@ -213,14 +213,36 @@ unbreakable space before \cyrdash so that the dash never
 appears at the beginning of a line.
 
 
-Where to get
+Where to get from from
 
-1. http://ctan.org/tex-archive/biblio/bibtex/contrib/gost
+1. http://mirror.ctan.org/biblio/bibtex/contrib/gost/
 2. http://ctan.org/pkg/gost
+
+
+What's new in version 1.2d (2016.02.18)
+
+1. jan, feb, mar, e.t.c. month macros fixed;
+2. New macro format.month.
+3. \cyrdash is now faked via \ProvideTextCommandDefault if not defined.
+
+
+What's new in version 1.2c (2015.01.10)
+
+1. langid field added; language field supported for backward compatibility.
+2. eid field added, it has priority over pages field;
+3. Fix Gost2003: "--- replaced by \BibDash;
+4. Spacing around \BibDash improved.
+
+
+What's new in version 1.2b (2014.01.19)
+
+1. numpages renamed to pagetotal.
+
 
 What's new in version 1.2a (2012.08.31)
 
 1. \cyrdash is now defined via \ProvideTextCommand rather than \providecommand.
+
 
 What's new in version 1.2 (2012.02.22)
 

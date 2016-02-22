@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{453}
+% \CheckSum{508}
 %
 % \changes{v1.2d}{18 Feb 2016}{\cs{bbljan} e.t.c. macros removed}
 % \changes{v1.2c}{18 Jan 2015}{langid field added}
@@ -270,7 +270,7 @@
 % |gost2008|.
 %
 % If the number of authors exceeds 4, modern styles cut the list of authors
-% to at most 4 persons as prescibed by the Standards. The option
+% to at most 4 persons as prescibed by the Standards. Option
 % |long| overrides this rule to provide backward compatibility with the
 % package disser by Stanislab Kruchinin. Two styles, |gost2008l| and
 % |gost2008ls|, compiled with the option |long| mimic behavior of the styles
@@ -365,7 +365,7 @@
 %   (\file{latex} and \file{pdflatex}) if source file is in utf8 encoding.
 %
 %   \item
-%   Neither \file{bitex.exe} nor \file{bitex8.exe} provides
+%   Neither \file{bibtex.exe} nor \file{bibtex8.exe} provides
 %   correct sorting order of unicode text. It means that using
 %   \file{ugost2008s} or \file{ugost2008ns} may produce unexpected result
 %   for documents in \texttt{utf8} encoding.
@@ -420,18 +420,21 @@
 %
 %   \begin{enumerate}
 %   \item
-%   \href{http://ctan.org/tex-archive/biblio/bibtex/contrib/gost}
+%   \href{http://mirror.ctan.org/biblio/bibtex/contrib/gost/}
 %       {CTAN:biblio/bibtex/contrib/gost}.
 %   \item
 %   \href{http://ctan.org/pkg/gost}
 %       {CTAN:pkg/gost}.
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2c (2015.01.10)}
+%   \subsection{What's new in version 1.2d (2015.02.18)}
 %
 %   \begin{enumerate}
 %   \item
 %   jan, feb, e.t.c. macros fixed.
+%
+%   \item
+%   New macro format.month.
 %   \end{enumerate}
 %
 %   \subsection{What's new in version 1.2c (2015.01.10)}
@@ -454,9 +457,11 @@
 %   Spacing around |\BibDash| has been improved.
 %
 %   \item
-%   |\BibDash| now typeset short em-dash (|\cyrdahs|) only for |russian| and
+%   |\BibDash| now typesets short em-dash (|\cyrdahs|) only for |russian| and
 %   |ukrainian| languages.  In earlier versions, it produces short em-dash for
 %   all languages.
+%
+%   (This feature was removed since it did not work with all engines.)
 %
 %   \end{enumerate}
 %
@@ -562,11 +567,11 @@
 %% The \cite command functions as follows:
 %%   \citet{key}              => Jones et al. (1990)
 %%   \citet*{key}             => Jones, Baker, and Smith (1990)
-%%   \citep{key}              => (Jones et al., 1990)
-%%   \citep*{key}             => (Jones, Baker, and Smith, 1990)
-%%   \citep[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
-%%   \citep[e.g.][]{key}      => (e.g. Jones et al., 1990)
-%%   \citep[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \cite{key}              => (Jones et al., 1990)
+%%   \cite*{key}             => (Jones, Baker, and Smith, 1990)
+%%   \cite[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
+%%   \cite[e.g.][]{key}      => (e.g. Jones et al., 1990)
+%%   \cite[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
 %%   \citeauthor{key}         => Jones et al.
 %%   \citeauthor*{key}        => Jones, Baker, and Smith
 %%   \citeyear{key}           => 1990
@@ -1938,6 +1943,57 @@ FUNCTION {format.title}
 }
 
 %    \end{macrocode}
+% \DescribeFunction{format.month}
+% New in version 1.2d. This macro reeads month field and translate English names
+% of months to Russian if current language is Russian.
+%    \begin{macrocode}
+FUNCTION {format.month}
+{ month empty$
+    { "" }
+    { curlanguage "russian" =
+        { month "Jan." =
+%<!utf8>            { "\CYRYA\cyrn\cyrv." }
+%<utf8>            { "Янв." }
+        { month "Feb." =
+%<!utf8>            { "\CYRF\cyre\cyrv\cyrr." }
+%<utf8>            { "Фев." }
+        { month "Mar." =
+%<!utf8>            { "\CYRM\cyra\cyrr\cyrt" }
+%<utf8>            { "Март" }
+        { month "Apr." =
+%<!utf8>            { "\CYRA\cyrp\cyrr." }
+%<utf8>            { "Апр." }
+        { month "May" =
+%<!utf8>            { "\CYRM\cyra\cyrishrt" }
+%<utf8>            { "Май" }
+        { month "Jun." =
+%<!utf8>            { "\CYRI\cyryu\cyrn\cyrsftsn" }
+%<utf8>            { "Июнь" }
+        { month "Jul." =
+%<!utf8>            { "\CYRI\cyryu\cyrl\cyrsftsn" }
+%<utf8>            { "Июль" }
+        { month "Aug." =
+%<!utf8>            { "\CYRA\cyrv\cyrg\." }
+%<utf8>            { "Авг." }
+        { month "Sep." =
+%<!utf8>            { "\CYRS\cyre\cyn\cyrt." }
+%<utf8>            { "Сент." }
+        { month "Oct." =
+%<!utf8>            { "\CYRO\cyrk\cyrt." }
+%<utf8>            { "Окт." }
+        { month "Nov." =
+%<!utf8>            { "\CYRN\cyro\cyrya\cyrb." }
+%<utf8>            { "Нояб." }
+        { month "Dec." =
+%<!utf8>            { "\CYRD\cyre\cyrk." }
+%<utf8>            { "Дек." }
+            { month }
+            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
+        { month }
+        if$}
+    if$
+}
+%    \end{macrocode}
 % \DescribeFunction{format.date}
 %    \begin{macrocode}
 FUNCTION {format.date}
@@ -1945,14 +2001,14 @@ FUNCTION {format.date}
     { month empty$
         { "" }
         { "there's a month but no year in " cite$ * warning$
-          month
+          format.month
         }
       if$
     }
     { month empty$
         'year
-%<!modern>        { year ". \BibDash " month * * }%%{ year ". " quote$ "--- " month * * * * }
-%<modern>        { year ". \BibDash " month * * }
+%<!modern>        { year ". \BibDash " format.month * * }%%{ year ". " quote$ "--- " month * * * * }
+%<modern>        { year ". \BibDash " format.month * * }
       if$
     }
   if$
@@ -2902,7 +2958,7 @@ FUNCTION {add.medium}
 % information: |eprint|, |eprinttype|, and |eprintclass|. The |eprint| field
 % is a verbatim field similar to |doi| which holds the identifier of the item.
 % The |eprinttype| field holds the resource name, i. e., the name of the
-% site or electronic archive. The optional |eprintclass| field is intended
+% site or electronic archive. Optional |eprintclass| field is intended
 % for additional information specific to the resource indicated by the
 % |eprinttype| field. This could be a section, a path, classification
 % information, etc. If the |eprinttype| field is available, the standard styles
@@ -3899,8 +3955,9 @@ FUNCTION {default.type} { misc }
 %
 % \subsection{Month Abbreviations}
 %  Borrowed from \file{merlin.mbs} of package \pkg{custom-bib}. This is done for
-%  backward compatibility with standard .bst styles which are designed for Englsih.
-%  We did not try to substitute this abbreviations with language-sensitive macros.
+%  backward compatibility with standard .bst styles which are designed for English.
+%  The string in the definition of any month macro must coincide with that used in
+%  |format.month| function in the above.
 %    \begin{macrocode}
 MACRO {jan} {"Jan."}
 MACRO {feb} {"Feb."}
@@ -4013,7 +4070,12 @@ MACRO {science} {"Science"}
 MACRO {sciam} {"Sci. Am."}
 MACRO {sam} {"Stud. Appl. Math."}
 MACRO {st} {"Sky and Telesc."}
-
+%    \end{macrocode}
+%
+% \subsubsection{Supplementary Journal Names}
+%
+% Borrowed from \file{suppjour.mbs} of package \pkg{custom-bib}.
+%    \begin{macrocode}
 MACRO {cjp} {"Czech. J. Phys."}
 MACRO {el} {"Europhys. Lett."}
 MACRO {en} {"Europhys. News"}
@@ -4077,11 +4139,6 @@ MACRO {ol}     {"Opt. Lett."}
 MACRO {os}     {"Opt. Spectrosc."}
 MACRO {phtl}   {"IEEE Photon. Technol. Lett."}
 MACRO {pspie}  {"Proc. Soc. Photo-Opt. Instrum. Eng."}
-MACRO {sjot}   {"Sov. J. Opt. Technol."}
-MACRO {sjqe}   {"Sov. J. Quantum Electron."}
-MACRO {sleb}   {"Sov. Phys.--Leb. Inst. Rep."}
-MACRO {stph}   {"Sov. Phys.--Techn. Phys."}
-MACRO {stphl}  {"Sov. Techn. Phys. Lett."}
 MACRO {vr}     {"Vision Res."}
 MACRO {zph}    {"Z. f. Physik"}
 MACRO {zphb}   {"Z. f. Physik~B"}
@@ -4100,13 +4157,20 @@ MACRO {nl}  {"Nano Lett."}
 %  To be extended.
 %    \begin{macrocode}
 MACRO {sjpp} {"Sov. J. Plasma Phys."}
-MACRO {spd} {"Sov. Phys.--Doklady"}
+MACRO {spd}  {"Sov. Phys.--Doklady"}
 MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
-MACRO {spu} {"Sov. Phys.--Uspekhi"}
-MACRO {ufn} {"Phys.--Uspekhi"}
+MACRO       {spu}  {"Sov. Phys.--Uspekhi"}
+%<!utf8>MACRO {ufn}  {"\CYRU\CYRF\CYRN"}
+%<utf8>MACRO {ufn}  {"УФН"}
+MACRO {pu}  {"Phys.--Uspekhi"}
+MACRO {sjot} {"Sov. J. Opt. Technol."}
+MACRO {sjqe} {"Sov. J. Quantum Electron."}
+MACRO {sleb} {"Sov. Phys.--Leb. Inst. Rep."}
+MACRO {stph} {"Sov. Phys.--Techn. Phys."}
+MACRO {stphl}{"Sov. Techn. Phys. Lett."}
 %    \end{macrocode}
 %
-% \section{Main cycle}
+% \subsection{Main cycle}
 %
 %    \begin{macrocode}
 
@@ -4562,7 +4626,9 @@ FUNCTION {begin.bib}
   %"\ProvideTextCommandDefault{\cyrdash}{---}" write$ newline$
   %\DeclareUTFcharacter[\UTFencname]{x2014}{\cyrdash}
   %"\let\cyrdash\textemdash" write$ newline$
-  "\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+  %"\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+  %"\ProvideTextCommandDefault{\cyrdash}{\textemdash}" write$ newline$
+  "\ProvideTextCommandDefault{\cyrdash}{\iflanguage{russian}{\hbox to.8em{--\hss--}}{\textemdash}}" write$ newline$
   %%"\ProvideTextCommandDefault{\cyrdash}{%"  write$ newline$
   %%"  \iflanguage{russian}{\hbox to.8em{--\hss--}}{%" write$ newline$
   %%"    \iflanguage{ukrainian}{\hbox to.8em{--\hss--}}{\textemdash}}}"  write$ newline$

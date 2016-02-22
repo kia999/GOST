@@ -16,7 +16,8 @@
 %% 
 %% This file has the LPPL maintenance status "maintained".
 %% Maintained by Igor A. Kotelnikov.
-%% Current version: 2012.02.02
+%% 
+%% Current version: 1.2d, 2016.02.18
 %% 
 %% Please, send bug report via e-mail:
 %%   kia999 at mail dot ru <Igor Kotelnikov>
@@ -46,11 +47,11 @@
 %% The \cite command functions as follows:
 %%   \citet{key}              => Jones et al. (1990)
 %%   \citet*{key}             => Jones, Baker, and Smith (1990)
-%%   \citep{key}              => (Jones et al., 1990)
-%%   \citep*{key}             => (Jones, Baker, and Smith, 1990)
-%%   \citep[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
-%%   \citep[e.g.][]{key}      => (e.g. Jones et al., 1990)
-%%   \citep[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \cite{key}              => (Jones et al., 1990)
+%%   \cite*{key}             => (Jones, Baker, and Smith, 1990)
+%%   \cite[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
+%%   \cite[e.g.][]{key}      => (e.g. Jones et al., 1990)
+%%   \cite[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
 %%   \citeauthor{key}         => Jones et al.
 %%   \citeauthor*{key}        => Jones, Baker, and Smith
 %%   \citeyear{key}           => 1990
@@ -75,17 +76,19 @@ ENTRY
     number
     organization
     pages
+    eid % new in v1.2c
     publisher
     school
     series
     title
-    medium % new in v.2.
+    medium % new in v1.2.
     type
     volume
     year
     language
+    langid % new in v1.2c
     booklanguage
-    numpages
+    pagetotal
     url
     urldate
     isbn
@@ -1021,18 +1024,52 @@ FUNCTION {format.title}
   if$
 }
 
+FUNCTION {format.month}
+{ month empty$
+    { "" }
+    { curlanguage "russian" =
+        { month "Jan." =
+            { "\CYRYA\cyrn\cyrv." }
+        { month "Feb." =
+            { "\CYRF\cyre\cyrv\cyrr." }
+        { month "Mar." =
+            { "\CYRM\cyra\cyrr\cyrt" }
+        { month "Apr." =
+            { "\CYRA\cyrp\cyrr." }
+        { month "May" =
+            { "\CYRM\cyra\cyrishrt" }
+        { month "Jun." =
+            { "\CYRI\cyryu\cyrn\cyrsftsn" }
+        { month "Jul." =
+            { "\CYRI\cyryu\cyrl\cyrsftsn" }
+        { month "Aug." =
+            { "\CYRA\cyrv\cyrg\." }
+        { month "Sep." =
+            { "\CYRS\cyre\cyn\cyrt." }
+        { month "Oct." =
+            { "\CYRO\cyrk\cyrt." }
+        { month "Nov." =
+            { "\CYRN\cyro\cyrya\cyrb." }
+        { month "Dec." =
+            { "\CYRD\cyre\cyrk." }
+            { month }
+            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
+        { month }
+        if$}
+    if$
+}
 FUNCTION {format.date}
 { year empty$
     { month empty$
         { "" }
         { "there's a month but no year in " cite$ * warning$
-          month
+          format.month
         }
       if$
     }
     { month empty$
         'year
-        { year ". \BibDash " month * * }
+        { year ". \BibDash " format.month * * }
       if$
     }
   if$
@@ -1145,9 +1182,17 @@ FUNCTION {output.bibitem}
   "]{" * write$
   cite$ write$
   "}" write$
-  language empty$
-    { "english" 'curlanguage := }
-    {language  'curlanguage := }
+%%  language empty$
+%%    { "english" 'curlanguage := }
+%%    {language  'curlanguage := }
+%%  if$
+  langid empty$
+    { language empty$
+        { "english" 'curlanguage := }
+        { language  'curlanguage := }
+      if$
+    }
+    { langid  'curlanguage := }
   if$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
@@ -1309,24 +1354,57 @@ FUNCTION {multi.page.check}
   multiresult
 }
 
+%%FUNCTION {format.pages}
+%%{ pages empty$
+%%    { "" }
+%%    { pages multi.page.check
+%%        { bbl.ppages pages n.dashify tie.connect }
+%%        { bbl.ppage pages tie.connect }
+%%      if$
+%%    }
+%%  if$
+%%}
 FUNCTION {format.pages}
-{ pages empty$
-    { "" }
-    { pages multi.page.check
-        { bbl.ppages pages n.dashify tie.connect }
-        { bbl.ppage pages tie.connect }
+{ eid empty$
+    {
+      pages empty$
+        { "" }
+        { pages multi.page.check
+            { bbl.ppages pages n.dashify tie.connect }
+            { bbl.ppage pages tie.connect }
+          if$
+        }
+      if$
+    }
+    { eid multi.page.check
+        { bbl.ppages eid n.dashify tie.connect }
+        { bbl.ppage eid tie.connect }
       if$
     }
   if$
 }
 
+%%FUNCTION {format.pages.page}
+%%{ pages empty$
+%%    { pagetotal empty$
+%%      { "" }
+%%      { pagetotal bbl.pages tie.connect }
+%%    if$}
+%%    { format.pages}
+%%  if$
+%%}
 FUNCTION {format.pages.page}
-{ pages empty$
-    { numpages empty$
-      { "" }
-      { numpages bbl.pages tie.connect }
-    if$}
-    { format.pages}
+{ eid empty$
+    { pages empty$
+        { pagetotal empty$
+            { "" }
+            { pagetotal bbl.pages tie.connect }
+          if$
+        }
+        { format.pages}
+      if$
+    }
+    { format.pages }
   if$
 }
 
@@ -2016,20 +2094,18 @@ FUNCTION {techreport}
 
 FUNCTION {default.type} { misc }
 
-MACRO {jan} {"\bbljan{}"}
-MACRO {feb} {"\bblfeb{}"}
-MACRO {mar} {"\bblmar{}"}
-MACRO {apr} {"\bblapr{}"}
-MACRO {may} {"\bblmay{}"}
-MACRO {jun} {"\bbljun{}"}
-MACRO {jul} {"\bbljul{}"}
-MACRO {aug} {"\bblaug{}"}
-MACRO {sep} {"\bblsep{}"}
-MACRO {oct} {"\bbloct{}"}
-MACRO {nov} {"\bblnov{}"}
-MACRO {dec} {"\bbldec{}"}
-
-
+MACRO {jan} {"Jan."}
+MACRO {feb} {"Feb."}
+MACRO {mar} {"Mar."}
+MACRO {apr} {"Apr."}
+MACRO {may} {"May"}
+MACRO {jun} {"Jun."}
+MACRO {jul} {"Jul."}
+MACRO {aug} {"Aug."}
+MACRO {sep} {"Sep."}
+MACRO {oct} {"Oct."}
+MACRO {nov} {"Nov."}
+MACRO {dec} {"Dec."}
 MACRO {aa}{"Astron. \& Astrophys."}
 MACRO {aasup}{"Astron. \& Astrophys. Suppl. Ser."}
 MACRO {aj} {"Astron. J."}
@@ -2102,6 +2178,7 @@ MACRO {plb} {"Phys. Lett. B"}
 MACRO {prep} {"Phys. Rep."}
 MACRO {pnas} {"Proc. Nat. Acad. Sci. USA"}
 MACRO {pp} {"Phys. Plasmas"}
+MACRO {pop} {"Phys. Plasmas"}
 MACRO {ppcf} {"Plasma Phys. \& Controlled Fusion"}
 MACRO {phitrsl} {"Philos. Trans. Roy. Soc. London"}
 MACRO {prl} {"Phys. Rev. Lett."}
@@ -2119,12 +2196,48 @@ MACRO {rsi} {"Rev. Sci. Inst."}
 MACRO {science} {"Science"}
 MACRO {sciam} {"Sci. Am."}
 MACRO {sam} {"Stud. Appl. Math."}
-MACRO {sjpp} {"Sov. J. Plasma Phys."}
-MACRO {spd} {"Sov. Phys.--Doklady"}
-MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
-MACRO {spu} {"Sov. Phys.--Uspekhi"}
 MACRO {st} {"Sky and Telesc."}
-
+MACRO {cjp} {"Czech. J. Phys."}
+MACRO {el} {"Europhys. Lett."}
+MACRO {en} {"Europhys. News"}
+MACRO {fujitsustj} {"FUJITSU Sci. Tech. J."}
+MACRO {ieeeed} {"IEEE Trans. Electron Devices"}
+MACRO {ieeeim} {"IEEE Trans. Instrum. Meas."}
+MACRO {ieeejqe} {"IEEE J. Quantum Electron."}
+MACRO {ieeem} {"IEEE Trans. Magn."}
+MACRO {ieeeptl} {"IEEE Photonic Technol. Lett."}
+MACRO {ieeeuffc} {"IEEE Trans. Ultrason., Ferroelect., Freq. Cont."}
+MACRO {jem} {"J. Electron. Mater."}
+MACRO {jes} {"J. Electrochem. Soc."}
+MACRO {jetplett} {"JETP Lett."}
+MACRO {jjap} {"Japan. J. Appl. Phys."}
+MACRO {jpha} {"J. Phys. A: Math. Gen."}
+MACRO {jphb} {"J. Phys. B: At. Mol. Opt. Phys."}
+MACRO {jphbold} {"J. Phys. B: At. Mol. Phys."}
+MACRO {jphc} {"J. Phys.: Condens. Matter"}
+MACRO {jphcold} {"J. Phys. C: Solid State Phys."}
+MACRO {jphd} {"J. Phys. D: Appl. Phys."}
+MACRO {jvsta} {"J. Vac. Sci. Technol. A"}
+MACRO {jvstb} {"J. Vac. Sci. Technol. B"}
+MACRO {me} {"Microelectron. Eng."}
+MACRO {necrd} {"NEC Res.{\&} Develop."}
+MACRO {pa} {"Physica A"}
+MACRO {pb} {"Physica B"}
+MACRO {pc} {"Physica C"}
+MACRO {pd} {"Physica D"}
+MACRO {procieee} {"Proc. IEEE"}
+MACRO {procspie} {"Proc. SPIE"}
+MACRO {pssa} {"Phys. Stat. Sol. A"}
+MACRO {pssb} {"Phys. Stat. Sol. B"}
+MACRO {rpp} {"Rep. Progr. Phys."}
+MACRO {sm} {"Synthet. Metal"}
+MACRO {sost} {"Solid State Technol."}
+MACRO {ss} {"Surf. Sci."}
+MACRO {ssc} {"Solid State Commun."}
+MACRO {sst} {"Semicond. Sci. Technol."}
+MACRO {suplatt} {"Superlatt. Microstr."}
+MACRO {sust} {"Supercond. Sci. Technol."}
+MACRO {znat} {"Z. Naturforsch."}
 MACRO {appopt} {"Appl. Opt."}
 MACRO {bell}   {"Bell Syst. Tech. J."}
 MACRO {ell}    {"Electron. Lett."}
@@ -2141,19 +2254,24 @@ MACRO {ol}     {"Opt. Lett."}
 MACRO {os}     {"Opt. Spectrosc."}
 MACRO {phtl}   {"IEEE Photon. Technol. Lett."}
 MACRO {pspie}  {"Proc. Soc. Photo-Opt. Instrum. Eng."}
-MACRO {sjot}   {"Sov. J. Opt. Technol."}
-MACRO {sjqe}   {"Sov. J. Quantum Electron."}
-MACRO {sleb}   {"Sov. Phys.--Leb. Inst. Rep."}
-MACRO {stph}   {"Sov. Phys.--Techn. Phys."}
-MACRO {stphl}  {"Sov. Techn. Phys. Lett."}
 MACRO {vr}     {"Vision Res."}
 MACRO {zph}    {"Z. f. Physik"}
 MACRO {zphb}   {"Z. f. Physik~B"}
 MACRO {zphd}   {"Z. f. Physik~D"}
 MACRO {sse} {"Solid-State Electron."}
 MACRO {pss} {"Phys. Sol. State"}
-MACRO {sst} {"Semicond. Sci. Tech."}
 MACRO {nl}  {"Nano Lett."}
+MACRO {sjpp} {"Sov. J. Plasma Phys."}
+MACRO {spd}  {"Sov. Phys.--Doklady"}
+MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
+MACRO       {spu}  {"Sov. Phys.--Uspekhi"}
+MACRO {ufn}  {"\CYRU\CYRF\CYRN"}
+MACRO {pu}  {"Phys.--Uspekhi"}
+MACRO {sjot} {"Sov. J. Opt. Technol."}
+MACRO {sjqe} {"Sov. J. Quantum Electron."}
+MACRO {sleb} {"Sov. Phys.--Leb. Inst. Rep."}
+MACRO {stph} {"Sov. Phys.--Techn. Phys."}
+MACRO {stphl}{"Sov. Techn. Phys. Lett."}
 
 READ
 
@@ -2260,9 +2378,18 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
-  "\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi" write$ newline$
-  "\cyrdash\hskip.2em\ignorespaces}" write$ newline$
+  %"\ProvideTextCommandDefault{\cyrdash}{---}" write$ newline$
+  %\DeclareUTFcharacter[\UTFencname]{x2014}{\cyrdash}
+  %"\let\cyrdash\textemdash" write$ newline$
+  %"\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
+  %"\ProvideTextCommandDefault{\cyrdash}{\textemdash}" write$ newline$
+  "\ProvideTextCommandDefault{\cyrdash}{\iflanguage{russian}{\hbox to.8em{--\hss--}}{\textemdash}}" write$ newline$
+  %%"\ProvideTextCommandDefault{\cyrdash}{%"  write$ newline$
+  %%"  \iflanguage{russian}{\hbox to.8em{--\hss--}}{%" write$ newline$
+  %%"    \iflanguage{ukrainian}{\hbox to.8em{--\hss--}}{\textemdash}}}"  write$ newline$
+  "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em plus 0.1em\fi" write$ newline$
+  "\cyrdash\hskip.2em plus 0.1em\ignorespaces}" write$ newline$
+  "\renewcommand{\newblock}{\ignorespaces}" write$ newline$
   "\providecommand{\natexlab}[1]{#1}" write$ newline$
   preamble$ empty$
     'skip$
