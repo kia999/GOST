@@ -8,7 +8,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012-2016 Igor A. Kotelnikov.
-% Version 1.2d
+% Version 1.2f
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -17,7 +17,7 @@
 % to add the field
 %     language = {russian}.
 % Ukrainian, German, French, Italian languages are
-% also supported. Default language is English.
+% also partially supported. Default language is English.
 %
 % Book entry should have the pagetotal field
 % showing total number of pages. Optional field
@@ -126,8 +126,10 @@
 %</driver>
 % \fi
 %
-% \CheckSum{508}
+% \CheckSum{556}
 %
+% \changes{v1.2f}{12 Jul 2016}{patent entry added}
+% \changes{v1.2e}{07 Jul 2016}{bbl.url added to replace URL string}
 % \changes{v1.2d}{18 Feb 2016}{\cs{bbljan} e.t.c. macros removed}
 % \changes{v1.2c}{18 Jan 2015}{langid field added}
 % \changes{v1.2c}{18 Jan 2015}{eid field added}
@@ -616,8 +618,9 @@ ENTRY
     langid % new in v1.2c
     booklanguage
 %    \end{macrocode}
-%   Remaining entries are borrowed from biblatex.
+%   Entries borrowed from biblatex.
 %    \begin{macrocode}
+    date         % new in v1.2f; not implemented yet...
     pagetotal
     url
     urldate
@@ -627,6 +630,29 @@ ENTRY
     eprinttype   % = archivePrefix
     eprintclass  % = primaryClass
     eprint
+%    \end{macrocode}
+%   Entries borrowed from disser.bst by S.Kruchinin.
+%    \begin{macrocode}
+    % new in v1.2f, added with @patent:
+    % appear in biblatex:
+    addendum
+    holder
+    location
+    subtitle
+    titleaddon
+    version
+    % Appear in biblatex-gost:
+    authortype % ??
+    credits    % statement of responsibility, other than provided in Biblatex
+    ipc        % Code of the International Patent Classification
+    media      % General material designation
+    reqnumber  % Registration number of the application to the patent document
+    publdate   % Date of publication
+    publication%  and information on the official gazette, which published patent
+    prdate     % Information about the convention priority: the date of filing of the application,
+    prnumber   %   number and
+    prcountry  %   country name of convention priority.
+    reqdate    % ??
   }
   {}
 %<!natbib>  { label }
@@ -636,7 +662,7 @@ ENTRY
 % Declare internal variables and constants used in to format references.
 %    \begin{macrocode}
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
-after.dblslash after.slash after.column after.semicolumn }
+after.dblslash after.slash after.colon after.semicolon }
 
 %    \end{macrocode}
 % \DescribeFunction{init.state.consts}%
@@ -648,8 +674,8 @@ FUNCTION {init.state.consts}
   #3 'after.block :=
   #4 'after.dblslash :=
   #5 'after.slash :=
-  #6 'after.column :=
-  #7 'after.semicolumn :=
+  #6 'after.colon :=
+  #7 'after.semicolon :=
 }
 
 STRINGS { s t }
@@ -697,10 +723,10 @@ FUNCTION {output.nonnull}
                 { "~//" * change.language * " " * write$ }
                 { output.state after.slash =
                     { "~/ " * write$ }
-                    { output.state after.column =
+                    { output.state after.colon =
 %<!(strict|modern)>                        { ": " * write$ }
 %<strict|modern>                        { "~: " * write$ }
-                        { output.state after.semicolumn =
+                        { output.state after.semicolon =
 %<!(strict|modern)>                            { "; " * write$ }
 %<strict|modern>                            { "~; " * write$ }
 	                        { add.period$ " " * write$ }
@@ -788,22 +814,22 @@ FUNCTION {new.slash}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{new.column}%
+% \DescribeFunction{new.colon}%
 %    \begin{macrocode}
-FUNCTION {new.column}
+FUNCTION {new.colon}
 { output.state before.all =
     'skip$
-    { after.column 'output.state := }
+    { after.colon 'output.state := }
   if$
 }
 
 %    \end{macrocode}
-% \DescribeFunction{new.semicolumn}%
+% \DescribeFunction{new.semicolon}%
 %    \begin{macrocode}
-FUNCTION {new.semicolumn}
+FUNCTION {new.semicolon}
 { output.state before.all =
     'skip$
-    { after.semicolumn 'output.state := }
+    { after.semicolon 'output.state := }
   if$
 }
 
@@ -965,8 +991,8 @@ FUNCTION {emphasize}
 %
 % \DescribeFunction{enclose.square.brackets}
 % New in v.1.2.
-% Declare function to enclose last word in square brackets. It do so only
-% for the |string| option.
+% Declare function to enclose last word by square brackets.
+% It do so only for the |strict| option.
 %    \begin{macrocode}
 %<*!strict>
 FUNCTION {enclose.square.brackets} { }
@@ -985,8 +1011,8 @@ FUNCTION {enclose.square.brackets}
 % \DescribeFunction{bracketise}
 % \DescribeFunction{parenthesify}
 % New in v.1.2. An idea borrowed from apsrev4-1.bst.
-% Declare function to enclose last word in braces, square brackets and
-% parenthesis.
+% Declare function to enclose last word by braces, square brackets and
+% parenthesis, respectively.
 %    \begin{macrocode}
 FUNCTION {bracify}
 { duplicate$ empty$
@@ -994,13 +1020,13 @@ FUNCTION {bracify}
     { "{" swap$ * "}" * }
   if$
 }
-FUNCTION {bracketise}
+FUNCTION {bracketise} % currently not used
 { duplicate$ empty$
     { pop$ "[]" }
     { "[" swap$ * "]" * }
   if$
 }
-FUNCTION {parenthesify}
+FUNCTION {parenthesify} % currently not used
 { duplicate$ empty$
     { pop$ "()" }
     { "(" swap$ * ")" * }
@@ -1378,6 +1404,26 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
 if$}
 
 %    \end{macrocode}
+% Next function was added in version 2016.07.07.
+% \DescribeFunction{bbl.url}
+%    \begin{macrocode}
+FUNCTION {bbl.url}
+{ curlanguage "english" =
+   {"Access mode"}
+   { curlanguage "ukrainian" =
+%<!utf8>      { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyru}" }
+%<utf8>      { "{Режим доступу}" }
+      { curlanguage "russian" =
+%<!utf8>         { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyra}" }
+%<utf8>         { "{Режим доступа}" }
+         { curlanguage "german" =
+            { "{online; abgerufen}" }
+            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
+         if$}
+      if$}
+   if$}
+if$}
+%    \end{macrocode}
 % Next function was added in version 2012.01.15.
 % \DescribeFunction{bbl.urldate}
 %    \begin{macrocode}
@@ -1581,6 +1627,63 @@ FUNCTION {bbl.medium}
    { bbl.medium.elres }
    { bbl.medium.text  }
 if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.req}
+%    \begin{macrocode}
+FUNCTION {bbl.req}
+{
+  curlanguage "english" =
+    { "req." }
+    { curlanguage "german" =
+      { "ang." }
+      { curlanguage "russian" =
+        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
+        { "language is not defined: " language * warning$ "req" }
+      if$
+      }
+    if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.publ}
+%    \begin{macrocode}
+FUNCTION {bbl.publ}
+{
+  curlanguage "english" =
+    { "publ." }
+    { curlanguage "german" =
+      { "ausg." }
+      { curlanguage "russian" =
+        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
+        { "language is not defined: " language * warning$ "In" }
+      if$
+      }
+    if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.prio}
+%    \begin{macrocode}
+FUNCTION {bbl.prio}
+{
+  curlanguage "english" =
+    { "priority" }
+    { curlanguage "german" =
+      { "Prioritat" }
+      { curlanguage "russian" =
+        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
+        { "language is not defined: " language * warning$ "In" }
+      if$
+      }
+    if$
+    }
+  if$
+}
 
 %    \end{macrocode}
 %
@@ -2027,7 +2130,7 @@ FUNCTION {output.address.publisher}
     { address output
       publisher empty$
         'skip$
-        { new.column }
+        { new.colon }
       if$
     }
   if$
@@ -2048,7 +2151,7 @@ FUNCTION {output.address.publisher}
 %    }
 %    {
 %      address output
-%      new.column
+%      new.colon
 %      publisher empty$
 %        { bbl.nopublisher enclose.square.brackets }
 %        { publisher }
@@ -2069,7 +2172,7 @@ FUNCTION {output.address.publisher}
     }
     {
       address output
-      new.column
+      new.colon
       publisher empty$
         { bbl.nopublisher enclose.square.brackets }
         { publisher }
@@ -2791,7 +2894,7 @@ FUNCTION {author.after}
   author empty$
     'skip$
     {format.authors.after output
-       new.semicolumn }
+       new.semicolon }
   if$
 }
 %</!modern>
@@ -2803,7 +2906,7 @@ FUNCTION {author.after}
     'skip$
     {author num.names$ #3 >
       {format.authors.after output
-       new.semicolumn }
+       new.semicolon }
       'skip$
     if$}
   if$
@@ -2824,7 +2927,7 @@ FUNCTION {bookauthor.after}
   bookauthor empty$
     'skip$
     {format.bookauthors.after output
-       new.semicolumn }
+       new.semicolon }
   if$
 }
 
@@ -2836,19 +2939,19 @@ FUNCTION {editor.organization.after}
   compiler empty$
     {}
     { format.compiler.after  output
-    new.semicolumn
+    new.semicolon
     }
   if$
   editor empty$
     {}
     { format.editors.after  output
-    new.semicolumn
+    new.semicolon
     }
   if$
   organization empty$
     {}
     {organization output
-    new.semicolumn
+    new.semicolon
     }
   if$
 }
@@ -2861,12 +2964,23 @@ FUNCTION {format.url}
     { "" }
     {
 %<!(modern|strict)>      "\BibUrl{ " url * "}" *
-%<modern|strict>      "URL: \BibUrl{" url * "}" *
+%<modern|strict>      bbl.url ": \BibUrl{" * url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * ": " * urldate * ")" * }
       if$ *
     }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{output.url}
+%    \begin{macrocode}
+FUNCTION {output.url}
+{
+  url empty$
+    'skip$
+    { format.url output }
   if$
 }
 
@@ -3049,6 +3163,87 @@ FUNCTION {output.eprint.url}
     format.url output
 }
 %</!eprint>
+
+%    \end{macrocode}
+%
+% Functions added to format patent entry (thank to Stanislav Kruchinin).
+%
+% \DescribeFunction{add.number}
+%    \begin{macrocode}
+FUNCTION {add.number}
+{ duplicate$ empty$
+    { "" }
+    { bbl.nr swap$ tie.or.space.connect }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{in.square.brackets}
+%    \begin{macrocode}
+FUNCTION {in.square.brackets}
+{
+  duplicate$ empty$
+    { pop$ "" }
+    { "[" swap$ * "]" * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{in.round.brackets}
+%    \begin{macrocode}
+FUNCTION {in.round.brackets}
+{
+  duplicate$ empty$
+    { pop$ "" }
+    { "(" swap$ * ")" * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.type.number}
+%    \begin{macrocode}
+FUNCTION {format.type.number}
+{
+  type empty$
+    { "" }
+    {
+      number empty$
+      { "" }
+      { type number tie.or.space.connect }
+    if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.reqdate}
+%    \begin{macrocode}
+FUNCTION {format.reqdate}
+{ reqdate empty$
+    { "" }
+    { bbl.req reqdate tie.or.space.connect }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.publdate}
+%    \begin{macrocode}
+FUNCTION {format.publdate}
+{ publdate empty$
+    { "" }
+    { bbl.publ publdate tie.or.space.connect }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.prdate}
+%    \begin{macrocode}
+FUNCTION {format.prdate}
+{ prdate empty$
+    { "" }
+    { bbl.prio prdate tie.or.space.connect }
+  if$
+}
 
 %    \end{macrocode}
 %
@@ -3371,7 +3566,7 @@ FUNCTION {inproceedings}
 %      format.date "year" output.check
 %    }
 %    { address output.nonnull
-%      new.column
+%      new.colon
 %      publisher output
 %      format.date "year" output.check
 %    }
@@ -3439,6 +3634,62 @@ FUNCTION {manual}
 %  format.url output
   output.eprint.url
   format.annote output
+  fin.entry
+}
+
+%    \end{macrocode}
+% \DescribeFunction{patent}
+%  A patent or patent request. The number or record token is given in the number
+%  field. Use the |type| field to specify the type and the |location| field to
+%  indicate the scope of the patent, if different from the scope implied by the
+%  type. Note that the location field is treated as a key list with this entry
+%  type.
+%
+%  Required fields: author, title, number, year/date.
+%
+%  Optional fields: holder, subtitle, titleaddon, type, version, location, note,
+%  date, month, year, addendum, pubstate, doi, eprint, eprint class, eprint type,
+%  url, urldate.
+%    \begin{macrocode}
+FUNCTION {patent}
+{
+  output.bibitem
+  title output.nonnull
+  add.blank
+  media in.square.brackets output
+  new.colon
+  format.type.number output
+  add.blank
+  location output
+  new.colon
+  ipc output
+  new.slash
+  format.authors.after "author" output.check
+  add.blank
+  authortype in.round.brackets output.nonnull
+%<natbib>  author format.key output
+  new.semicolon
+  holder output.nonnull
+  new.semicolon
+  credits output.nonnull
+  new.block
+  reqnumber add.number output
+  new.semicolon
+  format.reqdate output
+  new.semicolon
+  format.publdate output
+  publication output
+  new.semicolon
+  format.prdate output
+  prnumber output
+  prcountry in.round.brackets output
+  new.block
+  note output
+  new.sentence
+  output.url
+  format.annote output
+  new.block
+  pagetotal output
   fin.entry
 }
 
@@ -3569,7 +3820,7 @@ FUNCTION {thesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
-  new.column
+  new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
@@ -3591,14 +3842,14 @@ FUNCTION {thesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
-  new.column
+  new.colon
 %  bbl.phdthesis format.thesis.type output.nonnull
   type "type" output.check
-  new.column
+  new.colon
   number output
   new.slash
   format.authors.after output
-  new.semicolumn
+  new.semicolon
   school "school" output.check
   new.block
   output.address.publisher
@@ -3636,7 +3887,7 @@ FUNCTION {thesis}
 %  author.before
 %  new.sentence
 %  format.title add.doi add.medium "title" output.check
-%  new.column
+%  new.colon
 %%  format.techrep.type.number output.nonnull
 %  type "type" output.check
 %  new.slash
@@ -3644,7 +3895,7 @@ FUNCTION {thesis}
 %  editor.organization.after
 %  new.block
 %  address output
-%  new.column
+%  new.colon
 %  institution "institution" output.check
 %  format.date "year" output.check
 %  new.block
@@ -3664,22 +3915,22 @@ FUNCTION {report}
 %  new.sentence
   format.title add.doi add.medium "title" output.check
 %<natbib>  title format.key output
-  new.column
+  new.colon
 %  format.techrep.type.number output.nonnull
 %  type "type" output.check
 %  format.report.type.number "type" output.check
   type "type" output.check
-  new.column
+  new.colon
   number output
   new.slash
   institution "institution" output.check
-  new.semicolumn
+  new.semicolon
   format.chief.after output % from editor field
-  new.semicolumn
+  new.semicolon
   format.executor.after output % from author field
   new.block
   address output
-  new.column
+  new.colon
   organization output
   format.date "year" output.check
   new.block                % v.2
@@ -3711,7 +3962,7 @@ FUNCTION {phdthesis}
   format.authors "author" output.check
   new.sentence
   format.btitle "title" output.check
-  new.column
+  new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
@@ -3733,13 +3984,13 @@ FUNCTION {phdthesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
-  new.column
+  new.colon
   bbl.phdthesis format.thesis.type output.nonnull
-  new.column
+  new.colon
   number output
   new.slash
   format.authors.after output
-  new.semicolumn
+  new.semicolon
   school "school" output.check
   new.block
   output.address.publisher
@@ -3768,7 +4019,7 @@ FUNCTION {masterthesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
-  new.column
+  new.colon
   bbl.mthesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
@@ -3790,13 +4041,13 @@ FUNCTION {masterthesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
-  new.column
+  new.colon
   bbl.mthesis format.thesis.type output.nonnull
-  new.column
+  new.colon
   number output
   new.slash
   format.authors.after output
-  new.semicolumn
+  new.semicolon
   school "school" output.check
   new.block
   output.address.publisher
@@ -3825,7 +4076,7 @@ FUNCTION {dscithesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle "title" output.check
-  new.column
+  new.colon
   bbl.dscithesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
@@ -3847,13 +4098,13 @@ FUNCTION {dscithesis}
 %<natbib>  author format.key output
   new.sentence
   format.btitle add.doi add.medium "title" output.check
-  new.column
+  new.colon
   bbl.dscithesis format.thesis.type output.nonnull
-  new.column
+  new.colon
   number output
   new.slash
   format.authors.after output
-  new.semicolumn
+  new.semicolon
   school "school" output.check
   new.block
   output.address.publisher
@@ -3888,14 +4139,14 @@ FUNCTION {conference} { inproceedings }
 %  author.before
 %  new.sentence
 %  format.title add.doi add.medium "title" output.check
-%  new.column
+%  new.colon
 %  format.techrep.type.number output.nonnull
 %  new.slash
 %  author.after
 %  editor.organization.after
 %  new.block
 %  address output
-%  new.column
+%  new.colon
 %  institution "institution" output.check
 %  format.date "year" output.check
 %  new.block
@@ -3916,23 +4167,23 @@ FUNCTION {techreport}
 %  new.sentence
   format.title add.doi add.medium "title" output.check
 %<natbib>  title format.key output
-  new.column
+  new.colon
 %  format.techrep.type.number output.nonnull
 %  type "type" output.check
 %  format.report.type.number "type" output.check
 %  type output
   format.techreport.type output
-  new.column
+  new.colon
   number output
   new.slash
   institution "institution" output.check
-  new.semicolumn
+  new.semicolon
   format.chief.after output % from editor field
-  new.semicolumn
+  new.semicolon
   format.executor.after output % from author field
   new.block
   address output
-  new.column
+  new.colon
   organization output
   format.date "year" output.check
   new.block                % v.2
