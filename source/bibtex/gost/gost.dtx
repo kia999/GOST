@@ -52,7 +52,7 @@
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2016/02/18 v.1.2d Bibliography styles for GOST R 7.0.5-2008.]
+  [2016/07/12 v.1.2f Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -126,7 +126,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{556}
+% \CheckSum{548}
 %
 % \changes{v1.2f}{12 Jul 2016}{patent entry added}
 % \changes{v1.2e}{07 Jul 2016}{bbl.url added to replace URL string}
@@ -429,6 +429,26 @@
 %       {CTAN:pkg/gost}.
 %   \end{enumerate}
 %
+%   \subsection{What's new in version 1.2f (2016.07.12)}
+%
+%   \begin{enumerate}
+%   \item
+%   Support for patent entry added (thanks to Stanislav Kruchinin).
+%
+%   \item
+%   medium field renamed to media field.
+
+%   \end{enumerate}
+%
+%   \subsection{What's new in version 1.2e (2016.07.07)}
+%
+%   \begin{enumerate}
+%   \item
+%   Hard coded "URL" string replaced with a language sensitive string
+%   (thanks to Roman Budnyi).
+%
+%   \end{enumerate}
+%
 %   \subsection{What's new in version 1.2d (2015.02.18)}
 %
 %   \begin{enumerate}
@@ -610,7 +630,8 @@ ENTRY
     school
     series
     title
-    medium % new in v1.2.
+    %medium % new in v1.2; renamed to media.
+    media % new in v1.2f
     type
     volume
     year
@@ -633,7 +654,7 @@ ENTRY
 %    \end{macrocode}
 %   Entries borrowed from disser.bst by S.Kruchinin.
 %    \begin{macrocode}
-    % new in v1.2f, added with @patent:
+    % new in v1.2f:
     % appear in biblatex:
     addendum
     holder
@@ -642,17 +663,17 @@ ENTRY
     titleaddon
     version
     % Appear in biblatex-gost:
-    authortype % ??
-    credits    % statement of responsibility, other than provided in Biblatex
-    ipc        % Code of the International Patent Classification
-    media      % General material designation
-    reqnumber  % Registration number of the application to the patent document
-    publdate   % Date of publication
-    publication%  and information on the official gazette, which published patent
-    prdate     % Information about the convention priority: the date of filing of the application,
-    prnumber   %   number and
-    prcountry  %   country name of convention priority.
-    reqdate    % ??
+    authorcountry   % ??
+    credits         % statement of responsibility, other than provided in Biblatex
+    ipc             % Code of the International Patent Classification
+    %media          % General material designation NOTE: medium in the above
+    requestnumber   % Registration number of the application to the patent document
+    publicationdate % Date of publication
+    publication     %  and information on the official gazette, which published patent
+    prioritydate    % Information about the convention priority: the date of filing of the application,
+    prioritynumber  %   number and
+    prioritycountry %   country name of convention priority.
+    requestdate     % ??
   }
   {}
 %<!natbib>  { label }
@@ -712,8 +733,7 @@ FUNCTION {output.nonnull}
     { ", " * write$ }
     { output.state after.block =
         { add.period$ write$
-%<!modern>          " \BibDash " write$ %%" " quote$ "--- " * *  write$ % since v1.2c
-%<modern>          " \BibDash " write$
+          " \BibDash " write$
           newline$
           "\newblock " write$
         }
@@ -989,30 +1009,9 @@ FUNCTION {emphasize}
 
 %    \end{macrocode}
 %
-% \DescribeFunction{enclose.square.brackets}
-% New in v.1.2.
-% Declare function to enclose last word by square brackets.
-% It do so only for the |strict| option.
-%    \begin{macrocode}
-%<*!strict>
-FUNCTION {enclose.square.brackets} { }
-%</!strict>
-%<*strict>
-FUNCTION {enclose.square.brackets}
-{ duplicate$ empty$
-    { pop$ "" }
-    { "[" swap$ * "]" * }
-  if$
-}
-%</strict>
-
-
 % \DescribeFunction{bracify}
-% \DescribeFunction{bracketise}
-% \DescribeFunction{parenthesify}
 % New in v.1.2. An idea borrowed from apsrev4-1.bst.
-% Declare function to enclose last word by braces, square brackets and
-% parenthesis, respectively.
+% Declare function to enclose last word by braces even if empty.
 %    \begin{macrocode}
 FUNCTION {bracify}
 { duplicate$ empty$
@@ -1020,19 +1019,29 @@ FUNCTION {bracify}
     { "{" swap$ * "}" * }
   if$
 }
-FUNCTION {bracketise} % currently not used
-{ duplicate$ empty$
-    { pop$ "[]" }
+
+%    \end{macrocode}
+% \DescribeFunction{enclose.square.brackets}
+% This and the next functions are used to enclose last word by brackets.
+%    \begin{macrocode}
+FUNCTION {enclose.square.brackets}
+{
+  duplicate$ empty$
+    { pop$ "" }
     { "[" swap$ * "]" * }
   if$
 }
-FUNCTION {parenthesify} % currently not used
-{ duplicate$ empty$
-    { pop$ "()" }
+
+%    \end{macrocode}
+% \DescribeFunction{enclose.round.brackets}
+%    \begin{macrocode}
+FUNCTION {enclose.round.brackets}
+{
+  duplicate$ empty$
+    { pop$ "" }
     { "(" swap$ * ")" * }
   if$
 }
-
 
 %    \end{macrocode}
 %
@@ -1555,22 +1564,22 @@ FUNCTION {bbl.nnopublisher}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.medium.text}
+% \DescribeFunction{bbl.media.text}
 %    \begin{macrocode}
-FUNCTION {bbl.medium.text}
+FUNCTION {bbl.media.text}
 { curlanguage "english" =
    { "Text" }
    { curlanguage "russian" = curlanguage "ukrainian" = or
 %<!utf8>      { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
 %<utf8>      { "{Текст}" }
-      { "language is not defined: " language "medium" * * warning$ "Text" }
+      { "language is not defined: " language "media" * * warning$ "Text" }
    if$}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.medium.elres}
+% \DescribeFunction{bbl.media.elres}
 %    \begin{macrocode}
-FUNCTION {bbl.medium.elres}
+FUNCTION {bbl.media.elres}
 { curlanguage "english" =
    { "Electronic resource" }
    { curlanguage "russian" =
@@ -1579,11 +1588,10 @@ FUNCTION {bbl.medium.elres}
       { curlanguage "ukrainian" =
 %<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
 %<utf8>        { "{Електронний ресурс}" }
-        { "language is not defined: " language "medium" * * warning$ "Electronic resource" }
+        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
       if$}
    if$}
 if$}
-
 
 %    \end{macrocode}
 % \DescribeFunction{bbl.chief}
@@ -1614,18 +1622,18 @@ FUNCTION {bbl.executor}
       { curlanguage "ukrainian" =
 %<!utf8>        { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
 %<utf8>        { "{виконавець}" }
-        { "language is not defined: " language "medium" * * warning$ "Executor" }
+        { "language is not defined: " language "executor" * * warning$ "executor" }
       if$}
    if$}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.medium}
+% \DescribeFunction{bbl.media}
 %    \begin{macrocode}
-FUNCTION {bbl.medium}
+FUNCTION {bbl.media}
 { type$ "online" =
-   { bbl.medium.elres }
-   { bbl.medium.text  }
+   { bbl.media.elres }
+   { bbl.media.text  }
 if$}
 
 %    \end{macrocode}
@@ -1638,8 +1646,9 @@ FUNCTION {bbl.req}
     { curlanguage "german" =
       { "ang." }
       { curlanguage "russian" =
-        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
-        { "language is not defined: " language * warning$ "req" }
+%<!utf8>        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
+%<utf8>        { "{заявл.}" }
+        { "language is not defined: " language "req" * * warning$ "req" }
       if$
       }
     if$
@@ -1657,8 +1666,9 @@ FUNCTION {bbl.publ}
     { curlanguage "german" =
       { "ausg." }
       { curlanguage "russian" =
-        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
-        { "language is not defined: " language * warning$ "In" }
+%<!utf8>        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
+%<utf8>        { "{опубл.}" }
+        { "language is not defined: " language "publication" * * warning$ "publication" }
       if$
       }
     if$
@@ -1667,17 +1677,18 @@ FUNCTION {bbl.publ}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.prio}
+% \DescribeFunction{bbl.priority}
 %    \begin{macrocode}
-FUNCTION {bbl.prio}
+FUNCTION {bbl.priority}
 {
   curlanguage "english" =
     { "priority" }
     { curlanguage "german" =
       { "Prioritat" }
       { curlanguage "russian" =
-        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
-        { "language is not defined: " language * warning$ "In" }
+%<!utf8>        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
+%<utf8>        { "{приоритет}" }
+        { "language is not defined: " language "priority" * * warning$ "priority" }
       if$
       }
     if$
@@ -2047,7 +2058,7 @@ FUNCTION {format.title}
 
 %    \end{macrocode}
 % \DescribeFunction{format.month}
-% New in version 1.2d. This macro reeads month field and translate English names
+% New in version 1.2d. This macro reads month field and translate English names
 % of months to Russian if current language is Russian.
 %    \begin{macrocode}
 FUNCTION {format.month}
@@ -2110,8 +2121,7 @@ FUNCTION {format.date}
     }
     { month empty$
         'year
-%<!modern>        { year ". \BibDash " format.month * * }%%{ year ". " quote$ "--- " month * * * * }
-%<modern>        { year ". \BibDash " format.month * * }
+        { year ". \BibDash " format.month * * }
       if$
     }
   if$
@@ -2138,28 +2148,6 @@ FUNCTION {output.address.publisher}
 }
 %</!strict>
 %<*strict>
-%FUNCTION {output.address.publisher}
-%{
-%  address empty$
-%    {
-%      bbl.nnoaddress
-%      publisher empty$
-%        { "~: " * bbl.nopublisher *  }
-%        { }
-%      if$
-%      enclose.square.brackets
-%    }
-%    {
-%      address output
-%      new.colon
-%      publisher empty$
-%        { bbl.nopublisher enclose.square.brackets }
-%        { publisher }
-%      if$
-%    }
-%  if$
-%  output
-%}
 FUNCTION {output.address.publisher}
 {
   address empty$
@@ -2201,20 +2189,6 @@ FUNCTION {output.address.publisher.date}
 % \DescribeFunction{output.bibitem}
 %    \begin{macrocode}
 %<*!natbib>
-%%FUNCTION {output.bibitem}
-%%{ newline$
-%%  "\bibitem" write$
-%%  cite$ bracify write$
-%%  newline$
-%%  language empty$
-%%    { "english" 'curlanguage := }
-%%    { language  'curlanguage := }
-%%  if$
-%%  "\selectlanguageifdefined" curlanguage bracify * write$
-%%  newline$
-%%  ""
-%%  before.all 'output.state :=
-%%}
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem" write$
@@ -3043,21 +3017,21 @@ FUNCTION {add.doi} { }
 %</!eprint>
 
 %    \end{macrocode}
-% \DescribeFunction{add.medium}
-% New in version 2.
+% \DescribeFunction{add.media}
+% New in version 2. Adds media field if |strict| options is in effect.
 %    \begin{macrocode}
 %<*!strict>
-FUNCTION {add.medium} { }
+FUNCTION {add.media} { }
 %</!strict>
 %<*strict>
-FUNCTION {add.medium}
+FUNCTION {add.media}
 { duplicate$ empty$
     'skip$
-    { medium empty$
-        { " " * bbl.medium enclose.square.brackets * }
-        { " " * medium enclose.square.brackets * }
-%%        { bbl.medium enclose.square.brackets * }
-%%        { medium enclose.square.brackets * }
+    { media empty$
+        { " " * bbl.media enclose.square.brackets * }
+        { " " * media enclose.square.brackets * }
+%%        { bbl.media enclose.square.brackets * }
+%%        { media enclose.square.brackets * }
       if$
     }
   if$
@@ -3166,7 +3140,7 @@ FUNCTION {output.eprint.url}
 
 %    \end{macrocode}
 %
-% Functions added to format patent entry (thank to Stanislav Kruchinin).
+% Functions added in v1.2f to format patent entry (thanks to Stanislav Kruchinin).
 %
 % \DescribeFunction{add.number}
 %    \begin{macrocode}
@@ -3174,28 +3148,6 @@ FUNCTION {add.number}
 { duplicate$ empty$
     { "" }
     { bbl.nr swap$ tie.or.space.connect }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{in.square.brackets}
-%    \begin{macrocode}
-FUNCTION {in.square.brackets}
-{
-  duplicate$ empty$
-    { pop$ "" }
-    { "[" swap$ * "]" * }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{in.round.brackets}
-%    \begin{macrocode}
-FUNCTION {in.round.brackets}
-{
-  duplicate$ empty$
-    { pop$ "" }
-    { "(" swap$ * ")" * }
   if$
 }
 
@@ -3216,32 +3168,32 @@ FUNCTION {format.type.number}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.reqdate}
+% \DescribeFunction{format.requestdate}
 %    \begin{macrocode}
-FUNCTION {format.reqdate}
-{ reqdate empty$
+FUNCTION {format.requestdate}
+{ requestdate empty$
     { "" }
-    { bbl.req reqdate tie.or.space.connect }
+    { bbl.req requestdate tie.or.space.connect }
   if$
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.publdate}
+% \DescribeFunction{format.publicationdate}
 %    \begin{macrocode}
-FUNCTION {format.publdate}
-{ publdate empty$
+FUNCTION {format.publicationdate}
+{ publicationdate empty$
     { "" }
-    { bbl.publ publdate tie.or.space.connect }
+    { bbl.publ publicationdate tie.or.space.connect }
   if$
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.prdate}
+% \DescribeFunction{format.prioritydate}
 %    \begin{macrocode}
-FUNCTION {format.prdate}
-{ prdate empty$
+FUNCTION {format.prioritydate}
+{ prioritydate empty$
     { "" }
-    { bbl.prio prdate tie.or.space.connect }
+    { bbl.priority prioritydate tie.or.space.connect }
   if$
 }
 
@@ -3289,7 +3241,7 @@ FUNCTION {article}
   output.bibitem
   author.before
 %<natbib>  author format.key output
-  format.title add.medium "title" output.check
+  format.title add.media "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -3330,7 +3282,7 @@ FUNCTION {book}
   output.bibitem
   author.before
 %<natbib>  author format.key output
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -3374,7 +3326,7 @@ FUNCTION {booklet}
   output.bibitem
   author.before
 %<natbib>  author format.key output
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
   new.slash
   author.after
   editor.organization.after
@@ -3410,7 +3362,7 @@ FUNCTION {inbook}
   output.bibitem
   author.before
 %<natbib>  author format.key output
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -3462,7 +3414,7 @@ FUNCTION {incollection}
   author.before
 %<natbib>  author format.key output
   new.sentence
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -3505,7 +3457,7 @@ FUNCTION {proceedings}
 {
   output.bibitem
 %<natbib>  editor format.key output
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.slash
   editor.organization.after
   new.block
@@ -3550,7 +3502,7 @@ FUNCTION {inproceedings}
   author.before
 %<natbib>  author format.key output
   new.sentence
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
   new.slash
   author.after
   new.dblslash
@@ -3610,7 +3562,7 @@ FUNCTION {manual}
   if$
 %<natbib>  author format.key output
   new.block
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   author empty$
     { organization empty$
     {
@@ -3654,9 +3606,10 @@ FUNCTION {manual}
 FUNCTION {patent}
 {
   output.bibitem
-  title output.nonnull
-  add.blank
-  media in.square.brackets output
+%  title output.nonnull
+  title add.media output.nonnull
+%  add.blank
+%  media enclose.square.brackets output % S.Kruchinin's version
   new.colon
   format.type.number output
   add.blank
@@ -3666,23 +3619,23 @@ FUNCTION {patent}
   new.slash
   format.authors.after "author" output.check
   add.blank
-  authortype in.round.brackets output.nonnull
+  authorcountry enclose.round.brackets output.nonnull
 %<natbib>  author format.key output
   new.semicolon
   holder output.nonnull
   new.semicolon
   credits output.nonnull
   new.block
-  reqnumber add.number output
+  requestnumber add.number output
   new.semicolon
-  format.reqdate output
+  format.requestdate output
   new.semicolon
-  format.publdate output
+  format.publicationdate output
   publication output
   new.semicolon
-  format.prdate output
-  prnumber output
-  prcountry in.round.brackets output
+  format.prioritydate output
+  prioritynumber output
+  prioritycountry enclose.round.brackets output
   new.block
   note output
   new.sentence
@@ -3706,7 +3659,7 @@ FUNCTION {misc}
   format.authors output
 %<natbib>  author format.key output
   title howpublished new.sentence.checkb
-  format.title add.medium output
+  format.title add.media output
   howpublished new.block.checka
   howpublished output
   new.block
@@ -3768,10 +3721,11 @@ FUNCTION {online}
   format.authors output
 %<natbib>  author format.key output
   title howpublished new.sentence.checkb
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
 %  howpublished new.block.checka
   howpublished new.dblslash.checka
-  howpublished enclose.square.brackets output
+%<!strict>  howpublished output
+%<strict>  howpublished enclose.square.brackets output
   editor.organization.after
   new.sentence
   new.block
@@ -3841,7 +3795,7 @@ FUNCTION {thesis}
   format.authors "author" output.check
 %<natbib>  author format.key output
   new.sentence
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.colon
 %  bbl.phdthesis format.thesis.type output.nonnull
   type "type" output.check
@@ -3886,7 +3840,7 @@ FUNCTION {thesis}
 %  output.bibitem
 %  author.before
 %  new.sentence
-%  format.title add.doi add.medium "title" output.check
+%  format.title add.doi add.media "title" output.check
 %  new.colon
 %%  format.techrep.type.number output.nonnull
 %  type "type" output.check
@@ -3913,7 +3867,7 @@ FUNCTION {report}
   output.bibitem
 %  author.before
 %  new.sentence
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
 %<natbib>  title format.key output
   new.colon
 %  format.techrep.type.number output.nonnull
@@ -3983,7 +3937,7 @@ FUNCTION {phdthesis}
   format.authors "author" output.check
 %<natbib>  author format.key output
   new.sentence
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
@@ -4040,7 +3994,7 @@ FUNCTION {masterthesis}
   format.authors "author" output.check
 %<natbib>  author format.key output
   new.sentence
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.colon
   bbl.mthesis format.thesis.type output.nonnull
   new.colon
@@ -4097,7 +4051,7 @@ FUNCTION {dscithesis}
   format.authors "author" output.check
 %<natbib>  author format.key output
   new.sentence
-  format.btitle add.doi add.medium "title" output.check
+  format.btitle add.doi add.media "title" output.check
   new.colon
   bbl.dscithesis format.thesis.type output.nonnull
   new.colon
@@ -4138,7 +4092,7 @@ FUNCTION {conference} { inproceedings }
 %  output.bibitem
 %  author.before
 %  new.sentence
-%  format.title add.doi add.medium "title" output.check
+%  format.title add.doi add.media "title" output.check
 %  new.colon
 %  format.techrep.type.number output.nonnull
 %  new.slash
@@ -4165,7 +4119,7 @@ FUNCTION {techreport}
   output.bibitem
 %  author.before
 %  new.sentence
-  format.title add.doi add.medium "title" output.check
+  format.title add.doi add.media "title" output.check
 %<natbib>  title format.key output
   new.colon
 %  format.techrep.type.number output.nonnull
