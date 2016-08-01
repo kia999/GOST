@@ -1,4 +1,4 @@
-GOST is a bundle of BibTeX styles designed to meet State Standards (GOST)
+GOST is a bundle of BibTeX styles designed to match the State Standards (GOST)
 on information, librarianship and publishing issued by The Russian Federation
 and Interstate Committee of former USSR States.
 
@@ -23,14 +23,14 @@ GOST 7.11 -2004  Bibliographic description and references.
 GOST 7.83 -2001  Electronic editions. Basic types and imprint.
 Ect.
 
-GOST comprises 16 BibTeX styles to format bibliography in English, Russian 
-and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit 
-and Unicode (UTF-8) versions of each BibTeX style, in each case offering 
-a choice of sorted and unsorted. Further, 2 more styles, |gost780| and 
-|gost780s| styles (not conforming to effective standards) are retained 
+GOST comprises 16 BibTeX styles to format bibliography in English, Russian
+and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit
+and Unicode (UTF-8) versions of each BibTeX style, in each case offering
+a choice of sorted and unsorted. Further, 2 more styles, |gost780| and
+|gost780s| styles (not conforming to effective standards) are retained
 for backwards compatibility.
 
-All BibTeX styles are derived from same master file |gost.dtx| by applying 
+All BibTeX styles are derived from same master file |gost.dtx| by applying
 different set of options as shown in the table below.
 
 ------------------------------------------------------------------------
@@ -66,20 +66,20 @@ currently effective Standard 7.0.5-2008. Librarians should use the style
 Standard 7.1-2003. Use of other styles is best explained through
 the meaning of options used to compile those styles from the master source.
 
-Two styles, |gost780| and |gost780s|, generated without |modern| and 
-|strict| options, are retained for backward compatibility. They do not 
+Two styles, |gost780| and |gost780s|, generated without |modern| and
+|strict| options, are retained for backward compatibility. They do not
 conform the Standards 7.0.5-2008 and 7.1-2003 cited above.
 
 The |strict| option provides conformance to the Standard 7.1-2003. The
 styles compiled with that option bear the name |gost2003| with possible
-suffixes |s|, |l|, |n| as explained below. These styles are intended 
+suffixes |s|, |l|, |n| as explained below. These styles are intended
 primarily for the librarians who compose a library catalog.
 
 The |modern| option meets the Standard 7.0.5-2008 which can be thought
 off as a relaxed version of the Standard 7.1-2003. The styles compiled with
 that option bear the name |gost2008| with possible suffixes |s|, |l|, |n|.
 The |strict| option  has precedence over |modern| so that a style compiled
-with both options will resemble mainly the |gost2003| style rather than 
+with both options will resemble mainly the |gost2003| style rather than
 |gost2008|.
 
 If the number of authors exceeds 4, modern styles cut the list of authors
@@ -93,25 +93,24 @@ precedes book or article title no matter how long is it.
 Modern styles compiled without |long| place long list of authors behind
 the title. The names of styles compiled with the option |long| has the
 suffix |l|. Recall that those styles do not conform effective Standards and
-their use is discouraged. 
+their use is discouraged.
 
 The |eprint| option enables formatting electronic publications. In particular,
 it enables |eprint|, |eprinttype|, |eprintclass|, and |doi| fields for a
 bibliographic entry. The styles, generated without the |eprint| option,
-just ignore the these fields. Starting from the
-version 1.2 of the GOST package, all modern styles are compiled with this
-option included, and therefore the suffix |e| which designated
-this option in earlier  versions is not appended to the name of style
-any more.
+just ignore these fields. Starting from the version 1.2 of the GOST package, 
+all modern styles are compiled with this option included, and therefore the 
+suffix |e| which designated this option in earlier  versions is not appended 
+to the name of style any more.
 
-The |natbib| option provides compatibility with the |natbib| package. The names 
+The |natbib| option provides compatibility with the |natbib| package. The names
 of styles compiled with the option |natbib| bear the suffix |n|. Currently
 4 styles with that option are available for public use.
 
 The |sort| option enables sorting bibliographic references by author names
 and titles of references. The names of styles compiled with the option |sort|
 bear the suffix |s|. Sorting does not work as expected for databases in
-unicode encoding (see below). 
+unicode encoding (see below).
 
 Finally, the |utf8| option produces bibliographic styles in unicode rather
 that in 8-bit encoding. Names of those styles bear the prefix |u|.
@@ -149,7 +148,7 @@ How to use
 2. Add the field language="ukrainian" or language="russian" to the
    bibliographic entries in Ukrainian or Russian languages in your
    database; English is the default language. German, Italian and
-   French are also supported.
+   French are partially supported.
 
 3. To compile list of references from your database use bibtex8.exe
    rather than bibtex.exe. Depending on the codepage of your
@@ -169,7 +168,7 @@ How to use
    should be preferred as well when using 8bit compilers
    (latex and pdflatex) if source file is in utf8 encoding.
 
-6. Neither bitex.exe nor bitex8.exe provides
+6. Neither bibtex.exe nor bibtex8.exe provide
    correct sorting order of unicode text. It means that using
    ugost2008s or any other style ended with `s' in
    its name may produce unexpected result for utf8 documents.
@@ -184,7 +183,7 @@ How to use
    authors.
 
 9. Package |natbib| should be loaded when using styles with
-   suffix |n| in their names. 
+   suffix |n| in their names.
 
 
 Customization
@@ -209,14 +208,31 @@ By default, \BibDash is equivalent to the shorthand "---
 introduced by the babel package with the option russian.
 It prints a so called Cyrillic dash (\cyrdash), which is
 20% shorter than ordinary LaTeX dash (---), and puts
-unbreakable space before \cyrdash so that the dash never 
+unbreakable space before \cyrdash so that the dash never
 appears at the beginning of a line.
 
 
-Where to get from from
+Where to get from
 
 1. http://mirror.ctan.org/biblio/bibtex/contrib/gost/
 2. http://ctan.org/pkg/gost
+
+
+What's new in version 1.2g (2016.07.25)
+
+1. Minor changes in documentation.
+
+
+What's new in version 1.2f (2016.07.11)
+
+1. Support for |@patent| entry added (thanks to Stanislav Kruchinin).
+2. medium field renamed to media field.
+
+
+What's new in version 1.2e (2016.07.07)
+
+1. Hard coded "URL" string replaced with a language sensitive string
+   (thanks to Roman Budnyi).
 
 
 What's new in version 1.2d (2016.02.18)
