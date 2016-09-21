@@ -17,7 +17,7 @@
 %% This file has the LPPL maintenance status "maintained".
 %% Maintained by Igor A. Kotelnikov.
 %% 
-%% Current version: 1.2g, 2016.07.25
+%% Current version: 1.2h, 2016.09.21
 %% 
 %% Please, send bug report via e-mail:
 %%   kia999 at mail dot ru <Igor Kotelnikov>
