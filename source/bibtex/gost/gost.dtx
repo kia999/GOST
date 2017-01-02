@@ -7,8 +7,8 @@
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
-% Copyright 2012-2016 Igor A. Kotelnikov.
-% Version 1.2g
+% Copyright 2012-20167 Igor A. Kotelnikov.
+% Version 1.2i
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -40,6 +40,7 @@
 %    makeindex -r -s gind.ist gost
 %    makeindex -r -s gglo.ist -o gost.gls gost.glo
 %    pdflatex gost.dtx
+%    pdflatex gost.dtx
 %
 % TeX Directory Structure
 %
@@ -48,11 +49,11 @@
 % Move all *.pdf files       to TDS:doc/bibtex/gost
 % Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
 %
-% $Id: gost.dtx, v.2012/08/31 kia999 $
+% $Id: gost.dtx, v.2017/01/12 kia999 $
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2016/09/21 v.1.2h Bibliography styles for GOST R 7.0.5-2008.]
+  [2017/01/12 v.1.2i Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -62,7 +63,8 @@
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
   \usepackage{cmap}
 \else
-  \usepackage[hypertex]{hyperref}
+  %\usepackage[hypertex]{hyperref}
+  \usepackage{hyperref}
 \fi
 \usepackage{color}
 \definecolor{darkblue}{rgb}{0,0,.6}
@@ -126,8 +128,11 @@
 %</driver>
 % \fi
 %
-% \CheckSum{548}
+% \CheckSum{600}
 %
+% \changes{v1.2i}{02 Jan 2017}{media field mormalised}
+% \changes{v1.2i}{29 Dec 2016}{documentation update}
+% \changes{v1.2i}{29 Dec 2016}{minor changes in meta information}
 % \changes{v1.2h}{21 Sep 2016}{minor changes in documentation}
 % \changes{v1.2g}{25 Jul 2016}{minor changes in documentation}
 % \changes{v1.2f}{12 Jul 2016}{patent entry added}
@@ -163,7 +168,22 @@
 % \DoNotIndex{\cyrt,\cyri,\cyrz,\CYRT,\cyrm}
 % \DoNotIndex{\cyr,\cyrc,\CYRD,\cyrery,\cyrh,\CYRK,\CYRM,\CYRN,\cyrn}
 % \DoNotIndex{\cyrp,\cyrs,\cyrshch,\cyru,\CYRV,\cyrya}
+% \DoNotIndex{\CYRA,\CYRB,\cyrch,\CYRE,\CYREREV,\CYRF,\cyrf,\CYRI,\cyrishrt}
+% \DoNotIndex{\CYRO,\CYRR,\cyrsftsn,\CYRYA,\cyryu,\cyrzh}
 % \DoNotIndex{\z@skip,\z@}
+% \DoNotIndex{\|,\~,\ }
+% \DoNotIndex{\\&,\',\(,\),\`,\\,\/,\.}
+% \DoNotIndex{\begin,\DeclareUTFcharacter}
+% \DoNotIndex{\csname,\def}
+% \DoNotIndex{\else,\endcsname,\end}
+% \DoNotIndex{\expandafter,\fi}
+% \DoNotIndex{\hbox,\hss}
+% \DoNotIndex{\iffalse,\ifx,\ignorespaces,\iflanguage}
+% \DoNotIndex{\language,\lastskip,\ldots,\let,\natexlab,\newblock,\nobreak}
+% \DoNotIndex{\providecommand,\ProvideTextCommandDefault,\relax,\renewcommand}
+% \DoNotIndex{\selectlanguage,\selectlanguageifdefined,\small,\textemdash}
+% \DoNotIndex{\textnumero,\unskip,\url,\UTFencname}
+% \DoNotIndex{\,,\catcode,\cite,\citeauthor,\citet,\citeyear,\href,\hskip,\ifdim}
 %
 % \begin{abstract}
 %
@@ -432,7 +452,29 @@
 %   \end{enumerate}
 %
 %
-%   \subsection{What's new in version 1.2h (2016.08.21)}
+%   \subsection{Version history}
+%
+%   \subsubsection{Version 1.2i (2016.12.29)}
+%
+%   \begin{enumerate}
+%   \item
+%   Documentation and examples update.
+%
+%   \item
+%   Restored |@MastersThesis| instead of |@MasterThesis| (thanks to Leonid Sinev).
+%
+%   \item
+%   |media="eresource"| is introduced in addition to |media="online"| and
+%   |media="text"|; if present, the |media| field is not ignored any more in
+%   modern bst-styles compiled without the |strict| option.
+%
+%   \item
+%   |location| field is introduced as an alias of |address| field.
+%%
+%   \end{enumerate}
+%
+%
+%   \subsubsection{Version 1.2h (2016.08.21)}
 %
 %   \begin{enumerate}
 %   \item
@@ -441,7 +483,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsection{What's new in version 1.2g (2016.07.25)}
+%   \subsubsection{Version 1.2g (2016.07.25)}
 %
 %   \begin{enumerate}
 %   \item
@@ -450,18 +492,18 @@
 %   \end{enumerate}
 %
 %
-%   \subsection{What's new in version 1.2f (2016.07.12)}
+%   \subsubsection{Version 1.2f (2016.07.12)}
 %
 %   \begin{enumerate}
 %   \item
 %   Support for patent entry added (thanks to Stanislav Kruchinin).
 %
 %   \item
-%   medium field renamed to media field.
+%   medium field renamed to media field for compatibility with biblatex.
 
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2e (2016.07.07)}
+%   \subsubsection{Version 1.2e (2016.07.07)}
 %
 %   \begin{enumerate}
 %   \item
@@ -470,7 +512,7 @@
 %
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2d (2015.02.18)}
+%   \subsubsection{Version 1.2d (2015.02.18)}
 %
 %   \begin{enumerate}
 %   \item
@@ -480,7 +522,7 @@
 %   New macro format.month.
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2c (2015.01.10)}
+%   \subsubsection{Version 1.2c (2015.01.10)}
 %
 %   \begin{enumerate}
 %   \item
@@ -508,7 +550,7 @@
 %
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2a (2012.08.31)}
+%   \subsubsection{Version 1.2a (2012.08.31)}
 %
 %   \begin{enumerate}
 %
@@ -518,7 +560,7 @@
 %
 %   \end{enumerate}
 %
-%   \subsection{What's new in version 1.2 (2012.02.22)}
+%   \subsubsection{Version 1.2 (2012.02.22)}
 %
 %   \begin{enumerate}
 %   \item
@@ -537,7 +579,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsection{What's new in version 1.1 (2012.01.21)}
+%   \subsubsection{Version 1.1 (2012.01.21)}
 %
 %   \begin{enumerate}
 %   \item
@@ -553,13 +595,13 @@
 %   \item
 %   |@DSciThesis| entry is added to format a reference to doctor of
 %   sciences thesis.
-
+%
 %   \item
 %   |Urldate|, |eprint|, |eprintclass|, |eprinttype| fields are added.
 %
 %   \end{enumerate}
 %
-%   \subsection{Version history}
+%   \subsubsection{Older versions}
 %
 %   \begin{enumerate}
 %   \item[2012.02.22] Support for |natbib| package.
@@ -1598,9 +1640,9 @@ FUNCTION {bbl.media.text}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.media.elres}
+% \DescribeFunction{bbl.media.eresource}
 %    \begin{macrocode}
-FUNCTION {bbl.media.elres}
+FUNCTION {bbl.media.eresource}
 { curlanguage "english" =
    { "Electronic resource" }
    { curlanguage "russian" =
@@ -1609,6 +1651,25 @@ FUNCTION {bbl.media.elres}
       { curlanguage "ukrainian" =
 %<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
 %<utf8>        { "{Електронний ресурс}" }
+        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
+      if$}
+   if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.media.online}
+%    \begin{macrocode}
+FUNCTION {bbl.media.online}
+{ curlanguage "english" =
+   { "Electronic resource online" }
+   { curlanguage "russian" =
+%<!utf8>      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+%<!utf8>        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" }
+%<utf8>      { "{Электронный ресурс онлайн}" }
+      { curlanguage "ukrainian" =
+%<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+%<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" }
+%<utf8>        { "{Електронний ресурс онлайн}" }
         { "language is not defined: " language "media" * * warning$ "Electronic resource" }
       if$}
    if$}
@@ -1651,10 +1712,18 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.media}
 %    \begin{macrocode}
+%FUNCTION {bbl.media}
+%{ type$ "online" =
+%   { bbl.media.eresource }
+%   { bbl.media.text  }
+%if$}
 FUNCTION {bbl.media}
-{ type$ "online" =
-   { bbl.media.elres }
-   { bbl.media.text  }
+{ media "online" =
+   { bbl.media.online }
+   { media "eresource" =
+     { bbl.media.eresource }
+     { bbl.media.text }
+   if$}
 if$}
 
 %    \end{macrocode}
@@ -2111,7 +2180,7 @@ FUNCTION {format.month}
 %<!utf8>            { "\CYRA\cyrv\cyrg\." }
 %<utf8>            { "Авг." }
         { month "Sep." =
-%<!utf8>            { "\CYRS\cyre\cyn\cyrt." }
+%<!utf8>            { "\CYRS\cyre\cyrn\cyrt." }
 %<utf8>            { "Сент." }
         { month "Oct." =
 %<!utf8>            { "\CYRO\cyrk\cyrt." }
@@ -2150,15 +2219,43 @@ FUNCTION {format.date}
 }
 
 %    \end{macrocode}
+% New function in version 1.2i.
+% \DescribeFunction{address.or.location}
+%    \begin{macrocode}
+FUNCTION {address.or.location}
+{
+  address empty$
+    { location empty$
+      'skip$
+      { location }
+    if$ }
+    { address }
+  if$
+}
+
+%    \end{macrocode}
 % \DescribeFunction{format.address.publisher}
 % \DescribeFunction{format.address.publisher.date}
 %    \begin{macrocode}
 %<*!strict>
+%FUNCTION {output.address.publisher}
+%{
+%  address empty$
+%    'skip$
+%    { address output
+%      publisher empty$
+%        'skip$
+%        { new.colon }
+%      if$
+%    }
+%  if$
+%  publisher output
+%}
 FUNCTION {output.address.publisher}
 {
-  address empty$
+  address empty$ location empty$ and
     'skip$
-    { address output
+    { address.or.location output
       publisher empty$
         'skip$
         { new.colon }
@@ -3039,20 +3136,30 @@ FUNCTION {add.doi} { }
 
 %    \end{macrocode}
 % \DescribeFunction{add.media}
-% New in version 2. Adds media field if |strict| options is in effect.
+% New in version 1.2. Adds |media| field if |strict| options is in effect.
+% If the |media| field is empty |add.media| prints a value based on the |type|
+% field. If the |type| is also empty |add.media| prints equivalent of the
+% word |text| in current language.
 %    \begin{macrocode}
 %<*!strict>
-FUNCTION {add.media} { }
+FUNCTION {add.media}
+{ duplicate$ empty$
+    'skip$
+    { media empty$
+        'skip$
+        { " " * bbl.media enclose.square.brackets * }
+      if$
+    }
+  if$
+}
 %</!strict>
 %<*strict>
 FUNCTION {add.media}
 { duplicate$ empty$
     'skip$
     { media empty$
+        { " " * bbl.media.text enclose.square.brackets * }
         { " " * bbl.media enclose.square.brackets * }
-        { " " * media enclose.square.brackets * }
-%%        { bbl.media enclose.square.brackets * }
-%%        { media enclose.square.brackets * }
       if$
     }
   if$
@@ -3353,7 +3460,7 @@ FUNCTION {booklet}
   editor.organization.after
   new.block
   howpublished output
-  address output
+  address.or.location output
   format.date "year" output.check
   new.block
   note output
@@ -3634,7 +3741,7 @@ FUNCTION {patent}
   new.colon
   format.type.number output
   add.blank
-  location output
+  address.or.location output
   new.colon
   ipc output
   new.slash
@@ -3904,7 +4011,7 @@ FUNCTION {report}
   new.semicolon
   format.executor.after output % from author field
   new.block
-  address output
+  address.or.location output
   new.colon
   organization output
   format.date "year" output.check
@@ -3988,7 +4095,7 @@ FUNCTION {phdthesis}
 % term `Master's thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
 %<*!(modern|strict)>
-FUNCTION {masterthesis}
+FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
 %<natbib>  author format.key output
@@ -4010,7 +4117,7 @@ FUNCTION {masterthesis}
 }
 %</!(modern|strict)>
 %<*modern|strict>
-FUNCTION {masterthesis}
+FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
 %<natbib>  author format.key output
@@ -4157,7 +4264,7 @@ FUNCTION {techreport}
   new.semicolon
   format.executor.after output % from author field
   new.block
-  address output
+  address.or.location output
   new.colon
   organization output
   format.date "year" output.check
@@ -4170,7 +4277,6 @@ FUNCTION {techreport}
   format.annote output
   fin.entry
 }
-
 
 %    \end{macrocode}
 % \DescribeFunction{default.type}
