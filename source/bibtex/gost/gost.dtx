@@ -1533,9 +1533,9 @@ FUNCTION {bbl.techreport} % rename to bbl.techreport
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.mthesis}
+% \DescribeFunction{bbl.mathesis}
 %    \begin{macrocode}
-FUNCTION {bbl.mthesis}
+FUNCTION {bbl.mathesis}
 { curlanguage "english" =
    { "Master's thesis" }
    { curlanguage "german" =
@@ -1571,9 +1571,9 @@ FUNCTION {bbl.phdthesis}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.dscithesis}
+% \DescribeFunction{bbl.docthesis}
 %    \begin{macrocode}
-FUNCTION {bbl.dscithesis}
+FUNCTION {bbl.docthesis}
 { curlanguage "english" =
    { "Dr.\,Sci. dissertation" }
    { curlanguage "german" =
@@ -1585,6 +1585,21 @@ FUNCTION {bbl.dscithesis}
          { "language is not defined: " language "dscithesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
+if$}
+
+%    \end{macrocode}
+% \DescribeFunction{bbl.thesis.type`}
+%    \begin{macrocode}
+FUNCTION {bbl.thesis.type}
+{ type "mathesis" =
+  { bbl.mathesis }
+  { type "phdthesis" =
+    { bbl.phdthesis }
+    { type "docthesis" =
+      { bbl.docthesis }
+      { "!!!" type * }
+    if$}
+  if$}
 if$}
 
 %    \end{macrocode}
@@ -3904,6 +3919,7 @@ FUNCTION {thesis}
   format.btitle "title" output.check
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
+  %format.thesis.type output.nonnull
   new.slash
   school "school" output.check
   new.block
@@ -3927,6 +3943,7 @@ FUNCTION {thesis}
   new.colon
 %  bbl.phdthesis format.thesis.type output.nonnull
   type "type" output.check
+  %format.thesis.type "type" output.check
   new.colon
   number output
   new.slash
@@ -4102,7 +4119,7 @@ FUNCTION {mastersthesis}
   new.sentence
   format.btitle "title" output.check
   new.colon
-  bbl.mthesis format.thesis.type output.nonnull
+  bbl.mathesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
   new.block
@@ -4124,7 +4141,7 @@ FUNCTION {mastersthesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  bbl.mthesis format.thesis.type output.nonnull
+  bbl.mathesis format.thesis.type output.nonnull
   new.colon
   number output
   new.slash
@@ -4159,7 +4176,7 @@ FUNCTION {dscithesis}
   new.sentence
   format.btitle "title" output.check
   new.colon
-  bbl.dscithesis format.thesis.type output.nonnull
+  bbl.docthesis format.thesis.type output.nonnull
   new.slash
   school "school" output.check
   new.block
@@ -4181,7 +4198,7 @@ FUNCTION {dscithesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  bbl.dscithesis format.thesis.type output.nonnull
+  bbl.docthesis format.thesis.type output.nonnull
   new.colon
   number output
   new.slash
