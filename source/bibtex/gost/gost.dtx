@@ -470,7 +470,10 @@
 %
 %   \item
 %   |location| field is introduced as an alias of |address| field.
-%%
+%
+%   \item
+%   |@DSCISTHESIS| entry renamed to |@DOCTHESIS|.
+%
 %   \end{enumerate}
 %
 %
@@ -593,7 +596,7 @@
 %   |@MastersThesis| entry is added to format a reference to master's thesis.
 %
 %   \item
-%   |@DSciThesis| entry is added to format a reference to doctor of
+%   |@docthesis| entry is added to format a reference to doctor of
 %   sciences thesis.
 %
 %   \item
@@ -1582,7 +1585,7 @@ FUNCTION {bbl.docthesis}
 %<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
 %<!utf8>           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
 %<utf8>         { "{Дисс\ldots\ доктора наук}" }
-         { "language is not defined: " language "dscithesis" * * warning$ "Dr.\,Sci. dissertation" }
+         { "language is not defined: " language "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
 if$}
@@ -1597,7 +1600,9 @@ FUNCTION {bbl.thesis.type}
     { bbl.phdthesis }
     { type "docthesis" =
       { bbl.docthesis }
-      { "!!!" type * }
+      %%{ "!!!" type * "t" change.case$ }
+%<!utf8>      { type "t" change.case$ }
+%<utf8>      { type }
     if$}
   if$}
 if$}
@@ -2873,16 +2878,23 @@ FUNCTION {empty.misc.check}
 %    \end{macrocode}
 % \DescribeFunction{format.thesis.type}
 %    \begin{macrocode}
+%FUNCTION {format.thesis.type}
+%{ type empty$
+%    'skip$
+%    { pop$
+%%<!utf8>      bbl.thesis.type "t" change.case$
+%%<utf8>      bbl.thesis.type
+%    }
+%  if$
+%}
 FUNCTION {format.thesis.type}
 { type empty$
     'skip$
     { pop$
-%<!utf8>      type "t" change.case$
-%<utf8>      type
+      bbl.thesis.type
     }
   if$
 }
-
 %    \end{macrocode}
 % \DescribeFunction{format.techrep.type.number}
 % Function to format report type and number.
@@ -3941,11 +3953,15 @@ FUNCTION {thesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-%  bbl.phdthesis format.thesis.type output.nonnull
-  type "type" output.check
-  %format.thesis.type "type" output.check
+  %%type "type" output.check
+  bbl.phdthesis format.thesis.type output.nonnull
+  %%"bbl.phdthesis" format.thesis.type output.nonnull
+  %%"bbl.phdthesis" format.thesis.type output.nonnull
+  %%"!!!" format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
@@ -4086,7 +4102,9 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
@@ -4143,7 +4161,9 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
@@ -4164,12 +4184,12 @@ FUNCTION {mastersthesis}
 %</modern|strict>
 
 %    \end{macrocode}
-% \DescribeFunction{dscithesis}
+% \DescribeFunction{docthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
 %<*!(modern|strict)>
-FUNCTION {dscithesis}
+FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
 %<natbib>  author format.key output
@@ -4191,7 +4211,7 @@ FUNCTION {dscithesis}
 }
 %</!(modern|strict)>
 %<*modern|strict>
-FUNCTION {dscithesis}
+FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
 %<natbib>  author format.key output
@@ -4200,7 +4220,9 @@ FUNCTION {dscithesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
