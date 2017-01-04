@@ -7,7 +7,7 @@
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
-% Copyright 2012-20167 Igor A. Kotelnikov.
+% Copyright 2012-2017 Igor A. Kotelnikov.
 % Version 1.2i
 %
 % Copyright 1996-2005 Maksym Polyakov.
@@ -128,8 +128,10 @@
 %</driver>
 % \fi
 %
-% \CheckSum{600}
+% \CheckSum{594}
 %
+% \changes{v1.2i}{02 Jan 2017}{location field added as alias to address field}
+% \changes{v1.2i}{02 Jan 2017}{dscithesis entry renamed to docthesis}
 % \changes{v1.2i}{02 Jan 2017}{media field mormalised}
 % \changes{v1.2i}{29 Dec 2016}{documentation update}
 % \changes{v1.2i}{29 Dec 2016}{minor changes in meta information}
@@ -454,7 +456,7 @@
 %
 %   \subsection{Version history}
 %
-%   \subsubsection{Version 1.2i (2016.12.29)}
+%   \subsubsection{Version 1.2i (2017.01.12)}
 %
 %   \begin{enumerate}
 %   \item
@@ -502,7 +504,7 @@
 %   Support for patent entry added (thanks to Stanislav Kruchinin).
 %
 %   \item
-%   medium field renamed to media field for compatibility with biblatex.
+%   |medium| field renamed to |media| field for compatibility with biblatex.
 
 %   \end{enumerate}
 %
@@ -596,7 +598,7 @@
 %   |@MastersThesis| entry is added to format a reference to master's thesis.
 %
 %   \item
-%   |@docthesis| entry is added to format a reference to doctor of
+%   |@DSciThesis| entry is added to format a reference to doctor of
 %   sciences thesis.
 %
 %   \item
@@ -619,6 +621,7 @@
 %       entry is described; numbers in black roman refer to the code lines where
 %       the entry is used.
 %   }
+%   \GlossaryPrologue{\section{Change History}}
 %   \PrintChanges
 %   \PrintIndex
 % }
@@ -1562,9 +1565,9 @@ FUNCTION {bbl.phdthesis}
    { curlanguage "german" =
       { "Diss.~Ph.\,D." }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
-%<!utf8>           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
-%<utf8>         { "{Дисс\ldots\ кандидата наук}" }
+%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd. "
+%<!utf8>           "\cyrn\cyra\cyru\cyrk}" * }
+%<utf8>         { "{Дисс\ldots\ канд. наук}" }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
            { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
