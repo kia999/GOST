@@ -441,6 +441,10 @@
 %   \item
 %   |@DSCISTHESIS| entry renamed to |@DOCTHESIS|.
 %
+%   \item
+%   |school| field in |@THESIS| and similar entries is replaced by
+%   |institution| to comply with |biblatex-gost| style.
+%
 %   \end{enumerate}
 %
 %
@@ -603,7 +607,7 @@
 %<*bst>
 %%
 %% This bibstyle attempts to format bibliography according to
-%<!modern>%% GOST 7.80-2000 for bibliographic records.
+%<!modern>%% GOST 7.1-2003 for bibliographic records.
 %<modern>%% GOST 7.0.5-2008 for bibliographic reference.
 %<*natbib>%%
 %%-------------------------------------------------------------------
@@ -3931,7 +3935,7 @@ FUNCTION {thesis}
   bbl.phdthesis format.thesis.type output.nonnull
   %format.thesis.type output.nonnull
   new.slash
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -3963,7 +3967,7 @@ FUNCTION {thesis}
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4079,7 +4083,7 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4107,7 +4111,7 @@ FUNCTION {phdthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4139,7 +4143,7 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.slash
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4167,7 +4171,7 @@ FUNCTION {mastersthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4199,7 +4203,7 @@ FUNCTION {docthesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.slash
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4227,7 +4231,7 @@ FUNCTION {docthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
