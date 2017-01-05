@@ -218,7 +218,22 @@ Where to get from
 2. http://ctan.org/pkg/gost
 
 
-What's new in version 1.2h (2016.09.21)
+What's new in version 1.2i (2017.01.12)
+
+1. Documentation and examples update (thanks to Leonid Sinev).
+
+2, Restored @MastersThesis instead of @MasterThesis (thanks to Leonid Sinev).
+
+3. media="eresource" field is introduced in addition to the media="online" and
+   media="text"; if present, the media field is not ignored any more in
+   modern bst-styles compiled without the strict option.
+
+4. location field is introduced as an alias of address field.
+
+5. @DSCISTHESIS entry renamed to @DOCTHESIS.
+
+
+What's new in version 1.2h (2016.08.21)
 
 1. Minor changes in documentation.
 
