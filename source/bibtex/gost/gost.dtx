@@ -35,7 +35,7 @@
 % To unpack run
 %   latex gost.ins
 %
-% To produce documentation run
+% To produce the documentation run
 %    pdflatex gost.dtx
 %    makeindex -r -s gind.ist gost
 %    makeindex -r -s gglo.ist -o gost.gls gost.glo
@@ -128,42 +128,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{594}
-%
-% \changes{v1.2i}{02 Jan 2017}{location field added as alias to address field}
-% \changes{v1.2i}{02 Jan 2017}{dscithesis entry renamed to docthesis}
-% \changes{v1.2i}{02 Jan 2017}{media field mormalised}
-% \changes{v1.2i}{29 Dec 2016}{documentation update}
-% \changes{v1.2i}{29 Dec 2016}{minor changes in meta information}
-% \changes{v1.2h}{21 Sep 2016}{minor changes in documentation}
-% \changes{v1.2g}{25 Jul 2016}{minor changes in documentation}
-% \changes{v1.2f}{12 Jul 2016}{patent entry added}
-% \changes{v1.2e}{07 Jul 2016}{bbl.url added to replace URL string}
-% \changes{v1.2d}{18 Feb 2016}{\cs{bbljan} e.t.c. macros removed}
-% \changes{v1.2c}{18 Jan 2015}{langid field added}
-% \changes{v1.2c}{18 Jan 2015}{eid field added}
-% \changes{v1.2c}{17 Jan 2015}{fix Gost2003: "--- replaced by \cs{BibDash}}
-% \changes{v1.2b}{19 Jan 2014}{numpages renamed to pagetotal}
-% \changes{v1.2a}{31 Aug 2012}{Default for \cs{cyrdash} added}
-% \changes{v1.2}{20 Feb 2012}{Support for natbib package}
-% \changes{v1.2}{13 Feb 2012}{Fix bbl.urldate for ukrainian (Andrey Shvajkoy)}
-% \changes{v1.2}{02 Feb 2012}{Thesis entry, report entry}
-% \changes{v1.2}{01 Feb 2012}{Medium field}
-% \changes{v1.2}{30 Jan 2012}{Strict option}
-% \changes{v1.2}{29 Jan 2012}{Refactoring, Documentation}
-% \changes{v1.2}{26 Jan 2012}{Entries eprint, eprintclass, eprinttype}
-% \changes{v1.2}{26 Jan 2012}{Options modern, long, eprint}
-% \changes{v1.1}{25 Jan 2012}{Gost705.dtx borrowed from Disser pkg}
-% \changes{v1.1}{21 Jan 2012}{Upload to CTAN}
-% \changes{v1.1}{15 Jan 2012}{Added German, French, Italian languages}
-% \changes{v1.1}{15 Jan 2012}{Entry ONLINE}
-% \changes{v1.0}{12 Aug 2005}{Bug fix (long annote)}
-% \changes{v0.9}{07 Oct 2003}{Bug fix in names and date formatting}
-% \changes{v0.9}{07 Oct 2003}{Bug fix in INPROCEEDINGS}
-% \changes{v0.8}{10 Aug 2003}{\cs{BibEmph} added}
-% \changes{v0.8}{06 Jun 2003}{Entry ANNOTE added}
-% \changes{v0.8}{06 Jun 2003}{\cs{BibUrl} added}
-% \changes{v0.8}{06 Jun 2003}{\cs{BibAnnote} added}
+% \CheckSum{592}
 %
 % \DoNotIndex{\cyra,\cyrb,\cyrv,\cyrg,\cyrd,\cyre}
 % \DoNotIndex{\CYRP,\cyrii,\cyrr,\cyre,\cyro,\CYRU,\cyrk,\cyrl,\CYRS,\cyrs|}
@@ -456,11 +421,11 @@
 %
 %   \subsection{Version history}
 %
-%   \subsubsection{Version 1.2i (2017.01.12)}
+%   \subsubsection*{Version 1.2i (2017.01.12)}
 %
 %   \begin{enumerate}
 %   \item
-%   Documentation and examples update.
+%   Documentation and examples update (thanks to Leonid Sinev).
 %
 %   \item
 %   Restored |@MastersThesis| instead of |@MasterThesis| (thanks to Leonid Sinev).
@@ -479,7 +444,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsubsection{Version 1.2h (2016.08.21)}
+%   \subsubsection*{Version 1.2h (2016.08.21)}
 %
 %   \begin{enumerate}
 %   \item
@@ -488,7 +453,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsubsection{Version 1.2g (2016.07.25)}
+%   \subsubsection*{Version 1.2g (2016.07.25)}
 %
 %   \begin{enumerate}
 %   \item
@@ -497,7 +462,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsubsection{Version 1.2f (2016.07.12)}
+%   \subsubsection*{Version 1.2f (2016.07.12)}
 %
 %   \begin{enumerate}
 %   \item
@@ -508,7 +473,7 @@
 
 %   \end{enumerate}
 %
-%   \subsubsection{Version 1.2e (2016.07.07)}
+%   \subsubsection*{Version 1.2e (2016.07.07)}
 %
 %   \begin{enumerate}
 %   \item
@@ -517,17 +482,17 @@
 %
 %   \end{enumerate}
 %
-%   \subsubsection{Version 1.2d (2015.02.18)}
+%   \subsubsection*{Version 1.2d (2015.02.18)}
 %
 %   \begin{enumerate}
 %   \item
-%   jan, feb, e.t.c. macros fixed.
+%   jan, feb, etc. macros fixed.
 %
 %   \item
 %   New macro format.month.
 %   \end{enumerate}
 %
-%   \subsubsection{Version 1.2c (2015.01.10)}
+%   \subsubsection*{Version 1.2c (2015.01.10)}
 %
 %   \begin{enumerate}
 %   \item
@@ -547,7 +512,7 @@
 %   Spacing around |\BibDash| has been improved.
 %
 %   \item
-%   |\BibDash| now typesets short em-dash (|\cyrdahs|) only for |russian| and
+%   |\BibDash| now typesets short em-dash (|\cyrdash|) only for |russian| and
 %   |ukrainian| languages.  In earlier versions, it produces short em-dash for
 %   all languages.
 %
@@ -555,7 +520,7 @@
 %
 %   \end{enumerate}
 %
-%   \subsubsection{Version 1.2a (2012.08.31)}
+%   \subsubsection*{Version 1.2a (2012.08.31)}
 %
 %   \begin{enumerate}
 %
@@ -565,14 +530,14 @@
 %
 %   \end{enumerate}
 %
-%   \subsubsection{Version 1.2 (2012.02.22)}
+%   \subsubsection*{Version 1.2 (2012.02.22)}
 %
 %   \begin{enumerate}
 %   \item
 %   Code refactoring. All styles are now generated from single source file.
 %
 %   \item
-%   Support for GOST-7.1-2003. The field |medium| is added to reflect type
+%   Support for GOST 7.1-2003. The field |medium| is added to reflect type
 %   of material. For most entry types |medium| defaults to |text|.
 %
 %   \item
@@ -584,7 +549,7 @@
 %   \end{enumerate}
 %
 %
-%   \subsubsection{Version 1.1 (2012.01.21)}
+%   \subsubsection*{Version 1.1 (2012.01.21)}
 %
 %   \begin{enumerate}
 %   \item
@@ -674,6 +639,11 @@
 %
 % Enlist all entry types allowed in a bibliographic database.
 % Most entries are common for many standard bst styles.
+% \changes{v1.2f}{12 Jul 2016}{entry \texttt{patent} added}
+% \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
+% \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
+% \changes{v1.2}{01 Feb 2012}{entry field \texttt{medium} added}
+% \changes{v0.8}{06 Jun 2003}{entry field \texttt{annote} added}
 %    \begin{macrocode}
 ENTRY
   { address
@@ -709,6 +679,8 @@ ENTRY
     booklanguage
 %    \end{macrocode}
 %   Entries borrowed from biblatex.
+% \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
+% \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype} added}
 %    \begin{macrocode}
     date         % new in v1.2f; not implemented yet...
     pagetotal
@@ -794,6 +766,7 @@ FUNCTION {change.language}
 %
 % Declare functions to output various parts of bibliographic record.
 % \DescribeFunction{output.nonnull}
+% \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 %    \begin{macrocode}
 FUNCTION {output.nonnull}
 {
@@ -1046,6 +1019,7 @@ FUNCTION {new.sentence.checkb}
 %    \end{macrocode}
 % \DescribeFunction{new.dblslash.checka}
 % For |online| entry.
+% \changes{v1.1}{15 Jan 2012}{entry type \texttt{@online} added}
 %    \begin{macrocode}
 FUNCTION {new.dblslash.checka}
 { empty$
@@ -1068,6 +1042,7 @@ FUNCTION {field.or.null}
 %
 % \DescribeFunction{emphasize}
 % Declare function to emphasize last string in stack.
+% \changes{v0.8}{10 Aug 2003}{macro \cs{BibEmph} added}
 %    \begin{macrocode}
 FUNCTION {emphasize}
 { duplicate$ empty$
@@ -1484,6 +1459,7 @@ if$}
 %    \end{macrocode}
 % Next function was added in version 2016.07.07.
 % \DescribeFunction{bbl.url}
+% \changes{v1.2e}{07 Jul 2016}{\texttt{bbl.url} added to replace URL string}
 %    \begin{macrocode}
 FUNCTION {bbl.url}
 { curlanguage "english" =
@@ -1504,6 +1480,7 @@ if$}
 %    \end{macrocode}
 % Next function was added in version 2012.01.15.
 % \DescribeFunction{bbl.urldate}
+% \changes{v1.2}{13 Feb 2012}{fix \texttt{bbl.urldate} for ukrainian (Andrey Shvajkoy)}
 %    \begin{macrocode}
 FUNCTION {bbl.urldate}
 { curlanguage "english" =
@@ -1558,6 +1535,7 @@ if$}
 
 %    \end{macrocode}
 % \DescribeFunction{bbl.phdthesis}
+% \changes{v1.2i}{04 Jan 2017}{corrected bbl.phdthesis and bbl.docthesis to comply GOST}
 %    \begin{macrocode}
 FUNCTION {bbl.phdthesis}
 { curlanguage "english" =
@@ -1565,9 +1543,9 @@ FUNCTION {bbl.phdthesis}
    { curlanguage "german" =
       { "Diss.~Ph.\,D." }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd. "
+%<!utf8>         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrk\cyra\cyrn\cyrd. "
 %<!utf8>           "\cyrn\cyra\cyru\cyrk}" * }
-%<utf8>         { "{Дисс\ldots\ канд. наук}" }
+%<utf8>         { "{дис.\ \ldots\ канд. наук}" }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
            { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
@@ -1585,9 +1563,9 @@ FUNCTION {bbl.docthesis}
    { curlanguage "german" =
       { "Diss.~Dr." }
       { curlanguage "russian" =
-%<!utf8>         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
-%<!utf8>           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
-%<utf8>         { "{Дисс\ldots\ доктора наук}" }
+%<!utf8>         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
+%<!utf8>           "\cyrn\cyra\cyru\cyrk}" * }
+%<utf8>         { "{дис.\ \ldots\ д-ра наук}" }
          { "language is not defined: " language "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
@@ -1669,10 +1647,12 @@ FUNCTION {bbl.media.eresource}
 { curlanguage "english" =
    { "Electronic resource" }
    { curlanguage "russian" =
-%<!utf8>      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+%<!utf8>      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+%<!utf8>        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
 %<utf8>      { "{Электронный ресурс}" }
       { curlanguage "ukrainian" =
-%<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+%<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+%<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
 %<utf8>        { "{Електронний ресурс}" }
         { "language is not defined: " language "media" * * warning$ "Electronic resource" }
       if$}
@@ -1681,17 +1661,18 @@ if$}
 
 %    \end{macrocode}
 % \DescribeFunction{bbl.media.online}
+% \changes{v1.2i}{02 Jan 2017}{\texttt{media} field normalised}
 %    \begin{macrocode}
 FUNCTION {bbl.media.online}
 { curlanguage "english" =
    { "Electronic resource online" }
    { curlanguage "russian" =
 %<!utf8>      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
-%<!utf8>        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" }
+%<!utf8>        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" * }
 %<utf8>      { "{Электронный ресурс онлайн}" }
       { curlanguage "ukrainian" =
 %<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
-%<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" }
+%<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
 %<utf8>        { "{Електронний ресурс онлайн}" }
         { "language is not defined: " language "media" * * warning$ "Electronic resource" }
       if$}
@@ -2173,6 +2154,7 @@ FUNCTION {format.title}
 % \DescribeFunction{format.month}
 % New in version 1.2d. This macro reads month field and translate English names
 % of months to Russian if current language is Russian.
+% \changes{v1.2i}{29 Dec 2016}{typo fix in \texttt{format.month}}
 %    \begin{macrocode}
 FUNCTION {format.month}
 { month empty$
@@ -2222,6 +2204,7 @@ FUNCTION {format.month}
 }
 %    \end{macrocode}
 % \DescribeFunction{format.date}
+% \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 %    \begin{macrocode}
 FUNCTION {format.date}
 { year empty$
@@ -2244,6 +2227,7 @@ FUNCTION {format.date}
 %    \end{macrocode}
 % New function in version 1.2i.
 % \DescribeFunction{address.or.location}
+% \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
 FUNCTION {address.or.location}
 {
@@ -2328,6 +2312,7 @@ FUNCTION {output.address.publisher.date}
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
+% \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {output.bibitem}
@@ -2741,6 +2726,7 @@ FUNCTION {multi.page.check}
 
 %    \end{macrocode}
 % \DescribeFunction{format.pages}
+% \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 %    \begin{macrocode}
 %%FUNCTION {format.pages}
 %%{ pages empty$
@@ -2774,6 +2760,8 @@ FUNCTION {format.pages}
 
 %    \end{macrocode}
 % \DescribeFunction{format.pages.page}
+% \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
+% \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 %    \begin{macrocode}
 %%FUNCTION {format.pages.page}
 %%{ pages empty$
@@ -3080,6 +3068,7 @@ FUNCTION {editor.organization.after}
 
 %    \end{macrocode}
 % \DescribeFunction{format.url}
+% \changes{v0.8}{06 Jun 2003}{macro \cs{BibUrl} added}
 %    \begin{macrocode}
 FUNCTION {format.url}
 { url empty$
@@ -3108,6 +3097,7 @@ FUNCTION {output.url}
 
 %    \end{macrocode}
 % \DescribeFunction{format.annote}
+% \changes{v0.8}{06 Jun 2003}{macro \cs{BibAnnote} added}
 %    \begin{macrocode}
 FUNCTION {format.annote}
 { annote empty$
@@ -3222,6 +3212,7 @@ FUNCTION {add.media}
 % Also see eprinttype and eprintclass.
 %
 % This function should use url. TO BE DONE YET.
+% \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype}}
 %    \begin{macrocode}
 %<*eprint>
 %FUNCTION {format.eprint}
@@ -3300,6 +3291,7 @@ FUNCTION {output.eprint.url}
 %
 % Functions added in v1.2f to format patent entry (thanks to Stanislav Kruchinin).
 %
+% \changes{v1.2f}{12 Jul 2016}{entry field \texttt{patent} added}
 % \DescribeFunction{add.number}
 %    \begin{macrocode}
 FUNCTION {add.number}
@@ -3654,6 +3646,7 @@ FUNCTION {proceedings}
 % venue, language, volume, part, volumes, series, number, note, organization,
 % publisher, location, month, isbn, chapter, pages, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
+% \changes{v0.9}{07 Oct 2003}{bug fix in \texttt{@inproceedings} entry type}
 %    \begin{macrocode}
 FUNCTION {inproceedings}
 { output.bibitem
@@ -3873,6 +3866,7 @@ FUNCTION {unpublished}
 %
 % Optional fields: subtitle, titleaddon, language, version, note,
 % organization, date, month, year, addendum, pubstate, urldate.
+% \changes{v1.1}{15 Jan 2012}{Entry type \texttt{@online} added}
 %    \begin{macrocode}
 FUNCTION {online}
 { output.bibitem
@@ -3924,6 +3918,7 @@ FUNCTION {electronic} {online}
 % chapter, pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
 % eprinttype, url, urldate
 %
+% \changes{v1.2}{02 Feb 2012}{\texttt{@thesis} entry}
 %    \begin{macrocode}
 %<*!(modern|strict)>
 FUNCTION {thesis}
@@ -3998,6 +3993,7 @@ FUNCTION {thesis}
 % Optional fields: subtitle, titleaddon, language, number, version, note,
 % location, month, isrn, chapter, pages, pagetotal, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
+% \changes{v1.2}{02 Feb 2012}{\texttt{@report} entry}
 %    \begin{macrocode}
 %FUNCTION {report}
 %{
@@ -4131,6 +4127,7 @@ FUNCTION {phdthesis}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Master's thesis'. You may still use the type field to override that.
+% \changes{v1.2i}{29 Dec 2016}{entry \texttt{@MastersThesis} added again (see v1.1)}
 %    \begin{macrocode}
 %<*!(modern|strict)>
 FUNCTION {mastersthesis}
@@ -4190,6 +4187,7 @@ FUNCTION {mastersthesis}
 % \DescribeFunction{docthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
+% \changes{v1.2i}{02 Jan 2017}{\texttt{@dscithesis} entry renamed to \texttt{@docthesis}}
 %    \begin{macrocode}
 %<*!(modern|strict)>
 FUNCTION {docthesis}
@@ -4332,6 +4330,7 @@ FUNCTION {default.type} { misc }
 %  backward compatibility with standard .bst styles which are designed for English.
 %  The string in the definition of any month macro must coincide with that used in
 %  |format.month| function in the above.
+% \changes{v1.2d}{18 Feb 2016}{\cs{bbljan} etc. macros removed}
 %    \begin{macrocode}
 MACRO {jan} {"Jan."}
 MACRO {feb} {"Feb."}
@@ -4984,6 +4983,10 @@ SORT
 % \DescribeFunction{begin.bib}
 % Within |thebibliography| environment we define few formatting macros
 % for user to customize how the reference list is formatted.
+% \changes{v1.2a}{31 Aug 2012}{default for \cs{cyrdash} added}
+% \changes{v0.8}{06 Jun 2003}{macro \cs{BibAnnote} added}
+% \changes{v0.8}{06 Jun 2003}{macro \cs{BibUrl} added}
+% \changes{v0.8}{10 Aug 2003}{macro \cs{BibEmph} added}
 %    \begin{macrocode}
 FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
