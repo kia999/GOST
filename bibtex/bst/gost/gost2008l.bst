@@ -17,14 +17,13 @@
 %% This file has the LPPL maintenance status "maintained".
 %% Maintained by Igor A. Kotelnikov.
 %% 
-%% Current version: 1.2h, 2016.09.21
+%% Current version: 1.2i, 2017.01.12
 %% 
 %% Please, send bug report via e-mail:
 %%   kia999 at mail dot ru <Igor Kotelnikov>
 %% or
 %%   polyama at yahoo dot com <Maksym Polyakov>
 %% 
-
 
 
 
@@ -633,7 +632,7 @@ FUNCTION {bbl.techreport} % rename to bbl.techreport
    if$}
 if$}
 
-FUNCTION {bbl.mthesis}
+FUNCTION {bbl.mathesis}
 { curlanguage "english" =
    { "Master's thesis" }
    { curlanguage "german" =
@@ -653,8 +652,8 @@ FUNCTION {bbl.phdthesis}
    { curlanguage "german" =
       { "Diss.~Ph.\,D." }
       { curlanguage "russian" =
-         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrk\cyra\cyrn\cyrd\cyri"
-           "\cyrd\cyra\cyrt\cyra\ \cyrn\cyra\cyru\cyrk}" * }
+         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrk\cyra\cyrn\cyrd. "
+           "\cyrn\cyra\cyru\cyrk}" * }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
            { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
@@ -663,17 +662,30 @@ FUNCTION {bbl.phdthesis}
    if$}
 if$}
 
-FUNCTION {bbl.dscithesis}
+FUNCTION {bbl.docthesis}
 { curlanguage "english" =
    { "Dr.\,Sci. dissertation" }
    { curlanguage "german" =
       { "Diss.~Dr." }
       { curlanguage "russian" =
-         { "{\cyr\CYRD\cyri\cyrs\cyrs\ldots\ \cyrd\cyro\cyrk\cyrt\cyro"
-           "\cyrr\cyra\ \cyrn\cyra\cyru\cyrk}" * }
-         { "language is not defined: " language "dscithesis" * * warning$ "Dr.\,Sci. dissertation" }
+         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
+           "\cyrn\cyra\cyru\cyrk}" * }
+         { "language is not defined: " language "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
+if$}
+
+FUNCTION {bbl.thesis.type}
+{ type "mathesis" =
+  { bbl.mathesis }
+  { type "phdthesis" =
+    { bbl.phdthesis }
+    { type "docthesis" =
+      { bbl.docthesis }
+      %%{ "!!!" type * "t" change.case$ }
+      { type "t" change.case$ }
+    if$}
+  if$}
 if$}
 
 FUNCTION {bbl.nnoaddress}
@@ -712,13 +724,29 @@ FUNCTION {bbl.media.text}
    if$}
 if$}
 
-FUNCTION {bbl.media.elres}
+FUNCTION {bbl.media.eresource}
 { curlanguage "english" =
    { "Electronic resource" }
    { curlanguage "russian" =
-      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
       { curlanguage "ukrainian" =
-        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ \cyrr\cyre\cyrs\cyru\cyrr\cyrs}" }
+        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
+        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.media.online}
+{ curlanguage "english" =
+   { "Electronic resource online" }
+   { curlanguage "russian" =
+      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" * }
+      { curlanguage "ukrainian" =
+        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
         { "language is not defined: " language "media" * * warning$ "Electronic resource" }
       if$}
    if$}
@@ -749,9 +777,12 @@ FUNCTION {bbl.executor}
 if$}
 
 FUNCTION {bbl.media}
-{ type$ "online" =
-   { bbl.media.elres }
-   { bbl.media.text  }
+{ media "online" =
+   { bbl.media.online }
+   { media "eresource" =
+     { bbl.media.eresource }
+     { bbl.media.text }
+   if$}
 if$}
 
 FUNCTION {bbl.req}
@@ -963,7 +994,7 @@ FUNCTION {format.month}
         { month "Aug." =
             { "\CYRA\cyrv\cyrg\." }
         { month "Sep." =
-            { "\CYRS\cyre\cyn\cyrt." }
+            { "\CYRS\cyre\cyrn\cyrt." }
         { month "Oct." =
             { "\CYRO\cyrk\cyrt." }
         { month "Nov." =
@@ -993,11 +1024,22 @@ FUNCTION {format.date}
   if$
 }
 
-FUNCTION {output.address.publisher}
+FUNCTION {address.or.location}
 {
   address empty$
+    { location empty$
+      'skip$
+      { location }
+    if$ }
+    { address }
+  if$
+}
+
+FUNCTION {output.address.publisher}
+{
+  address empty$ location empty$ and
     'skip$
-    { address output
+    { address.or.location output
       publisher empty$
         'skip$
         { new.colon }
@@ -1279,15 +1321,16 @@ FUNCTION {empty.misc.check}
   if$
 }
 
+%%<!utf8>      bbl.thesis.type "t" change.case$
+%%<utf8>      bbl.thesis.type
 FUNCTION {format.thesis.type}
 { type empty$
     'skip$
     { pop$
-      type "t" change.case$
+      bbl.thesis.type
     }
   if$
 }
-
 %%<!utf8>    { "t" change.case$ }
 %%<utf8>    { "" }
 
@@ -1417,7 +1460,16 @@ FUNCTION {add.doi}
   if$
 }
 
-FUNCTION {add.media} { }
+FUNCTION {add.media}
+{ duplicate$ empty$
+    'skip$
+    { media empty$
+        'skip$
+        { " " * bbl.media enclose.square.brackets * }
+      if$
+    }
+  if$
+}
 
 
 
@@ -1554,7 +1606,7 @@ FUNCTION {booklet}
   editor.organization.after
   new.block
   howpublished output
-  address output
+  address.or.location output
   format.date "year" output.check
   new.block
   note output
@@ -1717,7 +1769,7 @@ FUNCTION {patent}
   new.colon
   format.type.number output
   add.blank
-  location output
+  address.or.location output
   new.colon
   ipc output
   new.slash
@@ -1813,13 +1865,19 @@ FUNCTION {thesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  type "type" output.check
+  %%type "type" output.check
+  bbl.phdthesis format.thesis.type output.nonnull
+  %%"bbl.phdthesis" format.thesis.type output.nonnull
+  %%"bbl.phdthesis" format.thesis.type output.nonnull
+  %%"!!!" format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -1850,7 +1908,7 @@ FUNCTION {report}
   new.semicolon
   format.executor.after output % from author field
   new.block
-  address output
+  address.or.location output
   new.colon
   organization output
   format.date "year" output.check
@@ -1872,11 +1930,13 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -1890,19 +1950,21 @@ FUNCTION {phdthesis}
   fin.entry
 }
 
-FUNCTION {masterthesis}
+FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  bbl.mthesis format.thesis.type output.nonnull
+  bbl.mathesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -1916,19 +1978,21 @@ FUNCTION {masterthesis}
   fin.entry
 }
 
-FUNCTION {dscithesis}
+FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  bbl.dscithesis format.thesis.type output.nonnull
+  bbl.docthesis format.thesis.type output.nonnull
   new.colon
-  number output
+  number output % code of the speciality
+  new.colon
+  titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  school "school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -1961,7 +2025,7 @@ FUNCTION {techreport}
   new.semicolon
   format.executor.after output % from author field
   new.block
-  address output
+  address.or.location output
   new.colon
   organization output
   format.date "year" output.check
