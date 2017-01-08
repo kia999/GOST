@@ -1,8 +1,8 @@
 rename .\bib\examples.bib examples.bak
-pause
+REM pause
 copy .\bib\ex*.bib .\bib\examples.bib
-pause
-
+REM pause
+if not exist bibnocap.sty copy .\..\..\..\..\..\tex\latex\gost\bibnocap.sty .\bibnocap.sty
 for %%f in (ugost7*.tex) do pdflatex -quiet %%f 
 for %%f in (ugost200*.tex) do pdflatex -quiet %%f 
 
@@ -19,3 +19,4 @@ del *.aux *.out *.toc *.brf .pdf
 del *.bbl 
 del *.blg 
 del *.log
+if exist bibnocap.sty del bibnocap.sty
