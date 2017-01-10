@@ -1,0 +1,5 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+gost-*.bat export-ignore
+gost-*.cmd export-ignore
+source/bibtex/gost/do.cmd export-ignore
