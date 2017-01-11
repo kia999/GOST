@@ -16,4 +16,3 @@
 @copy /V doc\bibtex\gost\README gost\README
 @copy /V source\bibtex\gost\gost.dtx gost\source\
 @copy /V source\bibtex\gost\gost.ins gost\source\
-@copy /V tex\latex\gost\bibnocap.sty gost\tex\
