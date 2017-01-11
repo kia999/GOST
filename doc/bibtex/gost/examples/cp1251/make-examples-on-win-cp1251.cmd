@@ -9,10 +9,6 @@ rename .\bib\examples.bib examples.bak
 
 copy .\bib\ex*.bib .\bib\examples.bib
 
-@echo Подтаскивание bibnocap.sty в папку с файлами примеров
-
-if not exist bibnocap.sty copy .\..\..\..\..\..\tex\latex\gost\bibnocap.sty .\bibnocap.sty
-
 @echo Циклическая генерация примеров
 
 for %%f in (gost7*.tex) do pdflatex -quiet %%f 
@@ -35,5 +31,4 @@ for %%f in (gost2008-sort*.tex) do pdflatex %%f
 @del *.bbl 
 @del *.blg 
 @del *.log
-if exist bibnocap.sty del bibnocap.sty
 @echo =======
