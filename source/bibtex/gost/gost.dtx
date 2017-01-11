@@ -196,7 +196,7 @@
 %   \item[GOST 7.83 -2001]
 %                Electronic editions. Basic types and imprint.
 %   \end{description}
-%   etc.
+%   ect.
 %
 %   Currently, GOST contains 16 BibTeX styles to format bibliography in English,
 %   Russian and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both
@@ -668,47 +668,49 @@ ENTRY
     number
     organization
     pages
-    eid % new in v1.2c
+    eid             % new in v1.2c
     publisher
     school
     series
+    %speciality     % new in v.1.2i, eqv. to major in biblatex-gost, not implemented yet...
+    specialitycode  % new in v.1.2i, alias of number, eqv. to majorcode in biblatex-gost
     title
-    %medium % new in v1.2; renamed to media.
-    media % new in v1.2f
+    %medium         % new in v1.2; renamed to media.
+    media           % new in v1.2f
     type
     volume
     year
     language
-    langid % new in v1.2c
+    langid          % new in v1.2c
     booklanguage
 %    \end{macrocode}
 %   Entries borrowed from biblatex.
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 % \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype} added}
 %    \begin{macrocode}
-    date         % new in v1.2f; not implemented yet...
+    %date            % not implemented yet...
     pagetotal
     url
     urldate
     isbn
     doi
 %    archive
-    eprinttype   % = archivePrefix
-    eprintclass  % = primaryClass
+    eprinttype      % = archivePrefix
+    eprintclass     % = primaryClass
     eprint
 %    \end{macrocode}
 %   Entries borrowed from disser.bst by S.Kruchinin.
 %    \begin{macrocode}
     % new in v1.2f:
     % appear in biblatex:
-    addendum
-    holder
-    location
-    subtitle
-    titleaddon
-    version
-    % Appear in biblatex-gost:
-    authorcountry   % ??
+    %addendum       % not implemented yet...
+    holder          % see patent
+    location        % new in v.1.2i, alias of address
+    %subtitle       % not implemented yet...
+    titleaddon      % new in v.1.2i, see @thesis
+    %version        % not implemented yet...
+    % Appear in biblatex-gost for @patent entry:
+    authorcountry   % country of the patent authors
     credits         % statement of responsibility, other than provided in Biblatex
     ipc             % Code of the International Patent Classification
     %media          % General material designation NOTE: medium in the above
@@ -770,6 +772,8 @@ FUNCTION {change.language}
 %
 % Declare functions to output various parts of bibliographic record.
 % \DescribeFunction{output.nonnull}
+% Function |output.nonnull| writes to output buffer the last literal in the stack
+% assuming that it is not empty and adds an appropriate punctuation symbol.
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 %    \begin{macrocode}
 FUNCTION {output.nonnull}
@@ -815,6 +819,10 @@ FUNCTION {output.nonnull}
 %    \end{macrocode}
 %
 % \DescribeFunction{output}
+% Function |output| calls |output.nonnul| is the last literal string in the stack
+% if it is not empty; otherwise it discards the literal.
+% Function |output.check| do the same but also warns if the indicated field is
+% empty.
 % \DescribeFunction{output.check}
 %    \begin{macrocode}
 FUNCTION {output}
@@ -2229,18 +2237,41 @@ FUNCTION {format.date}
 }
 
 %    \end{macrocode}
-% New function in version 1.2i.
 % \DescribeFunction{address.or.location}
+% New function in version 1.2i. Returns |address| value if not empty; otherwise
+% returns |location| value even if the latter is empty.
 % \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
+%FUNCTION {address.or.location}
+%{
+%  address empty$
+%    { location empty$
+%      'skip$
+%      { location }
+%    if$ }
+%    { address }
+%  if$
+%}
 FUNCTION {address.or.location}
 {
   address empty$
-    { location empty$
-      'skip$
-      { location }
-    if$ }
+    { location }
     { address }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{specialitycode.or.number}
+% New function in version 1.2i. Returns |specialitycode| value if not empty;
+% otherwise returns |number| value even if the latter is empty.
+% Used in |@Thesis| and similar entries.
+% \changes{v1.2i}{09 Jan 2017}{\texttt{specialitycode} field added as alias to \texttt{number} field}
+%    \begin{macrocode}
+FUNCTION {specialitycode.or.number}
+{
+  specialitycode empty$
+    { number }
+    { specialitycode }
   if$
 }
 
@@ -3617,16 +3648,6 @@ FUNCTION {proceedings}
   new.block
   format.bvolume output
   format.number.series output
-%  address empty$
-%    { publisher output
-%      format.date "year" output.check
-%    }
-%    { address output.nonnull
-%      format.date "year" output.check
-%      new.sentence
-%      publisher output
-%    }
-%  if$
   output.address.publisher
   format.date "year" output.check
   new.block
@@ -3933,7 +3954,6 @@ FUNCTION {thesis}
   format.btitle "title" output.check
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
-  %format.thesis.type output.nonnull
   new.slash
   institution "institution" output.check
   new.block
@@ -3957,11 +3977,9 @@ FUNCTION {thesis}
   new.colon
   %%type "type" output.check
   bbl.phdthesis format.thesis.type output.nonnull
-  %%"bbl.phdthesis" format.thesis.type output.nonnull
-  %%"bbl.phdthesis" format.thesis.type output.nonnull
-  %%"!!!" format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
@@ -4105,7 +4123,8 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
@@ -4165,7 +4184,8 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
@@ -4225,7 +4245,8 @@ FUNCTION {docthesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
@@ -5047,6 +5068,7 @@ EXECUTE {end.bib}
 %
 % That's all, Folks!
 %
+% \PrintChanges
 % \Finale
 %
 % \endinput
