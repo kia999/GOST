@@ -12,6 +12,6 @@
 @call "%~dp0gost-zip-tds-after-prepare.bat"
 @echo Вызов скрипта подготовки файлов в архиве со структурой TDS
 @echo Непосредственно архивирование папки gost\
-zip -r gost.zip gost gost.tds.zip -x *.bst *.blg *.bbl *.bak gost\doc\examples\*\bibnocap.sty
+zip -r gost.zip gost gost.tds.zip -x *.bst *.blg *.bbl *.bak 
 @echo Вызов скрипта удаления папки gost\
 @call "%~dp0gost-remove-gost-folder.bat"
