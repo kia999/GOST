@@ -4,8 +4,38 @@
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
 \usepackage[russian]{babel}
-\usepackage{bibunits,verbatim,bibnocap,geometry,ifpdf}
-%\usepackage{cmap}
+\usepackage{bibunits,verbatim,geometry,ifpdf}
+
+%============================================================
+\makeatletter
+\RequirePackage{bibunits}
+\renewcommand{\@bibunitname}{\jobname-\the\@bibunitauxcnt}
+\newcounter{qnum}\newcounter{qnuma}\setcounter{qnum}{0}
+\def\@biblabel#1{#1.\hfill}
+%\endinput
+\renewenvironment{thebibliography}[1]
+      {\list{\@biblabel{\@arabic\c@enumiv}}%
+           {\settowidth\labelwidth{\@biblabel{99}}%
+            \leftmargin\labelwidth
+            \advance\leftmargin\labelsep
+%            \advance\leftmargin\parindent
+            \setcounter{qnuma}{\c@enumiv}
+            \@openbib@code
+            \usecounter{enumiv}%
+            \let\p@enumiv\@empty
+            \setcounter{enumiv}{\theqnuma}
+            \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+      \sloppy
+      \clubpenalty4000
+      \@clubpenalty \clubpenalty
+      \widowpenalty4000%
+      \sfcode`\.\@m}
+     {\def\@noitemerr
+       {\@latex@warning{Empty `thebibliography' environment}}%
+      \endlist}
+\makeatother
+%============================================================
+
 \ifpdf
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
 \else
@@ -49,51 +79,73 @@
 \bibliographystyle{\mybibstyle}
 
 \section{Books}
+
 \subsection{One--three authors}
 \bibentry{ex01}
 \bibentry{ex02}
 \bibentry{ex03}
+
 \subsection{Four and more authors}
 \bibentry{ex04}
 \bibentry{ex05}
+
 \subsection{Collective author}
 \bibentry{ex06}
+
 \subsection{Compiler}
 \bibentry{ex06a}
-\subsection{Multiple-volume publication}
+
+\subsection{Multiple-volume publications}
 \bibentry{ex07}
 \bibentry{ex08}
 \bibentry{ex09}
+
 \subsection{Translated}
 \bibentry{ex10}
+
 \subsection{Collections}
 \bibentry{ex12}
+
 \subsection{Dictionary}
 \bibentry{ex13}
-\section{Parts of}
+
+
+\section{Parts of \ldots}
+
 \subsection{Book}
 \bibentry{ex14}
 \bibentry{ex14a}
+
 \subsection{Collection}
 \bibentry{ex15}
+
 \subsection{Journal}
 \bibentry{ex16}
 \bibentry{ex17}
 \bibentry{ex17a}
+
 \subsection{Newspaper}
 \bibentry{ex17b}
-\subsection{Encyclop\ae dia}
+
+\subsection{Encyclopedia}
 \bibentry{ex18}
+
 \subsection{Proceedings}
 \bibentry{ex19}
 \bibentry{ex20}
+
 \subsubsection{With crossreference}
 \bibentry{ex20a}
+
 \subsubsection{With multiple languages}
 \bibentry{ex20b}
-\section{Other}
+
+
+\section{Others}
+
 \subsection{Standard}
 \bibentry{ex11}
+
 \subsection{Dissertation}
 \bibentry{ex21}
 \bibentry{ex21a}
@@ -101,31 +153,43 @@
 Allowed built-in values of \verb|type| field in \verb|@THESIS| entry are \verb|mathesis| for masters thesis, \verb|phdthesis| for Ph.D. thesis, and \verb|docthesis| for doctor of sciences dissertation. Any other value of \verb|type| is reproduced literally.
 \bibentry{ex22}
 \bibentry{ex22a}
+
 \subsection{Preprint}
 \bibentry{ex23}
+
 \subsection{Report}
 \bibentry{ex24}
 \bibentry{ex24a}
 \bibentry{ex24b}
+
 \subsection{Catalog}
 \bibentry{ex25}
+
 \subsection{Instruction}
 \bibentry{ex26}
-\section{Electronic Publishing}
+
+\subsection{Patent}
+\bibentry{ex31}
+
+
+\section{Electronic resources}
+
 \subsection{Common Fields}
 \verb|Url|, \verb|eprint|, \verb|doi| and \verb|media| fields can be assigned to any entry. Allowed values of \verb|media| are \verb|online|, \verb|eresource| and \verb|text| (default).
 \bibentry{ex27c}
 \bibentry{ex28}
 \bibentry{ex28a}
 \bibentry{ex29}
+
 \subsection{Online Entry}
 \bibentry{ex27a}
 \bibentry{ex27b}
+
 \section{Use of macros}
+
 \texttt{jan}, \texttt{feb}, \texttt{mar},\ldots{} \texttt{dec} macros in \texttt{month} field
 are automatically translated to Russian or English if necessary. Other languages are not supported.
 \bibentry{ex30}
-\section{Patents}
-\bibentry{ex31}
+
 
 \end{document} 
