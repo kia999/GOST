@@ -663,8 +663,6 @@ ENTRY
     institution
     journal
     key
-    %major          % new in v.1.2i, alias for speciality, not implemented
-    majorcode       % new in v.1.2i, alias for specialitycode
     month
     note
     number
@@ -672,7 +670,7 @@ ENTRY
     pages
     eid             % new in v1.2c
     publisher
-    school          % alias for institution
+    school
     series
     %speciality     % new in v.1.2i, eqv. to major in biblatex-gost, not implemented yet...
     specialitycode  % new in v.1.2i, alias of number, eqv. to majorcode in biblatex-gost
@@ -690,15 +688,19 @@ ENTRY
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 % \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype} added}
 %    \begin{macrocode}
-    date            % not implemented yet...
+    %date            % not implemented yet...
     pagetotal
     url
     urldate
     isbn
     doi
+%    archive
     eprinttype      % = archivePrefix
     eprintclass     % = primaryClass
     eprint
+%    \end{macrocode}
+%   Entries borrowed from disser.bst by S.Kruchinin.
+%    \begin{macrocode}
     % new in v1.2f:
     % appear in biblatex:
     %addendum       % not implemented yet...
@@ -2259,11 +2261,11 @@ FUNCTION {address.or.location}
 }
 
 %    \end{macrocode}
-%
 % \DescribeFunction{specialitycode.or.number}
-% New function in version 1.2i. Returns |specialitycode| value if not empty; otherwise
-% returns |number| value even if the latter is empty.
-% \changes{v1.2i}{13 Jan 2017}{\texttt{number} field is now alias to \texttt{specialitycode}}
+% New function in version 1.2i. Returns |specialitycode| value if not empty;
+% otherwise returns |number| value even if the latter is empty.
+% Used in |@Thesis| and similar entries.
+% \changes{v1.2i}{09 Jan 2017}{\texttt{specialitycode} field added as alias to \texttt{number} field}
 %    \begin{macrocode}
 FUNCTION {specialitycode.or.number}
 {
@@ -2274,21 +2276,6 @@ FUNCTION {specialitycode.or.number}
 }
 
 %    \end{macrocode}
-%
-% \DescribeFunction{institution.or.school}
-% New function in version 1.2i. Returns |institution| value if not empty; otherwise
-% returns |school| value even if the latter is empty.
-% \changes{v1.2i}{13 Jan 2017}{\texttt{school} field is now alias to \texttt{instituttion}}
-%    \begin{macrocode}
-FUNCTION {institution.or.school}
-{
-  institution empty$
-    { school}
-    { institution }
-  if$
-}
-%    \end{macrocode}
-%
 % \DescribeFunction{format.address.publisher}
 % \DescribeFunction{format.address.publisher.date}
 %    \begin{macrocode}
@@ -3968,8 +3955,7 @@ FUNCTION {thesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -3999,8 +3985,7 @@ FUNCTION {thesis}
   new.slash
   format.authors.after output
   new.semicolon
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4074,8 +4059,7 @@ FUNCTION {report}
   new.colon
   number output
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.semicolon
   format.chief.after output % from editor field
   new.semicolon
@@ -4117,8 +4101,7 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4147,8 +4130,7 @@ FUNCTION {phdthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4180,8 +4162,7 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4210,8 +4191,7 @@ FUNCTION {mastersthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4243,8 +4223,7 @@ FUNCTION {docthesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher.date
   new.block
@@ -4273,8 +4252,7 @@ FUNCTION {docthesis}
   new.slash
   format.authors.after output
   new.semicolon
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.block
   output.address.publisher
   format.date "year" output.check
@@ -4345,8 +4323,7 @@ FUNCTION {techreport}
   new.colon
   number output
   new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
+  institution "institution" output.check
   new.semicolon
   format.chief.after output % from editor field
   new.semicolon
