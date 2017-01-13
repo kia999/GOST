@@ -6,6 +6,7 @@
 @md gost\bibtex\
 @md gost\source\
 @echo Копирование файлов в положенные им места структуры CTAN
+@copy /V README.md gost\
 @copy /V bibtex\csf\gost\*.csf gost\bibtex\
 @copy /V doc\bibtex\gost\gost.pdf gost\doc\
 @copy /V doc\bibtex\gost\examples\cp1251\bib\* gost\doc\examples\cp1251\bib\*

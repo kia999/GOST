@@ -10,7 +10,7 @@
 @cd /d "%~dp0source\bibtex\gost\"
 @echo Выполнение скрипта преобразования gost.dtx в *.bst и *.pdf
 @call do.cmd
-@echo Перемещение созданных файлов в папки, где они располагаться
+@echo Перемещение созданных файлов в папки, где они должны располагаться
 @move /Y gost.pdf ..\..\..\doc\bibtex\gost\
 @copy gost*.bst ..\..\..\bibtex\bst\gost\
 @copy ugost*.bst ..\..\..\bibtex\bst\gost\
