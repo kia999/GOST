@@ -5,7 +5,6 @@
 @md gost\doc\examples\utf8\bib\
 @md gost\bibtex\
 @md gost\source\
-@md gost\tex\
 @echo Копирование файлов в положенные им места структуры CTAN
 @copy /V bibtex\csf\gost\*.csf gost\bibtex\
 @copy /V doc\bibtex\gost\gost.pdf gost\doc\
