@@ -21,7 +21,7 @@ GOST 7.11 -2004  Bibliographic description and references.
                  Rules for the abbreviation of words and word combinations
                  in foreign European languages.
 GOST 7.83 -2001  Electronic editions. Basic types and imprint.
-etc.
+Etc.
 
 GOST comprises 16 BibTeX styles to format bibliography in English, Russian
 and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit
@@ -98,9 +98,9 @@ their use is discouraged.
 The |eprint| option enables formatting electronic publications. In particular,
 it enables |eprint|, |eprinttype|, |eprintclass|, and |doi| fields for a
 bibliographic entry. The styles, generated without the |eprint| option,
-just ignore these fields. Starting from the version 1.2 of the GOST package, 
-all modern styles are compiled with this option included, and therefore the 
-suffix |e| which designated this option in earlier  versions is not appended 
+just ignore these fields. Starting from the version 1.2 of the GOST package,
+all modern styles are compiled with this option included, and therefore the
+suffix |e| which designated this option in earlier  versions is not appended
 to the name of style any more.
 
 The |natbib| option provides compatibility with the |natbib| package. The names
@@ -224,13 +224,22 @@ What's new in version 1.2i (2017.01.12)
 
 2, Restored @MastersThesis instead of @MasterThesis (thanks to Leonid Sinev).
 
-3. media="eresource" field is introduced in addition to the media="online" and
+3. Media="eresource" field is introduced in addition to the media="online" and
    media="text"; if present, the media field is not ignored any more in
    modern bst-styles compiled without the strict option.
 
-4. location field is introduced as an alias of address field.
+4. Location field is introduced as an alias of address field.
 
 5. @DSCISTHESIS entry renamed to @DOCTHESIS.
+
+6. School field is now treated as an alias of institution.
+
+7. Specialitycode is added for @THESIS and similar entries; number is treated as
+   alias of specialitycode.
+
+8. Type field in THESIS and similar entries can now accept three values 
+   (mathesis, phdthesis, docthesis) which are translated to built-in 
+   language-sensitive strings; any other value is reproduced literally.  
 
 
 What's new in version 1.2h (2016.08.21)
