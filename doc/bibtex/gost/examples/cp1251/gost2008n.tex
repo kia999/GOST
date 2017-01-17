@@ -1,5 +1,7 @@
 \newcommand*{\mybibstyle}{gost2008n}
 
+ % cmap надо грузить до inputenc, чтобы работал поиск
+\RequirePackage{cmap}
 \RequirePackage[cp1251]{inputenc}
 
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
@@ -8,20 +10,18 @@
    and \texttt{natbib} package.
    No customization is applied.
 
-   пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 
-   \texttt{\mybibstyle.bst} пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ \texttt{natbib}.
-   пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+   Пример оформления списка литературы с помощью стиля 
+   \texttt{\mybibstyle.bst} и пакета \texttt{natbib}.
+   Команды форматирования не изменены.
 }
 
 \documentclass[a4paper]{article}
-\usepackage[cp1251]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[ukrainian,russian]{babel}
 \usepackage{natbib}
 \usepackage{geometry,ifpdf}
 \ifpdf
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
-  \usepackage{cmap}
 \else
   \usepackage[hypertex]{hyperref}
 \fi

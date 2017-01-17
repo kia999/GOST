@@ -1,16 +1,16 @@
-@echo я┐╜я┐╜я┐╜я┐╜я┐╜товя┐╜я┐╜ файя┐╜я┐╜я┐╜ я┐╜римя┐╜ров 
+@echo Подготовка файлов примеров 
 @echo ==========================
 
-@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜римя┐╜ров
+@echo Циклическая генерация примеров
 
 for %%f in (ugost7*.tex) do pdflatex %%f 
 for %%f in (ugost200*.tex) do pdflatex %%f 
 
-@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜рабя┐╜тка bibtex8 *.aux, я┐╜я┐╜я┐╜ я┐╜тогя┐╜ 'я┐╜уда я┐╜я┐╜ я┐╜удея┐╜'
+@echo Циклическая обработка bibtex8 *.aux, без этого 'чуда не будет'
 
 for %%f in (ugost*.aux) do bibtex8 -B -c utf8cyrillic.csf %%f 
 
-@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜римя┐╜ров (я┐╜я┐╜ход я┐╜я┐╜сле bibtex8)
+@echo Циклическая генерация примеров (заход после bibtex8)
 
 for %%f in (ugost7*.tex) do pdflatex %%f 
 for %%f in (ugost200*.tex) do pdflatex %%f 
@@ -18,7 +18,7 @@ pdflatex ugost2008n.tex
 pdflatex ugost2008ns.tex
 pdflatex ugost2008s.tex
 
-@echo я┐╜я┐╜я┐╜тка я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜ужня┐╜я┐╜ файя┐╜я┐╜я┐╜
+@echo Чистка папки от ненужных файлов
 
 @del *.aux *.out *.toc *.brf .pdf
 @del *.bbl 

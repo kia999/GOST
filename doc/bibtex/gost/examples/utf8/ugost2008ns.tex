@@ -1,7 +1,8 @@
 \newcommand*{\mybibstyle}{ugost2008ns}
 
-\RequirePackage[utf8]{inputenc}
+ % cmap надо грузить до inputenc, чтобы работал поиск
 \RequirePackage{cmap}
+\RequirePackage[utf8]{inputenc}
 
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{
@@ -15,14 +16,12 @@
 }
 
 \documentclass[a4paper]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[ukrainian,russian]{babel}
 \usepackage{natbib}
 \usepackage{geometry,ifpdf}
 \ifpdf
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
-  \usepackage{cmap}
 \else
   \usepackage[hypertex]{hyperref}
 \fi

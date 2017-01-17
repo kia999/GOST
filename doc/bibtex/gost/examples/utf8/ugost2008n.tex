@@ -1,7 +1,8 @@
 \newcommand*{\mybibstyle}{ugost2008n}
 
-\RequirePackage[utf8]{inputenc}
+ % cmap надо грузить до inputenc, чтобы работал поиск
 \RequirePackage{cmap}
+\RequirePackage[utf8]{inputenc}
 
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{
@@ -15,14 +16,12 @@
 }
 
 \documentclass[a4paper]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[ukrainian,russian]{babel}
 \usepackage{natbib}
 \usepackage{geometry,ifpdf}
 \ifpdf
   \usepackage[pdftex,hyperindex,unicode]{hyperref}
-  \usepackage{cmap}
 \else
   \usepackage[hypertex]{hyperref}
 \fi
@@ -53,12 +52,6 @@
 \begin{abstract}
   \mydescription
 \end{abstract}
-
-%\verb|\cite{*}| \cite{*}
-%
-%\verb|\citep{*}| \citep{*}
-%
-%\verb|\citet{*}| \citet{*}
 
 \newcommand{\allrefs}{Vasylenko92,
 Afanasyev92,
@@ -117,6 +110,8 @@ phys:moodle,
 1998PhRvE..57.7111K,
 1998UFN}
 
+
+\verb|\cite|\par \cite{\allrefs}
 
 \verb|\citep|\par \citep{\allrefs}
 

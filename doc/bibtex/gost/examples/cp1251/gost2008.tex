@@ -1,4 +1,6 @@
 \edef\mybibstyle{gost2008}
+ % cmap надо грузить до inputenc, чтобы работал поиск
+\RequirePackage{cmap}
 \RequirePackage[cp1251]{inputenc}
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{

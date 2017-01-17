@@ -1,4 +1,7 @@
 \edef\mybibstyle{gost780}
+ % cmap надо грузить до inputenc, чтобы работал поиск при кодировке utf8
+\RequirePackage{cmap}
+\RequirePackage[cp1251]{inputenc}
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{
    Example of a bibliography using the style \texttt{\mybibstyle.bst}. 

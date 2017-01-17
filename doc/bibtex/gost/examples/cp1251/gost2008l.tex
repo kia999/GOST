@@ -1,4 +1,6 @@
 \edef\mybibstyle{gost2008l}
+ % cmap надо грузить до inputenc, чтобы работал поиск
+\RequirePackage{cmap}
 \RequirePackage[cp1251]{inputenc}
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{
@@ -11,6 +13,6 @@
 
    Note: this style do not conform State Standard.
 
-   Внимание: данный не удовлетворяет ГОСТу.
+   Внимание: данный стиль не удовлетворяет ГОСТу.
 }
 \input gost

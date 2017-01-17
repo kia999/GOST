@@ -1,4 +1,6 @@
 \edef\mybibstyle{gost2003}
+ % cmap надо грузить до inputenc, чтобы работал поиск
+\RequirePackage{cmap}
 \RequirePackage[cp1251]{inputenc}
 \newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
 \newcommand{\mydescription}{
@@ -11,6 +13,6 @@
    This is style is intended for composing bibliographic catalogs and descriptions.
 
    Данный стиль предназначен для составления библиотечных каталогов и описаний.
-   
+
 }
 \input gost
