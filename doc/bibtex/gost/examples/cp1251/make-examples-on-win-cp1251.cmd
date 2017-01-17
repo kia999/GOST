@@ -1,31 +1,31 @@
-@echo Подготовка файлов примеров 
+@echo я┐╜я┐╜я┐╜я┐╜я┐╜товя┐╜я┐╜ файя┐╜я┐╜я┐╜ я┐╜римя┐╜ров 
 @echo ==========================
 
-@echo Переименование предыдущего общего файла
+@echo я┐╜я┐╜реия┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜редя┐╜я┐╜щегя┐╜ я┐╜я┐╜щегя┐╜ файя┐╜я┐╜
 
 rename .\bib\examples.bib examples.bak
 
-@echo Копирование массы маленьких файлов в один большой
+@echo я┐╜я┐╜я┐╜я┐╜ровя┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜ькия┐╜ файя┐╜я┐╜я┐╜ я┐╜ я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜шой
 
 copy .\bib\ex*.bib .\bib\examples.bib
 
-@echo Циклическая генерация примеров
-
-for %%f in (gost7*.tex) do pdflatex -quiet %%f 
-for %%f in (gost200*.tex) do pdflatex -quiet %%f 
-
-@echo Циклическая обработка bibtex8 *.aux, без этого 'чуда не будет'
-
-for %%f in (gost*.aux) do bibtex8 -B -c cp1251.csf %%f 
-
-@echo Циклическая генерация примеров (заход после bibtex8)
+@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜римя┐╜ров
 
 for %%f in (gost7*.tex) do pdflatex %%f 
 for %%f in (gost200*.tex) do pdflatex %%f 
-for %%f in (gost2008-nat*.tex) do pdflatex %%f 
-for %%f in (gost2008-sort*.tex) do pdflatex %%f 
 
-@echo Чистка папки от ненужных файлов
+@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜рабя┐╜тка bibtex8 *.aux, я┐╜я┐╜я┐╜ я┐╜тогя┐╜ 'я┐╜уда я┐╜я┐╜ я┐╜удея┐╜'
+
+for %%f in (gost*.aux) do bibtex8 -B -c cp1251.csf %%f 
+
+@echo я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ская┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜римя┐╜ров (я┐╜я┐╜ход я┐╜я┐╜сле bibtex8)
+
+for %%f in (gost7*.tex) do pdflatex %%f 
+for %%f in (gost200*.tex) do pdflatex %%f 
+pdflatex gost2008n.tex
+pdflatex gost2008ns.tex
+
+@echo я┐╜я┐╜я┐╜тка я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜ я┐╜я┐╜я┐╜ужня┐╜я┐╜ файя┐╜я┐╜я┐╜
 
 @del *.aux *.out *.toc *.brf .pdf
 @del *.bbl 
