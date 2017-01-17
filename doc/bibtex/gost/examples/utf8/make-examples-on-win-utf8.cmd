@@ -1,14 +1,6 @@
 @echo �����⮢�� 䠩��� �ਬ�஢ 
 @echo ==========================
 
-@echo ��२��������� �।��饣� ��饣� 䠩��
-
-rename .\bib\examples.bib examples.bak
-
-@echo ����஢���� ����� �����쪨� 䠩��� � ���� ����让
-
-copy .\bib\ex*.bib .\bib\examples.bib
-
 @echo ������᪠� ������� �ਬ�஢
 
 for %%f in (ugost7*.tex) do pdflatex %%f 
