@@ -8,7 +8,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012-2017 Igor A. Kotelnikov.
-% Version 1.2i
+% Version 1.2j
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -49,11 +49,11 @@
 % Move all *.pdf files       to TDS:doc/bibtex/gost
 % Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
 %
-% $Id: gost.dtx, v.2017/01/12 kia999 $
+% $Id: gost.dtx, v.2017/02/12 kia999 $
 %
 %<*driver>
 \ProvidesFile{gost.dtx}%
-  [2017/01/12 v.1.2i Bibliography styles for GOST R 7.0.5-2008.]
+  [2017/02/12 v.1.2j Bibliography styles for GOST R 7.0.5-2008.]
 
 \documentclass{ltxdoc}
 
@@ -128,7 +128,7 @@
 %</driver>
 % \fi
 %
-% \CheckSum{592}
+% \CheckSum{593}
 %
 % \DoNotIndex{\cyra,\cyrb,\cyrv,\cyrg,\cyrd,\cyre}
 % \DoNotIndex{\CYRP,\cyrii,\cyrr,\cyre,\cyro,\CYRU,\cyrk,\cyrl,\CYRS,\cyrs|}
@@ -421,6 +421,18 @@
 %
 %   \subsection{Version history}
 %
+%   \subsubsection*{Version 1.2j (2017.02.12)}
+%
+%   \begin{enumerate}
+%   \item
+%   Restricted support of |date| field added.
+%
+%   \item
+%   Documentation and examples update (thanks to Leonid Sinev).
+%
+%   \end{enumerate}
+%
+%
 %   \subsubsection*{Version 1.2i (2017.01.12)}
 %
 %   \begin{enumerate}
@@ -690,7 +702,7 @@ ENTRY
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 % \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype} added}
 %    \begin{macrocode}
-    %date            % not implemented yet...
+    date            % new in v1.2j
     pagetotal
     url
     urldate
@@ -747,6 +759,8 @@ FUNCTION {init.state.consts}
 STRINGS { s t }
 
 STRINGS { curlanguage }
+
+STRINGS { y m d }   % new in v.1.2j
 
 %    \end{macrocode}
 %
@@ -2161,6 +2175,108 @@ FUNCTION {format.title}
 }
 
 %    \end{macrocode}
+%
+% \DescribeFunction{date.to.year}
+% New in version 1.2j. Extracts year from date.
+% \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.year}}
+%    \begin{macrocode}
+FUNCTION {date.to.year}
+{
+  date empty$
+    { date }
+    {
+      "date.to.year::: date in " cite$ * " =" * date * warning$
+      "date.to.year::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #1 #4 substring$ 'y :=
+          ":::::: y=" y * warning$
+          y
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{date.to.month}
+% New in version 1.2j. Extracts month from date.
+% \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.month}}
+%    \begin{macrocode}
+FUNCTION {date.to.month}
+{
+  date empty$
+    { date }
+    {
+      "date.to.month::: date in " cite$ * " =" * date * warning$
+      "date.to.month::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #6 #2 substring$ 'm :=
+          ":::::: m=" m * warning$
+          m
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{date.to.day}
+% New in version 1.2j. Extracts year from date.
+% \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.day}}
+%    \begin{macrocode}
+FUNCTION {date.to.day}
+{
+  date empty$
+    { date }
+    {
+      "date.to.day::: date in " cite$ * " =" * date * warning$
+      "date.to.day::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #9 #2 substring$ 'd :=
+          ":::::: d=" d * warning$
+          d
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{year.or.date.to.year}
+% New in version 1.2j. Returns year; if empty tries to extract it from date.
+% \changes{v1.2j}{15 Jan 2017}{new function \texttt{year.or.date.to.year}}
+%    \begin{macrocode}
+FUNCTION {year.or.date.to.year}
+{
+  year empty$
+    {
+      "year.or.date.to.year::: empty year in " cite$ * warning$
+      date.to.year
+    }
+    { year }
+  if$
+}
+
+%    \end{macrocode}
+%
 % \DescribeFunction{format.month}
 % New in version 1.2d. This macro reads month field and translate English names
 % of months to Russian if current language is Russian.
@@ -2215,9 +2331,11 @@ FUNCTION {format.month}
 %    \end{macrocode}
 % \DescribeFunction{format.date}
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
+% \changes{v1.2j}{15 Jan 2017}{extraction of year from date added}
 %    \begin{macrocode}
 FUNCTION {format.date}
-{ year empty$
+%{ year empty$
+{ year.or.date.to.year empty$
     { month empty$
         { "" }
         { "there's a month but no year in " cite$ * warning$
@@ -2226,8 +2344,10 @@ FUNCTION {format.date}
       if$
     }
     { month empty$
-        'year
-        { year ". \BibDash " format.month * * }
+%        'year
+%        { year ". \BibDash " format.month * * }
+        'year.or.date.to.year
+        { year.or.date.to.year ". \BibDash " format.month * * }
       if$
     }
   if$
@@ -3445,7 +3565,7 @@ FUNCTION {article}
   new.dblslash
   journal emphasize add.doi "journal" output.check % new in v.2
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.volume output
   format.number output
@@ -3490,7 +3610,7 @@ FUNCTION {book}
   format.edition output
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   new.block
@@ -3531,7 +3651,7 @@ FUNCTION {booklet}
   new.block
   howpublished output
   address.or.location output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -3575,7 +3695,7 @@ FUNCTION {inbook}
   format.number.series output
   new.sentence
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   new.block
@@ -3621,7 +3741,7 @@ FUNCTION {incollection}
   editor.organization.after
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   format.number.series output
@@ -3662,7 +3782,7 @@ FUNCTION {proceedings}
   format.bvolume output
   format.number.series output
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -3704,16 +3824,16 @@ FUNCTION {inproceedings}
   new.block
 %  address empty$
 %    { publisher output
-%      format.date "year" output.check
+%      format.date "year/date" output.check
 %    }
 %    { address output.nonnull
 %      new.colon
 %      publisher output
-%      format.date "year" output.check
+%      format.date "year/date" output.check
 %    }
 %  if$
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -3768,7 +3888,7 @@ FUNCTION {manual}
     }
   if$
   format.edition output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -3852,7 +3972,7 @@ FUNCTION {misc}
   howpublished new.block.checka
   howpublished output
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -3882,7 +4002,7 @@ FUNCTION {unpublished}
   author.after
   editor.organization.after
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note "note" output.check
   new.sentence
@@ -4003,7 +4123,7 @@ FUNCTION {thesis}
   institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -4048,7 +4168,7 @@ FUNCTION {thesis}
 %  address output
 %  new.colon
 %  institution "institution" output.check
-%  format.date "year" output.check
+%  format.date "year/date" output.check
 %  new.block
 %  note output
 %  new.block                % v.2
@@ -4084,7 +4204,7 @@ FUNCTION {report}
   address.or.location output
   new.colon
   organization output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block                % v.2
   format.pages.page output % v.2
   new.sentence % или new.block ?
@@ -4151,7 +4271,7 @@ FUNCTION {phdthesis}
   institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -4214,7 +4334,7 @@ FUNCTION {mastersthesis}
   institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -4277,7 +4397,7 @@ FUNCTION {docthesis}
   institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -4317,7 +4437,7 @@ FUNCTION {conference} { inproceedings }
 %  address output
 %  new.colon
 %  institution "institution" output.check
-%  format.date "year" output.check
+%  format.date "year/date" output.check
 %  new.block
 %  note output
 %  new.block                % v.2
@@ -4355,7 +4475,7 @@ FUNCTION {techreport}
   address.or.location output
   new.colon
   organization output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block                % v.2
   format.pages.page output % v.2
   new.sentence % или new.block ?
