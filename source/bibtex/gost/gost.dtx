@@ -8,7 +8,7 @@
 % GOST R 7.0.5-2008 with some conventional modifications.
 %
 % Copyright 2012-2017 Igor A. Kotelnikov.
-% Version 1.2j
+% Version 1.3, 2017.02.25.
 %
 % Copyright 1996-2005 Maksym Polyakov.
 % Version 2005.08.12
@@ -49,11 +49,10 @@
 % Move all *.pdf files       to TDS:doc/bibtex/gost
 % Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
 %
-% $Id: gost.dtx, v.2017/02/12 kia999 $
+% $Id: gost.dtx, v.2017/01/12 kia999 $
 %
 %<*driver>
-\ProvidesFile{gost.dtx}%
-  [2017/02/12 v.1.2j Bibliography styles for GOST R 7.0.5-2008.]
+\ProvidesFile{gost.dtx}[2017/02/25 v.1.3 BibTEX support for GOST bibliographies]
 
 \documentclass{ltxdoc}
 
@@ -128,8 +127,6 @@
 %</driver>
 % \fi
 %
-% \CheckSum{593}
-%
 % \DoNotIndex{\cyra,\cyrb,\cyrv,\cyrg,\cyrd,\cyre}
 % \DoNotIndex{\CYRP,\cyrii,\cyrr,\cyre,\cyro,\CYRU,\cyrk,\cyrl,\CYRS,\cyrs|}
 % \DoNotIndex{\cyrt,\cyri,\cyrz,\CYRT,\cyrm}
@@ -161,13 +158,12 @@
 % It comprises 16 BibTeX styles to format bibliography in English, Russian
 % and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit
 % and Unicode (UTF-8) versions of each BibTeX style, in each case offering
-% a choice of sorted and unsorted. Further, 2 more styles, |gost780| and
-% |gost780s| styles (not conforming to effective standards) are retained
-% for backwards compatibility.
+% a choice of sorted and unsorted.
 %
 % \end{abstract}
 %
 % \section{Introduction}
+%
 %   The package was initially developed by Maksym Polyakov. It was later
 %   updated by Igor Kotelnikov to the present status and some code was borrowed
 %   from \pkg{disser} package developed by Stanislav Kruchinin and unpublished
@@ -179,63 +175,58 @@
 %
 %   The System of Standards includes:
 %   \begin{description}
-%   \item[GOST 7.0.5-2008]
-%                Bibliographic reference.
-%                General requirements and rules of making.
+%   \item[GOST 7.80 -2000]
+%                Bibliographic record.
+%                Heading. General requirements and rules.
+%   \item[GOST 7.83 -2001]
+%                Electronic editions. Basic types and imprint.
 %   \item[GOST 7.1  -2003]
 %                Bibliographic record.
 %                Bibliographic description.
 %                General requirements and rules.
-%   \item[GOST 7.80 -2000]
-%                Bibliographic record.
-%                Heading. General requirements and rules.
 %   \item[GOST 7.11 -2004]
 %                Bibliographic description and references.
 %                Rules for the abbreviation of words and word combinations
 %                in foreign European languages.
-%   \item[GOST 7.83 -2001]
-%                Electronic editions. Basic types and imprint.
+%   \item[GOST 7.0.5-2008]
+%                Bibliographic reference.
+%                General requirements and rules of making.
 %   \end{description}
-%   ect.
+%   Etc.
 %
 %   Currently, GOST contains 16 BibTeX styles to format bibliography in English,
 %   Russian and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both
 %   8-bit and Unicode (UTF-8) versions of each BibTeX style, in each case
-%   offering a choice of sorted and unsorted. Further, 2 styles, |gost780| and
-%   |gost780s| styles (which do not conform to effective standards) are retained
-%   for backwards compatibility.
+%   offering a choice of sorted and unsorted.
 %
 %   All styles in the GOST bundle are derived from single master file
 %   \file{gost.dtx} by applying different set of options as shown in the table
 %   below.
 %
 %   \begin{verbatim}
-%------------------------------------------------------------------------
-% Style         | utf8 | strict | modern | eprint | long | sort | natbib
-%------------------------------------------------------------------------
-% gost780       |      |        |        |        |      |      |
-% gost780s      |      |        |        |        |      |   +  |
-%------------------------------------------------------------------------
-% gost2003      |      |   +    |        |    +   |      |      |
-% gost2003s     |      |   +    |        |    +   |      |   +  |
-% gost2008      |      |        |   +    |    +   |      |      |
-% gost2008n     |      |        |   +    |    +   |      |      |   +
-% gost2008l     |      |        |   +    |    +   |   +  |      |
-% gost2008s     |      |        |   +    |    +   |      |   +  |
-% gost2008ns    |      |        |   +    |    +   |      |   +  |   +
-% gost2008ls    |      |        |   +    |    +   |   +  |   +  |
-%------------------------------------------------------------------------
-% ugost2003     |  +   |   +    |        |    +   |      |      |
-% ugost2003s    |  +   |   +    |        |    +   |      |   +  |
-% ugost2008     |  +   |        |   +    |    +   |      |      |
-% ugost2008n    |  +   |        |   +    |    +   |      |      |   +
-% ugost2008l    |  +   |        |   +    |    +   |   +  |      |
-% ugost2008s    |  +   |        |   +    |    +   |      |   +  |
-% ugost2008ns   |  +   |        |   +    |    +   |      |   +  |   +
-% ugost2008ls   |  +   |        |   +    |    +   |   +  |   +  |
-%------------------------------------------------------------------------
-% Style         | utf8 | strict | modern | eprint | long | sort | natbib
-%------------------------------------------------------------------------
+%---------------------------------------------------------------
+% Style         | utf8 | strict | eprint | long | sort | natbib
+%---------------------------------------------------------------
+% gost2003      |      |   +    |    +   |      |      |
+% gost2003s     |      |   +    |    +   |      |   +  |
+% gost2008      |      |        |    +   |      |      |
+% gost2008n     |      |        |    +   |      |      |   +
+% gost2008l     |      |        |    +   |   +  |      |
+% gost2008s     |      |        |    +   |      |   +  |
+% gost2008ns    |      |        |    +   |      |   +  |   +
+% gost2008ls    |      |        |    +   |   +  |   +  |
+%---------------------------------------------------------------
+% ugost2003     |  +   |   +    |    +   |      |      |
+% ugost2003s    |  +   |   +    |    +   |      |   +  |
+% ugost2008     |  +   |        |    +   |      |      |
+% ugost2008n    |  +   |        |    +   |      |      |   +
+% ugost2008l    |  +   |        |    +   |   +  |      |
+% ugost2008s    |  +   |        |    +   |      |   +  |
+% ugost2008ns   |  +   |        |    +   |      |   +  |   +
+% ugost2008ls   |  +   |        |    +   |   +  |   +  |
+%---------------------------------------------------------------
+% Style         | utf8 | strict | eprint | long | sort | natbib
+%---------------------------------------------------------------
 %   \end{verbatim}
 %
 % |Gost2008| style is recommended for most applications. It corresponds to the
@@ -244,21 +235,14 @@
 % Standard 7.1-2003. Use of other styles is best explained through
 % the meaning of options used to compile those styles from the master source.
 %
-% Two styles, |gost780| and |gost780s|, compiled without |modern| and |strict|
-% options, are retained for backward compatibility. They do not conform
-% the Standards 7.0.5-2008 and 7.1-2003 cited above.
-%
 % The |strict| option provides conformance to the Standard 7.1-2003. The
-% styles compiled with that option bear the name |gost2003| with possible
+% bibstyles compiled with that option bear the name |gost2003| with possible
 % suffixes |s|, |l|, |n| as explained below. These styles are intended
 % primarily for the librarians who compose a library catalog.
 %
-% The |modern| option meets the Standard 7.0.5-2008 which can be thought
-% off as a relaxed version of the Standards 7.1-2003. The styles compiled with
-% that option bear the name |gost2008| with possible suffixes |s|, |l|, |n|.
-% The |strict| option  has precedence over |modern| so that a style compiled
-% with both options will resemble mainly the |gost2003| style rather than
-% |gost2008|.
+% The bibstyles compiled without |strict| option meets the Standard 7.0.5-2008
+% which can be thought off as a relaxed version of the Standards 7.1-2003. These
+% bibstyles bear the name |gost2008| with possible suffixes |s|, |l|, |n|.
 %
 % If the number of authors exceeds 4, modern styles cut the list of authors
 % to at most 4 persons as prescibed by the Standards. Option
@@ -347,7 +331,7 @@
 
 %   \item
 %   For details on preparing bibliographic database see examples in
-%   \file{gost*.pdf}.
+%   \file{gost*.pdf} and \file{ugost*.pdf}.
 
 %   \item
 %   \file{ugost*} styles are primarily intended for use
@@ -411,11 +395,9 @@
 %
 %   \begin{enumerate}
 %   \item
-%   \href{http://mirror.ctan.org/biblio/bibtex/contrib/gost/}
-%       {CTAN:biblio/bibtex/contrib/gost}.
+%   \href{http://ctan.org/pkg/gost}{http://ctan.org/pkg/gost}.
 %   \item
-%   \href{http://ctan.org/pkg/gost}
-%       {CTAN:pkg/gost}.
+%   \href{http://github.com/kia999/gost}{http://github.com/kia999/gost}.
 %   \end{enumerate}
 %
 %
@@ -621,8 +603,8 @@
 %
 %    \begin{macrocode}
 %% This bibstyle attempts to format bibliography according to
-%<!modern>%% GOST 7.1-2003 for bibliographic records.
-%<modern>%% GOST 7.0.5-2008 for bibliographic reference.
+%<strict>%% GOST 7.1-2003 for bibliographic records.
+%<!strict>%% GOST 7.0.5-2008 for bibliographic reference.
 %<*natbib>%%
 %%-------------------------------------------------------------------
 %% This is an author-year citation style bibliography.
@@ -808,11 +790,9 @@ FUNCTION {output.nonnull}
                 { output.state after.slash =
                     { "~/ " * write$ }
                     { output.state after.colon =
-%<!(strict|modern)>                        { ": " * write$ }
-%<strict|modern>                        { "~: " * write$ }
+                        { "~: " * write$ }
                         { output.state after.semicolon =
-%<!(strict|modern)>                            { "; " * write$ }
-%<strict|modern>                            { "~; " * write$ }
+                            { "~; " * write$ }
 	                        { add.period$ " " * write$ }
     	                  if$
                         }
@@ -1830,7 +1810,7 @@ INTEGERS { nameptr namesleft numnames }
 % \DescribeFunction{format.names}
 % Function |format.names| has 2 version.
 % First is for bibliographic records rather then for bibliographic references.
-% It is used for \file{.bst} styles compiled without the |modern| option.
+% It is used for \file{.bst} styles compiled with the |strict| option.
 % It format every name as `LastName, F. S.'.
 % Historically, this version was used first for earlier styles included into
 % GOST bundle.
@@ -1842,19 +1822,19 @@ INTEGERS { nameptr namesleft numnames }
 % Therefore we avoid using |f.| primitive when option |utf8| is in effect.
 
 %    \begin{macrocode}
-%<*!modern>
+%<*strict>
 FUNCTION {format.names}
 {
 %<!utf8>  #1 "{vv~}{ll}{~jj}{,~f.}" format.name$
 %<utf8>  #1 "{vv~}{ll}{~jj}{,~ff}" format.name$
 }
-%</!modern>
+%</strict>
 %    \end{macrocode}
 % Second version drops comma from output so that every name is formatted
 % as `LastName F. S.'. It also substitutes 4th and following names by
 % localized term `et al'.
 %    \begin{macrocode}
-%<*modern>
+%<*!strict>
 FUNCTION {format.names}
 {
   's :=
@@ -1877,8 +1857,8 @@ FUNCTION {format.names}
             { t "others" =
 	          t "~others" =
 	          or
-%<!strict>                { " " * bbl.etal * }
-%<strict>                { " " * bbl.etal enclose.square.brackets *}
+                { " " * bbl.etal * }
+                %%%%{ " " * bbl.etal enclose.square.brackets *}
                 { ", " * t * }
               if$
             }
@@ -1891,7 +1871,7 @@ FUNCTION {format.names}
     }
   while$
 }
-%</modern>
+%</!strict>
 
 %    \end{macrocode}
 % \DescribeFunction{format.lab.names}
@@ -2353,7 +2333,6 @@ FUNCTION {format.date}
       if$
     }
   if$
-%<natbib>  extra.label * % new in v.1.2
 }
 
 %    \end{macrocode}
@@ -2466,19 +2445,6 @@ FUNCTION {output.address.publisher}
 }
 
 %</strict>
-
-%    \end{macrocode}
-% \DescribeFunction{output.address.publisher.date}
-% |Otput.address.publisher.date| is used in old styles.
-% New styles use |output.address.publisher|.
-%    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {output.address.publisher.date}
-{
-  output.address.publisher
-  format.date output
-}
-%</!(modern|strict)>
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
@@ -3094,7 +3060,7 @@ FUNCTION {format.techreport.type}
 % or if the author field is empty. Note that GOST requires for a long list of
 % authors to be reduced. Hence this first version is preferable.
 % Note also that |format.names|  cuts list of names
-% to 4 person at most in case if |modern| option is used. and |format.authors|
+% to 4 person at most in case if |long| option is not used, and |format.authors|
 % just emphasizes |format.names|.
 %    \begin{macrocode}
 %<*!long>
@@ -3161,14 +3127,14 @@ FUNCTION {author.before}
 % \DescribeFunction{author.after}
 % Functions |author.after| and |bookauthor.after| also have by 2 versions.
 % They are used to write authors list after the title followed by a slash.
-% In modern styles, compiled with option |modern|, the list of authors is
+% In modern styles, compiled without option |strict|, the list of authors is
 % always cut to at most 4 persons. The cut is performed first by
 % |format.names.rev|, which is called by |format.authors.after|. For old styles,
 % |author.after| just outputs formatted string whereas for new style it
 % skips the string if the number of authors exceeds 3 (and author list is not
 % printed before the title).
 %    \begin{macrocode}
-%<*!modern>
+%<*strict>
 FUNCTION {author.after}
 {
   author empty$
@@ -3177,8 +3143,8 @@ FUNCTION {author.after}
        new.semicolon }
   if$
 }
-%</!modern>
-%<*modern>
+%</strict>
+%<*!strict>
 %<*!long>
 FUNCTION {author.after}
 {
@@ -3195,7 +3161,7 @@ FUNCTION {author.after}
 %<*long>
 FUNCTION {author.after} { }
 %</long>
-%</modern>
+%</!strict>
 
 %    \end{macrocode}
 % \DescribeFunction{bookauthor.after}
@@ -3244,8 +3210,7 @@ FUNCTION {format.url}
 { url empty$
     { "" }
     {
-%<!(modern|strict)>      "\BibUrl{ " url * "}" *
-%<modern|strict>      bbl.url ": \BibUrl{" * url * "}" *
+      bbl.url ": \BibUrl{" * url * "}" *
       urldate empty$
         { "" }
         { " (" bbl.urldate * ": " * urldate * ")" * }
@@ -4100,30 +4065,6 @@ FUNCTION {electronic} {online}
 %
 % \changes{v1.2}{02 Feb 2012}{\texttt{@thesis} entry}
 %    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {thesis}
-{ output.bibitem
-  format.authors "author" output.check
-%<natbib>  author format.key output
-  new.sentence
-  format.btitle "title" output.check
-  new.colon
-  bbl.phdthesis format.thesis.type output.nonnull
-  new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
-  new.block
-  output.address.publisher.date
-  new.block
-  format.pages.page output
-  note output
-  new.sentence
-  format.url output
-  format.annote output
-  fin.entry
-}
-%</!(modern|strict)>
-%<*modern|strict>
 FUNCTION {thesis}
 { output.bibitem
   format.authors "author" output.check
@@ -4131,10 +4072,8 @@ FUNCTION {thesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  %%type "type" output.check
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
-  %%number output % code of the speciality
   specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
@@ -4156,8 +4095,6 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
-
 %    \end{macrocode}
 %
 % \DescribeFunction{report}
@@ -4252,29 +4189,6 @@ FUNCTION {report}
 % Similar to @thesis except that the type field is optional and defaults to the localized
 % term `PhD thesis'. You may still use the type field to override that.
 %    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {phdthesis}
-{ output.bibitem
-  format.authors "author" output.check
-  new.sentence
-  format.btitle "title" output.check
-  new.colon
-  bbl.phdthesis format.thesis.type output.nonnull
-  new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
-  new.block
-  output.address.publisher.date
-  new.block
-  format.pages.page output
-  note output
-  new.sentence
-  format.url output
-  format.annote output
-  fin.entry
-}
-%</!(modern|strict)>
-%<*modern|strict>
 FUNCTION {phdthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -4306,38 +4220,12 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
-
 %    \end{macrocode}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Master's thesis'. You may still use the type field to override that.
 % \changes{v1.2i}{29 Dec 2016}{entry \texttt{@MastersThesis} added again (see v1.1)}
 %    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {mastersthesis}
-{ output.bibitem
-  format.authors "author" output.check
-%<natbib>  author format.key output
-  new.sentence
-  format.btitle "title" output.check
-  new.colon
-  bbl.mathesis format.thesis.type output.nonnull
-  new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
-  new.block
-  output.address.publisher.date
-  new.block
-  format.pages.page output
-  note output
-  new.sentence
-  format.url output
-  format.annote output
-  fin.entry
-}
-%</!(modern|strict)>
-%<*modern|strict>
 FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -4369,38 +4257,12 @@ FUNCTION {mastersthesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
-
 %    \end{macrocode}
 % \DescribeFunction{docthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
 % \changes{v1.2i}{02 Jan 2017}{\texttt{@dscithesis} entry renamed to \texttt{@docthesis}}
 %    \begin{macrocode}
-%<*!(modern|strict)>
-FUNCTION {docthesis}
-{ output.bibitem
-  format.authors "author" output.check
-%<natbib>  author format.key output
-  new.sentence
-  format.btitle "title" output.check
-  new.colon
-  bbl.docthesis format.thesis.type output.nonnull
-  new.slash
-  %institution "institution" output.check
-  institution.or.school "institution/school" output.check
-  new.block
-  output.address.publisher.date
-  new.block
-  format.pages.page output
-  note output
-  new.sentence
-  format.url output
-  format.annote output
-  fin.entry
-}
-%</!(modern|strict)>
-%<*modern|strict>
 FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -4432,8 +4294,6 @@ FUNCTION {docthesis}
   format.annote output
   fin.entry
 }
-%</modern|strict>
-
 %    \end{macrocode}
 % \DescribeFunction{conference}
 %    \begin{macrocode}
@@ -5191,20 +5051,10 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
-%<*modern|!modern>
-  %"\ProvideTextCommandDefault{\cyrdash}{---}" write$ newline$
-  %\DeclareUTFcharacter[\UTFencname]{x2014}{\cyrdash}
-  %"\let\cyrdash\textemdash" write$ newline$
-  %"\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-  %"\ProvideTextCommandDefault{\cyrdash}{\textemdash}" write$ newline$
   "\ProvideTextCommandDefault{\cyrdash}{\iflanguage{russian}{\hbox to.8em{--\hss--}}{\textemdash}}" write$ newline$
-  %%"\ProvideTextCommandDefault{\cyrdash}{%"  write$ newline$
-  %%"  \iflanguage{russian}{\hbox to.8em{--\hss--}}{%" write$ newline$
-  %%"    \iflanguage{ukrainian}{\hbox to.8em{--\hss--}}{\textemdash}}}"  write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em plus 0.1em\fi" write$ newline$
   "\cyrdash\hskip.2em plus 0.1em\ignorespaces}" write$ newline$
   "\renewcommand{\newblock}{\ignorespaces}" write$ newline$
-%</modern|!modern>
 %<natbib>  "\providecommand{\natexlab}[1]{#1}" write$ newline$
   preamble$ empty$
     'skip$
@@ -5230,7 +5080,11 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
+%    \end{macrocode}
+%
+%    \begin{macrocode}
 %</bst>
 %    \end{macrocode}
 %
+%\CheckSum{568}
 %\Finale

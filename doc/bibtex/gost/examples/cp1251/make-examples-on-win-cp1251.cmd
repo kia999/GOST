@@ -3,7 +3,6 @@
 
 @echo Циклическая генерация примеров
 
-for %%f in (gost7*.tex) do pdflatex %%f 
 for %%f in (gost200*.tex) do pdflatex %%f 
 
 @echo Циклическая обработка bibtex8 *.aux, без этого 'чуда не будет'
@@ -12,7 +11,6 @@ for %%f in (gost*.aux) do bibtex8 -B -c cp1251.csf %%f
 
 @echo Циклическая генерация примеров (заход после bibtex8)
 
-for %%f in (gost7*.tex) do pdflatex %%f 
 for %%f in (gost200*.tex) do pdflatex %%f 
 pdflatex gost2008n.tex
 pdflatex gost2008ns.tex

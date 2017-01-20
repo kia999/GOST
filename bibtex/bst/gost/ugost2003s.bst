@@ -17,7 +17,7 @@
 %% This file has the LPPL maintenance status "maintained".
 %% Maintained by Igor A. Kotelnikov.
 %% 
-%% Current version: 1.2i, 2017.01.12
+%% Current version: 1.2j, 2017.01.12
 %% 
 %% Please, send bug report via e-mail:
 %%   kia999 at mail dot ru <Igor Kotelnikov>
@@ -27,7 +27,6 @@
 
 
 
-%%
 %% This bibstyle attempts to format bibliography according to
 %% GOST 7.1-2003 for bibliographic records.
 
@@ -45,43 +44,47 @@ ENTRY
     institution
     journal
     key
+    %major          % new in v.1.2i, alias for speciality, not implemented
+    majorcode       % new in v.1.2i, alias for specialitycode
     month
     note
     number
     organization
     pages
-    eid % new in v1.2c
+    eid             % new in v1.2c
     publisher
-    school
+    school          % alias for institution
     series
+    %speciality     % new in v.1.2i, eqv. to major in biblatex-gost, not implemented yet...
+    specialitycode  % new in v.1.2i, alias of number, eqv. to majorcode in biblatex-gost
     title
-    %medium % new in v1.2; renamed to media.
-    media % new in v1.2f
+    %medium         % new in v1.2; renamed to media.
+    media           % new in v1.2f
     type
     volume
     year
     language
-    langid % new in v1.2c
+    langid          % new in v1.2c
     booklanguage
-    date         % new in v1.2f; not implemented yet...
+    date            % new in v1.2j
     pagetotal
     url
     urldate
     isbn
     doi
-    eprinttype   % = archivePrefix
-    eprintclass  % = primaryClass
+    eprinttype      % = archivePrefix
+    eprintclass     % = primaryClass
     eprint
     % new in v1.2f:
     % appear in biblatex:
-    addendum
-    holder
-    location
-    subtitle
-    titleaddon
-    version
-    % Appear in biblatex-gost:
-    authorcountry   % ??
+    %addendum       % not implemented yet...
+    holder          % see patent
+    location        % new in v.1.2i, alias of address
+    %subtitle       % not implemented yet...
+    titleaddon      % new in v.1.2i, see @thesis
+    %version        % not implemented yet...
+    % Appear in biblatex-gost for @patent entry:
+    authorcountry   % country of the patent authors
     credits         % statement of responsibility, other than provided in Biblatex
     ipc             % Code of the International Patent Classification
     %media          % General material designation NOTE: medium in the above
@@ -113,6 +116,8 @@ FUNCTION {init.state.consts}
 STRINGS { s t }
 
 STRINGS { curlanguage }
+
+STRINGS { y m d }   % new in v.1.2j
 
 FUNCTION {change.language}
 { booklanguage empty$
@@ -944,6 +949,83 @@ FUNCTION {format.title}
   if$
 }
 
+FUNCTION {date.to.year}
+{
+  date empty$
+    { date }
+    {
+      "date.to.year::: date in " cite$ * " =" * date * warning$
+      "date.to.year::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #1 #4 substring$ 'y :=
+          ":::::: y=" y * warning$
+          y
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {date.to.month}
+{
+  date empty$
+    { date }
+    {
+      "date.to.month::: date in " cite$ * " =" * date * warning$
+      "date.to.month::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #6 #2 substring$ 'm :=
+          ":::::: m=" m * warning$
+          m
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {date.to.day}
+{
+  date empty$
+    { date }
+    {
+      "date.to.day::: date in " cite$ * " =" * date * warning$
+      "date.to.day::: length of date is " date text.length$ int.to.str$ * warning$
+      date text.length$ #10 =
+        {
+          date #9 #2 substring$ 'd :=
+          ":::::: d=" d * warning$
+          d
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {year.or.date.to.year}
+{
+  year empty$
+    {
+      "year.or.date.to.year::: empty year in " cite$ * warning$
+      date.to.year
+    }
+    { year }
+  if$
+}
+
 FUNCTION {format.month}
 { month empty$
     { "" }
@@ -979,7 +1061,7 @@ FUNCTION {format.month}
     if$
 }
 FUNCTION {format.date}
-{ year empty$
+{ year.or.date.to.year empty$
     { month empty$
         { "" }
         { "there's a month but no year in " cite$ * warning$
@@ -988,8 +1070,8 @@ FUNCTION {format.date}
       if$
     }
     { month empty$
-        'year
-        { year ". \BibDash " format.month * * }
+        'year.or.date.to.year
+        { year.or.date.to.year ". \BibDash " format.month * * }
       if$
     }
   if$
@@ -998,14 +1080,26 @@ FUNCTION {format.date}
 FUNCTION {address.or.location}
 {
   address empty$
-    { location empty$
-      'skip$
-      { location }
-    if$ }
+    { location }
     { address }
   if$
 }
 
+FUNCTION {specialitycode.or.number}
+{
+  specialitycode empty$
+    { number }
+    { specialitycode }
+  if$
+}
+
+FUNCTION {institution.or.school}
+{
+  institution empty$
+    { school}
+    { institution }
+  if$
+}
 FUNCTION {output.address.publisher}
 {
   address empty$
@@ -1027,7 +1121,6 @@ FUNCTION {output.address.publisher}
   if$
   output
 }
-
 
 
 FUNCTION {output.bibitem}
@@ -1542,7 +1635,7 @@ FUNCTION {article}
   new.dblslash
   journal emphasize add.doi "journal" output.check % new in v.2
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.volume output
   format.number output
@@ -1561,6 +1654,8 @@ FUNCTION {book}
   output.bibitem
   author.before
   format.btitle add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   editor.organization.after
@@ -1570,7 +1665,7 @@ FUNCTION {book}
   format.edition output
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   new.block
@@ -1590,13 +1685,15 @@ FUNCTION {booklet}
   output.bibitem
   author.before
   format.title add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   editor.organization.after
   new.block
   howpublished output
   address.or.location output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -1610,6 +1707,8 @@ FUNCTION {inbook}
   output.bibitem
   author.before
   format.btitle add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   new.dblslash
@@ -1623,7 +1722,7 @@ FUNCTION {inbook}
   format.number.series output
   new.sentence
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   new.block
@@ -1644,6 +1743,8 @@ FUNCTION {incollection}
   author.before
   new.sentence
   format.title add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   new.dblslash
@@ -1652,7 +1753,7 @@ FUNCTION {incollection}
   editor.organization.after
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.bvolume output
   format.number.series output
@@ -1670,13 +1771,15 @@ FUNCTION {proceedings}
 {
   output.bibitem
   format.btitle add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   editor.organization.after
   new.block
   format.bvolume output
   format.number.series output
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -1690,6 +1793,8 @@ FUNCTION {inproceedings}
   author.before
   new.sentence
   format.title add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   new.dblslash
@@ -1701,7 +1806,7 @@ FUNCTION {inproceedings}
   format.number.series output
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -1726,6 +1831,8 @@ FUNCTION {manual}
   if$
   new.block
   format.btitle add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   author empty$
     { organization empty$
     {
@@ -1742,7 +1849,7 @@ FUNCTION {manual}
     }
   if$
   format.edition output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -1755,6 +1862,8 @@ FUNCTION {patent}
 {
   output.bibitem
   title add.media output.nonnull
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.colon
   format.type.number output
   add.blank
@@ -1798,7 +1907,7 @@ FUNCTION {misc}
   howpublished new.block.checka
   howpublished output
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note output
   new.sentence
@@ -1811,11 +1920,13 @@ FUNCTION {unpublished}
 { output.bibitem
   author.before
   format.btitle "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.slash
   author.after
   editor.organization.after
   new.block
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   note "note" output.check
   new.sentence
@@ -1829,6 +1940,8 @@ FUNCTION {online}
   format.authors output
   title howpublished new.sentence.checkb
   format.title add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   howpublished new.dblslash.checka
   howpublished enclose.square.brackets output
   editor.organization.after
@@ -1854,22 +1967,19 @@ FUNCTION {thesis}
   new.sentence
   format.btitle add.doi add.media "title" output.check
   new.colon
-  %%type "type" output.check
   bbl.phdthesis format.thesis.type output.nonnull
-  %%"bbl.phdthesis" format.thesis.type output.nonnull
-  %%"bbl.phdthesis" format.thesis.type output.nonnull
-  %%"!!!" format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -1879,19 +1989,21 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
-
 %%  format.techrep.type.number output.nonnull
 %%  format.url output
 FUNCTION {report}
 {
   output.bibitem
   format.title add.doi add.media "title" output.check
+  new.colon          % added in v.1.3
+  titleaddon output  % added in v.1.3
   new.colon
   type "type" output.check
   new.colon
   number output
   new.slash
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.semicolon
   format.chief.after output % from editor field
   new.semicolon
@@ -1900,7 +2012,7 @@ FUNCTION {report}
   address.or.location output
   new.colon
   organization output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block                % v.2
   format.pages.page output % v.2
   new.sentence % или new.block ?
@@ -1919,16 +2031,18 @@ FUNCTION {phdthesis}
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -1938,7 +2052,6 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
-
 FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -1947,16 +2060,18 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -1966,7 +2081,6 @@ FUNCTION {mastersthesis}
   format.annote output
   fin.entry
 }
-
 FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -1975,16 +2089,18 @@ FUNCTION {docthesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.colon
-  number output % code of the speciality
+  %%number output % code of the speciality
+  specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block
@@ -1994,7 +2110,6 @@ FUNCTION {docthesis}
   format.annote output
   fin.entry
 }
-
 FUNCTION {conference} { inproceedings }
 
 %%  format.url output
@@ -2008,7 +2123,8 @@ FUNCTION {techreport}
   new.colon
   number output
   new.slash
-  institution "institution" output.check
+  %institution "institution" output.check
+  institution.or.school "institution/school" output.check
   new.semicolon
   format.chief.after output % from editor field
   new.semicolon
@@ -2017,7 +2133,7 @@ FUNCTION {techreport}
   address.or.location output
   new.colon
   organization output
-  format.date "year" output.check
+  format.date "year/date" output.check
   new.block                % v.2
   format.pages.page output % v.2
   new.sentence % или new.block ?
@@ -2364,15 +2480,7 @@ FUNCTION {begin.bib}
   "\providecommand*{\BibUrl}[1]{\url{#1}}"           write$ newline$
   "\providecommand{\BibAnnote}[1]{}"                 write$ newline$
   "\providecommand*{\BibEmph}[1]{#1}"                write$ newline$
-  %"\ProvideTextCommandDefault{\cyrdash}{---}" write$ newline$
-  %\DeclareUTFcharacter[\UTFencname]{x2014}{\cyrdash}
-  %"\let\cyrdash\textemdash" write$ newline$
-  %"\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}" write$ newline$
-  %"\ProvideTextCommandDefault{\cyrdash}{\textemdash}" write$ newline$
   "\ProvideTextCommandDefault{\cyrdash}{\iflanguage{russian}{\hbox to.8em{--\hss--}}{\textemdash}}" write$ newline$
-  %%"\ProvideTextCommandDefault{\cyrdash}{%"  write$ newline$
-  %%"  \iflanguage{russian}{\hbox to.8em{--\hss--}}{%" write$ newline$
-  %%"    \iflanguage{ukrainian}{\hbox to.8em{--\hss--}}{\textemdash}}}"  write$ newline$
   "\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em plus 0.1em\fi" write$ newline$
   "\cyrdash\hskip.2em plus 0.1em\ignorespaces}" write$ newline$
   "\renewcommand{\newblock}{\ignorespaces}" write$ newline$
