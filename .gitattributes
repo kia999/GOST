@@ -3,3 +3,4 @@
 gost-*.bat export-ignore
 gost-*.cmd export-ignore
 source/bibtex/gost/do.cmd export-ignore
+source/bibtex/gost/clean.cmd export-ignore
