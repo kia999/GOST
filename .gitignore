@@ -218,5 +218,6 @@ TSWLatexianTemp*
 *.txss
 /README
 gost/*
+doc/bibtex/gost/examples/*/*.bst
 source/bibtex/gost/*.bst
 source/bibtex/gost/README*
