@@ -1,9 +1,9 @@
 @echo Удаление файлов из папки вызова скрипта:
-@del *.pdf
+@del README README.md
 @cd /d "%~dp0source\bibtex\gost\"
 @echo Удаление файлов из подпапки source\bibtex\gost\:
-@del /S *.pdf
+@del README README.md
 @cd /d "%~dp0doc\bibtex\gost\"
 @echo Удаление файлов из подпапки doc\bibtex\gost\:
-@del /S *.pdf
+@del README README.md
 @echo =====

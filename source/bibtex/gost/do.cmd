@@ -14,3 +14,4 @@ pdflatex gost.dtx
 
 @del *.aux *.idx *.log *.ilg *.out .pdf
 @del *.ind *.glo *.gls *.idx *.hd
+@del gost.ins

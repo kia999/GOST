@@ -6,9 +6,11 @@
 @call "%~dp0gost-clean-bst.bat"
 @echo Чистка папок от остатков прошлых компиляций *.pdf
 @call "%~dp0gost-clean-pdf.bat"
+@echo Чистка папок от остатков прошлых компиляций README*
+@call "%~dp0gost-clean-readme.bat"
 @echo Переход в подпапку с gost.dtx
 @cd /d "%~dp0source\bibtex\gost\"
-@echo Выполнение скрипта преобразования gost.dtx в *.bst и *.pdf
+@echo Выполнение скрипта преобразования gost.dtx в массу разных файлов
 @call do.cmd
 @echo Перемещение созданных файлов в папки, где они должны располагаться
 @move /Y gost.pdf ..\..\..\doc\bibtex\gost\

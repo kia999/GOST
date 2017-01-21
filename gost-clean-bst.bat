@@ -10,7 +10,4 @@
 @cd /d "%~dp0bibtex\bst\gost\"
 @echo Удаление файлов из подпапки bibtex\bst\gost\:
 @del /S *.bst
-@cd /d "%~dp0tex\latex\gost\"
-@echo Удаление файлов из подпапки tex\latex\gost\:
-@del /S *.bst
 @echo =====
