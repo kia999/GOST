@@ -10,7 +10,6 @@
 @call "%~dp0gost-create-gost-folder-after-prepare.cmd"
 @echo Вызов скрипта подготовки файлов в архиве со структурой TDS
 @call "%~dp0gost-zip-tds-after-prepare.bat"
-@echo Вызов скрипта подготовки файлов в архиве со структурой TDS
 @echo Непосредственно архивирование папки gost\
 zip -r gost.zip gost gost.tds.zip -x *.bst *.blg *.bbl *.bak 
 @echo Вызов скрипта удаления папки gost\
