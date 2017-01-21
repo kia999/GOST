@@ -5,25 +5,20 @@
 %% The original source files were:
 %%
 %% gost.dtx  (with options: `bst,utf8,strict,eprint,sort')
+%% -------------------------------------------------------------------
+%% This file is a part of GOST package, which is a bundle of BibTEX
+%% styles to format bibliographic references according to the State
+%% Standards on information, librarianship and publishing (GOST)
+%% issued by The Russian Federation and Interstate Committee of former
+%% USSR States.
 %% 
-%% This file may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version 1.3
-%% of this license or (at your option) any later version.
-%% The latest version of this license is in
-%%   http://www.latex-project.org/lppl.txt
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 2005/12/01 or later.
+%% Current version is 1.3, 2017.02.25.
 %% 
-%% This file has the LPPL maintenance status "maintained".
-%% Maintained by Igor A. Kotelnikov.
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
 %% 
-%% Current version: 1.2j, 2017.01.12
-%% 
-%% Please, send bug report via e-mail:
-%%   kia999 at mail dot ru <Igor Kotelnikov>
-%% or
-%%   polyama at yahoo dot com <Maksym Polyakov>
-%% 
+%% E-mail: kia999@mail.ru
+%% -------------------------------------------------------------------
 
 
 
@@ -1536,7 +1531,7 @@ FUNCTION {add.doi}
     'skip$
     { doi empty$
         'skip$
-        { "\href{http://dx.doi.org/" doi * "}{" * swap$ * "}" * }
+        { "\href{https://doi.org/" doi * "}{" * swap$ * "}" * }
       if$
     }
   if$
@@ -2503,5 +2498,30 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
+%% -------------------------------------------------------------------
+%% Copyright 2012-2017 Igor A. Kotelnikov.
+%% Copyright 2017      Leonid Sinev.
+%% Version 1.3*
+%% 
+%% Copyright 1996-2005 Maksym Polyakov.
+%% Version 2005.08.12
+%% 
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%% Igor A. Kotelnikov.
+%% 
+%% Current version is 1.3, 2017.02.25.
+%% 
+%% Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
+%% -------------------------------------------------------------------
+%% This work consists of the file  gost.dtx
+%% and the derived files           gost.ins,
+%%                                 gost.pdf,
+%%                                 gost*.bst (10 files),
+%%                                 ugost*.bst (8 files).
+%% It also contains a lot of examples (*.tex, *.bib files).
+%% -------------------------------------------------------------------
 %%
 %% End of file `ugost2003s.bst'.

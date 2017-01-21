@@ -16,6 +16,9 @@
 @copy ugost*.bst ..\..\..\bibtex\bst\gost\
 @move /Y gost*.bst ..\..\..\doc\bibtex\gost\examples\cp1251\
 @move /Y ugost*.bst ..\..\..\doc\bibtex\gost\examples\utf8\
+@copy README.md ..\..\..\
+@move /Y README.md ..\..\..\doc\bibtex\gost\
+@move /Y README ..\..\..\
 @echo Переход в подпапку с примерами для кодировки cp1251
 @cd /d "%~dp0doc\bibtex\gost\examples\cp1251\"
 @echo Выполнение скрипта сборки примеров применения стилей для кодировки cp1251

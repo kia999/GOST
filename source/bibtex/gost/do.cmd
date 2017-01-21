@@ -1,10 +1,7 @@
-@echo Запуск сборки *.bst из *.dtx
-
-latex gost.ins
-
-@echo Запуск сборки документации
+@echo Запуск сборки *.bst из *.dtx и сборки документации
 
 pdflatex gost.dtx
+
 @echo Making Index...
 makeindex -r -s gind.ist gost
 @echo Making Glossary...
@@ -16,4 +13,4 @@ pdflatex gost.dtx
 @echo Удаление временных файлов
 
 @del *.aux *.idx *.log *.ilg *.out .pdf
-@del *.ind *.glo *.gls *.idx
+@del *.ind *.glo *.gls *.idx *.hd

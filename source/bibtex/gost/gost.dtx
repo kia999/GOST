@@ -1,17 +1,14 @@
-% \iffalse
+% \iffalse meta-comment
+% !TEX program  = pdfLaTeX
 % !Mode:: "DTX:UNIX:UTF-8"
 %
-% This is the source file for the GOST package
-% to be used with BibTeX8.
+% This is the source file for the GOST bundle used with BibTeX.
+%
+% Current version is 1.3, 2017.02.25.
+%
 % It contains set of bibliographic style that
 % attempt to format the bibliography according to
 % GOST R 7.0.5-2008 with some conventional modifications.
-%
-% Copyright 2012-2017 Igor A. Kotelnikov.
-% Version 1.3, 2017.02.25.
-%
-% Copyright 1996-2005 Maksym Polyakov.
-% Version 2005.08.12
 %
 % For a bibliographic entry in Russian you need
 % to add the field
@@ -28,12 +25,11 @@
 % Requires 8-bit bibtex with switch -B and csf file supporting cyrillic.
 % bibtex8 -B -c <encoding>.csf <your_document>
 %
-%
 % Download from
-%  CTAN:macros/latex/contrib/gost/gost.dtx
+%  http://ctan.org/pkg/gost
 %
 % To unpack run
-%   latex gost.ins
+%   tex gost.dtx
 %
 % To produce the documentation run
 %    pdflatex gost.dtx
@@ -42,56 +38,493 @@
 %    pdflatex gost.dtx
 %    pdflatex gost.dtx
 %
-% TeX Directory Structure
-%
-% Move all *.bst files       to TDS:bibtex/bst/gost
-% Move all *.csf files       to TDS:bibtex/csf/gost
-% Move all *.pdf files       to TDS:doc/bibtex/gost
-% Move gost.dtx and gost.ins to TDS:source/bibtex/gost/
-%
-% $Id: gost.dtx, v.2017/01/12 kia999 $
-%
-%<*driver>
-\ProvidesFile{gost.dtx}[2017/02/25 v.1.3 BibTEX support for GOST bibliographies]
+%<*internal>
+\iffalse
+%</internal>
+%<*readmemd|readme>
+-------------------------------------------------------------------
+GOST is a bundle of BibTEX styles to format references according to
+the State Standards on information, librarianship and publishing
+(GOST) issued by The Russian Federation and Interstate Committee
+of former USSR States.
 
-\documentclass{ltxdoc}
+Current version is 1.3, 2017.02.25.
 
-\usepackage{geometry}
-\usepackage{makeidx}
-\ifpdf
-  \usepackage[pdftex,hyperindex,unicode]{hyperref}
-  \usepackage{cmap}
-\else
-  %\usepackage[hypertex]{hyperref}
-  \usepackage{hyperref}
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+
+E-mail: kia999@mail.ru
+-------------------------------------------------------------------
+%</readmemd|readme>
+%<*readmemd>
+
+The System of State Standards includes:
+GOST 7.80 -2000  Bibliographic record.
+                 Heading. General requirements and rules.
+GOST 7.1  -2003  Bibliographic record.
+                 Bibliographic description.
+                 General requirements and rules.
+GOST 7.83 -2001  Electronic editions. Basic types and imprint.
+GOST 7.11 -2004  Bibliographic description and references.
+                 Rules for the abbreviation of words and word
+                 combinations in foreign European languages.
+GOST 7.0.5-2008  Bibliographic reference.
+                 General requirements and rules of making.
+Etc.
+
+GOST comprises 16 BibTeX styles to format bibliography in English, Russian
+and Ukrainian according to GOST 7.0.5-2008 and GOST 7.1-2003. Both 8-bit
+and Unicode (UTF-8) versions of each BibTeX style, in each case offering
+a choice of sorted and unsorted.
+
+All BibTeX styles are derived from same master file |gost.dtx| by applying
+different set of options as shown in the table below.
+
+---------------------------------------------------------------
+ Style         | utf8 | strict | eprint | long | sort | natbib
+---------------------------------------------------------------
+ gost2003      |      |   +    |    +   |      |      |
+ gost2003s     |      |   +    |    +   |      |   +  |
+ gost2008      |      |        |    +   |      |      |
+ gost2008n     |      |        |    +   |      |      |   +
+ gost2008l     |      |        |    +   |   +  |      |
+ gost2008s     |      |        |    +   |      |   +  |
+ gost2008ns    |      |        |    +   |      |   +  |   +
+ gost2008ls    |      |        |    +   |   +  |   +  |
+---------------------------------------------------------------
+ ugost2003     |  +   |   +    |    +   |      |      |
+ ugost2003s    |  +   |   +    |    +   |      |   +  |
+ ugost2008     |  +   |        |    +   |      |      |
+ ugost2008n    |  +   |        |    +   |      |      |   +
+ ugost2008l    |  +   |        |    +   |   +  |      |
+ ugost2008s    |  +   |        |    +   |      |   +  |
+ ugost2008ns   |  +   |        |    +   |      |   +  |   +
+ ugost2008ls   |  +   |        |    +   |   +  |   +  |
+---------------------------------------------------------------
+ Style         | utf8 | strict | eprint | long | sort | natbib
+---------------------------------------------------------------
+
+Gost2008 style is recommended for most applications. It corresponds to the
+currently effective Standard 7.0.5-2008. Librarians should use the style
+gost2003 instead of gost2008 to compile a library catalog to meet the
+Standard 7.1-2003. Use of other styles is best explained through
+the meaning of options used to compile those styles from the master source.
+
+The strict option provides conformance to the Standard 7.1-2003. The
+styles compiled with that option bear the name gost2003 with possible
+suffixes s, l, n as explained below. These styles are intended
+primarily for the librarians who compose a library catalog.
+
+The modern option meets the Standard 7.0.5-2008 which can be thought
+off as a relaxed version of the Standard 7.1-2003. The styles compiled with
+that option bear the name gost2008 with possible suffixes s, l, n.
+The strict option  has precedence over modern so that a style compiled
+with both options will resemble mainly the gost2003 style rather than
+gost2008.
+
+If the number of authors exceeds 4, modern styles cut the list of authors
+to at most 4 persons as prescibed by the Standards. The option
+long overrides this rule to provide backward compatibility with the
+package disser by Stanislab Kruchinin. Two styles, gost2008l and
+gost2008ls, compiled with the option long mimic behavior of the styles
+gost705 and gost705s from the disser package. Major
+effect of the long option is that the list of authors always
+precedes book or article title no matter how long is it.
+Modern styles compiled without long place long list of authors behind
+the title. The names of styles compiled with the option long has the
+suffix l. Recall that those styles do not conform effective Standards and
+their use is discouraged.
+
+The eprint option enables formatting electronic publications. In particular,
+it enables eprint, eprinttype, eprintclass, and doi fields for a
+bibliographic entry. The styles, generated without the eprint option,
+just ignore these fields. Starting from the version 1.2 of the GOST package,
+all modern styles are compiled with this option included, and therefore the
+suffix e which designated this option in earlier  versions is not appended
+to the name of style any more.
+
+The natbib option provides compatibility with the natbib package. The names
+of styles compiled with the option natbib bear the suffix n. Currently
+4 styles with that option are available for public use.
+
+The sort option enables sorting bibliographic references by author names
+and titles of references. The names of styles compiled with the option sort
+bear the suffix s. Sorting does not work as expected for databases in
+unicode encoding (see below).
+
+Finally, the utf8 option produces bibliographic styles in unicode rather
+that in 8-bit encoding. Names of those styles bear the prefix u.
+
+
+Beyond bibliographic style, GOST bundle contains CS files (codepage and
+sorting order).
+
+----------------------------------------------------------------
+ Encoding        |   CSF                 Sorting order
+----------------------------------------------------------------
+ cp866           |   ruscii.csf          Cyrillic first, Latin
+ cp1251          |   cp1251.csf          Cyrillic first, Latin
+ koi8-u          |   koi8u.csf           Cyrillic first, Latin
+ utf8            |   utf8cyrillic.csf    Cyrillic first, Latin
+----------------------------------------------------------------
+
+In addition, BibTeX8 distribution comes with few more CSFs.
+
+----------------------------------------------------------------
+ Encoding        |   CSF                 Sorting order
+----------------------------------------------------------------
+ cp866           |   cp866rus.csf        Latin first, Cyrillic
+----------------------------------------------------------------
+
+
+How to use
+
+1. Select bibliography style by adding appropriate \bibliographystyle
+   declaration to your source file <filename>.tex, e.g.
+
+	\bibliographystyle{gost2008}
+	\bibliography{database}
+
+2. Add the field language="ukrainian" or language="russian" to the
+   bibliographic entries in Ukrainian or Russian languages in your
+   database; English is the default language. German, Italian and
+   French are partially supported.
+
+3. To compile list of references from your database use bibtex8.exe
+   rather than bibtex.exe. Depending on the codepage of your
+   bibliographic database, indicate one of the CS files
+   listed above as option to bibtex8.exe.  Run LaTeX, then run
+   bibTeX8 and again LaTeX:
+
+   	latex <filename>.tex
+   	bibtex8 -B -c <csf_file>.csf <filename>.aux
+	latex <filename>.tex
+
+4. For details on preparing bibliographic database see
+   examples in gost*.pdf and ugost*.pdf.
+
+5. Ugost*.bst styles are primarily intended for use
+   with unicode compilers (xelatex and lualatex). They
+   should be preferred as well when using 8bit compilers
+   (latex and pdflatex) if source file is in utf8 encoding.
+
+6. Neither bibtex.exe nor bibtex8.exe provide
+   correct sorting order of unicode text. It means that using
+   ugost2008s or any other style ended with `s' in
+   its name may produce unexpected result for utf8 documents.
+
+7. Bibtex8 fails to change case of a string if it contains Cyrillic
+   letter in unicode. Therefore ugost2008* styles do not change the
+   case of  titles and other parts of bibliographic record while
+   8-bit styles do the case change where appropriate.
+
+8. Either bibtex8 or bibtex8 fail to cut Cyrillic names to
+   initials. Therefore ugost2008* styles do not modify the name of
+   authors.
+
+9. Package natbib should be loaded when using styles with
+   suffix n in their names.
+
+
+Customization
+
+Every GOST style defines few commands to format some parts of a
+reference. You can redefine these commands prior to
+the \bibliography{<bibtex_style>} command. Initial
+definitions are listed below.
+
+	\providecommand*{\url}[1]{{\small #1}}
+	\providecommand*{\BibUrl}[1]{\url{#1}}
+	\providecommand{\BibAnnote}[1]{}
+	\providecommand*{\BibEmph}[1]{#1}
+
+By default, gost styles separate logical parts of a bibliography
+record by a period and cyrdash (. "---). It is legitimate to drop
+that dash by overriding the command \BibDash as follows
+
+	\providecommand*{\BibDash}{}
+
+By default, \BibDash is equivalent to the shorthand "---
+introduced by the babel package with the option russian.
+It prints a so called Cyrillic dash (\cyrdash), which is
+20% shorter than ordinary LaTeX dash (---), and puts
+unbreakable space before \cyrdash so that the dash never
+appears at the beginning of a line.
+
+
+Where to get from
+
+1. http://ctan.org/pkg/gost
+2. http://github.com/kia999/gost
+
+   Run
+    tex.exe gost.dtx
+   to produce .bst styles.
+
+   Run
+    pdllatex.exe gost.dtx
+    makeindex -r -s gind.ist gost
+    makeindex -r -s gglo.ist -o gost.gls gost.glo
+    pdflatex gost.dtx
+    pdflatex gost.dtx
+   to produce .bst styles and documentation.
+
+%</readmemd>
+%<*readmemd|readme>
+
+What's new in version 1.3 (2017.02.12)
+
+1. All stuff is now generated from gost.dtx.
+
+2. Limited support of the date field added.
+
+3. Formatting of \texttt{doi} field updated.
+
+
+%</readmemd|readme>
+%<*readmemd>
+
+What's new in version 1.2i (2017.01.12)
+
+1. Documentation and examples update (thanks to Leonid Sinev).
+
+2, Restored @MastersThesis instead of @MasterThesis (thanks to Leonid Sinev).
+
+3. media="eresource" field is introduced in addition to the media="online" and
+   media="text"; if present, the media field is not ignored any more in
+   modern bst-styles compiled without the strict option.
+
+4. location field is introduced as an alias of address field.
+
+5. @DSCISTHESIS entry renamed to @DOCTHESIS.
+
+
+What's new in version 1.2h (2016.08.21)
+
+1. Minor changes in documentation.
+
+
+What's new in version 1.2g (2016.07.25)
+
+1. Minor changes in documentation.
+
+
+What's new in version 1.2f (2016.07.11)
+
+1. Support for @patent entry added (thanks to Stanislav Kruchinin).
+2. medium field renamed to media field.
+
+
+What's new in version 1.2e (2016.07.07)
+
+1. Hard coded "URL" string replaced with a language sensitive string
+   (thanks to Roman Budnyi).
+
+
+What's new in version 1.2d (2016.02.18)
+
+1. jan, feb, mar, e.t.c. month macros fixed;
+2. New macro format.month.
+3. \cyrdash is now faked via \ProvideTextCommandDefault if not defined.
+
+
+What's new in version 1.2c (2015.01.10)
+
+1. langid field added; language field supported for backward compatibility.
+2. eid field added, it has priority over pages field;
+3. Fix Gost2003: "--- replaced by \BibDash;
+4. Spacing around \BibDash improved.
+
+
+What's new in version 1.2b (2014.01.19)
+
+1. numpages renamed to pagetotal.
+
+
+What's new in version 1.2a (2012.08.31)
+
+1. \cyrdash is now defined via \ProvideTextCommand rather than \providecommand.
+
+
+What's new in version 1.2 (2012.02.22)
+
+1. Code refactoring. All styles are now generated from single source file.
+2. Support for GOST-7.1-2003. The field medium is added to reflect type
+   of material. For most entry types medium defaults to text.
+3. Support for natbib package.
+4. All modern styles are now compiled with the eprint option.
+
+
+What's new in version 1.1 (2012.01.21)
+
+1. Support for GOST 7.0.5-2008 and GOST 7.1-2003 is provided.
+2. @Online entry is added to format a reference to electronic
+   resource on Internet.
+3. @MastersThesis entry is added to format a reference to master's thesis.
+   @DSciThesis entry is added to format a reference to doctor of
+   sciences thesis.
+4. Urldate, eprint, eprintclass, eprinttype fields are added.
+
+
+Version history
+
+2012.08.31 \cyrdash is now defined via \ProvideTextCommand.
+2012.02.22 Support for natbib package.
+2012.02.02 Adaptation to GOST 7.0.5, electronic publishing.
+2005.08.12 First version uploaded to CTAN.
+2003.06.06 First public version.
+
+
+Please, send feature requests and bug reports via e-mail:
+  kia999  at mail  dot ru   <Igor A. Kotelnikov>
+or
+  polyama at yahoo dot com  <Maksym Polyakov>
+
+Happy BibTeXing!
+%</readmemd>
+%<*internal>
 \fi
-\usepackage{color}
-\definecolor{darkblue}{rgb}{0,0,.6}
-\hypersetup{
-  pdftitle           = {The GOST package},
-  pdfauthor          = {Igor A. Kotelnikov},
-  pdfsubject         = {BibTeX, GOST},
-  pdfstartview       = {FitH},
-%  pdfborder          = {0 0 0},
-%  bookmarksopen      = true,
-  bookmarksnumbered  = true,
-%  bookmarksopenlevel = 2,
-  colorlinks = true,     linkcolor  = darkblue,
-  citecolor  = darkblue, filecolor  = darkblue,
-  menucolor  = darkblue, urlcolor   = darkblue
+\def\nameofplainTeX{plain}
+\ifx\fmtname\nameofplainTeX\else
+  \expandafter\begingroup
+\fi
+%</internal>
+%<*install>
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+\preamble
+-------------------------------------------------------------------
+This file is a part of GOST package, which is a bundle of BibTEX
+styles to format bibliographic references according to the State
+Standards on information, librarianship and publishing (GOST)
+issued by The Russian Federation and Interstate Committee of former
+USSR States.
+
+Current version is 1.3, 2017.02.25.
+
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+
+E-mail: kia999@mail.ru
+-------------------------------------------------------------------
+\endpreamble
+\postamble
+-------------------------------------------------------------------
+Copyright 2012-2017 Igor A. Kotelnikov.
+Copyright 2017      Leonid Sinev.
+Version 1.3*
+
+Copyright 1996-2005 Maksym Polyakov.
+Version 2005.08.12
+
+Released under the LaTeX Project Public License v1.3c or later
+See http://www.latex-project.org/lppl.txt
+
+This work is "maintained" (as per LPPL maintenance status) by
+Igor A. Kotelnikov.
+
+Current version is 1.3, 2017.02.25.
+
+Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
+-------------------------------------------------------------------
+This work consists of the file  gost.dtx
+and the derived files           gost.ins,
+                                gost.pdf,
+                                gost*.bst (10 files),
+                                ugost*.bst (8 files).
+It also contains a lot of examples (*.tex, *.bib files).
+-------------------------------------------------------------------
+\endpostamble
+\usedir{source/bibtex/gost}
+\askonceonly
+\ProvidesFile{gost.ins}[2017/02/25 1.3 Russian support for the Babel system]
+\generate{%
+%
+% BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
+  \file{gost2003.bst}            {\from{gost.dtx} {bst,strict,eprint}}
+%
+% BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
+  \file{gost2008.bst}            {\from{gost.dtx} {bst,eprint}}
+  \file{gost2008l.bst}           {\from{gost.dtx} {bst,eprint,long}}
+%
+% Same style with sorting
+  \file{gost2003s.bst}           {\from{gost.dtx} {bst,strict,eprint,sort}}
+%
+  \file{gost2008s.bst}           {\from{gost.dtx} {bst,eprint,sort}}
+  \file{gost2008ls.bst}          {\from{gost.dtx} {bst,eprint,long,sort}}
+%                    `
+% -----------------------------------------------------------------------------------------
+% Unicode BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
+  \file{ugost2003.bst}           {\from{gost.dtx} {bst,utf8,strict,eprint}}
+%
+% Unicode BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
+  \file{ugost2008.bst}           {\from{gost.dtx} {bst,utf8,eprint}}
+  \file{ugost2008l.bst}          {\from{gost.dtx} {bst,utf8,eprint,long}}
+%
+% Same style with sorting
+  \file{ugost2003s.bst}          {\from{gost.dtx} {bst,utf8,strict,eprint,sort}}
+%
+  \file{ugost2008s.bst}          {\from{gost.dtx} {bst,utf8,eprint,sort}}
+  \file{ugost2008ls.bst}         {\from{gost.dtx} {bst,utf8,eprint,long,sort}}
+%
+% -----------------------------------------------------------------------------------------
+% Experimental style compatible with natbib package.
+%
+  \file{gost2008n.bst}           {\from{gost.dtx} {bst,natbib,eprint}}
+  \file{gost2008ns.bst}          {\from{gost.dtx} {bst,natbib,eprint,sort}}
+%
+  \file{ugost2008n.bst}          {\from{gost.dtx} {bst,utf8,natbib,eprint}}
+  \file{ugost2008ns.bst}         {\from{gost.dtx} {bst,utf8,natbib,eprint,sort}}
 }
-
-
+%</install>
+%<install>\endbatchfile
+%<*internal>
+\usedir{source/bibtex/gost}
+\generate{
+  \file{\jobname.ins}{\from{\jobname.dtx}{install}}
+}
+\nopreamble\nopostamble
+\usedir{source/doc/gost}
+\generate{
+  \file{README.}{\from{\jobname.dtx}{readme}}
+  \file{README.md}{\from{\jobname.dtx}{readmemd}}
+}
+\ifx\fmtname\nameofplainTeX
+  \expandafter\endbatchfile
+\else
+  \expandafter\endgroup
+\fi
+%</internal>
+%<*driver>
+\ProvidesFile{gost.dtx}[2017/02/23 v.1.3 BibTEX support for GOST bibliographies]
+\NeedsTeXFormat{LaTeX2e}
+\documentclass{ltxdoc}
+\usepackage{geometry}
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[russian,english]{babel}
-
-\MakeShortVerb{\|}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%\usepackage[numbered]{hypdoc}
+\usepackage{cmap}
+\usepackage{makeidx}\makeindex
+%\usepackage{xcolor}
+%\definecolor{darkblue}{rgb}{0,0,.6}
+\usepackage[
+  unicode
+  ,pdfusetitle
+  ,colorlinks = true
+  %,linkcolor  = darkblue
+  %,citecolor  = darkblue, filecolor = darkblue
+  %,menucolor  = darkblue, urlcolor  = darkblue
+  ,bookmarksnumbered  = true,
+]{hyperref}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \def\file#1{\texttt{#1}}
 \def\pkg#1{\textsf{#1}}
 \def\cmd#1{\texttt{#1}}
-
+%
 \newcommand\DescribeEntry[1]{%
   \DescribeMacro{#1}\index{Entry!\texttt{#1}}%
 }
@@ -101,28 +534,13 @@
 \newcommand\DescribeField[1]{%
   \DescribeMacro{#1}\index{Field!\texttt{#1}}%
 }
-
-
-\GetFileInfo{gost.dtx}
+%
+%\OnlyDescription % uncomment to hide the Implementation section
 \EnableCrossrefs
-%\DisableCrossrefs   % Say \DisableCrossrefs if index is ready
-\RecordChanges       % Gather update information
-\CodelineIndex       % Index code by line number
-%\PageIndex           % Index code by page number
-
-\title{The GOST package}
-
-\author{
-    Igor A. Kotelnikov\thanks{\texttt{kia999@mail.ru}}
-}
-
-\date{\filedate, \fileversion}
-
-\makeindex
-
+\CodelineIndex
+\RecordChanges
 \begin{document}
-  \maketitle
-  \DocInput{gost.dtx}
+  \DocInput{\jobname.dtx}
 \end{document}
 %</driver>
 % \fi
@@ -135,7 +553,8 @@
 % \DoNotIndex{\CYRA,\CYRB,\cyrch,\CYRE,\CYREREV,\CYRF,\cyrf,\CYRI,\cyrishrt}
 % \DoNotIndex{\CYRO,\CYRR,\cyrsftsn,\CYRYA,\cyryu,\cyrzh}
 % \DoNotIndex{\z@skip,\z@}
-% \DoNotIndex{\|,\~,\ }
+% \DoNotIndex{\|,\~,\ ,\,}
+% \DoNotIndex{\ }
 % \DoNotIndex{\\&,\',\(,\),\`,\\,\/,\.}
 % \DoNotIndex{\begin,\DeclareUTFcharacter}
 % \DoNotIndex{\csname,\def}
@@ -147,7 +566,17 @@
 % \DoNotIndex{\providecommand,\ProvideTextCommandDefault,\relax,\renewcommand}
 % \DoNotIndex{\selectlanguage,\selectlanguageifdefined,\small,\textemdash}
 % \DoNotIndex{\textnumero,\unskip,\url,\UTFencname}
-% \DoNotIndex{\,,\catcode,\cite,\citeauthor,\citet,\citeyear,\href,\hskip,\ifdim}
+% \DoNotIndex{\catcode,\cite,\citeauthor,\citet,\citeyear,\href,\hskip,\ifdim}
+%
+%\GetFileInfo{\jobname.ins}
+%
+%\title{The GOST package}
+%\author{
+%  Igor Kotelnikov\thanks{E-mail: kia999@mail.ru},
+%  Leonid Sinev
+%}
+%\date{Version \fileversion\ released \filedate}
+%\maketitle
 %
 % \begin{abstract}
 %
@@ -407,7 +836,7 @@
 %
 %   \begin{enumerate}
 %   \item
-%   All stuff is now generated from |xgost.dtx|.
+%   All stuff is now generated from |gost.dtx|.
 %
 %   \item
 %   Limited support of the |date| field added.
