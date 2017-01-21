@@ -3268,6 +3268,7 @@ FUNCTION {format.isbn}
 %
 % Function |add.doi| embraces last string in stack into hyperlink
 % that links it to specified |doi| identificator at http://dx.doi.org/ web-site.
+% \changes{v1.3}{21 Jan 2017}{formatting of \texttt{doi} field updated}
 %    \begin{macrocode}
 %<*eprint>
 FUNCTION {add.doi}
@@ -3275,7 +3276,7 @@ FUNCTION {add.doi}
     'skip$
     { doi empty$
         'skip$
-        { "\href{http://dx.doi.org/" doi * "}{" * swap$ * "}" * }
+        { "\href{https://doi.org/" doi * "}{" * swap$ * "}" * }
       if$
     }
   if$
