@@ -215,4 +215,8 @@ TSWLatexianTemp*
 *.7z
 
 # This repository only
+*.txss
+/README
 gost/*
+source/bibtex/gost/*.bst
+source/bibtex/gost/README*
