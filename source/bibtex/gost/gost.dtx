@@ -932,7 +932,7 @@ It also contains a lot of examples (*.tex, *.bib files).
 %   jan, feb, etc. macros fixed.
 %
 %   \item
-%   New macro format.month.
+%   New macro |format.month|.
 %   \end{enumerate}
 %
 %   \subsubsection*{Version 1.2c (2015.01.10)}
@@ -2243,6 +2243,228 @@ FUNCTION {bbl.priority}
 
 %    \end{macrocode}
 %
+%
+% \DescribeFunction{bbl.jan}
+% \DescribeFunction{bbl.feb}
+% \DescribeFunction{bbl.mar}
+% \DescribeFunction{bbl.apr}
+% \DescribeFunction{bbl.may}
+% \DescribeFunction{bbl.jun}
+% \DescribeFunction{bbl.jul}
+% \DescribeFunction{bbl.aug}
+% \DescribeFunction{bbl.sep}
+% \DescribeFunction{bbl.oct}
+% \DescribeFunction{bbl.nov}
+% \DescribeFunction{bbl.dec}
+% New in version 1.3.
+% \changes{v1.3}{22 Jan 2017}{added \texttt{bbl.jan}, \texttt{bbl.feb}, etc.}
+%    \begin{macrocode}
+FUNCTION {bbl.jan}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRS\cyrii\cyrch."}
+%<utf8>      {"Січ."} % Січень
+      { curlanguage "russian" =
+%<!utf8>         { "\CYRYA\cyrn\cyrv." }
+%<utf8>         { "Янв." }
+         { curlanguage "german" =
+            { "Jan." } % Januar
+            { "language is not defined: bbl.jan for " language * warning$ "Jan." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.feb}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRL\cyryu\cyrt."}
+%<utf8>      {"Лют."} % Лютий
+      { curlanguage "russian" =
+%<!utf8>         { "\CYRF\cyre\cyrv\cyrr." }
+%<utf8>         { "Фев." }
+         { curlanguage "german" =
+            {"Feb."} % Februar
+            {"language is not defined: bbl.feb for " language * warning$ "Feb."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.mar}
+{ curlanguage "english" =
+   {"Mar."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRB\cyre\cyrr."}
+%<utf8>      {"Бер."} % Березень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRM\cyra\cyrr\cyrt" }
+%<utf8>            { "Март" }
+         { curlanguage "german" =
+            {"März"} % März
+            {"language is not defined: bbl.mar for " language * warning$ "Mar."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.apr}
+{ curlanguage "english" =
+   {"Apr."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRK\cyrv\cyrii\cyrt."}
+%<utf8>      {"Квіт."} % квітень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRA\cyrp\cyrr." }
+%<utf8>            { "Апр." }
+         { curlanguage "german" =
+            {"Apr."} % April
+            { "language is not defined: bbl.apr for " language * warning$ "Apr." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.may}
+{ curlanguage "english" =
+   {"May"}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRT\cyrr\cyra\cyrv."}
+%<utf8>      {"Трав."} % травень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRM\cyra\cyrishrt" }
+%<utf8>            { "Май" }
+         { curlanguage "german" =
+            {"Mai"}
+            { "language is not defined: bbl.may for " language * warning$ "May" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jun}
+{ curlanguage "english" =
+   {"June"}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRCH\cyre\cyrr."}
+%<utf8>      {"Чер."} % червень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRI\cyryu\cyrn\cyrsftsn" }
+%<utf8>            { "Июнь" }
+         { curlanguage "german" =
+            {"Juni"}
+            { "language is not defined: bbl.jun for " language * warning$ "June" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jul}
+{ curlanguage "english" =
+   {"July"}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRL\cyri\cyrp."}
+%<utf8>      {"Липень"} %Липень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRI\cyryu\cyrl\cyrsftsn" }
+%<utf8>            { "Июль" }
+         { curlanguage "german" =
+            {"Juli"}
+            { "language is not defined: bbl.jul for " language * warning$ "July" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.aug}
+{ curlanguage "english" =
+   {"Aug."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRS\cyre\cyrr."}
+%<utf8>      {"Серпень"} % Серпень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRA\cyrv\cyrg\." }
+%<utf8>            { "Авг." }
+         { curlanguage "german" =
+            {"Aug."} % August
+            { "language is not defined: bbl.aug for " language * warning$ "Aug." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.sep}
+{ curlanguage "english" =
+   {"Sep."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRV\cyre\cyrr."}
+%<utf8>      {"Вер."} % вересень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRS\cyre\cyrn\cyrt." }
+%<utf8>            { "Сент." }
+         { curlanguage "german" =
+            {"Sep."} % September
+            { "language is not defined: bbl.sep for " language * warning$ "Sep." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.oct}
+{ curlanguage "english" =
+   {"Oct."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRZH\cyro\cyrn."}
+%<utf8>      {"Жов."} % жовтень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRO\cyrk\cyrt." }
+%<utf8>            { "Окт." }
+         { curlanguage "german" =
+            {"Okt."} % Oktober
+            { "language is not defined: bbl.oct for " language * warning$ "Oct." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nov}
+{ curlanguage "english" =
+   {"Nov."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRL\cyri\cyrs."}
+%<utf8>      {"Лис."} % листопад
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRN\cyro\cyrya\cyrb." }
+%<utf8>            { "Нояб." }
+         { curlanguage "german" =
+            {"Nov."} % November
+            { "language is not defined: bbl.nov for " language * warning$ "Nov." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.dec}
+{ curlanguage "english" =
+   {"Dec."}
+   { curlanguage "ukrainian" =
+%<!utf8>      {"\CYRG\cyrr\cyru\cyrd."}
+%<utf8>      {"Груд."} % грудень
+      { curlanguage "russian" =
+%<!utf8>            { "\CYRD\cyre\cyrk." }
+%<utf8>            { "Дек." }
+         { curlanguage "german" =
+            {"Dez."} % Dezember
+            { "language is not defined: bbl.dec for " language * warning$ "Dec." }
+         if$}
+      if$}
+   if$}
+if$}
+%    \end{macrocode}
+%
+%
 % \subsection{Formatting functions}
 %
 % Declare functions to format separate elements of bibliographic reference.
@@ -2712,50 +2934,39 @@ FUNCTION {year.or.date.to.year}
 FUNCTION {format.month}
 { month empty$
     { "" }
-    { curlanguage "russian" =
-        { month "Jan." =
-%<!utf8>            { "\CYRYA\cyrn\cyrv." }
-%<utf8>            { "Янв." }
-        { month "Feb." =
-%<!utf8>            { "\CYRF\cyre\cyrv\cyrr." }
-%<utf8>            { "Фев." }
-        { month "Mar." =
-%<!utf8>            { "\CYRM\cyra\cyrr\cyrt" }
-%<utf8>            { "Март" }
-        { month "Apr." =
-%<!utf8>            { "\CYRA\cyrp\cyrr." }
-%<utf8>            { "Апр." }
-        { month "May" =
-%<!utf8>            { "\CYRM\cyra\cyrishrt" }
-%<utf8>            { "Май" }
-        { month "Jun." =
-%<!utf8>            { "\CYRI\cyryu\cyrn\cyrsftsn" }
-%<utf8>            { "Июнь" }
-        { month "Jul." =
-%<!utf8>            { "\CYRI\cyryu\cyrl\cyrsftsn" }
-%<utf8>            { "Июль" }
-        { month "Aug." =
-%<!utf8>            { "\CYRA\cyrv\cyrg\." }
-%<utf8>            { "Авг." }
-        { month "Sep." =
-%<!utf8>            { "\CYRS\cyre\cyrn\cyrt." }
-%<utf8>            { "Сент." }
-        { month "Oct." =
-%<!utf8>            { "\CYRO\cyrk\cyrt." }
-%<utf8>            { "Окт." }
-        { month "Nov." =
-%<!utf8>            { "\CYRN\cyro\cyrya\cyrb." }
-%<utf8>            { "Нояб." }
-        { month "Dec." =
-%<!utf8>            { "\CYRD\cyre\cyrk." }
-%<utf8>            { "Дек." }
-            { month }
-            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
-        { month }
-        if$}
+    { month "Jan." =
+        { bbl.jan }
+    { month "Feb." =
+        { bbl.feb }
+    { month "Mar." =
+        { bbl.mar }
+    { month "Apr." =
+        { bbl.apr }
+    { month "May" =
+        { bbl.may }
+    { month "Jun." =
+        { bbl.jun }
+    { month "Jul." =
+        { bbl.jul }
+    { month "Aug." =
+        { bbl.aug }
+    { month "Sep." =
+        { bbl.sep }
+    { month "Oct." =
+        { "Окт." }
+    { month "Nov." =
+        { bbl.nov }
+    { month "Dec." =
+        { bbl.dec }
+        {
+          "unknown month value in " cite$ * warning$
+          month
+        }
+        if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
     if$
 }
 %    \end{macrocode}
+%
 % \DescribeFunction{format.date}
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 % \changes{v1.2j}{15 Jan 2017}{extraction of year from date added}
@@ -3759,9 +3970,13 @@ FUNCTION {add.media}
 { duplicate$ empty$
     'skip$
     { media empty$
-        { " " * bbl.media.text enclose.square.brackets * }
-        { " " * bbl.media enclose.square.brackets * }
-      if$
+      { type$ "online" =
+        { " " * bbl.media.online enclose.square.brackets * }
+        { " " * bbl.media.text   enclose.square.brackets * }
+        if$
+      }
+      { " " * bbl.media enclose.square.brackets * }
+    if$
     }
   if$
 }
@@ -3976,7 +4191,7 @@ FUNCTION {article}
   new.slash
   author.after
   new.dblslash
-  journal emphasize add.doi "journal" output.check % new in v.2
+  journal emphasize add.doi "journal" output.check % new in v1.2
   new.block
   format.date "year/date" output.check
   new.block
@@ -5532,5 +5747,6 @@ EXECUTE {end.bib}
 %</bst>
 %    \end{macrocode}
 %
-%\CheckSum{568}
+%\CheckSum{607}
+%
 %\Finale
