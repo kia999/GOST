@@ -825,6 +825,185 @@ FUNCTION {bbl.priority}
   if$
 }
 
+FUNCTION {bbl.jan}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+      {"Січ."} % Січень
+      { curlanguage "russian" =
+         { "Янв." }
+         { curlanguage "german" =
+            { "Jan." } % Januar
+            { "language is not defined: bbl.jan for " language * warning$ "Jan." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.feb}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+      {"Лют."} % Лютий
+      { curlanguage "russian" =
+         { "Фев." }
+         { curlanguage "german" =
+            {"Feb."} % Februar
+            {"language is not defined: bbl.feb for " language * warning$ "Feb."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.mar}
+{ curlanguage "english" =
+   {"Mar."}
+   { curlanguage "ukrainian" =
+      {"Бер."} % Березень
+      { curlanguage "russian" =
+            { "Март" }
+         { curlanguage "german" =
+            {"März"} % März
+            {"language is not defined: bbl.mar for " language * warning$ "Mar."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.apr}
+{ curlanguage "english" =
+   {"Apr."}
+   { curlanguage "ukrainian" =
+      {"Квіт."} % квітень
+      { curlanguage "russian" =
+            { "Апр." }
+         { curlanguage "german" =
+            {"Apr."} % April
+            { "language is not defined: bbl.apr for " language * warning$ "Apr." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.may}
+{ curlanguage "english" =
+   {"May"}
+   { curlanguage "ukrainian" =
+      {"Трав."} % травень
+      { curlanguage "russian" =
+            { "Май" }
+         { curlanguage "german" =
+            {"Mai"}
+            { "language is not defined: bbl.may for " language * warning$ "May" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jun}
+{ curlanguage "english" =
+   {"June"}
+   { curlanguage "ukrainian" =
+      {"Чер."} % червень
+      { curlanguage "russian" =
+            { "Июнь" }
+         { curlanguage "german" =
+            {"Juni"}
+            { "language is not defined: bbl.jun for " language * warning$ "June" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jul}
+{ curlanguage "english" =
+   {"July"}
+   { curlanguage "ukrainian" =
+      {"Липень"} %Липень
+      { curlanguage "russian" =
+            { "Июль" }
+         { curlanguage "german" =
+            {"Juli"}
+            { "language is not defined: bbl.jul for " language * warning$ "July" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.aug}
+{ curlanguage "english" =
+   {"Aug."}
+   { curlanguage "ukrainian" =
+      {"Серпень"} % Серпень
+      { curlanguage "russian" =
+            { "Авг." }
+         { curlanguage "german" =
+            {"Aug."} % August
+            { "language is not defined: bbl.aug for " language * warning$ "Aug." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.sep}
+{ curlanguage "english" =
+   {"Sep."}
+   { curlanguage "ukrainian" =
+      {"Вер."} % вересень
+      { curlanguage "russian" =
+            { "Сент." }
+         { curlanguage "german" =
+            {"Sep."} % September
+            { "language is not defined: bbl.sep for " language * warning$ "Sep." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.oct}
+{ curlanguage "english" =
+   {"Oct."}
+   { curlanguage "ukrainian" =
+      {"Жов."} % жовтень
+      { curlanguage "russian" =
+            { "Окт." }
+         { curlanguage "german" =
+            {"Okt."} % Oktober
+            { "language is not defined: bbl.oct for " language * warning$ "Oct." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nov}
+{ curlanguage "english" =
+   {"Nov."}
+   { curlanguage "ukrainian" =
+      {"Лис."} % листопад
+      { curlanguage "russian" =
+            { "Нояб." }
+         { curlanguage "german" =
+            {"Nov."} % November
+            { "language is not defined: bbl.nov for " language * warning$ "Nov." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.dec}
+{ curlanguage "english" =
+   {"Dec."}
+   { curlanguage "ukrainian" =
+      {"Груд."} % грудень
+      { curlanguage "russian" =
+            { "Дек." }
+         { curlanguage "german" =
+            {"Dez."} % Dezember
+            { "language is not defined: bbl.dec for " language * warning$ "Dec." }
+         if$}
+      if$}
+   if$}
+if$}
 INTEGERS { nameptr namesleft numnames }
 
 
@@ -1014,35 +1193,35 @@ FUNCTION {year.or.date.to.year}
 FUNCTION {format.month}
 { month empty$
     { "" }
-    { curlanguage "russian" =
-        { month "Jan." =
-            { "Янв." }
-        { month "Feb." =
-            { "Фев." }
-        { month "Mar." =
-            { "Март" }
-        { month "Apr." =
-            { "Апр." }
-        { month "May" =
-            { "Май" }
-        { month "Jun." =
-            { "Июнь" }
-        { month "Jul." =
-            { "Июль" }
-        { month "Aug." =
-            { "Авг." }
-        { month "Sep." =
-            { "Сент." }
-        { month "Oct." =
-            { "Окт." }
-        { month "Nov." =
-            { "Нояб." }
-        { month "Dec." =
-            { "Дек." }
-            { month }
-            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
-        { month }
-        if$}
+    { month "Jan." =
+        { bbl.jan }
+    { month "Feb." =
+        { bbl.feb }
+    { month "Mar." =
+        { bbl.mar }
+    { month "Apr." =
+        { bbl.apr }
+    { month "May" =
+        { bbl.may }
+    { month "Jun." =
+        { bbl.jun }
+    { month "Jul." =
+        { bbl.jul }
+    { month "Aug." =
+        { bbl.aug }
+    { month "Sep." =
+        { bbl.sep }
+    { month "Oct." =
+        { "Окт." }
+    { month "Nov." =
+        { bbl.nov }
+    { month "Dec." =
+        { bbl.dec }
+        {
+          "unknown month value in " cite$ * warning$
+          month
+        }
+        if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
     if$
 }
 FUNCTION {format.date}
@@ -1531,9 +1710,13 @@ FUNCTION {add.media}
 { duplicate$ empty$
     'skip$
     { media empty$
-        { " " * bbl.media.text enclose.square.brackets * }
-        { " " * bbl.media enclose.square.brackets * }
-      if$
+      { type$ "online" =
+        { " " * bbl.media.online enclose.square.brackets * }
+        { " " * bbl.media.text   enclose.square.brackets * }
+        if$
+      }
+      { " " * bbl.media enclose.square.brackets * }
+    if$
     }
   if$
 }
@@ -1618,7 +1801,7 @@ FUNCTION {article}
   new.slash
   author.after
   new.dblslash
-  journal emphasize add.doi "journal" output.check % new in v.2
+  journal emphasize add.doi "journal" output.check % new in v1.2
   new.block
   format.date "year/date" output.check
   new.block

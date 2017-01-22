@@ -843,6 +843,185 @@ FUNCTION {bbl.priority}
   if$
 }
 
+FUNCTION {bbl.jan}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+      {"\CYRS\cyrii\cyrch."}
+      { curlanguage "russian" =
+         { "\CYRYA\cyrn\cyrv." }
+         { curlanguage "german" =
+            { "Jan." } % Januar
+            { "language is not defined: bbl.jan for " language * warning$ "Jan." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.feb}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyryu\cyrt."}
+      { curlanguage "russian" =
+         { "\CYRF\cyre\cyrv\cyrr." }
+         { curlanguage "german" =
+            {"Feb."} % Februar
+            {"language is not defined: bbl.feb for " language * warning$ "Feb."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.mar}
+{ curlanguage "english" =
+   {"Mar."}
+   { curlanguage "ukrainian" =
+      {"\CYRB\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRM\cyra\cyrr\cyrt" }
+         { curlanguage "german" =
+            {"März"} % März
+            {"language is not defined: bbl.mar for " language * warning$ "Mar."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.apr}
+{ curlanguage "english" =
+   {"Apr."}
+   { curlanguage "ukrainian" =
+      {"\CYRK\cyrv\cyrii\cyrt."}
+      { curlanguage "russian" =
+            { "\CYRA\cyrp\cyrr." }
+         { curlanguage "german" =
+            {"Apr."} % April
+            { "language is not defined: bbl.apr for " language * warning$ "Apr." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.may}
+{ curlanguage "english" =
+   {"May"}
+   { curlanguage "ukrainian" =
+      {"\CYRT\cyrr\cyra\cyrv."}
+      { curlanguage "russian" =
+            { "\CYRM\cyra\cyrishrt" }
+         { curlanguage "german" =
+            {"Mai"}
+            { "language is not defined: bbl.may for " language * warning$ "May" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jun}
+{ curlanguage "english" =
+   {"June"}
+   { curlanguage "ukrainian" =
+      {"\CYRCH\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRI\cyryu\cyrn\cyrsftsn" }
+         { curlanguage "german" =
+            {"Juni"}
+            { "language is not defined: bbl.jun for " language * warning$ "June" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jul}
+{ curlanguage "english" =
+   {"July"}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyri\cyrp."}
+      { curlanguage "russian" =
+            { "\CYRI\cyryu\cyrl\cyrsftsn" }
+         { curlanguage "german" =
+            {"Juli"}
+            { "language is not defined: bbl.jul for " language * warning$ "July" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.aug}
+{ curlanguage "english" =
+   {"Aug."}
+   { curlanguage "ukrainian" =
+      {"\CYRS\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRA\cyrv\cyrg\." }
+         { curlanguage "german" =
+            {"Aug."} % August
+            { "language is not defined: bbl.aug for " language * warning$ "Aug." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.sep}
+{ curlanguage "english" =
+   {"Sep."}
+   { curlanguage "ukrainian" =
+      {"\CYRV\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRS\cyre\cyrn\cyrt." }
+         { curlanguage "german" =
+            {"Sep."} % September
+            { "language is not defined: bbl.sep for " language * warning$ "Sep." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.oct}
+{ curlanguage "english" =
+   {"Oct."}
+   { curlanguage "ukrainian" =
+      {"\CYRZH\cyro\cyrn."}
+      { curlanguage "russian" =
+            { "\CYRO\cyrk\cyrt." }
+         { curlanguage "german" =
+            {"Okt."} % Oktober
+            { "language is not defined: bbl.oct for " language * warning$ "Oct." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nov}
+{ curlanguage "english" =
+   {"Nov."}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyri\cyrs."}
+      { curlanguage "russian" =
+            { "\CYRN\cyro\cyrya\cyrb." }
+         { curlanguage "german" =
+            {"Nov."} % November
+            { "language is not defined: bbl.nov for " language * warning$ "Nov." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.dec}
+{ curlanguage "english" =
+   {"Dec."}
+   { curlanguage "ukrainian" =
+      {"\CYRG\cyrr\cyru\cyrd."}
+      { curlanguage "russian" =
+            { "\CYRD\cyre\cyrk." }
+         { curlanguage "german" =
+            {"Dez."} % Dezember
+            { "language is not defined: bbl.dec for " language * warning$ "Dec." }
+         if$}
+      if$}
+   if$}
+if$}
 INTEGERS { nameptr namesleft numnames }
 
 
@@ -1064,35 +1243,35 @@ FUNCTION {year.or.date.to.year}
 FUNCTION {format.month}
 { month empty$
     { "" }
-    { curlanguage "russian" =
-        { month "Jan." =
-            { "\CYRYA\cyrn\cyrv." }
-        { month "Feb." =
-            { "\CYRF\cyre\cyrv\cyrr." }
-        { month "Mar." =
-            { "\CYRM\cyra\cyrr\cyrt" }
-        { month "Apr." =
-            { "\CYRA\cyrp\cyrr." }
-        { month "May" =
-            { "\CYRM\cyra\cyrishrt" }
-        { month "Jun." =
-            { "\CYRI\cyryu\cyrn\cyrsftsn" }
-        { month "Jul." =
-            { "\CYRI\cyryu\cyrl\cyrsftsn" }
-        { month "Aug." =
-            { "\CYRA\cyrv\cyrg\." }
-        { month "Sep." =
-            { "\CYRS\cyre\cyrn\cyrt." }
-        { month "Oct." =
-            { "\CYRO\cyrk\cyrt." }
-        { month "Nov." =
-            { "\CYRN\cyro\cyrya\cyrb." }
-        { month "Dec." =
-            { "\CYRD\cyre\cyrk." }
-            { month }
-            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
-        { month }
-        if$}
+    { month "Jan." =
+        { bbl.jan }
+    { month "Feb." =
+        { bbl.feb }
+    { month "Mar." =
+        { bbl.mar }
+    { month "Apr." =
+        { bbl.apr }
+    { month "May" =
+        { bbl.may }
+    { month "Jun." =
+        { bbl.jun }
+    { month "Jul." =
+        { bbl.jul }
+    { month "Aug." =
+        { bbl.aug }
+    { month "Sep." =
+        { bbl.sep }
+    { month "Oct." =
+        { "Окт." }
+    { month "Nov." =
+        { bbl.nov }
+    { month "Dec." =
+        { bbl.dec }
+        {
+          "unknown month value in " cite$ * warning$
+          month
+        }
+        if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
     if$
 }
 FUNCTION {format.date}
@@ -1662,7 +1841,7 @@ FUNCTION {article}
   new.slash
   author.after
   new.dblslash
-  journal emphasize add.doi "journal" output.check % new in v.2
+  journal emphasize add.doi "journal" output.check % new in v1.2
   new.block
   format.date "year/date" output.check
   new.block
