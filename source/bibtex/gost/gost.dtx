@@ -388,8 +388,6 @@ Happy BibTeXing!
 \ifx\fmtname\nameofplainTeX\else
   \expandafter\begingroup
 \fi
-%</internal>
-%<*install>
 \input docstrip.tex
 \keepsilent
 \askforoverwritefalse
@@ -431,49 +429,52 @@ Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
 This work consists of the file  gost.dtx
 and the derived files           gost.ins,
                                 gost.pdf,
-                                gost*.bst (10 files),
-                                ugost*.bst (8 files).
-It also contains a lot of examples (*.tex, *.bib files).
+                                gost*.bst  (8 files),
+                                ugost*.bst (8 files),
+                                README.md.
+It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 -------------------------------------------------------------------
 \endpostamble
+%</internal>
+%<*install>
 \usedir{source/bibtex/gost}
 \askonceonly
 \ProvidesFile{gost.ins}[2017/02/25 1.3 Russian support for the Babel system]
 \generate{%
-%
-% BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
+%%
+%% BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
   \file{gost2003.bst}            {\from{gost.dtx} {bst,strict,eprint}}
-%
-% BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
+%%
+%% BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
   \file{gost2008.bst}            {\from{gost.dtx} {bst,eprint}}
   \file{gost2008l.bst}           {\from{gost.dtx} {bst,eprint,long}}
-%
-% Same style with sorting
+%%
+%% Same styles with sorting
   \file{gost2003s.bst}           {\from{gost.dtx} {bst,strict,eprint,sort}}
-%
+%%
   \file{gost2008s.bst}           {\from{gost.dtx} {bst,eprint,sort}}
   \file{gost2008ls.bst}          {\from{gost.dtx} {bst,eprint,long,sort}}
-%                    `
-% -----------------------------------------------------------------------------------------
-% Unicode BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
+%%                    `
+%% --------------------------------------------------------------------------
+%% Unicode BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
   \file{ugost2003.bst}           {\from{gost.dtx} {bst,utf8,strict,eprint}}
-%
-% Unicode BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
+%%
+%% Unicode BST styles that mimics GOST 7.0.5-2008 for bibliographic *references*
   \file{ugost2008.bst}           {\from{gost.dtx} {bst,utf8,eprint}}
   \file{ugost2008l.bst}          {\from{gost.dtx} {bst,utf8,eprint,long}}
-%
-% Same style with sorting
+%%
+%% Same styles with sorting
   \file{ugost2003s.bst}          {\from{gost.dtx} {bst,utf8,strict,eprint,sort}}
-%
+%%
   \file{ugost2008s.bst}          {\from{gost.dtx} {bst,utf8,eprint,sort}}
   \file{ugost2008ls.bst}         {\from{gost.dtx} {bst,utf8,eprint,long,sort}}
-%
-% -----------------------------------------------------------------------------------------
-% Experimental style compatible with natbib package.
-%
+%%
+%% --------------------------------------------------------------------------
+%% Experimental styles compatible with natbib package.
+%%
   \file{gost2008n.bst}           {\from{gost.dtx} {bst,natbib,eprint}}
   \file{gost2008ns.bst}          {\from{gost.dtx} {bst,natbib,eprint,sort}}
-%
+%%
   \file{ugost2008n.bst}          {\from{gost.dtx} {bst,utf8,natbib,eprint}}
   \file{ugost2008ns.bst}         {\from{gost.dtx} {bst,utf8,natbib,eprint,sort}}
 }
