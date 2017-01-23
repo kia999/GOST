@@ -757,11 +757,11 @@ It also contains a lot of examples (*.tex, *.bib files).
 %   bibtex8 -B -c <csf_file>.csf <filename>.aux
 %   latex <filename>.tex
 %   \end{verbatim}
-
+%
 %   \item
 %   For details on preparing bibliographic database see examples in
 %   \file{gost*.pdf} and \file{ugost*.pdf}.
-
+%
 %   \item
 %   \file{ugost*} styles are primarily intended for use
 %   with unicode compilers (\file{xelatex} and \file{lualatex}). They
@@ -913,7 +913,7 @@ It also contains a lot of examples (*.tex, *.bib files).
 %
 %   \item
 %   |medium| field renamed to |media| field for compatibility with biblatex.
-
+%
 %   \end{enumerate}
 %
 %   \subsubsection*{Version 1.2e (2016.07.07)}
@@ -2487,7 +2487,7 @@ INTEGERS { nameptr namesleft numnames }
 % Neither \file{bibtex} nor \file{bibtex8} can handle unicoded text without
 % troubles. In particular, they fail to reduce a Cyrillic name to initials.
 % Therefore we avoid using |f.| primitive when option |utf8| is in effect.
-
+%
 %    \begin{macrocode}
 %<*strict>
 FUNCTION {format.names}
