@@ -249,7 +249,6 @@ FUNCTION {or}
   if$
 }
 
-
 FUNCTION {non.stop}
 { duplicate$
    "}" * add.period$
@@ -470,7 +469,6 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
    if$}
 if$}
 
-
 FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
 { curlanguage "english" =
    {"Number"}
@@ -602,6 +600,7 @@ FUNCTION {bbl.url}
       if$}
    if$}
 if$}
+
 FUNCTION {bbl.urldate}
 { curlanguage "english" =
    {"online; accessed"}
@@ -1001,6 +1000,7 @@ FUNCTION {bbl.dec}
       if$}
    if$}
 if$}
+
 INTEGERS { nameptr namesleft numnames }
 
 FUNCTION {format.names}
@@ -1039,7 +1039,6 @@ FUNCTION {format.names}
   while$
 }
 
-
 FUNCTION {format.names.rev}
 {
   's :=
@@ -1075,14 +1074,12 @@ FUNCTION {format.names.rev}
   while$
 }
 
-
 FUNCTION {format.authors}
 { author empty$
     { "" }
     { author format.names emphasize}
   if$
 }
-
 
 FUNCTION {format.bookauthors}
 { bookauthor empty$
@@ -1251,6 +1248,7 @@ FUNCTION {format.month}
         if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
     if$
 }
+
 FUNCTION {format.date}
 { year.or.date.to.year empty$
     { month empty$
@@ -1291,6 +1289,7 @@ FUNCTION {institution.or.school}
     { institution }
   if$
 }
+
 FUNCTION {output.address.publisher}
 {
   address empty$ location empty$ and
@@ -1323,7 +1322,6 @@ FUNCTION {output.bibitem}
   ""
   before.all 'output.state :=
 }
-
 
 FUNCTION {n.dashify}
 { 't :=
@@ -1436,7 +1434,6 @@ FUNCTION {extract.num}
     { pop$ s }
   if$
 }
-
 
 FUNCTION {convert.edition}
 { edition
@@ -1564,7 +1561,6 @@ FUNCTION {format.number}
     { bbl.nr number tie.or.space.connect }
   if$
 }
-
 
 FUNCTION {empty.misc.check}
 { author empty$ title empty$ howpublished empty$
@@ -1726,8 +1722,6 @@ FUNCTION {add.media}
   if$
 }
 
-
-
 FUNCTION {format.eprint}
 { eprint empty$
    { "" }
@@ -1754,8 +1748,6 @@ FUNCTION {output.eprint.url}
     { format.eprint output }
   if$
 }
-
-
 
 FUNCTION {add.number}
 { duplicate$ empty$
@@ -2162,6 +2154,7 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
+
 %%  format.techrep.type.number output.nonnull
 %%  format.url output
 FUNCTION {report}
@@ -2225,6 +2218,7 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
+
 FUNCTION {mastersthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -2254,6 +2248,7 @@ FUNCTION {mastersthesis}
   format.annote output
   fin.entry
 }
+
 FUNCTION {docthesis}
 { output.bibitem
   format.authors "author" output.check
@@ -2283,6 +2278,7 @@ FUNCTION {docthesis}
   format.annote output
   fin.entry
 }
+
 FUNCTION {conference} { inproceedings }
 
 %%  format.url output
@@ -2500,10 +2496,6 @@ MACRO {stphl}{"Sov. Techn. Phys. Lett."}
 
 READ
 
-
-
-
-
 STRINGS { longest.label }
 
 INTEGERS { number.label longest.label.width }
@@ -2528,7 +2520,6 @@ FUNCTION {forward.pass}
 }
 
 ITERATE {forward.pass}
-
 
 FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$

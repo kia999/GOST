@@ -1365,8 +1365,8 @@ FUNCTION {chop.word}
     's
   if$
 }
-%</sort|natbib>
 
+%</sort|natbib>
 %    \end{macrocode}
 % \DescribeFunction{non.stop}
 %    \begin{macrocode}
@@ -1701,8 +1701,8 @@ FUNCTION {bbl.and}      %  { "\bbland{}" }
       if$}
    if$}
 if$}
-%</natbib>
 
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{bbl.nnumber}
 %    \begin{macrocode}
@@ -1881,6 +1881,7 @@ FUNCTION {bbl.url}
       if$}
    if$}
 if$}
+
 %    \end{macrocode}
 % Next function was added in version 2012.01.15.
 % \DescribeFunction{bbl.urldate}
@@ -1976,7 +1977,7 @@ FUNCTION {bbl.docthesis}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.thesis.type`}
+% \DescribeFunction{bbl.thesis.type}
 %    \begin{macrocode}
 FUNCTION {bbl.thesis.type}
 { type "mathesis" =
@@ -2415,15 +2416,14 @@ FUNCTION {bbl.dec}
       if$}
    if$}
 if$}
+
 %    \end{macrocode}
-%
 %
 % \subsection{Formatting functions}
 %
 % Declare functions to format separate elements of bibliographic reference.
 %    \begin{macrocode}
 INTEGERS { nameptr namesleft numnames }
-
 
 %    \end{macrocode}
 %
@@ -2523,8 +2523,8 @@ FUNCTION {format.lab.names}
     }
   if$
 }
-%</natbib>
 
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{format.names.rev}
 % Declare function to format names for authors/bookauthors list after title and etc.
@@ -2580,8 +2580,8 @@ FUNCTION {format.key}
     { "" }
   if$
 }
-%</natbib>
 
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{format.authors}
 %    \begin{macrocode}
@@ -2686,7 +2686,6 @@ FUNCTION {calc.label}
 }
 
 %</natbib>
-
 %    \end{macrocode}
 % \DescribeFunction{format.bookauthors}
 % This function is used only once, in |bookauthor.before|, and the latter is
@@ -2918,6 +2917,7 @@ FUNCTION {format.month}
         if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
     if$
 }
+
 %    \end{macrocode}
 %
 % \DescribeFunction{format.date}
@@ -2997,10 +2997,10 @@ FUNCTION {institution.or.school}
     { institution }
   if$
 }
+
 %    \end{macrocode}
 %
-% \DescribeFunction{format.address.publisher}
-% \DescribeFunction{format.address.publisher.date}
+% \DescribeFunction{output.address.publisher}
 %    \begin{macrocode}
 %<*!strict>
 %FUNCTION {output.address.publisher}
@@ -3052,7 +3052,6 @@ FUNCTION {output.address.publisher}
   if$
   output
 }
-
 %</strict>
 
 %    \end{macrocode}
@@ -3223,8 +3222,8 @@ FUNCTION {output.bibitem}
 %  before.all 'output.state :=
 %}
 % =======================================
-%</natbib>
 
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{n.dashify}
 %    \begin{macrocode}
@@ -3368,8 +3367,8 @@ FUNCTION {extract.num}
     { pop$ s }
   if$
 }
-
 %<*debug>
+
 %    \end{macrocode}
 % \DescribeFunction{eng.ord}
 %    \begin{macrocode}
@@ -3596,8 +3595,8 @@ FUNCTION {format.chapter.pages}
     }
   if$
 }
-%</debug>
 
+%</debug>
 %    \end{macrocode}
 % \DescribeFunction{empty.misc.check}
 %    \begin{macrocode}
@@ -3979,7 +3978,7 @@ FUNCTION {add.media}
 %      if$}
 %   if$}
 %if$}
-
+%
 %FUNCTION {format.eprint}
 %{ eprint empty$
 %   { "" }
@@ -3999,7 +3998,7 @@ FUNCTION {add.media}
 %    { "\href{" url * "}{" * swap$ * "}" *}
 %  if$
 %}
-
+%
 FUNCTION {format.eprint}
 { eprint empty$
    { "" }
@@ -4026,10 +4025,9 @@ FUNCTION {output.eprint.url}
     { format.eprint output }
   if$
 }
-
 %</eprint>
-
 %<*!eprint>
+
 FUNCTION {output.eprint.url}
 {
     format.url output
@@ -4709,6 +4707,7 @@ FUNCTION {thesis}
   format.annote output
   fin.entry
 }
+
 %    \end{macrocode}
 %
 % \DescribeFunction{report}
@@ -4834,6 +4833,7 @@ FUNCTION {phdthesis}
   format.annote output
   fin.entry
 }
+
 %    \end{macrocode}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
@@ -4871,6 +4871,7 @@ FUNCTION {mastersthesis}
   format.annote output
   fin.entry
 }
+
 %    \end{macrocode}
 % \DescribeFunction{docthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
@@ -4908,6 +4909,7 @@ FUNCTION {docthesis}
   format.annote output
   fin.entry
 }
+
 %    \end{macrocode}
 % \DescribeFunction{conference}
 %    \begin{macrocode}
@@ -5221,18 +5223,15 @@ READ
 %
 % Next chunk of code governs sorting reference list by authors' names and
 % titles.
-%    \begin{macrocode}
-%<*sort|natbib>
-
-%    \end{macrocode}
 % \DescribeFunction{sortify}
 %    \begin{macrocode}
+%<*sort|natbib>
 FUNCTION {sortify}
 { purify$
 %<!utf8>  "l" change.case$
 }
-%</sort|natbib>
 
+%</sort|natbib>
 %    \end{macrocode}
 % \DescribeFunction{sort.format.names}
 %    \begin{macrocode}
@@ -5381,6 +5380,7 @@ FUNCTION {author.title.sort}
      }  	
   if$
 }
+
 %</!natbib|natbib>
 %<*natbib|natbib>
 FUNCTION {author.editor.sort}
@@ -5433,9 +5433,8 @@ FUNCTION {editor.organization.sort}
     { editor sort.format.names }
   if$
 }
+
 %</natbib|natbib>
-
-
 %    \end{macrocode}
 % \DescribeFunction{presort}
 % Function to compute |sort.key$|.
@@ -5497,9 +5496,9 @@ FUNCTION {presort}%#2
   #1 entry.max$ substring$
   'sort.key$ :=
 }
+
 %</natbib>
 %</sort>
-
 %<*!sort>
 %<*natbib>
 INTEGERS { seq.num }
@@ -5527,16 +5526,15 @@ FUNCTION {presort}%#3
   #1 entry.max$ substring$ % cut if too long
   'sort.key$ :=            % set sort.key$
 }
+
 %</natbib>
 %</!sort>
-
 %<*sort|natbib>
 ITERATE {presort}
 
 SORT
 
 %</sort|natbib>
-
 %    \end{macrocode}
 %
 % \subsection{Bibliography list}
@@ -5643,8 +5641,8 @@ FUNCTION {bib.sort.order}
 ITERATE {bib.sort.order}
 
 SORT
-%</natbib>
 
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{begin.bib}
 % Within |thebibliography| environment we define few formatting macros
