@@ -19,9 +19,6 @@
 %% 
 %% E-mail: kia999@mail.ru
 %% -------------------------------------------------------------------
-
-
-
 %% This bibstyle attempts to format bibliography according to
 %% GOST 7.0.5-2008 for bibliographic reference.
 %%-------------------------------------------------------------------
@@ -383,7 +380,7 @@ FUNCTION {bbl.edby}    %  { "\bbledby{}" }
          {"{\cyr\CYRP\cyro\cyrd\ \cyrr\cyre\cyrd.}"}
          { curlanguage "german" =
             { "ed." }
-            {"language is not defined: " language "edby" * * warning$ "Ed.\ by"}
+            {"language is not defined: " curlanguage " in bbl.edby" * * warning$ "Ed.\ by"}
          if$}
       if$}
    if$}
@@ -398,7 +395,7 @@ FUNCTION {bbl.cmplr}
          {"{\cyr\CYRU\cyrk\cyrl.}"}
          { curlanguage "russian" =
             {"{\cyr\CYRS\cyro\cyrs\cyrt.}"}
-            {"language is not defined: " language  "cmplr" * * warning$ "Compiler"}
+            {"language is not defined: " curlanguage  " in bbl.cmplr" * * warning$ "Compiler"}
          if$}
       if$}
    if$}
@@ -417,7 +414,7 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
                {"edizione"}
                { curlanguage "french" =
                   {"\'{e}dition"}
-                  {"language is not defined: " language  "edition" * * warning$ "edition"}
+                  {"language is not defined: " curlanguage  " in bbl.edition" * * warning$ "edition"}
                if$}
             if$}
          if$}
@@ -432,7 +429,7 @@ FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
       { "\CYRT\cyro\cyrm" }
       { curlanguage "german" =
          {"{Band}"} %%%% { "Volumen" }
-         {"language is not defined: " language  "vvolume" * * warning$ "Volume"}
+         {"language is not defined: " curlanguage  " in bbl.vvolume" * * warning$ "Volume"}
       if$}
    if$}
 if$}
@@ -444,7 +441,7 @@ FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
       {"\CYRT."}
       { curlanguage "german" =
          {"{Bd.}"} %%%% { "Vol." }
-         {"language is not defined: " language  "vvol" * * warning$ "Vol."}
+         {"language is not defined: " curlanguage  " in bbl.vvol" * * warning$ "Vol."}
       if$}
    if$}
 if$}
@@ -458,7 +455,7 @@ FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
          {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
          { curlanguage "german" =
             {"{Heft}"} %%%% { "Ausgabe" }
-            {"language is not defined: " language "iissue" * * warning$ "Issue"}
+            {"language is not defined: " curlanguage "iissue" * * warning$ "Issue"}
          if$}
       if$}
    if$}
@@ -473,7 +470,7 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
          {"\CYRV\cyrery\cyrp."}
          { curlanguage "german" =
             {"{H.}"}
-            {"language is not defined: " language "iiss" * * warning$ "Iss."}
+            {"language is not defined: " curlanguage "iiss" * * warning$ "Iss."}
          if$}
       if$}
    if$}
@@ -488,7 +485,7 @@ FUNCTION {bbl.of}      %  { "\bblof{}" }
          { "{\cyr\cyrii\cyrz}" }
          { curlanguage "russian" =
             { "{\cyr\cyri\cyrz}" }
-            {"language is not defined: " language "of" * * warning$ "of"}
+            {"language is not defined: " curlanguage "of" * * warning$ "of"}
          if$}
       if$}
    if$}
@@ -503,7 +500,7 @@ FUNCTION {bbl.etal}      %  { "\bblof{}" }
          {"{\cyr\cyrt\cyra~\cyrii\cyrn.}"}
          { curlanguage "russian" =
             {"{\cyr\cyri~\cyrd\cyrr.}"}
-            {"language is not defined: " language  "et~al" * * warning$ "et~al."}
+            {"language is not defined: " curlanguage  " in bbl.etal" * * warning$ "et~al."}
          if$}
       if$}
    if$}
@@ -518,7 +515,7 @@ FUNCTION {bbl.and}      %  { "\bbland{}" }
          {"{\cyrii}"}
          { curlanguage "russian" =
             {"{\cyri}"}
-            {"language is not defined: " language  "and" * * warning$ "and"}
+            {"language is not defined: " curlanguage  " in bbl.and" * * warning$ "and"}
          if$}
       if$}
    if$}
@@ -531,7 +528,7 @@ FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
       { "\CYRN\cyro\cyrm\cyre\cyrr" }
       { curlanguage "german" =
          {"{Heft}"} %%% { "Anzahl" }
-         {"language is not defined: " language  "nnumber" * * warning$ "Number"}
+         {"language is not defined: " curlanguage  " in bbl.nnumber" * * warning$ "Number"}
       if$}
    if$}
 if$}
@@ -543,7 +540,7 @@ FUNCTION {bbl.number}  %  { "\bblnumber{}" }
       {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
       { curlanguage "german" =
          {"{Heft}"} %%% { "anzahl" }???
-         {"language is not defined: " language  "number" * * warning$ "number"}
+         {"language is not defined: " curlanguage  " in bbl.number" * * warning$ "number"}
       if$}
    if$}
 if$}
@@ -557,7 +554,7 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
          { "{\cyr\textnumero}" }
          { curlanguage "german" =
             {"{H.}"} %%% { "an." }
-            {"language is not defined: " language "nr" * * warning$ "no."}
+            {"language is not defined: " curlanguage "nr" * * warning$ "no."}
          if$}
       if$}
    if$}
@@ -570,7 +567,7 @@ FUNCTION {bbl.nnr}     %   { "\bblno{}" }
       { "{\cyr\textnumero}" }
       { curlanguage "german" =
          {"{H.}"} %%% { "an." }
-         {"language is not defined: " language  "nnr" * * warning$ "No."}
+         {"language is not defined: " curlanguage  " in bbl.nnr" * * warning$ "No."}
       if$}
    if$}
 if$}
@@ -580,7 +577,7 @@ FUNCTION {bbl.in}    %    { "\bblin{}" }
    {"in"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
       { "{\cyr\cyrv}" }
-      {"language is not defined: " language  "in" * * warning$ "in"}
+      {"language is not defined: " curlanguage  " in bbl.in" * * warning$ "in"}
    if$}
 if$}
 
@@ -589,7 +586,7 @@ FUNCTION {bbl.iin}  %     { "\bblIn{}" }
    {"In"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
       { "\CYRV" }
-      {"language is not defined: " language  "iin" * * warning$ "In"}
+      {"language is not defined: " curlanguage  " in bbl.iin" * * warning$ "In"}
    if$}
 if$}
 
@@ -600,7 +597,7 @@ FUNCTION {bbl.pages}    % { "\bblpp." }
       {"{\cyr\cyrs.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
-         {"language is not defined: " language  "pages" * * warning$ "p."}
+         {"language is not defined: " curlanguage  " in bbl.pages" * * warning$ "p."}
       if$}
    if$}
 if$}
@@ -612,7 +609,7 @@ FUNCTION {bbl.page}   %   { "\bblp."
       {"{\cyr\cyrs.}"}
       { curlanguage "german" =
          {"S."} %%%% { "s." }
-         {"language is not defined: " language  "page" * * warning$ "p."}
+         {"language is not defined: " curlanguage  " in bbl.page" * * warning$ "p."}
       if$}
    if$}
 if$}
@@ -624,7 +621,7 @@ FUNCTION {bbl.ppages}%    { "\bblPp." }
       {"{\cyr\CYRS.}"}
       { curlanguage "german" =
          {"S."}
-         {"language is not defined: " language "ppages" * * warning$ "P."}
+         {"language is not defined: " curlanguage "ppages" * * warning$ "P."}
       if$}
    if$}
 if$}
@@ -636,7 +633,7 @@ FUNCTION {bbl.ppage}  %   { "\bblP." }
       {"{\cyr\CYRS.}"}
       { curlanguage "german" =
          {"S."}
-         {"language is not defined: " language  "ppage" * * warning$ "P."}
+         {"language is not defined: " curlanguage  " in bbl.ppage" * * warning$ "P."}
       if$}
    if$}
 if$}
@@ -650,7 +647,7 @@ FUNCTION {bbl.url}
          { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyra}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
+            { "language is not defined: " curlanguage "urldate" * * warning$ "online; accessed" }
          if$}
       if$}
    if$}
@@ -664,7 +661,7 @@ FUNCTION {bbl.urldate}
          { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
+            { "language is not defined: " curlanguage "urldate" * * warning$ "online; accessed" }
          if$}
       if$}
    if$}
@@ -677,7 +674,7 @@ FUNCTION {bbl.techreport} % rename to bbl.techreport
       { "Bericht" }
       { curlanguage "russian" =
          { "{\cyr\CYRO\cyrt\cyrch\cyre\cyrt}" }
-         { "language is not defined: " language "techrep" * * warning$ "Rep." }
+         { "language is not defined: " curlanguage "techrep" * * warning$ "Rep." }
       if$}
    if$}
 if$}
@@ -691,7 +688,7 @@ FUNCTION {bbl.mathesis}
         { "{\cyr\CYRK\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
           "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
           "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
-         { "language is not defined: " language "mthesis" * * warning$ "Master's thesis" }
+         { "language is not defined: " curlanguage "mthesis" * * warning$ "Master's thesis" }
       if$}
    if$}
 if$}
@@ -706,7 +703,7 @@ FUNCTION {bbl.phdthesis}
            "\cyrn\cyra\cyru\cyrk}" * }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
-           { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
+           { "language is not defined: " curlanguage "phdthesis" * * warning$ "Ph.\,D. thesis" }
          if$}
       if$}
    if$}
@@ -720,7 +717,7 @@ FUNCTION {bbl.docthesis}
       { curlanguage "russian" =
          { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
            "\cyrn\cyra\cyru\cyrk}" * }
-         { "language is not defined: " language "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
+         { "language is not defined: " curlanguage "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
 if$}
@@ -743,7 +740,7 @@ FUNCTION {bbl.nnoaddress}
    { "S.\ l." }
    { curlanguage "russian" =
       { "{\cyr\CYRB.\ \cyrm.}" }
-      { "language is not defined: " language "nnoaddress" * * warning$ "S.\ l." }
+      { "language is not defined: " curlanguage "nnoaddress" * * warning$ "S.\ l." }
    if$}
 if$}
 
@@ -752,7 +749,7 @@ FUNCTION {bbl.nopublisher}
    { "s.\ n." }
    { curlanguage "russian" =
       { "{\cyr\cyrb.\ \cyri.}" }
-      { "language is not defined: " language "nnopublisher" * * warning$ "s.\ n." }
+      { "language is not defined: " curlanguage "nnopublisher" * * warning$ "s.\ n." }
    if$}
 if$}
 
@@ -761,7 +758,7 @@ FUNCTION {bbl.nnopublisher}
    { "S.\ n." }
    { curlanguage "russian" =
       { "{\cyr\CYRB.\ \cyri.}" }
-      { "language is not defined: " language "nnopublisher" * * warning$ "S.\ n." }
+      { "language is not defined: " curlanguage "nnopublisher" * * warning$ "S.\ n." }
    if$}
 if$}
 
@@ -770,7 +767,7 @@ FUNCTION {bbl.media.text}
    { "Text" }
    { curlanguage "russian" = curlanguage "ukrainian" = or
       { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
-      { "language is not defined: " language "media" * * warning$ "Text" }
+      { "language is not defined: " curlanguage "media" * * warning$ "Text" }
    if$}
 if$}
 
@@ -783,7 +780,7 @@ FUNCTION {bbl.media.eresource}
       { curlanguage "ukrainian" =
         { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
           "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
-        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
+        { "language is not defined: " curlanguage "media" * * warning$ "Electronic resource" }
       if$}
    if$}
 if$}
@@ -797,7 +794,7 @@ FUNCTION {bbl.media.online}
       { curlanguage "ukrainian" =
         { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
           "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
-        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
+        { "language is not defined: " curlanguage "media" * * warning$ "Electronic resource" }
       if$}
    if$}
 if$}
@@ -809,7 +806,7 @@ FUNCTION {bbl.chief}
       { "\cyrr\cyru\cyrk." }
       { curlanguage "ukrainian" =
         { "\cyrr\cyru\cyrk." }
-        { "language is not defined: " language "chief" * * warning$ "chief" }
+        { "language is not defined: " curlanguage "chief" * * warning$ "chief" }
       if$}
    if$}
 if$}
@@ -821,7 +818,7 @@ FUNCTION {bbl.executor}
       { "{\cyr\cyri\cyrs\cyrp\cyro\cyrl\cyrn.}" }
       { curlanguage "ukrainian" =
         { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
-        { "language is not defined: " language "executor" * * warning$ "executor" }
+        { "language is not defined: " curlanguage "executor" * * warning$ "executor" }
       if$}
    if$}
 if$}
@@ -843,7 +840,7 @@ FUNCTION {bbl.req}
       { "ang." }
       { curlanguage "russian" =
         { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
-        { "language is not defined: " language "req" * * warning$ "req" }
+        { "language is not defined: " curlanguage "req" * * warning$ "req" }
       if$
       }
     if$
@@ -859,7 +856,7 @@ FUNCTION {bbl.publ}
       { "ausg." }
       { curlanguage "russian" =
         { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
-        { "language is not defined: " language "publication" * * warning$ "publication" }
+        { "language is not defined: " curlanguage "publication" * * warning$ "publication" }
       if$
       }
     if$
@@ -875,7 +872,7 @@ FUNCTION {bbl.priority}
       { "Prioritat" }
       { curlanguage "russian" =
         { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
-        { "language is not defined: " language "priority" * * warning$ "priority" }
+        { "language is not defined: " curlanguage "priority" * * warning$ "priority" }
       if$
       }
     if$
@@ -892,7 +889,7 @@ FUNCTION {bbl.jan}
          { "\CYRYA\cyrn\cyrv." }
          { curlanguage "german" =
             { "Jan." } % Januar
-            { "language is not defined: bbl.jan for " language * warning$ "Jan." }
+            { "language is not defined: bbl.jan for " curlanguage * warning$ "Jan." }
          if$}
       if$}
    if$}
@@ -907,7 +904,7 @@ FUNCTION {bbl.feb}
          { "\CYRF\cyre\cyrv\cyrr." }
          { curlanguage "german" =
             {"Feb."} % Februar
-            {"language is not defined: bbl.feb for " language * warning$ "Feb."}
+            {"language is not defined: bbl.feb for " curlanguage * warning$ "Feb."}
          if$}
       if$}
    if$}
@@ -922,7 +919,7 @@ FUNCTION {bbl.mar}
             { "\CYRM\cyra\cyrr\cyrt" }
          { curlanguage "german" =
             {"März"} % März
-            {"language is not defined: bbl.mar for " language * warning$ "Mar."}
+            {"language is not defined: bbl.mar for " curlanguage * warning$ "Mar."}
          if$}
       if$}
    if$}
@@ -937,7 +934,7 @@ FUNCTION {bbl.apr}
             { "\CYRA\cyrp\cyrr." }
          { curlanguage "german" =
             {"Apr."} % April
-            { "language is not defined: bbl.apr for " language * warning$ "Apr." }
+            { "language is not defined: bbl.apr for " curlanguage * warning$ "Apr." }
          if$}
       if$}
    if$}
@@ -952,7 +949,7 @@ FUNCTION {bbl.may}
             { "\CYRM\cyra\cyrishrt" }
          { curlanguage "german" =
             {"Mai"}
-            { "language is not defined: bbl.may for " language * warning$ "May" }
+            { "language is not defined: bbl.may for " curlanguage * warning$ "May" }
          if$}
       if$}
    if$}
@@ -967,7 +964,7 @@ FUNCTION {bbl.jun}
             { "\CYRI\cyryu\cyrn\cyrsftsn" }
          { curlanguage "german" =
             {"Juni"}
-            { "language is not defined: bbl.jun for " language * warning$ "June" }
+            { "language is not defined: bbl.jun for " curlanguage * warning$ "June" }
          if$}
       if$}
    if$}
@@ -982,7 +979,7 @@ FUNCTION {bbl.jul}
             { "\CYRI\cyryu\cyrl\cyrsftsn" }
          { curlanguage "german" =
             {"Juli"}
-            { "language is not defined: bbl.jul for " language * warning$ "July" }
+            { "language is not defined: bbl.jul for " curlanguage * warning$ "July" }
          if$}
       if$}
    if$}
@@ -997,7 +994,7 @@ FUNCTION {bbl.aug}
             { "\CYRA\cyrv\cyrg\." }
          { curlanguage "german" =
             {"Aug."} % August
-            { "language is not defined: bbl.aug for " language * warning$ "Aug." }
+            { "language is not defined: bbl.aug for " curlanguage * warning$ "Aug." }
          if$}
       if$}
    if$}
@@ -1012,7 +1009,7 @@ FUNCTION {bbl.sep}
             { "\CYRS\cyre\cyrn\cyrt." }
          { curlanguage "german" =
             {"Sep."} % September
-            { "language is not defined: bbl.sep for " language * warning$ "Sep." }
+            { "language is not defined: bbl.sep for " curlanguage * warning$ "Sep." }
          if$}
       if$}
    if$}
@@ -1027,7 +1024,7 @@ FUNCTION {bbl.oct}
             { "\CYRO\cyrk\cyrt." }
          { curlanguage "german" =
             {"Okt."} % Oktober
-            { "language is not defined: bbl.oct for " language * warning$ "Oct." }
+            { "language is not defined: bbl.oct for " curlanguage * warning$ "Oct." }
          if$}
       if$}
    if$}
@@ -1042,7 +1039,7 @@ FUNCTION {bbl.nov}
             { "\CYRN\cyro\cyrya\cyrb." }
          { curlanguage "german" =
             {"Nov."} % November
-            { "language is not defined: bbl.nov for " language * warning$ "Nov." }
+            { "language is not defined: bbl.nov for " curlanguage * warning$ "Nov." }
          if$}
       if$}
    if$}
@@ -1057,13 +1054,12 @@ FUNCTION {bbl.dec}
             { "\CYRD\cyre\cyrk." }
          { curlanguage "german" =
             {"Dez."} % Dezember
-            { "language is not defined: bbl.dec for " language * warning$ "Dec." }
+            { "language is not defined: bbl.dec for " curlanguage * warning$ "Dec." }
          if$}
       if$}
    if$}
 if$}
 INTEGERS { nameptr namesleft numnames }
-
 
 FUNCTION {format.names}
 {
@@ -3087,9 +3083,10 @@ EXECUTE {end.bib}
 %% This work consists of the file  gost.dtx
 %% and the derived files           gost.ins,
 %%                                 gost.pdf,
-%%                                 gost*.bst (10 files),
-%%                                 ugost*.bst (8 files).
-%% It also contains a lot of examples (*.tex, *.bib files).
+%%                                 gost*.bst  (8 files),
+%%                                 ugost*.bst (8 files),
+%%                                 README.md.
+%% It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 %% -------------------------------------------------------------------
 %%
 %% End of file `gost2008ns.bst'.
