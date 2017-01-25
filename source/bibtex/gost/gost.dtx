@@ -1057,7 +1057,7 @@ ENTRY
     institution
     journal
     key
-    %major          % new in v.1.2i, alias for speciality, not implemented
+% ^^A    %major          % new in v.1.2i, alias for speciality, not implemented
     majorcode       % new in v.1.2i, alias for specialitycode
     month
     note
@@ -1068,10 +1068,10 @@ ENTRY
     publisher
     school          % alias for institution
     series
-    %speciality     % new in v.1.2i, eqv. to major in biblatex-gost, not implemented yet...
+% ^^A    %speciality     % new in v.1.2i, eqv. to major in biblatex-gost, not implemented yet...
     specialitycode  % new in v.1.2i, alias of number, eqv. to majorcode in biblatex-gost
     title
-    %medium         % new in v1.2; renamed to media.
+% ^^A    %medium         % new in v1.2; renamed to media.
     media           % new in v1.2f
     type
     volume
@@ -1093,26 +1093,26 @@ ENTRY
     eprinttype      % = archivePrefix
     eprintclass     % = primaryClass
     eprint
-    % new in v1.2f:
-    % appear in biblatex:
-    %addendum       % not implemented yet...
+% ^^A    % new in v1.2f:
+% ^^A    % appear in biblatex:
+% ^^A    %addendum       % not implemented yet...
     holder          % see patent
     location        % new in v.1.2i, alias of address
-    %subtitle       % not implemented yet...
+% ^^A    %subtitle       % not implemented yet...
     titleaddon      % new in v.1.2i, see @thesis
-    %version        % not implemented yet...
+% ^^A    %version        % not implemented yet...
     % Appear in biblatex-gost for @patent entry:
     authorcountry   % country of the patent authors
     credits         % statement of responsibility, other than provided in Biblatex
     ipc             % Code of the International Patent Classification
-    %media          % General material designation NOTE: medium in the above
+% ^^A    %media          % General material designation NOTE: medium in the above
     requestnumber   % Registration number of the application to the patent document
     publicationdate % Date of publication
     publication     %  and information on the official gazette, which published patent
     prioritydate    % Information about the convention priority: the date of filing of the application,
     prioritynumber  %   number and
     prioritycountry %   country name of convention priority.
-    requestdate     % ??
+    requestdate
   }
   {}
 %<!natbib>  { label }
@@ -1506,7 +1506,7 @@ FUNCTION {space.word}
 % Declare language-sensitive abbreviations.
 % \DescribeFunction{bbl.edby}
 %    \begin{macrocode}
-FUNCTION {bbl.edby}    %  { "\bbledby{}" }
+FUNCTION {bbl.edby} % ^^A   %  { "\bbledby{}" }
 { curlanguage "english" =
    {"Ed.\ by"}
    { curlanguage "ukrainian" =
@@ -1546,7 +1546,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.edition}
 %    \begin{macrocode}
-FUNCTION {bbl.edition} %  { "\bbledition{}" }
+FUNCTION {bbl.edition} % ^^A%  { "\bbledition{}" }
 { curlanguage "english" =
    {"edition"}
    { curlanguage "ukrainian" =
@@ -1556,7 +1556,7 @@ FUNCTION {bbl.edition} %  { "\bbledition{}" }
 %<!utf8>         {"{\cyr\cyri\cyrz\cyrd.}"}
 %<utf8>         {"{изд.}"}
          { curlanguage "german" =
-            {" {aus.}" } %%%% { "Aufl." } ??
+            {" {aus.}" } % ^^A%%%% { "Aufl." } ??
             { curlanguage "italian" =
                {"edizione"}
                { curlanguage "french" =
@@ -1572,14 +1572,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.vvolume}
 %    \begin{macrocode}
-FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
+FUNCTION {bbl.vvolume} % ^^A%  { "\bblVolume{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"Volume"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      { "\CYRT\cyro\cyrm" }
 %<utf8>      { "Том" }
       { curlanguage "german" =
-         {"{Band}"} %%%% { "Volumen" }
+         {"{Band}"} % ^^A%%%% { "Volumen" }
          {"language is not defined: " curlanguage  " in bbl.vvolume" * * warning$ "Volume"}
       if$}
    if$}
@@ -1588,14 +1588,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.vvol}
 %    \begin{macrocode}
-FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
+FUNCTION {bbl.vvol} % ^^A   %  { "\bblVol{}" }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"Vol."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"\CYRT."}
 %<utf8>      {"Т."}
       { curlanguage "german" =
-         {"{Bd.}"} %%%% { "Vol." }
+         {"{Bd.}"} % ^^A%%%% { "Vol." }
          {"language is not defined: " curlanguage  " in bbl.vvol" * * warning$ "Vol."}
       if$}
    if$}
@@ -1604,7 +1604,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.iissue}
 %    \begin{macrocode}
-FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
+FUNCTION {bbl.iissue} % ^^A %  { "\bblIssue{}" }
 { curlanguage "english" =
    {"Issue"}
    { curlanguage "ukrainian" =
@@ -1614,7 +1614,7 @@ FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
 %<!utf8>         {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
 %<utf8>         {"Выпуск"}
          { curlanguage "german" =
-            {"{Heft}"} %%%% { "Ausgabe" }
+            {"{Heft}"} % ^^A%%%% { "Ausgabe" }
             {"language is not defined: " curlanguage "iissue" * * warning$ "Issue"}
          if$}
       if$}
@@ -1624,7 +1624,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.iiss}
 %    \begin{macrocode}
-FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
+FUNCTION {bbl.iiss} % ^^A %  { "\bblIss{}" }
 { curlanguage "english" =
    {"Iss."}
    { curlanguage "ukrainian" =
@@ -1644,7 +1644,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.of}
 %    \begin{macrocode}
-FUNCTION {bbl.of}      %  { "\bblof{}" }
+FUNCTION {bbl.of} % ^^A     %  { "\bblof{}" }
 { curlanguage "english" =
    {"of"}
    { curlanguage "german" =
@@ -1664,7 +1664,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.etal}
 %    \begin{macrocode}
-FUNCTION {bbl.etal}      %  { "\bblof{}" }
+FUNCTION {bbl.etal} % ^^A     %  { "\bblof{}" }
 { curlanguage "english" =
    {"et~al."}
    { curlanguage "german" =
@@ -1685,7 +1685,7 @@ if$}
 % \DescribeFunction{bbl.and}
 %    \begin{macrocode}
 %<*natbib>
-FUNCTION {bbl.and}      %  { "\bbland{}" }
+FUNCTION {bbl.and} % ^^A     %  { "\bbland{}" }
 { curlanguage "english" =
    {"and"}
    { curlanguage "german" =
@@ -1706,14 +1706,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.nnumber}
 %    \begin{macrocode}
-FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
+FUNCTION {bbl.nnumber} % ^^A%  { "\bblNumber{}" }
 { curlanguage "english" =
    {"Number"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      { "\CYRN\cyro\cyrm\cyre\cyrr" }
 %<utf8>      { "{Номер}" }
       { curlanguage "german" =
-         {"{Heft}"} %%% { "Anzahl" }
+         {"{Heft}"} % ^^A%%% { "Anzahl" }
          {"language is not defined: " curlanguage  " in bbl.nnumber" * * warning$ "Number"}
       if$}
    if$}
@@ -1722,14 +1722,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.number}
 %    \begin{macrocode}
-FUNCTION {bbl.number}  %  { "\bblnumber{}" }
+FUNCTION {bbl.number} % ^^A %  { "\bblnumber{}" }
 { curlanguage "english" =
    {"number"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
 %<utf8>      {"{номер}"}
       { curlanguage "german" =
-         {"{Heft}"} %%% { "anzahl" }???
+         {"{Heft}"} % ^^A%%% { "anzahl" }???
          {"language is not defined: " curlanguage  " in bbl.number" * * warning$ "number"}
       if$}
    if$}
@@ -1738,7 +1738,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.nr}
 %    \begin{macrocode}
-FUNCTION {bbl.nr}     %   { "\bblno{}" }
+FUNCTION {bbl.nr} % ^^A    %   { "\bblno{}" }
 { curlanguage "english" =
    {"no."}
    { curlanguage "italian" =
@@ -1747,7 +1747,7 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
 %<!utf8>         { "{\cyr\textnumero}" }
 %<utf8>         { "{№}" }
          { curlanguage "german" =
-            {"{H.}"} %%% { "an." }
+            {"{H.}"} % ^^A %%% { "an." }
             {"language is not defined: " curlanguage "nr" * * warning$ "no."}
          if$}
       if$}
@@ -1757,14 +1757,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.nnr}
 %    \begin{macrocode}
-FUNCTION {bbl.nnr}     %   { "\bblno{}" }
+FUNCTION {bbl.nnr} % ^^A %   { "\bblno{}" }
 { curlanguage "english" =
    {"No."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      { "{\cyr\textnumero}" }
 %<utf8>      { "{№}" }
       { curlanguage "german" =
-         {"{H.}"} %%% { "an." }
+         {"{H.}"} % ^^A%%% { "an." }
          {"language is not defined: " curlanguage  " in bbl.nnr" * * warning$ "No."}
       if$}
    if$}
@@ -1773,7 +1773,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.in}
 %    \begin{macrocode}
-FUNCTION {bbl.in}    %    { "\bblin{}" }
+FUNCTION {bbl.in} % ^^A%    { "\bblin{}" }
 { curlanguage "english" = curlanguage "german" = or
    {"in"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
@@ -1786,7 +1786,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.iin}
 %    \begin{macrocode}
-FUNCTION {bbl.iin}  %     { "\bblIn{}" }
+FUNCTION {bbl.iin} % ^^A%     { "\bblIn{}" }
 { curlanguage "english" = curlanguage "german" = or
    {"In"}
    { curlanguage "ukrainian" = curlanguage "russian" = or
@@ -1799,14 +1799,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.pages}
 %    \begin{macrocode}
-FUNCTION {bbl.pages}    % { "\bblpp." }
+FUNCTION {bbl.pages} % ^^A% { "\bblpp." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"p."} %%% {"pp."}
+   {"p."} % ^^A%%% {"pp."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrs.}"}
 %<utf8>      {"{с.}"}
       { curlanguage "german" =
-         {"S."} %%%% { "s." }
+         {"S."} % ^^A%%%% { "s." }
          {"language is not defined: " curlanguage  " in bbl.pages" * * warning$ "p."}
       if$}
    if$}
@@ -1815,14 +1815,14 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.page}
 %    \begin{macrocode}
-FUNCTION {bbl.page}   %   { "\bblp."
+FUNCTION {bbl.page} % ^^A%   { "\bblp."
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"p."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\cyrs.}"}
 %<utf8>      {"{с.}"}
       { curlanguage "german" =
-         {"S."} %%%% { "s." }
+         {"S."} % ^^A%%%% { "s." }
          {"language is not defined: " curlanguage  " in bbl.page" * * warning$ "p."}
       if$}
    if$}
@@ -1831,9 +1831,9 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.ppages}
 %    \begin{macrocode}
-FUNCTION {bbl.ppages}%    { "\bblPp." }
+FUNCTION {bbl.ppages}% ^^A%    { "\bblPp." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"P."} %%%% { "Pp." }
+   {"P."} % ^^A%%%% { "Pp." }
    { curlanguage "ukrainian" = curlanguage "russian" = or
 %<!utf8>      {"{\cyr\CYRS.}"}
 %<utf8>      {"{С.}"}
@@ -1847,7 +1847,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.ppage}
 %    \begin{macrocode}
-FUNCTION {bbl.ppage}  %   { "\bblP." }
+FUNCTION {bbl.ppage} % ^^A%   { "\bblP." }
 { curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
    {"P."}
    { curlanguage "ukrainian" = curlanguage "russian" = or
@@ -1906,7 +1906,7 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.techreport}
 %    \begin{macrocode}
-FUNCTION {bbl.techreport} % rename to bbl.techreport
+FUNCTION {bbl.techreport}
 { curlanguage "english" =
    { "Rep." }
    { curlanguage "german" =
@@ -1985,7 +1985,7 @@ FUNCTION {bbl.thesis.type}
     { bbl.phdthesis }
     { type "docthesis" =
       { bbl.docthesis }
-      %%{ "!!!" type * "t" change.case$ }
+% ^^A      %%{ "!!!" type * "t" change.case$ }
 %<!utf8>      { type "t" change.case$ }
 %<utf8>      { type }
     if$}
@@ -2120,11 +2120,11 @@ if$}
 %    \end{macrocode}
 % \DescribeFunction{bbl.media}
 %    \begin{macrocode}
-%FUNCTION {bbl.media}
-%{ type$ "online" =
-%   { bbl.media.eresource }
-%   { bbl.media.text  }
-%if$}
+% ^^A%FUNCTION {bbl.media}
+% ^^A%{ type$ "online" =
+% ^^A%   { bbl.media.eresource }
+% ^^A%   { bbl.media.text  }
+% ^^A%if$}
 FUNCTION {bbl.media}
 { media "online" =
    { bbl.media.online }
@@ -2217,12 +2217,12 @@ FUNCTION {bbl.jan}
    {"Jan."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRS\cyrii\cyrch."}
-%<utf8>      {"Січ."} % Січень
+%<utf8>      {"Січ."} % ^^A% Січень
       { curlanguage "russian" =
 %<!utf8>         { "\CYRYA\cyrn\cyrv." }
 %<utf8>         { "Янв." }
          { curlanguage "german" =
-            { "Jan." } % Januar
+            { "Jan." } % ^^A% Januar
             { "language is not defined: bbl.jan for " curlanguage * warning$ "Jan." }
          if$}
       if$}
@@ -2234,12 +2234,12 @@ FUNCTION {bbl.feb}
    {"Jan."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRL\cyryu\cyrt."}
-%<utf8>      {"Лют."} % Лютий
+%<utf8>      {"Лют."} % ^^A% Лютий
       { curlanguage "russian" =
 %<!utf8>         { "\CYRF\cyre\cyrv\cyrr." }
 %<utf8>         { "Фев." }
          { curlanguage "german" =
-            {"Feb."} % Februar
+            {"Feb."} % ^^A% Februar
             {"language is not defined: bbl.feb for " curlanguage * warning$ "Feb."}
          if$}
       if$}
@@ -2251,12 +2251,12 @@ FUNCTION {bbl.mar}
    {"Mar."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRB\cyre\cyrr."}
-%<utf8>      {"Бер."} % Березень
+%<utf8>      {"Бер."} % ^^A% Березень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRM\cyra\cyrr\cyrt" }
 %<utf8>            { "Март" }
          { curlanguage "german" =
-            {"März"} % März
+            {"März"} % ^^A% März
             {"language is not defined: bbl.mar for " curlanguage * warning$ "Mar."}
          if$}
       if$}
@@ -2268,12 +2268,12 @@ FUNCTION {bbl.apr}
    {"Apr."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRK\cyrv\cyrii\cyrt."}
-%<utf8>      {"Квіт."} % квітень
+%<utf8>      {"Квіт."} % ^^A% квітень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRA\cyrp\cyrr." }
 %<utf8>            { "Апр." }
          { curlanguage "german" =
-            {"Apr."} % April
+            {"Apr."} % ^^A% April
             { "language is not defined: bbl.apr for " curlanguage * warning$ "Apr." }
          if$}
       if$}
@@ -2285,7 +2285,7 @@ FUNCTION {bbl.may}
    {"May"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRT\cyrr\cyra\cyrv."}
-%<utf8>      {"Трав."} % травень
+%<utf8>      {"Трав."} % ^^A% травень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRM\cyra\cyrishrt" }
 %<utf8>            { "Май" }
@@ -2302,7 +2302,7 @@ FUNCTION {bbl.jun}
    {"June"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRCH\cyre\cyrr."}
-%<utf8>      {"Чер."} % червень
+%<utf8>      {"Чер."} % ^^A% червень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRI\cyryu\cyrn\cyrsftsn" }
 %<utf8>            { "Июнь" }
@@ -2319,7 +2319,7 @@ FUNCTION {bbl.jul}
    {"July"}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRL\cyri\cyrp."}
-%<utf8>      {"Липень"} %Липень
+%<utf8>      {"Липень"} % ^^A%Липень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRI\cyryu\cyrl\cyrsftsn" }
 %<utf8>            { "Июль" }
@@ -2336,12 +2336,12 @@ FUNCTION {bbl.aug}
    {"Aug."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRS\cyre\cyrr."}
-%<utf8>      {"Серпень"} % Серпень
+%<utf8>      {"Серпень"} % ^^A% Серпень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRA\cyrv\cyrg\." }
 %<utf8>            { "Авг." }
          { curlanguage "german" =
-            {"Aug."} % August
+            {"Aug."} % ^^A% August
             { "language is not defined: bbl.aug for " curlanguage * warning$ "Aug." }
          if$}
       if$}
@@ -2353,12 +2353,12 @@ FUNCTION {bbl.sep}
    {"Sep."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRV\cyre\cyrr."}
-%<utf8>      {"Вер."} % вересень
+%<utf8>      {"Вер."} % ^^A% вересень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRS\cyre\cyrn\cyrt." }
 %<utf8>            { "Сент." }
          { curlanguage "german" =
-            {"Sep."} % September
+            {"Sep."} % ^^A% September
             { "language is not defined: bbl.sep for " curlanguage * warning$ "Sep." }
          if$}
       if$}
@@ -2370,12 +2370,12 @@ FUNCTION {bbl.oct}
    {"Oct."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRZH\cyro\cyrn."}
-%<utf8>      {"Жов."} % жовтень
+%<utf8>      {"Жов."} % ^^A% жовтень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRO\cyrk\cyrt." }
 %<utf8>            { "Окт." }
          { curlanguage "german" =
-            {"Okt."} % Oktober
+            {"Okt."} % ^^A% Oktober
             { "language is not defined: bbl.oct for " curlanguage * warning$ "Oct." }
          if$}
       if$}
@@ -2387,12 +2387,12 @@ FUNCTION {bbl.nov}
    {"Nov."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRL\cyri\cyrs."}
-%<utf8>      {"Лис."} % листопад
+%<utf8>      {"Лис."}% ^^A % листопад
       { curlanguage "russian" =
 %<!utf8>            { "\CYRN\cyro\cyrya\cyrb." }
 %<utf8>            { "Нояб." }
          { curlanguage "german" =
-            {"Nov."} % November
+            {"Nov."}% ^^A % November
             { "language is not defined: bbl.nov for " curlanguage * warning$ "Nov." }
          if$}
       if$}
@@ -2404,12 +2404,12 @@ FUNCTION {bbl.dec}
    {"Dec."}
    { curlanguage "ukrainian" =
 %<!utf8>      {"\CYRG\cyrr\cyru\cyrd."}
-%<utf8>      {"Груд."} % грудень
+%<utf8>      {"Груд."}% ^^A % грудень
       { curlanguage "russian" =
 %<!utf8>            { "\CYRD\cyre\cyrk." }
 %<utf8>            { "Дек." }
          { curlanguage "german" =
-            {"Dez."} % Dezember
+            {"Dez."}% ^^A % Dezember
             { "language is not defined: bbl.dec for " curlanguage * warning$ "Dec." }
          if$}
       if$}
@@ -2478,7 +2478,7 @@ FUNCTION {format.names}
 	          t "~others" =
 	          or
                 { " " * bbl.etal * }
-                %%%%{ " " * bbl.etal enclose.square.brackets *}
+% ^^A                %%%%{ " " * bbl.etal enclose.square.brackets *}
                 { ", " * t * }
               if$
             }
@@ -2508,14 +2508,14 @@ FUNCTION {format.lab.names}
   s #1 "{vv~}{ll}" format.name$
   s num.names$ duplicate$
   #2 >
-    %{ pop$ " et~al." * }
+% ^^A    %{ pop$ " et~al." * }
     { pop$ " " bbl.etal * * }
     { #2 <
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            %{ " et~al." * }
+% ^^A            %{ " et~al." * }
             { " " bbl.etal * * }
-            %{ " and " * s #2 "{vv~}{ll}" format.name$ * }
+% ^^A            %{ " and " * s #2 "{vv~}{ll}" format.name$ * }
             { " " bbl.and " " * * * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -2539,7 +2539,7 @@ FUNCTION {format.names.rev}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-%<!utf8>      %"{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+% ^^A%<!utf8>      %"{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
 %<!utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
 %<utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
       nameptr #1 >
@@ -2612,8 +2612,8 @@ FUNCTION {author.editor.key.label}
     { editor empty$
         { key empty$
             { cite$ #1 #3 substring$ }
-            %'key          %% causes lost of year
-            { "{}" key * } %% Bug in bibtex8 ??
+% ^^A            %'key          %% causes lost of year
+            { "{}" key * }% ^^A %% Bug in bibtex8 ??
           if$
         }
         { editor format.lab.names }
@@ -2925,7 +2925,7 @@ FUNCTION {format.month}
 % \changes{v1.2j}{15 Jan 2017}{extraction of year from date added}
 %    \begin{macrocode}
 FUNCTION {format.date}
-%{ year empty$
+% ^^A%{ year empty$
 { year.or.date.to.year empty$
     { month empty$
         { "" }
@@ -2935,8 +2935,8 @@ FUNCTION {format.date}
       if$
     }
     { month empty$
-%        'year
-%        { year ". \BibDash " format.month * * }
+% ^^A%        'year
+% ^^A%        { year ". \BibDash " format.month * * }
         'year.or.date.to.year
         { year.or.date.to.year ". \BibDash " format.month * * }
       if$
@@ -2950,16 +2950,16 @@ FUNCTION {format.date}
 % returns |location| value even if the latter is empty.
 % \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
-%FUNCTION {address.or.location}
-%{
-%  address empty$
-%    { location empty$
-%      'skip$
-%      { location }
-%    if$ }
-%    { address }
-%  if$
-%}
+% ^^A%FUNCTION {address.or.location}
+% ^^A%{
+% ^^A%  address empty$
+% ^^A%    { location empty$
+% ^^A%      'skip$
+% ^^A%      { location }
+% ^^A%    if$ }
+% ^^A%    { address }
+% ^^A%  if$
+% ^^A%}
 FUNCTION {address.or.location}
 {
   address empty$
@@ -3003,19 +3003,19 @@ FUNCTION {institution.or.school}
 % \DescribeFunction{format.address.publisher.date}
 %    \begin{macrocode}
 %<*!strict>
-%FUNCTION {output.address.publisher}
-%{
-%  address empty$
-%    'skip$
-%    { address output
-%      publisher empty$
-%        'skip$
-%        { new.colon }
-%      if$
-%    }
-%  if$
-%  publisher output
-%}
+% ^^A%FUNCTION {output.address.publisher}
+% ^^A%{
+% ^^A%  address empty$
+% ^^A%    'skip$
+% ^^A%    { address output
+% ^^A%      publisher empty$
+% ^^A%        'skip$
+% ^^A%        { new.colon }
+% ^^A%      if$
+% ^^A%    }
+% ^^A%  if$
+% ^^A%  publisher output
+% ^^A%}
 FUNCTION {output.address.publisher}
 {
   address empty$ location empty$ and
@@ -3117,9 +3117,9 @@ FUNCTION {format.full.names}
               t "others" =
 	          %t "~others" =
 	          %or
-                %{ " et~al." * }
+% ^^A                %{ " et~al." * }
                 { " " bbl.etal * * }
-                %{ " and " * t * }
+% ^^A                %{ " and " * t * }
                 { " " bbl.and " " * * * t * }
               if$
             }
@@ -3183,10 +3183,10 @@ FUNCTION {output.bibitem}
   "]{" * write$
   cite$ write$
   "}" write$
-%%  language empty$
-%%    { "english" 'curlanguage := }
-%%    {language  'curlanguage := }
-%%  if$
+% ^^A%%  language empty$
+% ^^A%%    { "english" 'curlanguage := }
+% ^^A%%    {language  'curlanguage := }
+% ^^A%%  if$
   langid empty$
     { language empty$
         { "english" 'curlanguage := }
@@ -3201,28 +3201,28 @@ FUNCTION {output.bibitem}
   before.all 'output.state :=
 }
 % =======================================
-%FUNCTION {output.bibitem}
-%{ newline$
-%  "\bibitem" write$
-%%  author.key.label
-%%  year parenthesify *
-%%  "; lbl:" label * *
-%%  "; mfn:"  make.full.names * *
-%  label
-%  make.full.names *
-%  bracketise write$
-%  cite$ bracify write$
-%  newline$
-%  language empty$
-%    { "english" 'curlanguage := }
-%    {language  'curlanguage := }
-%  if$
-%  "\selectlanguageifdefined" curlanguage bracify * write$
-%  newline$
-%  ""
-%  before.all 'output.state :=
-%}
-% =======================================
+% ^^A%FUNCTION {output.bibitem}
+% ^^A%{ newline$
+% ^^A%  "\bibitem" write$
+% ^^A%%  author.key.label
+% ^^A%%  year parenthesify *
+% ^^A%%  "; lbl:" label * *
+% ^^A%%  "; mfn:"  make.full.names * *
+% ^^A%  label
+% ^^A%  make.full.names *
+% ^^A%  bracketise write$
+% ^^A%  cite$ bracify write$
+% ^^A%  newline$
+% ^^A%  language empty$
+% ^^A%    { "english" 'curlanguage := }
+% ^^A%    {language  'curlanguage := }
+% ^^A%  if$
+% ^^A%  "\selectlanguageifdefined" curlanguage bracify * write$
+% ^^A%  newline$
+% ^^A%  ""
+% ^^A%  before.all 'output.state :=
+% ^^A%}
+% ^^A% =======================================
 %</natbib>
 
 %    \end{macrocode}
@@ -3400,32 +3400,32 @@ FUNCTION {eng.ord}
 %    \begin{macrocode}
 FUNCTION {convert.edition}
 { edition
-% edition extract.num "l" change.case$ 's :=
-%  s "first" = s "1" = or
-%    { bbl.first 't := }
-%    { s "second" = s "2" = or
-%        { bbl.second 't := }
-%        { s "third" = s "3" = or
-%            { bbl.third 't := }
-%            { s "fourth" = s "4" = or
-%                { bbl.fourth 't := }
-%                { s "fifth" = s "5" = or
-%                    { bbl.fifth 't := }
-%                    { s #1 #1 substring$ is.num
-%                        { s eng.ord 't := }
-%                        { edition 't := }
-%                      if$
-%                    }
-%                  if$
-%                }
-%              if$
-%            }
-%          if$
-%        }
-%      if$
-%    }
-%  if$
-%  t
+% ^^A% edition extract.num "l" change.case$ 's :=
+% ^^A%  s "first" = s "1" = or
+% ^^A%    { bbl.first 't := }
+% ^^A%    { s "second" = s "2" = or
+% ^^A%        { bbl.second 't := }
+% ^^A%        { s "third" = s "3" = or
+% ^^A%            { bbl.third 't := }
+% ^^A%            { s "fourth" = s "4" = or
+% ^^A%                { bbl.fourth 't := }
+% ^^A%                { s "fifth" = s "5" = or
+% ^^A%                    { bbl.fifth 't := }
+% ^^A%                    { s #1 #1 substring$ is.num
+% ^^A%                        { s eng.ord 't := }
+% ^^A%                        { edition 't := }
+% ^^A%                      if$
+% ^^A%                    }
+% ^^A%                  if$
+% ^^A%                }
+% ^^A%              if$
+% ^^A%            }
+% ^^A%          if$
+% ^^A%        }
+% ^^A%      if$
+% ^^A%    }
+% ^^A%  if$
+% ^^A%  t
 }
 
 %    \end{macrocode}
@@ -3473,16 +3473,16 @@ FUNCTION {multi.page.check}
 % \DescribeFunction{format.pages}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 %    \begin{macrocode}
-%%FUNCTION {format.pages}
-%%{ pages empty$
-%%    { "" }
-%%    { pages multi.page.check
-%%        { bbl.ppages pages n.dashify tie.connect }
-%%        { bbl.ppage pages tie.connect }
-%%      if$
-%%    }
-%%  if$
-%%}
+% ^^A%%FUNCTION {format.pages}
+% ^^A%%{ pages empty$
+% ^^A%%    { "" }
+% ^^A%%    { pages multi.page.check
+% ^^A%%        { bbl.ppages pages n.dashify tie.connect }
+% ^^A%%        { bbl.ppage pages tie.connect }
+% ^^A%%      if$
+% ^^A%%    }
+% ^^A%%  if$
+% ^^A%%}
 FUNCTION {format.pages}
 { eid empty$
     {
@@ -3508,15 +3508,15 @@ FUNCTION {format.pages}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 %    \begin{macrocode}
-%%FUNCTION {format.pages.page}
-%%{ pages empty$
-%%    { pagetotal empty$
-%%      { "" }
-%%      { pagetotal bbl.pages tie.connect }
-%%    if$}
-%%    { format.pages}
-%%  if$
-%%}
+% ^^A%%FUNCTION {format.pages.page}
+% ^^A%%{ pages empty$
+% ^^A%%    { pagetotal empty$
+% ^^A%%      { "" }
+% ^^A%%      { pagetotal bbl.pages tie.connect }
+% ^^A%%    if$}
+% ^^A%%    { format.pages}
+% ^^A%%  if$
+% ^^A%%}
 FUNCTION {format.pages.page}
 { eid empty$
     { pages empty$
@@ -3614,15 +3614,15 @@ FUNCTION {empty.misc.check}
 %    \end{macrocode}
 % \DescribeFunction{format.thesis.type}
 %    \begin{macrocode}
-%FUNCTION {format.thesis.type}
-%{ type empty$
-%    'skip$
-%    { pop$
-%%<!utf8>      bbl.thesis.type "t" change.case$
-%%<utf8>      bbl.thesis.type
-%    }
-%  if$
-%}
+% ^^A%FUNCTION {format.thesis.type}
+% ^^A%{ type empty$
+% ^^A%    'skip$
+% ^^A%    { pop$
+% ^^A%%<!utf8>      bbl.thesis.type "t" change.case$
+% ^^A%%<utf8>      bbl.thesis.type
+% ^^A%    }
+% ^^A%  if$
+% ^^A%}
 FUNCTION {format.thesis.type}
 { type empty$
     'skip$
@@ -3635,17 +3635,17 @@ FUNCTION {format.thesis.type}
 % \DescribeFunction{format.techrep.type.number}
 % Function to format report type and number.
 %    \begin{macrocode}
-%FUNCTION {format.techrep.type.number}
-%{ type empty$
-%    { bbl.techreport }
-%    'type
-%  if$
-%  number empty$
-%%<!utf8>    { "t" change.case$ }
-%%<utf8>    { "" }
-%    { number tie.or.space.connect }
-%  if$
-%}
+% ^^A%FUNCTION {format.techrep.type.number}
+% ^^A%{ type empty$
+% ^^A%    { bbl.techreport }
+% ^^A%    'type
+% ^^A%  if$
+% ^^A%  number empty$
+% ^^A%%<!utf8>    { "t" change.case$ }
+% ^^A%%<utf8>    { "" }
+% ^^A%    { number tie.or.space.connect }
+% ^^A%  if$
+% ^^A%}
 
 FUNCTION {format.techreport.type}
 { type empty$
@@ -3702,36 +3702,36 @@ FUNCTION {author.before}
 %</long>
 
 %    \end{macrocode}
-% \DescribeFunction{bookauthor.before}
-% There are also 2 version of the function |bookauthor.before|.
-% Not used anymore!
-%    \begin{macrocode}
-%%<*!long>
-%%FUNCTION {bookauthor.before}
-%%{
-%%  bookauthor empty$
-%%    'skip$
-%%    {bookauthor num.names$ #4 <
-%%      {format.bookauthors output
-%%       new.sentence}
-%%      'skip$
-%%    if$}
-%%  if$
-%%}
-%%</!long>
-%%<*long>
-%%FUNCTION {bookauthor.before}
-%%{
-%%  bookauthor empty$
-%%    'skip$
-%%    { format.bookauthors output
-%%      new.sentence
-%%    }
-%%  if$
-%%}
-%%</long>
-
-%    \end{macrocode}
+% ^^A% \DescribeFunction{bookauthor.before}
+% ^^A% There are also 2 version of the function |bookauthor.before|.
+% ^^A% Not used anymore!
+% ^^A%    \begin{macrocode}
+% ^^A%%<*!long>
+% ^^A%%FUNCTION {bookauthor.before}
+% ^^A%%{
+% ^^A%%  bookauthor empty$
+% ^^A%%    'skip$
+% ^^A%%    {bookauthor num.names$ #4 <
+% ^^A%%      {format.bookauthors output
+% ^^A%%       new.sentence}
+% ^^A%%      'skip$
+% ^^A%%    if$}
+% ^^A%%  if$
+% ^^A%%}
+% ^^A%%</!long>
+% ^^A%%<*long>
+% ^^A%%FUNCTION {bookauthor.before}
+% ^^A%%{
+% ^^A%%  bookauthor empty$
+% ^^A%%    'skip$
+% ^^A%%    { format.bookauthors output
+% ^^A%%      new.sentence
+% ^^A%%    }
+% ^^A%%  if$
+% ^^A%%}
+% ^^A%%</long>
+% ^^A
+% ^^A%    \end{macrocode}
 %
 % \DescribeFunction{author.after}
 % Functions |author.after| and |bookauthor.after| also have by 2 versions.
@@ -3964,41 +3964,41 @@ FUNCTION {add.media}
 % \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype}}
 %    \begin{macrocode}
 %<*eprint>
-%FUNCTION {format.eprint}
-%{ eprint empty$
-%   { "" }
-%   { eprintclass empty$
-%      { " \href{http://arxiv.org/abs/" eprint * "}" * "{" * eprint * "}" * }
-%      { eprinttype empty$
-%         { " \href{http://arxiv.org/abs/" eprint * "}" *
-%      	   "{" * eprintclass * "/" * eprint * "}" *
-%         }
-%         { " \href{http://arxiv.org/abs/" eprint * "}" *
-%      	   "{" * eprinttype * ":" * eprintclass * "/" * eprint * "}" *
-%         }
-%      if$}
-%   if$}
-%if$}
-
-%FUNCTION {format.eprint}
-%{ eprint empty$
-%   { "" }
-%   { eprinttype empty$
-%       { "" }
-%       { eprinttype "~: " *}
-%     if$
-%     eprintclass empty$
-%       { }
-%       { eprintclass * "/" *}
-%    if$
-%    eprint *
-%   }
-%  if$
-%  url empty$
-%    { }
-%    { "\href{" url * "}{" * swap$ * "}" *}
-%  if$
-%}
+% ^^A%FUNCTION {format.eprint}
+% ^^A%{ eprint empty$
+% ^^A%   { "" }
+% ^^A%   { eprintclass empty$
+% ^^A%      { " \href{http://arxiv.org/abs/" eprint * "}" * "{" * eprint * "}" * }
+% ^^A%      { eprinttype empty$
+% ^^A%         { " \href{http://arxiv.org/abs/" eprint * "}" *
+% ^^A%      	   "{" * eprintclass * "/" * eprint * "}" *
+% ^^A%         }
+% ^^A%         { " \href{http://arxiv.org/abs/" eprint * "}" *
+% ^^A%      	   "{" * eprinttype * ":" * eprintclass * "/" * eprint * "}" *
+% ^^A%         }
+% ^^A%      if$}
+% ^^A%   if$}
+% ^^A%if$}
+% ^^A
+% ^^A%FUNCTION {format.eprint}
+% ^^A%{ eprint empty$
+% ^^A%   { "" }
+% ^^A%   { eprinttype empty$
+% ^^A%       { "" }
+% ^^A%       { eprinttype "~: " *}
+% ^^A%     if$
+% ^^A%     eprintclass empty$
+% ^^A%       { }
+% ^^A%       { eprintclass * "/" *}
+% ^^A%    if$
+% ^^A%    eprint *
+% ^^A%   }
+% ^^A%  if$
+% ^^A%  url empty$
+% ^^A%    { }
+% ^^A%    { "\href{" url * "}{" * swap$ * "}" *}
+% ^^A%  if$
+% ^^A%}
 
 FUNCTION {format.eprint}
 { eprint empty$
@@ -4155,7 +4155,7 @@ FUNCTION {article}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4203,7 +4203,7 @@ FUNCTION {book}
 %<eprint>  new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4240,7 +4240,7 @@ FUNCTION {booklet}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4271,7 +4271,7 @@ FUNCTION {inbook}
   new.slash
   author.after
   new.dblslash
-%  bookauthor.before
+% ^^A%  bookauthor.before
   booktitle "booktitle" output.check
   new.slash
   bookauthor.after
@@ -4292,7 +4292,7 @@ FUNCTION {inbook}
 %<eprint>  new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4339,7 +4339,7 @@ FUNCTION {incollection}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4377,7 +4377,7 @@ FUNCTION {proceedings}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4415,16 +4415,16 @@ FUNCTION {inproceedings}
   format.bvolume output
   format.number.series output
   new.block
-%  address empty$
-%    { publisher output
-%      format.date "year/date" output.check
-%    }
-%    { address output.nonnull
-%      new.colon
-%      publisher output
-%      format.date "year/date" output.check
-%    }
-%  if$
+% ^^A%  address empty$
+% ^^A%    { publisher output
+% ^^A%      format.date "year/date" output.check
+% ^^A%    }
+% ^^A%    { address output.nonnull
+% ^^A%      new.colon
+% ^^A%      publisher output
+% ^^A%      format.date "year/date" output.check
+% ^^A%    }
+% ^^A%  if$
   output.address.publisher
   format.date "year/date" output.check
   new.block
@@ -4432,7 +4432,7 @@ FUNCTION {inproceedings}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4487,7 +4487,7 @@ FUNCTION {manual}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4510,10 +4510,10 @@ FUNCTION {manual}
 FUNCTION {patent}
 {
   output.bibitem
-%  title output.nonnull
+% ^^A%  title output.nonnull
   title add.media output.nonnull
-%  add.blank
-%  media enclose.square.brackets output % S.Kruchinin's version
+% ^^A%  add.blank
+% ^^A%  media enclose.square.brackets output % S.Kruchinin's version
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.colon
@@ -4573,7 +4573,7 @@ FUNCTION {misc}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4605,7 +4605,7 @@ FUNCTION {unpublished}
   new.block
   note "note" output.check
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4633,7 +4633,7 @@ FUNCTION {online}
   format.title add.doi add.media "title" output.check
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
-%  howpublished new.block.checka
+% ^^A%  howpublished new.block.checka
   howpublished new.dblslash.checka
 %<!strict>  howpublished output
 %<strict>  howpublished enclose.square.brackets output
@@ -4643,7 +4643,7 @@ FUNCTION {online}
   output.address.publisher
   format.date output
   new.block
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   new.sentence
   note output
@@ -4704,7 +4704,7 @@ FUNCTION {thesis}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4725,46 +4725,46 @@ FUNCTION {thesis}
 % eprint, eprintclass, eprinttype, url, urldate.
 % \changes{v1.2}{02 Feb 2012}{\texttt{@report} entry}
 %    \begin{macrocode}
-%FUNCTION {report}
-%{
-%  output.bibitem
-%  author.before
-%  new.sentence
-%  format.title add.doi add.media "title" output.check
-%  new.colon
-%%  format.techrep.type.number output.nonnull
-%  type "type" output.check
-%  new.slash
-%  author.after
-%  editor.organization.after
-%  new.block
-%  address output
-%  new.colon
-%  institution "institution" output.check
-%  format.date "year/date" output.check
-%  new.block
-%  note output
-%  new.block                % v.2
-%  format.pages.page output % v.2
-%  new.sentence
-%%  format.url output
-%  output.eprint.url
-%  format.annote output
-%  fin.entry
-%}
+% ^^A%FUNCTION {report}
+% ^^A%{
+% ^^A%  output.bibitem
+% ^^A%  author.before
+% ^^A%  new.sentence
+% ^^A%  format.title add.doi add.media "title" output.check
+% ^^A%  new.colon
+% ^^A%%  format.techrep.type.number output.nonnull
+% ^^A%  type "type" output.check
+% ^^A%  new.slash
+% ^^A%  author.after
+% ^^A%  editor.organization.after
+% ^^A%  new.block
+% ^^A%  address output
+% ^^A%  new.colon
+% ^^A%  institution "institution" output.check
+% ^^A%  format.date "year/date" output.check
+% ^^A%  new.block
+% ^^A%  note output
+% ^^A%  new.block                % v.2
+% ^^A%  format.pages.page output % v.2
+% ^^A%  new.sentence
+% ^^A%%  format.url output
+% ^^A%  output.eprint.url
+% ^^A%  format.annote output
+% ^^A%  fin.entry
+% ^^A%}
 FUNCTION {report}
 {
   output.bibitem
-%  author.before
-%  new.sentence
+% ^^A%  author.before
+% ^^A%  new.sentence
   format.title add.doi add.media "title" output.check
 %<natbib>  title format.key output
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.colon
-%  format.techrep.type.number output.nonnull
-%  type "type" output.check
-%  format.report.type.number "type" output.check
+% ^^A%  format.techrep.type.number output.nonnull
+% ^^A%  type "type" output.check
+% ^^A%  format.report.type.number "type" output.check
   type "type" output.check
   new.colon
   number output
@@ -4829,7 +4829,7 @@ FUNCTION {phdthesis}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4849,14 +4849,14 @@ FUNCTION {mastersthesis}
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.colon
-  %%number output % code of the speciality
+% ^^A  %%number output % code of the speciality
   specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
   format.authors.after output
   new.semicolon
-  %institution "institution" output.check
+% ^^A  %institution "institution" output.check
   institution.or.school "institution/school" output.check
   new.block
   output.address.publisher
@@ -4866,7 +4866,7 @@ FUNCTION {mastersthesis}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4886,7 +4886,7 @@ FUNCTION {docthesis}
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.colon
-  %%number output % code of the speciality
+% ^^A  %%number output % code of the speciality
   specialitycode.or.number output % code of the speciality, new in v.1.2i
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
@@ -4903,7 +4903,7 @@ FUNCTION {docthesis}
   new.block
   note output
   new.sentence
-%  format.url output
+% ^^A%  format.url output
   output.eprint.url
   format.annote output
   fin.entry
@@ -4920,45 +4920,45 @@ FUNCTION {conference} { inproceedings }
 % and defaults to the localized term `technical report'.
 % You may still use the type field to override that.
 %    \begin{macrocode}
-%FUNCTION {techreport}
-%{
-%  output.bibitem
-%  author.before
-%  new.sentence
-%  format.title add.doi add.media "title" output.check
-%  new.colon
-%  format.techrep.type.number output.nonnull
-%  new.slash
-%  author.after
-%  editor.organization.after
-%  new.block
-%  address output
-%  new.colon
-%  institution "institution" output.check
-%  format.date "year/date" output.check
-%  new.block
-%  note output
-%  new.block                % v.2
-%  format.pages.page output % v.2
-%  new.sentence
-%%  format.url output
-%  output.eprint.url
-%  format.annote output
-%  fin.entry
-%}
+% ^^A%FUNCTION {techreport}
+% ^^A%{
+% ^^A%  output.bibitem
+% ^^A%  author.before
+% ^^A%  new.sentence
+% ^^A%  format.title add.doi add.media "title" output.check
+% ^^A%  new.colon
+% ^^A%  format.techrep.type.number output.nonnull
+% ^^A%  new.slash
+% ^^A%  author.after
+% ^^A%  editor.organization.after
+% ^^A%  new.block
+% ^^A%  address output
+% ^^A%  new.colon
+% ^^A%  institution "institution" output.check
+% ^^A%  format.date "year/date" output.check
+% ^^A%  new.block
+% ^^A%  note output
+% ^^A%  new.block                % v.2
+% ^^A%  format.pages.page output % v.2
+% ^^A%  new.sentence
+% ^^A%%  format.url output
+% ^^A%  output.eprint.url
+% ^^A%  format.annote output
+% ^^A%  fin.entry
+% ^^A%}
 
 FUNCTION {techreport}
 {
   output.bibitem
-%  author.before
-%  new.sentence
+% ^^A%  author.before
+% ^^A%  new.sentence
   format.title add.doi add.media "title" output.check
 %<natbib>  title format.key output
   new.colon
-%  format.techrep.type.number output.nonnull
-%  type "type" output.check
-%  format.report.type.number "type" output.check
-%  type output
+% ^^A%  format.techrep.type.number output.nonnull
+% ^^A%  type "type" output.check
+% ^^A%  format.report.type.number "type" output.check
+% ^^A%  type output
   format.techreport.type output
   new.colon
   number output
@@ -5237,9 +5237,9 @@ FUNCTION {sortify}
 % \DescribeFunction{sort.format.names}
 %    \begin{macrocode}
 %<*sort>
-%% =====================================
-%% This version from old Gost package
-%%<*!natbib>
+% ^^A%% =====================================
+% ^^A%% This version from old Gost package
+% ^^A%%<*!natbib>
 FUNCTION {sort.format.names}
 { 's :=
   #1 'nameptr :=
@@ -5264,41 +5264,41 @@ FUNCTION {sort.format.names}
     }
   while$
 }
-%%</!natbib>
-%% This version from plainnat.bst
-%% It ignores second and subsequent authors but include year.
-%%<*natbib>
-%FUNCTION {sort.format.names}
-%{ 's :=
-%  #1 'nameptr :=
-%  ""
-%  s num.names$ 'numnames :=
-%  numnames 'namesleft :=
-%    { namesleft #0 > }
-%    {
-%      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
-%      nameptr #1 >
-%        {
-%          "   "  *
-%          namesleft #1 = t "others" = and
-%            { "zzzzz" * }
-%            { numnames #2 > nameptr #2 = and
-%                { "zz" * year field.or.null * "   " * }
-%                'skip$
-%              if$
-%              t sortify *
-%            }
-%          if$
-%        }
-%        { t sortify * }
-%      if$
-%      nameptr #1 + 'nameptr :=
-%      namesleft #1 - 'namesleft :=
-%    }
-%  while$
-%}
-%%</natbib>
-%% =====================================
+% ^^A%%</!natbib>
+% ^^A%% This version from plainnat.bst
+% ^^A%% It ignores second and subsequent authors but include year.
+% ^^A%%<*natbib>
+% ^^A%FUNCTION {sort.format.names}
+% ^^A%{ 's :=
+% ^^A%  #1 'nameptr :=
+% ^^A%  ""
+% ^^A%  s num.names$ 'numnames :=
+% ^^A%  numnames 'namesleft :=
+% ^^A%    { namesleft #0 > }
+% ^^A%    {
+% ^^A%      s nameptr "{vv{ } }{ll{ }}{  ff{ }}{  jj{ }}" format.name$ 't :=
+% ^^A%      nameptr #1 >
+% ^^A%        {
+% ^^A%          "   "  *
+% ^^A%          namesleft #1 = t "others" = and
+% ^^A%            { "zzzzz" * }
+% ^^A%            { numnames #2 > nameptr #2 = and
+% ^^A%                { "zz" * year field.or.null * "   " * }
+% ^^A%                'skip$
+% ^^A%              if$
+% ^^A%              t sortify *
+% ^^A%            }
+% ^^A%          if$
+% ^^A%        }
+% ^^A%        { t sortify * }
+% ^^A%      if$
+% ^^A%      nameptr #1 + 'nameptr :=
+% ^^A%      namesleft #1 - 'namesleft :=
+% ^^A%    }
+% ^^A%  while$
+% ^^A%}
+% ^^A%%</natbib>
+% ^^A%% =====================================
 
 %    \end{macrocode}
 % \DescribeFunction{sort.format.title}
@@ -5317,9 +5317,9 @@ FUNCTION {sort.format.title}
 %    \end{macrocode}
 % \DescribeFunction{author.sort}
 %    \begin{macrocode}
-%% =====================================
-%% This version from old gost package.
-%%
+% ^^A%% =====================================
+% ^^A%% This version from old gost package.
+% ^^A%%
 %<*!natbib>
 FUNCTION {author.sort}
 { author empty$
@@ -5339,7 +5339,7 @@ FUNCTION {author.sort}
   if$
 }
 %</!natbib>
-%% This version from plainnat.bst
+% ^^A%% This version from plainnat.bst
 %<*natbib>
 FUNCTION {author.sort}
 { author empty$
@@ -5354,7 +5354,7 @@ FUNCTION {author.sort}
   if$
 }
 %</natbib>
-%% =====================================
+% ^^A%% =====================================
 
 %    \end{macrocode}
 % \DescribeFunction{author.title.sort}
@@ -5459,27 +5459,27 @@ FUNCTION {presort}%#1
 }
 %</!natbib>
 %<*natbib>
-FUNCTION {presort}%#2
+FUNCTION {presort}% ^^A%#2
 { calc.label
   label sortify
   %author.title.sort
   "    "
   *
-  % ========= plainnat.bst =========
-%  type$ "book" =
-%  type$ "inbook" =
-%  or
-%    'author.editor.sort
-%    { type$ "proceedings" =
-%        'editor.organization.sort
-%        { type$ "manual" =
-%            'author.organization.sort
-%            'author.sort
-%          if$
-%        }
-%      if$
-%    }
-%  if$
+% ^^A  % ========= plainnat.bst =========
+% ^^A%  type$ "book" =
+% ^^A%  type$ "inbook" =
+% ^^A%  or
+% ^^A%    'author.editor.sort
+% ^^A%    { type$ "proceedings" =
+% ^^A%        'editor.organization.sort
+% ^^A%        { type$ "manual" =
+% ^^A%            'author.organization.sort
+% ^^A%            'author.sort
+% ^^A%          if$
+% ^^A%        }
+% ^^A%      if$
+% ^^A%    }
+% ^^A%  if$
   author.title.sort
   "    "
   *
@@ -5493,7 +5493,7 @@ FUNCTION {presort}%#2
   #1 entry.max$ substring$
   'sort.label :=
   sort.label *
-  % ================================
+% ^^A  % ================================
   #1 entry.max$ substring$
   'sort.key$ :=
 }
@@ -5514,7 +5514,7 @@ FUNCTION {int.to.fix}
   #-1 #10 substring$
 }
 
-FUNCTION {presort}%#3
+FUNCTION {presort}% ^^A%#3
 {
   calc.label               % computes label
   label sortify            % initiates sort.label
@@ -5658,7 +5658,7 @@ FUNCTION {begin.bib}
 { "\begin{thebibliography}{"  longest.label  * "}" * write$ newline$
   "\def\selectlanguageifdefined#1{"                  write$ newline$
   "\expandafter\ifx\csname date#1\endcsname\relax"   write$ newline$
-%  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
+% ^^A%  "\else\language\csname l@#1\endcsname\fi}"         write$ newline$
   "\else\selectlanguage{#1}\fi}"                     write$ newline$
   "\providecommand*{\href}[2]{{\small #2}}"          write$ newline$
   "\providecommand*{\url}[1]{{\small #1}}"           write$ newline$
@@ -5688,7 +5688,7 @@ ITERATE {call.type$}
 %    \begin{macrocode}
 FUNCTION {end.bib}
 { newline$
-%  "\catcode`\/=11"        write$ newline$
+% ^^A%  "\catcode`\/=11"        write$ newline$
   "\end{thebibliography}" write$ newline$
 }
 
