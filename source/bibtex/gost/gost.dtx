@@ -1663,7 +1663,7 @@ FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
 %<utf8>         {"Выпуск"}
          { curlanguage "german" =
             {"{Heft}"} %%%% { "Ausgabe" }
-            {"language is not defined: " curlanguage "iissue" * * warning$ "Issue"}
+            {"language is not defined: " curlanguage " in bbl.iissue" * * warning$ "Issue"}
          if$}
       if$}
    if$}
@@ -1683,7 +1683,7 @@ FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
 %<utf8>         {"Вып."}
          { curlanguage "german" =
             {"{H.}"}
-            {"language is not defined: " curlanguage "iiss" * * warning$ "Iss."}
+            {"language is not defined: " curlanguage " in bbl.iiss" * * warning$ "Iss."}
          if$}
       if$}
    if$}
@@ -1703,7 +1703,7 @@ FUNCTION {bbl.of}      %  { "\bblof{}" }
          { curlanguage "russian" =
 %<!utf8>            { "{\cyr\cyri\cyrz}" }
 %<utf8>            { "{из}" }
-            {"language is not defined: " curlanguage "of" * * warning$ "of"}
+            {"language is not defined: " curlanguage " in bbl.of" * * warning$ "of"}
          if$}
       if$}
    if$}
@@ -1796,7 +1796,7 @@ FUNCTION {bbl.nr}     %   { "\bblno{}" }
 %<utf8>         { "{№}" }
          { curlanguage "german" =
             {"{H.}"} %%% { "an." }
-            {"language is not defined: " curlanguage "nr" * * warning$ "no."}
+            {"language is not defined: " curlanguage " in bbl.nr" * * warning$ "no."}
          if$}
       if$}
    if$}
@@ -1887,7 +1887,7 @@ FUNCTION {bbl.ppages}%    { "\bblPp." }
 %<utf8>      {"{С.}"}
       { curlanguage "german" =
          {"S."}
-         {"language is not defined: " curlanguage "ppages" * * warning$ "P."}
+         {"language is not defined: " curlanguage " in bbl.ppages" * * warning$ "P."}
       if$}
    if$}
 if$}
@@ -1924,7 +1924,7 @@ FUNCTION {bbl.url}
 %<utf8>         { "{Режим доступа}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " curlanguage "urldate" * * warning$ "online; accessed" }
+            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
          if$}
       if$}
    if$}
@@ -1945,7 +1945,7 @@ FUNCTION {bbl.urldate}
 %<utf8>         { "{дата обращения}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " curlanguage "urldate" * * warning$ "online; accessed" }
+            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
          if$}
       if$}
    if$}
@@ -1962,7 +1962,7 @@ FUNCTION {bbl.techreport} % rename to bbl.techreport
       { curlanguage "russian" =
 %<!utf8>         { "{\cyr\CYRO\cyrt\cyrch\cyre\cyrt}" }
 %<utf8>         { "{Отчет}" }
-         { "language is not defined: " curlanguage "techrep" * * warning$ "Rep." }
+         { "language is not defined: " curlanguage " in bbl.techrep" * * warning$ "Rep." }
       if$}
    if$}
 if$}
@@ -1980,7 +1980,7 @@ FUNCTION {bbl.mathesis}
 %<!utf8>          "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
 %<!utf8>          "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
 %<utf8>         { "{Квалификационная работа магистра}" }
-         { "language is not defined: " curlanguage "mthesis" * * warning$ "Master's thesis" }
+         { "language is not defined: " curlanguage " in bbl.mthesis" * * warning$ "Master's thesis" }
       if$}
    if$}
 if$}
@@ -2000,7 +2000,7 @@ FUNCTION {bbl.phdthesis}
 %<utf8>         { "{дис.\ \ldots\ канд. наук}" }
          { curlanguage "french" =
            { "Th\`{e}se de doctorat" }
-           { "language is not defined: " curlanguage "phdthesis" * * warning$ "Ph.\,D. thesis" }
+           { "language is not defined: " curlanguage " in bbl.phdthesis" * * warning$ "Ph.\,D. thesis" }
          if$}
       if$}
    if$}
@@ -2018,7 +2018,7 @@ FUNCTION {bbl.docthesis}
 %<!utf8>         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
 %<!utf8>           "\cyrn\cyra\cyru\cyrk}" * }
 %<utf8>         { "{дис.\ \ldots\ д-ра наук}" }
-         { "language is not defined: " curlanguage "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
+         { "language is not defined: " curlanguage " in bbl.docthesis" * * warning$ "Dr.\,Sci. dissertation" }
       if$}
    if$}
 if$}
@@ -2049,7 +2049,7 @@ FUNCTION {bbl.nnoaddress}
    { curlanguage "russian" =
 %<!utf8>      { "{\cyr\CYRB.\ \cyrm.}" }
 %<utf8>      { "{Б.\ м.}" }
-      { "language is not defined: " curlanguage "nnoaddress" * * warning$ "S.\ l." }
+      { "language is not defined: " curlanguage " in bbl.nnoaddress" * * warning$ "S.\ l." }
    if$}
 if$}
 
@@ -2062,7 +2062,7 @@ FUNCTION {bbl.nopublisher}
    { curlanguage "russian" =
 %<!utf8>      { "{\cyr\cyrb.\ \cyri.}" }
 %<utf8>      { "{б.\ и.}" }
-      { "language is not defined: " curlanguage "nnopublisher" * * warning$ "s.\ n." }
+      { "language is not defined: " curlanguage " in bbl.nnopublisher" * * warning$ "s.\ n." }
    if$}
 if$}
 
@@ -2075,7 +2075,7 @@ FUNCTION {bbl.nnopublisher}
    { curlanguage "russian" =
 %<!utf8>      { "{\cyr\CYRB.\ \cyri.}" }
 %<utf8>      { "{Б.\ и.}" }
-      { "language is not defined: " curlanguage "nnopublisher" * * warning$ "S.\ n." }
+      { "language is not defined: " curlanguage " in bbl.nnopublisher" * * warning$ "S.\ n." }
    if$}
 if$}
 
@@ -2088,7 +2088,7 @@ FUNCTION {bbl.media.text}
    { curlanguage "russian" = curlanguage "ukrainian" = or
 %<!utf8>      { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
 %<utf8>      { "{Текст}" }
-      { "language is not defined: " curlanguage "media" * * warning$ "Text" }
+      { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Text" }
    if$}
 if$}
 
@@ -2106,7 +2106,7 @@ FUNCTION {bbl.media.eresource}
 %<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
 %<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
 %<utf8>        { "{Електронний ресурс}" }
-        { "language is not defined: " curlanguage "media" * * warning$ "Electronic resource" }
+        { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Electronic resource" }
       if$}
    if$}
 if$}
@@ -2126,7 +2126,7 @@ FUNCTION {bbl.media.online}
 %<!utf8>        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
 %<!utf8>          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
 %<utf8>        { "{Електронний ресурс онлайн}" }
-        { "language is not defined: " curlanguage "media" * * warning$ "Electronic resource" }
+        { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Electronic resource" }
       if$}
    if$}
 if$}
@@ -2143,7 +2143,7 @@ FUNCTION {bbl.chief}
       { curlanguage "ukrainian" =
 %<!utf8>        { "\cyrr\cyru\cyrk." }
 %<utf8>        { "{рук.}" }
-        { "language is not defined: " curlanguage "chief" * * warning$ "chief" }
+        { "language is not defined: " curlanguage " in bbl.chief" * * warning$ "chief" }
       if$}
    if$}
 if$}
@@ -2160,7 +2160,7 @@ FUNCTION {bbl.executor}
       { curlanguage "ukrainian" =
 %<!utf8>        { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
 %<utf8>        { "{виконавець}" }
-        { "language is not defined: " curlanguage "executor" * * warning$ "executor" }
+        { "language is not defined: " curlanguage " in bbl.executor" * * warning$ "executor" }
       if$}
    if$}
 if$}
@@ -2194,7 +2194,7 @@ FUNCTION {bbl.req}
       { curlanguage "russian" =
 %<!utf8>        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
 %<utf8>        { "{заявл.}" }
-        { "language is not defined: " curlanguage "req" * * warning$ "req" }
+        { "language is not defined: " curlanguage " in bbl.req" * * warning$ "req" }
       if$
       }
     if$
@@ -2214,7 +2214,7 @@ FUNCTION {bbl.publ}
       { curlanguage "russian" =
 %<!utf8>        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
 %<utf8>        { "{опубл.}" }
-        { "language is not defined: " curlanguage "publication" * * warning$ "publication" }
+        { "language is not defined: " curlanguage " in bbl.publication" * * warning$ "publication" }
       if$
       }
     if$
@@ -2234,7 +2234,7 @@ FUNCTION {bbl.priority}
       { curlanguage "russian" =
 %<!utf8>        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
 %<utf8>        { "{приоритет}" }
-        { "language is not defined: " curlanguage "priority" * * warning$ "priority" }
+        { "language is not defined: " curlanguage " in bbl.priority" * * warning$ "priority" }
       if$
       }
     if$
@@ -2465,6 +2465,99 @@ FUNCTION {bbl.dec}
 if$}
 %    \end{macrocode}
 %
+% \DescribeFunction{bbl.arxiv}
+% \DescribeFunction{bbl.jstor}
+% \DescribeFunction{bbl.pubmed}
+% \DescribeFunction{bbl.googlebooks}
+% \DescribeFunction{bbl.hdl}
+% New in version 1.3.
+% \changes{v1.3}{25 Jan 2017}{added \texttt{bbl.arxiv}, \texttt{bbl.jstor}, etc.}
+%    \begin{macrocode}
+FUNCTION {bbl.arxiv}
+{ curlanguage "english" =
+   { "ArXiv" }
+   { curlanguage "ukrainian" =
+%<!utf8>      {"ArXiv"}
+%<utf8>      {"ArXiv"}
+      { curlanguage "russian" =
+%<!utf8>         { "ArXiv" }
+%<utf8>         { "ArXiv" }
+         { curlanguage "german" =
+            { "ArXiv" }
+            { "language is not defined: bbl.arxiv for " curlanguage * warning$ "ArXiv" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jstor}
+{ curlanguage "english" =
+   { "JSTOR" }
+   { curlanguage "ukrainian" =
+%<!utf8>      {"JSTOR"}
+%<utf8>      {"JSTOR"}
+      { curlanguage "russian" =
+%<!utf8>         { "JSTOR" }
+%<utf8>         { "JSTOR" }
+         { curlanguage "german" =
+            { "JSTOR" }
+            { "language is not defined: bbl.jstor for " curlanguage * warning$ "JSTOR" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.pubmed}
+{ curlanguage "english" =
+   { "PubMed" }
+   { curlanguage "ukrainian" =
+%<!utf8>      {"PubMed"}
+%<utf8>      {"PubMed"}
+      { curlanguage "russian" =
+%<!utf8>         { "PubMed" }
+%<utf8>         { "PubMed" }
+         { curlanguage "german" =
+            { "PubMed" }
+            { "language is not defined: bbl.pubmed for " curlanguage * warning$ "PubMed" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.googlebooks}
+{ curlanguage "english" =
+   { "Google Books" }
+   { curlanguage "ukrainian" =
+%<!utf8>      {"Google \CYRK\cyrn\ciri\cyrg\cyri"}
+%<utf8>      {"Google Книги"}
+      { curlanguage "russian" =
+%<!utf8>         { "Google \CYRK\cyrn\ciri\cyrg\cyri" }
+%<utf8>         { "Google Книги" }
+         { curlanguage "german" =
+            { "Google B\"{u}cher" }
+            { "language is not defined: bbl.googlebooks for " curlanguage * warning$ "Google Books" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.hdl}
+{ curlanguage "english" =
+   { "Handle.Net" }
+   { curlanguage "ukrainian" =
+%<!utf8>      {"Handle.Net"}
+%<utf8>      {"Handle.Net"}
+      { curlanguage "russian" =
+%<!utf8>         { "Handle.Net" }
+%<utf8>         { "Handle.Net" }
+         { curlanguage "german" =
+            { "Handle.Net" }
+            { "language is not defined: bbl.hdl for " curlanguage * warning$ "Handle.Net" }
+         if$}
+      if$}
+   if$}
+if$}
+%    \end{macrocode}
 %
 % \subsection{Formatting functions}
 %
