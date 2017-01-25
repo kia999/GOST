@@ -1037,6 +1037,7 @@ Happy BibTeXing!
 %
 % Enlist all entry types allowed in a bibliographic database.
 % Most entries are common for many standard bst styles.
+% \begin{environment}{Fields}
 % \changes{v1.2f}{12 Jul 2016}{entry \texttt{patent} added}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
@@ -1119,13 +1120,14 @@ ENTRY
 %<natbib>  { label extra.label sort.label short.list }
 
 %    \end{macrocode}
+% \end{environment}
 % Declare internal variables and constants used in to format references.
 %    \begin{macrocode}
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
 after.dblslash after.slash after.colon after.semicolon }
 
 %    \end{macrocode}
-% \DescribeFunction{init.state.consts}%
+% \begin{environment}{init.state.consts}
 %    \begin{macrocode}
 FUNCTION {init.state.consts}
 { #0 'before.all :=
@@ -1145,11 +1147,13 @@ STRINGS { curlanguage }
 STRINGS { y m d }   % new in v.1.2j
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \subsection{Formatting functions}
 %
 % \DescribeFunction{change.language}
 % Declare function to switch language.
+% \begin{environment}{change.language}
 %    \begin{macrocode}
 FUNCTION {change.language}
 { booklanguage empty$
@@ -1163,11 +1167,13 @@ FUNCTION {change.language}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % Declare functions to output various parts of bibliographic record.
 % \DescribeFunction{output.nonnull}
 % Function |output.nonnull| writes to output buffer the last literal in the stack
 % assuming that it is not empty and adds an appropriate punctuation symbol.
+% \begin{environment}{output.nonnull}
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 %    \begin{macrocode}
 FUNCTION {output.nonnull}
@@ -1209,6 +1215,7 @@ FUNCTION {output.nonnull}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{output}
 % Function |output| calls |output.nonnul| is the last literal string in the stack
@@ -1423,6 +1430,7 @@ FUNCTION {new.sentence.checkb}
 %    \end{macrocode}
 % \DescribeFunction{new.dblslash.checka}
 % For |online| entry.
+% \begin{environment}{new.dblslash.checka}
 % \changes{v1.1}{15 Jan 2012}{entry type \texttt{@online} added}
 %    \begin{macrocode}
 FUNCTION {new.dblslash.checka}
@@ -1433,6 +1441,7 @@ FUNCTION {new.dblslash.checka}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{field.or.null}
 %    \begin{macrocode}
 FUNCTION {field.or.null}
@@ -1446,6 +1455,7 @@ FUNCTION {field.or.null}
 %
 % \DescribeFunction{emphasize}
 % Declare function to emphasize last string in stack.
+% \begin{environment}{emphasize}
 % \changes{v0.8}{10 Aug 2003}{macro \cs{BibEmph} added}
 %    \begin{macrocode}
 FUNCTION {emphasize}
@@ -1456,6 +1466,7 @@ FUNCTION {emphasize}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{bracify}
 % New in v.1.2. An idea borrowed from apsrev4-1.bst.
@@ -1862,7 +1873,7 @@ if$}
 
 %    \end{macrocode}
 % Next function was added in version 2016.07.07.
-% \DescribeFunction{bbl.url}
+% \begin{environment}{bbl.url}
 % \changes{v1.2e}{07 Jul 2016}{\texttt{bbl.url} added to replace URL string}
 %    \begin{macrocode}
 FUNCTION {bbl.url}
@@ -1882,8 +1893,9 @@ FUNCTION {bbl.url}
    if$}
 if$}
 %    \end{macrocode}
+% \end{environment}
 % Next function was added in version 2012.01.15.
-% \DescribeFunction{bbl.urldate}
+% \begin{environment}{bbl.urldate}
 % \changes{v1.2}{13 Feb 2012}{fix \texttt{bbl.urldate} for ukrainian (Andrey Shvajkoy)}
 %    \begin{macrocode}
 FUNCTION {bbl.urldate}
@@ -1904,6 +1916,7 @@ FUNCTION {bbl.urldate}
 if$}
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{bbl.techreport}
 %    \begin{macrocode}
 FUNCTION {bbl.techreport} % rename to bbl.techreport
@@ -1938,7 +1951,7 @@ FUNCTION {bbl.mathesis}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.phdthesis}
+% \begin{environment}{bbl.phdthesis}
 % \changes{v1.2i}{04 Jan 2017}{corrected bbl.phdthesis and bbl.docthesis to comply GOST}
 %    \begin{macrocode}
 FUNCTION {bbl.phdthesis}
@@ -1959,6 +1972,7 @@ FUNCTION {bbl.phdthesis}
 if$}
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{bbl.docthesis}
 %    \begin{macrocode}
 FUNCTION {bbl.docthesis}
@@ -2064,7 +2078,7 @@ FUNCTION {bbl.media.eresource}
 if$}
 
 %    \end{macrocode}
-% \DescribeFunction{bbl.media.online}
+% \begin{environment}{bbl.media.online}
 % \changes{v1.2i}{02 Jan 2017}{\texttt{media} field normalised}
 %    \begin{macrocode}
 FUNCTION {bbl.media.online}
@@ -2084,6 +2098,7 @@ FUNCTION {bbl.media.online}
 if$}
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{bbl.chief}
 %    \begin{macrocode}
 FUNCTION {bbl.chief}
@@ -2423,7 +2438,6 @@ if$}
 % Declare functions to format separate elements of bibliographic reference.
 %    \begin{macrocode}
 INTEGERS { nameptr namesleft numnames }
-
 
 %    \end{macrocode}
 %
@@ -2780,6 +2794,7 @@ FUNCTION {format.title}
 %
 % \DescribeFunction{date.to.year}
 % New in version 1.2j. Extracts year from date.
+% \begin{environment}{date.to.year}
 % \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.year}}
 %    \begin{macrocode}
 FUNCTION {date.to.year}
@@ -2805,9 +2820,11 @@ FUNCTION {date.to.year}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{date.to.month}
 % New in version 1.2j. Extracts month from date.
+% \begin{environment}{date.to.month}
 % \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.month}}
 %    \begin{macrocode}
 FUNCTION {date.to.month}
@@ -2833,9 +2850,11 @@ FUNCTION {date.to.month}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{date.to.day}
 % New in version 1.2j. Extracts year from date.
+% \begin{environment}{date.to.day}
 % \changes{v1.2j}{15 Jan 2017}{new function \texttt{date.to.day}}
 %    \begin{macrocode}
 FUNCTION {date.to.day}
@@ -2861,9 +2880,11 @@ FUNCTION {date.to.day}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{year.or.date.to.year}
 % New in version 1.2j. Returns year; if empty tries to extract it from date.
+% \begin{environment}{date.to.day}
 % \changes{v1.2j}{15 Jan 2017}{new function \texttt{year.or.date.to.year}}
 %    \begin{macrocode}
 FUNCTION {year.or.date.to.year}
@@ -2878,10 +2899,12 @@ FUNCTION {year.or.date.to.year}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{format.month}
 % New in version 1.2d. This macro reads month field and translate English names
 % of months to Russian if current language is Russian.
+% \begin{environment}{format.month}
 % \changes{v1.2i}{29 Dec 2016}{typo fix in \texttt{format.month}}
 %    \begin{macrocode}
 FUNCTION {format.month}
@@ -2919,8 +2942,9 @@ FUNCTION {format.month}
     if$
 }
 %    \end{macrocode}
+% \end{environment}
 %
-% \DescribeFunction{format.date}
+% \begin{environment}{format.date}
 % \changes{v1.2c}{17 Jan 2015}{fix Gost2003: \texttt{"}\texttt{-}\texttt{-}\texttt{-} replaced by macro \cs{BibDash}}
 % \changes{v1.2j}{15 Jan 2017}{extraction of year from date added}
 %    \begin{macrocode}
@@ -2945,9 +2969,11 @@ FUNCTION {format.date}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{address.or.location}
 % New function in version 1.2i. Returns |address| value if not empty; otherwise
 % returns |location| value even if the latter is empty.
+% \begin{environment}{address.or.location}
 % \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
 %FUNCTION {address.or.location}
@@ -2969,10 +2995,12 @@ FUNCTION {address.or.location}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{specialitycode.or.number}
 % New function in version 1.2i. Returns |specialitycode| value if not empty; otherwise
 % returns |number| value even if the latter is empty.
+% \begin{environment}{specialitycode.or.number}
 % \changes{v1.2i}{13 Jan 2017}{\texttt{number} field is now alias to \texttt{specialitycode}}
 %    \begin{macrocode}
 FUNCTION {specialitycode.or.number}
@@ -2984,10 +3012,12 @@ FUNCTION {specialitycode.or.number}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{institution.or.school}
 % New function in version 1.2i. Returns |institution| value if not empty; otherwise
 % returns |school| value even if the latter is empty.
+% \begin{environment}{institution.or.school}
 % \changes{v1.2i}{13 Jan 2017}{\texttt{school} field is now alias to \texttt{instituttion}}
 %    \begin{macrocode}
 FUNCTION {institution.or.school}
@@ -2998,6 +3028,7 @@ FUNCTION {institution.or.school}
   if$
 }
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{format.address.publisher}
 % \DescribeFunction{format.address.publisher.date}
@@ -3056,7 +3087,7 @@ FUNCTION {output.address.publisher}
 %</strict>
 
 %    \end{macrocode}
-% \DescribeFunction{output.bibitem}
+% \begin{environment}{output.bibitem}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
 %    \begin{macrocode}
 %<*!natbib>
@@ -3226,6 +3257,7 @@ FUNCTION {output.bibitem}
 %</natbib>
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{n.dashify}
 %    \begin{macrocode}
 FUNCTION {n.dashify}
@@ -3470,7 +3502,7 @@ FUNCTION {multi.page.check}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.pages}
+% \begin{environment}{format.pages}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 %    \begin{macrocode}
 %%FUNCTION {format.pages}
@@ -3504,7 +3536,8 @@ FUNCTION {format.pages}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.pages.page}
+% \end{environment}
+% \begin{environment}{format.pages.page}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 %    \begin{macrocode}
@@ -3533,6 +3566,7 @@ FUNCTION {format.pages.page}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{format.vol.num.pages}
 %    \begin{macrocode}
 FUNCTION {format.vol.num.pages}
@@ -3812,7 +3846,7 @@ FUNCTION {editor.organization.after}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.url}
+% \begin{environment}{format.url}
 % \changes{v0.8}{06 Jun 2003}{macro \cs{BibUrl} added}
 %    \begin{macrocode}
 FUNCTION {format.url}
@@ -3829,6 +3863,7 @@ FUNCTION {format.url}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{output.url}
 %    \begin{macrocode}
 FUNCTION {output.url}
@@ -3840,7 +3875,7 @@ FUNCTION {output.url}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{format.annote}
+% \begin{environment}{format.annote}
 % \changes{v0.8}{06 Jun 2003}{macro \cs{BibAnnote} added}
 %    \begin{macrocode}
 FUNCTION {format.annote}
@@ -3853,6 +3888,7 @@ FUNCTION {format.annote}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{format.isbn}
 % Do we really need to provide electronic search for ISNB?
 %    \begin{macrocode}
@@ -3877,6 +3913,7 @@ FUNCTION {format.isbn}
 %
 % Function |add.doi| embraces last string in stack into hyperlink
 % that links it to specified |doi| identificator at http://dx.doi.org/ web-site.
+% \begin{environment}{add.doi}
 % \changes{v1.3}{21 Jan 2017}{formatting of \texttt{doi} field updated}
 %    \begin{macrocode}
 %<*eprint>
@@ -3900,6 +3937,7 @@ FUNCTION {add.doi} { }
 %</!eprint>
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{add.media}
 % New in version 1.2. Adds |media| field if |strict| options is in effect.
 % If the |media| field is empty |add.media| prints a value based on the |type|
@@ -3961,6 +3999,7 @@ FUNCTION {add.media}
 % Also see eprinttype and eprintclass.
 %
 % This function should use url. TO BE DONE YET.
+% \begin{environment}{eprint}
 % \changes{v1.2}{26 Jan 2012}{entry fields \texttt{eprint}, \texttt{eprintclass}, \texttt{eprinttype}}
 %    \begin{macrocode}
 %<*eprint>
@@ -4037,11 +4076,12 @@ FUNCTION {output.eprint.url}
 %</!eprint>
 
 %    \end{macrocode}
+% \end{environment}
 %
 % Functions added in v1.2f to format patent entry (thanks to Stanislav Kruchinin).
 %
+% \begin{environment}{add.number}
 % \changes{v1.2f}{12 Jul 2016}{entry field \texttt{patent} added}
-% \DescribeFunction{add.number}
 %    \begin{macrocode}
 FUNCTION {add.number}
 { duplicate$ empty$
@@ -4051,6 +4091,7 @@ FUNCTION {add.number}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{format.type.number}
 %    \begin{macrocode}
 FUNCTION {format.type.number}
@@ -4395,6 +4436,7 @@ FUNCTION {proceedings}
 % venue, language, volume, part, volumes, series, number, note, organization,
 % publisher, location, month, isbn, chapter, pages, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
+% \begin{environment}{@inproceedings}
 % \changes{v0.9}{07 Oct 2003}{bug fix in \texttt{@inproceedings} entry type}
 %    \begin{macrocode}
 FUNCTION {inproceedings}
@@ -4439,6 +4481,7 @@ FUNCTION {inproceedings}
 }
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{manual}
 % Technical or other documentation, not necessarily in printed form. The author or
 % editor is omissible.
@@ -4623,6 +4666,7 @@ FUNCTION {unpublished}
 %
 % Optional fields: subtitle, titleaddon, language, version, note,
 % organization, date, month, year, addendum, pubstate, urldate.
+% \begin{environment}{@online}
 % \changes{v1.1}{15 Jan 2012}{Entry type \texttt{@online} added}
 %    \begin{macrocode}
 FUNCTION {online}
@@ -4664,6 +4708,7 @@ FUNCTION {www}        {online}
 FUNCTION {webpage}    {online}
 FUNCTION {electronic} {online}
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{thesis}
 % New in version 2012.02.02.
@@ -4677,6 +4722,7 @@ FUNCTION {electronic} {online}
 % chapter, pages, pagetotal, addendum, pubstate, doi, eprint, eprintclass,
 % eprinttype, url, urldate
 %
+% \begin{environment}{@thesis}
 % \changes{v1.2}{02 Feb 2012}{\texttt{@thesis} entry}
 %    \begin{macrocode}
 FUNCTION {thesis}
@@ -4710,6 +4756,7 @@ FUNCTION {thesis}
   fin.entry
 }
 %    \end{macrocode}
+% \end{environment}
 %
 % \DescribeFunction{report}
 % New in version 2012.02.02.
@@ -4723,6 +4770,7 @@ FUNCTION {thesis}
 % Optional fields: subtitle, titleaddon, language, number, version, note,
 % location, month, isrn, chapter, pages, pagetotal, addendum, pubstate, doi,
 % eprint, eprintclass, eprinttype, url, urldate.
+% \begin{environment}{@report}
 % \changes{v1.2}{02 Feb 2012}{\texttt{@report} entry}
 %    \begin{macrocode}
 %FUNCTION {report}
@@ -4791,6 +4839,7 @@ FUNCTION {report}
 }
 
 %    \end{macrocode}
+% \end{environment}
 %
 % \subsubsection{Type Aliases}
 %
@@ -4838,6 +4887,7 @@ FUNCTION {phdthesis}
 % \DescribeFunction{mastersthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Master's thesis'. You may still use the type field to override that.
+% \begin{environment}{@MastersThesis}
 % \changes{v1.2i}{29 Dec 2016}{entry \texttt{@MastersThesis} added again (see v1.1)}
 %    \begin{macrocode}
 FUNCTION {mastersthesis}
@@ -4872,9 +4922,11 @@ FUNCTION {mastersthesis}
   fin.entry
 }
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{docthesis}
 % Similar to |@thesis| except that the type field is optional and defaults to the localized
 % term `Doctor's of sciences thesis'. You may still use the type field to override that.
+% \begin{environment}{@docthesis}
 % \changes{v1.2i}{02 Jan 2017}{\texttt{@dscithesis} entry renamed to \texttt{@docthesis}}
 %    \begin{macrocode}
 FUNCTION {docthesis}
@@ -4909,6 +4961,7 @@ FUNCTION {docthesis}
   fin.entry
 }
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{conference}
 %    \begin{macrocode}
 FUNCTION {conference} { inproceedings }
@@ -5649,6 +5702,7 @@ SORT
 % \DescribeFunction{begin.bib}
 % Within |thebibliography| environment we define few formatting macros
 % for user to customize how the reference list is formatted.
+% \begin{environment}{begin.bib}
 % \changes{v1.2a}{31 Aug 2012}{default for \cs{cyrdash} added}
 % \changes{v0.8}{06 Jun 2003}{macro \cs{BibAnnote} added}
 % \changes{v0.8}{06 Jun 2003}{macro \cs{BibUrl} added}
@@ -5684,6 +5738,7 @@ EXECUTE {init.state.consts}
 ITERATE {call.type$}
 
 %    \end{macrocode}
+% \end{environment}
 % \DescribeFunction{end.bib}
 %    \begin{macrocode}
 FUNCTION {end.bib}
