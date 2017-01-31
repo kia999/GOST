@@ -1001,7 +1001,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 %% The form of the \bibitem entries is
 %%   \bibitem[Jones et al.(1990)]{key}...
 %%   \bibitem[Jones et al.(1990)Jones, Baker, and Smith]{key}...
-%% where the label part (in brackets) consists of the author names,
+%% where the label part [in brackets] consists of the author names,
 %% as they should appear in the citation, with the year in parentheses following.
 %% There must be no space before the opening parenthesis!
 %% A full list of authors may also follow the year.
@@ -1080,9 +1080,9 @@ ENTRY
     urldate
     isbn
     doi
+    eprint
     eprinttype      % = archivePrefix
     eprintclass     % = primaryClass
-    eprint
     % new in v1.2f:
     % appear in biblatex:
     %addendum       % not implemented yet...
@@ -2677,6 +2677,12 @@ FUNCTION {format.authors}
 
 %    \end{macrocode}
 % \DescribeFunction{author.key.label}
+% \DescribeFunction{author.editor.key.label}
+% \DescribeFunction{author.editor.key.label}
+% This function forms a key to be used as reference label when using natbib
+% styles. If `author` filed is empty an attempt is made to retrieve `ket` field.
+% If it is also empty 3 first letters are retreived from the citation key `cite$`.
+% If `author` field is not empty `format.lab.names` is called.
 %    \begin{macrocode}
 %<*natbib>
 FUNCTION {author.key.label}
@@ -2689,7 +2695,13 @@ FUNCTION {author.key.label}
     { author format.lab.names }
   if$
 }
-
+%    \end{macrocode}
+% \DescribeFunction{author.editor.key.label}
+% \DescribeFunction{author.key.organization.label}
+% \DescribeFunction{editor.key.organization.label}
+% These functions operate similarly but engage a different set of fields.
+% Do we use all these functions?
+%    \begin{macrocode}
 FUNCTION {author.editor.key.label}
 { author empty$
     { editor empty$
@@ -2760,6 +2772,7 @@ FUNCTION {calc.label}
   "("
   *
   year duplicate$ empty$
+%  year.or.date.to.year duplicate$ empty$
   short.list key field.or.null = or
      { pop$ "" }
      'skip$
@@ -5306,7 +5319,6 @@ READ
 % titles.
 %    \begin{macrocode}
 %<*sort|natbib>
-
 %    \end{macrocode}
 % \DescribeFunction{sortify}
 %    \begin{macrocode}
@@ -5315,7 +5327,6 @@ FUNCTION {sortify}
 %<!utf8>  "l" change.case$
 }
 %</sort|natbib>
-
 %    \end{macrocode}
 % \DescribeFunction{sort.format.names}
 %    \begin{macrocode}
@@ -5441,8 +5452,8 @@ FUNCTION {author.sort}
 
 %    \end{macrocode}
 % \DescribeFunction{author.title.sort}
+% The function |author.title.sort| is used in the |presort| function only.
 %    \begin{macrocode}
-%<*!natbib|natbib>
 FUNCTION {author.title.sort}
 { author empty$
     { title empty$
@@ -5464,41 +5475,48 @@ FUNCTION {author.title.sort}
      }  	
   if$
 }
-%</!natbib|natbib>
-%<*natbib|natbib>
-FUNCTION {author.editor.sort}
-{ author empty$
-    { editor empty$
-        { key empty$
-            { "to sort, need author, editor, or key in " cite$ * warning$
-              ""
-            }
-            { key sortify }
-          if$
-        }
-        { editor sort.format.names }
-      if$
-    }
-    { author sort.format.names }
-  if$
-}
-
-FUNCTION {author.organization.sort}
-{ author empty$
-    { organization empty$
-        { key empty$
-            { "to sort, need author, organization, or key in " cite$ * warning$
-              ""
-            }
-            { key sortify }
-          if$
-        }
-        { "The " #4 organization chop.word sortify }
-      if$
-    }
-    { author sort.format.names }
-  if$
-}
+%    \end{macrocode}
+% \DescribeFunction{author.editor.sort}
+% \DescribeFunction{author.organization.sort}
+% \DescribeFunction{editor.organization.sort}
+% The function |author.editor.sort|, |author.organization.sort|,
+% |editor.organization.sort| are not currently used. See commented
+% text in function |presort|\#2. WE NEED TO CORRECT THAT!
+%    \begin{macrocode}
+%<*natbib>
+%FUNCTION {author.editor.sort}
+%{ author empty$
+%    { editor empty$
+%        { key empty$
+%            { "to sort, need author, editor, or key in " cite$ * warning$
+%              ""
+%            }
+%            { key sortify }
+%          if$
+%        }
+%        { editor sort.format.names }
+%      if$
+%    }
+%    { author sort.format.names }
+%  if$
+%}
+%
+%FUNCTION {author.organization.sort}
+%{ author empty$
+%    { organization empty$
+%        { key empty$
+%            { "to sort, need author, organization, or key in " cite$ * warning$
+%              ""
+%            }
+%            { key sortify }
+%          if$
+%        }
+%        { "The " #4 organization chop.word sortify }
+%      if$
+%    }
+%    { author sort.format.names }
+%  if$
+%}
 
 FUNCTION {editor.organization.sort}
 { editor empty$
@@ -5516,13 +5534,14 @@ FUNCTION {editor.organization.sort}
     { editor sort.format.names }
   if$
 }
-%</natbib|natbib>
-
-
+%</natbib>
 %    \end{macrocode}
 % \DescribeFunction{presort}
 % Function to compute |sort.key$|.
 % What is the space string \verb*|"   "| for?
+% Version \#1 is for `sort` and `!natbib` options.
+% Version \#2 is for `sort` and `natbib` options.
+% Version \#3 is for `!sort` and `natbib` options.
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {presort}%#1
