@@ -484,7 +484,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
   \DescribeMacro{#1}\index{Field!\texttt{#1}}%
 }
 %
-\OnlyDescription % uncomment to hide the Implementation section
+%\OnlyDescription % uncomment to hide the Implementation section
 \EnableCrossrefs
 \CodelineIndex
 \RecordChanges
@@ -660,22 +660,22 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 % sorting order).
 %   \begin{verbatim}
 %  ----------------------------------------------------------------
-%  Encoding        |   CSF                 Sorting order
+%  Encoding        |   CSF               |  Sorting order
 %  ----------------------------------------------------------------
-%  cp866           |   ruscii.csf          Cyrillic first, Latin
-%  cp1251          |   cp1251.csf          Cyrillic first, Latin
-%  koi8-u          |   koi8u.csf           Cyrillic first, Latin
-%  utf8            |   utf8cyrillic.csf    Cyrillic first, Latin
+%  cp866           |   ruscii.csf        |  Cyrillic first, Latin
+%  cp1251          |   cp1251.csf        |  Cyrillic first, Latin
+%  koi8-u          |   koi8u.csf         |  Cyrillic first, Latin
+%  utf8            |   utf8cyrillic.csf  |  Cyrillic first, Latin
 %  ----------------------------------------------------------------
 %   \end{verbatim}
 %
-%  In addition, BibTeX8 distribution comes with few more CSFs.
+%  In addition, \BibTeX8 distribution comes with few more CSFs.
 %   \begin{verbatim}
-%  ----------------------------------------------------------------
-%  Encoding        |   CSF                 Sorting order
-%  ----------------------------------------------------------------
-%  cp866           |   cp866rus.csf        Latin first, Cyrillic
-%  ----------------------------------------------------------------
+%  ---------------------------------------------------------------
+%  Encoding        |   CSF               | Sorting order
+%  ---------------------------------------------------------------
+%  cp866           |   cp866rus.csf      | Latin first, Cyrillic
+%  ---------------------------------------------------------------
 %   \end{verbatim}
 %
 %   \section{How to use}
@@ -1011,11 +1011,11 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 %% The \cite command functions as follows:
 %%   \citet{key}              => Jones et al. (1990)
 %%   \citet*{key}             => Jones, Baker, and Smith (1990)
-%%   \cite{key}              => (Jones et al., 1990)
-%%   \cite*{key}             => (Jones, Baker, and Smith, 1990)
-%%   \cite[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
-%%   \cite[e.g.][]{key}      => (e.g. Jones et al., 1990)
-%%   \cite[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \cite{key}               => (Jones et al., 1990)
+%%   \cite*{key}              => (Jones, Baker, and Smith, 1990)
+%%   \cite[chap. 2]{key}      => (Jones et al., 1990, chap. 2)
+%%   \cite[e.g.][]{key}       => (e.g. Jones et al., 1990)
+%%   \cite[e.g.][p. 32]{key}  => (e.g. Jones et al., p. 32)
 %%   \citeauthor{key}         => Jones et al.
 %%   \citeauthor*{key}        => Jones, Baker, and Smith
 %%   \citeyear{key}           => 1990
@@ -1109,13 +1109,19 @@ ENTRY
 %<natbib>  { label extra.label sort.label short.list }
 
 %    \end{macrocode}
+%
+% \subsection{Formatting functions}
+%
 % Declare internal variables and constants used in to format references.
 %    \begin{macrocode}
 INTEGERS { output.state before.all mid.sentence after.sentence after.block
 after.dblslash after.slash after.colon after.semicolon }
-
 %    \end{macrocode}
+%
 % \DescribeFunction{init.state.consts}%
+% First we set constants that bear a trace of current output state kept by
+% `output.state` integer. The latter is checked and updated by a set of functions
+% such as `output`.
 %    \begin{macrocode}
 FUNCTION {init.state.consts}
 { #0 'before.all :=
@@ -1136,10 +1142,8 @@ STRINGS { y m d }   % new in v.1.2j
 
 %    \end{macrocode}
 %
-% \subsection{Formatting functions}
-%
 % \DescribeFunction{change.language}
-% Declare function to switch language.
+% Declare function to switch language in effect.
 %    \begin{macrocode}
 FUNCTION {change.language}
 { booklanguage empty$
@@ -2680,8 +2684,8 @@ FUNCTION {format.authors}
 % \DescribeFunction{author.editor.key.label}
 % \DescribeFunction{author.editor.key.label}
 % This function forms a key to be used as reference label when using natbib
-% styles. If `author` filed is empty an attempt is made to retrieve `ket` field.
-% If it is also empty 3 first letters are retreived from the citation key `cite$`.
+% styles. If `author` field is empty an attempt is made to retrieve `key` field.
+% If it is also empty 3 first letters are retreived from the citation key `cite\$`.
 % If `author` field is not empty `format.lab.names` is called.
 %    \begin{macrocode}
 %<*natbib>
@@ -5802,6 +5806,6 @@ EXECUTE {end.bib}
 %</bst>
 %    \end{macrocode}
 %
-%\CheckSum{607}
+%\CheckSum{617}
 %
 %\Finale
