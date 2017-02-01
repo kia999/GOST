@@ -1449,6 +1449,28 @@ FUNCTION {field.or.null}
 }
 
 %    \end{macrocode}
+%%
+% \DescribeFunction{either.or.check}
+% \textcolor{red}{Move upwards}
+%    \begin{macrocode}
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+%    \end{macrocode}
+%
+% \subsection{String Functions}\label{s6.4}
+%
+% \DescribeFunction{spaces.around}
+% Inserts a space before and after last literal in the stack.
+%    \begin{macrocode}
+FUNCTION {spaces.around}
+{ " " swap$ * " " * }
+
+%    \end{macrocode}
 %
 % \DescribeFunction{emphasize}
 % Emphasizes the last literal in the stack if it is not empty.
@@ -1466,8 +1488,7 @@ FUNCTION {emphasize}
 % \DescribeFunction{bracify}
 % New in v.1.2. An idea borrowed from apsrev4-1.bst.
 % Encloses last literal in the stack by braces even if it is empty. Note that
-% braces are normally not printed by \LaTeX. This is why this function is not
-% named as |enclose.braces| similarly to |enclose.square.brackets| defined below.
+% braces are normally not printed by \LaTeX.
 %    \begin{macrocode}
 FUNCTION {bracify}
 { duplicate$ empty$
@@ -1477,10 +1498,12 @@ FUNCTION {bracify}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{enclose.square.brackets}
-% This and the next functions are used to enclose last word by brackets.
+% \DescribeFunction{bracketise}
+% This and the next functions are used to enclose last word by square and round
+% brackets. In contrast to |bracify| function they push null string if the
+% last literal is empty.
 %    \begin{macrocode}
-FUNCTION {enclose.square.brackets}
+FUNCTION {bracketise}
 {
   duplicate$ empty$
     { pop$ "" }
@@ -1489,9 +1512,9 @@ FUNCTION {enclose.square.brackets}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{enclose.round.brackets}
+% \DescribeFunction{paranthesify}
 %    \begin{macrocode}
-FUNCTION {enclose.round.brackets}
+FUNCTION {paranthesify}
 {
   duplicate$ empty$
     { pop$ "" }
@@ -1500,17 +1523,6 @@ FUNCTION {enclose.round.brackets}
 }
 
 %    \end{macrocode}
-%
-% \DescribeFunction{space.word}
-% |space.word| inserts space before last string in stack.
-%    \begin{macrocode}
-FUNCTION {space.word}
-{ " " swap$ * " " * }
-
-%    \end{macrocode}
-%
-%
-% \subsection{String Functions}\label{s6.4}
 %
 % \DescribeFunction{chop.word}
 %
@@ -2532,7 +2544,7 @@ if$}
 %    \end{macrocode}
 %
 %
-% \subsection{Formatting authors' names}\label{s6.6}
+% \subsection{Formatting names}\label{s6.6}
 %
 % Declare functions to format separate elements of a bibliographic reference.
 %
@@ -2551,8 +2563,8 @@ INTEGERS { nameptr namesleft numnames }
 %
 % \DescribeFunction{format.names}
 % Has 2 version. The first version is intended for bibliographic records rather
-% then for bibliographic references. % It is used for \file{.bst} styles compiled
-% with the |strict| option. It format every name as `LastName, F. S.'.
+% then for bibliographic references. It is used for \file{.bst} styles compiled
+% with the |strict| option. It formats every name as `LastName, F. S.'.
 % Historically, this version was used for earlier bibstyles |gost780| and
 % |gost780s| nowadays removed from the GOST bundle.
 %
@@ -2562,6 +2574,9 @@ INTEGERS { nameptr namesleft numnames }
 % name corresponding to a person), the integer literal species which name to
 % pick from this list, and the first string literal species how to format this
 % name. Finally, this function pushes the formatted name.
+%
+% \textcolor{red}{Непонятно! Похоже, что первая версия печатает только первое
+% имя. Это правильно???}
 %
 %    \begin{macrocode}
 %<*strict>
@@ -2583,34 +2598,32 @@ FUNCTION {format.names}
   #1 'nameptr :=
   s num.names$ 'numnames :=
   numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
+  { namesleft #0 > }
+  { s nameptr
 %<!utf8>      "{vv~}{ll}{~jj}{~f.}" format.name$ 't :=
 %<utf8>      "{vv~}{ll}{~jj}{~ff}" format.name$ 't :=
-      nameptr #1 >
-        { nameptr #4 =
-          numnames #4 > and
-            { "others" 't :=
-              #1 'namesleft := }
-            'skip$
+    nameptr #1 >
+      { nameptr #4 = numnames #4 > and
+          { "others" 't :=
+            #1 'namesleft :=
+          }
+          'skip$
+        if$
+        namesleft #1 >
+          { ", " * t * }
+          { t "others" = t "~others" = or
+              { " " * bbl.etal * }
+              %%%%{ " " * bbl.etal bracketise *}
+              { ", " * t * }
           if$
-          namesleft #1 >
-            { ", " * t * }
-            { t "others" =
-	          t "~others" =
-	          or
-                { " " * bbl.etal * }
-                %%%%{ " " * bbl.etal enclose.square.brackets *}
-                { ", " * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
+          }
+        if$
+      }
+      't
+    if$
+    nameptr #1 + 'nameptr :=
+    namesleft #1 - 'namesleft :=
+  }
   while$
 }
 %</!strict>
@@ -2620,9 +2633,15 @@ FUNCTION {format.names}
 % \DescribeFunction{format.names.after}
 % \textcolor{red}{ПЕРЕНЕСено ВВЕРХ}
 %
-% Format names for authors/bookauthors list that goes after
-% the title or booktitle. Note that |format.names.after| cuts the list of names to
-% 4 persons at most. We do not cut the names to the initials in this list.
+% Formats names for |author| / |bookauthor| list that goes after
+% the |title| or |booktitle|. Note that |format.names.after| cuts the list of names to
+% 4 persons at most. We do not cut the first names to the initials in this list.
+%
+% \textcolor{red}{BUT WHY? -- I've changed this.}
+%
+% \textcolor{red}{This is almost exect copy of |format.names| defined above for
+% |strict| option, % except that |bracketise| is removed for |!strict| and different
+% order of the first and surnames is applied.}
 %    \begin{macrocode}
 FUNCTION {format.names.after}
 {
@@ -2632,8 +2651,8 @@ FUNCTION {format.names.after}
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr
-%<!utf8>      %"{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
-%<!utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
+%<!utf8>      "{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
+%<!utf8>      %%"{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
 %<utf8>      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
       nameptr #1 >
         { nameptr #4 =
@@ -2644,11 +2663,9 @@ FUNCTION {format.names.after}
           if$
           namesleft #1 >
             { ", " * t * }
-            { t "others" =
-	          t "~others" =
-	          or
+            { t "others" = t "~others" = or
 %<!strict>                { " " * bbl.etal * }
-%<strict>                { " " * bbl.etal enclose.square.brackets * }
+%<strict>                { " " * bbl.etal bracketise * }
                 { ", " * t * }
               if$
             }
@@ -2664,23 +2681,57 @@ FUNCTION {format.names.after}
 
 %    \end{macrocode}
 %
-% \DescribeFunction{format.authors}
-% \textcolor{red}{ПЕРЕНЕСено ВВЕРХ}
 %
-% Formats a list of authors by appying the function |format.names|
-% defined above to the field |auhor| if it is not empty; otherwise it pushes null
-% string.
+% \DescribeFunction{format.names.all}
+% Formats all names in a field even if their number exceeds 4; note that it drops
+% first names.
+%
+% \textcolor{red}{Do we need all these variations in the name format? Why the
+% format is different in different |format.names...| functions. As to this particular
+% function it seems reasonable to drop first names as it is used to compose
+% natbib labels.}
+%
 %    \begin{macrocode}
-FUNCTION {format.authors}
-{ author empty$
-    { "" }
-    { author format.names emphasize}
-  if$
+%<*natbib>
+FUNCTION {format.names.all}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >
+              curlanguage "english" =
+              and
+                { "," * }
+                'skip$
+              if$
+              t "others" = t "~others" = or
+                { " " bbl.etal * * }
+                { " " bbl.and " " * * * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
 }
 
+%</natbib>
 %    \end{macrocode}
 %
-%    \subsection{Formatting dates}\label{s6.9}
+%
+%    \subsection{Formatting dates}\label{s6.7}
 %
 %    \textcolor{red}{NEEDS to be located before natbib labels.}
 %
@@ -2876,7 +2927,7 @@ FUNCTION {format.date}
 %    \end{macrocode}
 %
 %
-% \subsection{Formatting natbib labels}\label{s6.7}
+% \subsection{Formatting natbib labels}\label{s6.8}
 %
 %    \begin{macrocode}
 %<*natbib>
@@ -3046,7 +3097,25 @@ FUNCTION {calc.label}
 %    \end{macrocode}
 %
 %
-% \subsection{Formatting names of authors, editors, etc. (cont.)}\label{s6.6A}
+% \subsection{Formatting names of authors, editors, etc. (cont.)}\label{s6.9}
+%
+% \DescribeFunction{format.authors}
+% \textcolor{red}{ПЕРЕНЕСено ВВЕРХ}
+%
+% Formats a list of authors by appying the function |format.names|
+% defined above to the field |auhor| if it is not empty; otherwise it pushes null
+% string.
+%
+% \textcolor{red}{Какой особый смысл возвращать нулевую строку, если поле пусто?}
+%    \begin{macrocode}
+FUNCTION {format.authors}
+{ author empty$
+    { "" }
+    { author format.names emphasize}
+  if$
+}
+
+%    \end{macrocode}
 %
 % \DescribeFunction{format.bookauthors}
 % Is used only once by |bookauthor.before| called in |inbook| entry.
@@ -3090,6 +3159,7 @@ FUNCTION {format.editors.after}
 
 %    \end{macrocode}
 % \DescribeFunction{format.chief.after}
+% Formats |editor| field for |report| and |techreport| entries.
 %    \begin{macrocode}
 FUNCTION {format.chief.after}
 { editor empty$
@@ -3120,33 +3190,76 @@ FUNCTION {format.compiler.after}
 
 %    \end{macrocode}
 %
-%    \subsection{Formatting title, booktitle, etc.}\label{s6.8}
 %
-% \textbf{Important note}
 %
-% Neither \file{bibtex.exe} nor \file{bibtex8.exe} can handle unicoded text without
-% troubles. In particular, \file{bibtex8} fails to change case of a string if it
-% contains Cyrillic letter. Therefore we avoid using |change.case$| when
-% option |utf8| is applied.
 %
-% \DescribeFunction{format.title}
 %    \begin{macrocode}
-FUNCTION {format.title}
-{ title empty$
+%<*natbib>
+%    \end{macrocode}
+%
+%
+% \DescribeFunction{format.authors.all}
+% \DescribeFunction{format.editors.all}
+% \DescribeFunction{format.authors.editors.all}
+% \DescribeFunction{make.names.all}
+% \DescribeFunction{output.bibitem}
+% In case of |natbib| option, we need |make.names.all| to compose
+% |output.bibitem|, and the latter, in its turn, requires some more functions.
+%
+% \textcolor{red}{ПОДОЗРЕВАЮ, ЧТО НИЖЕСЛЕДУЮЩИЕ ФУНКЦИИ ДУБЛИРУЮТ ФУНКЦИИ,
+% ОПРЕДЕЛЕННЫЕ ВЫШЕ.}
+%    \begin{macrocode}
+FUNCTION {format.authors.all}
+{ author empty$
     { "" }
-%<!utf8>    { title "t" change.case$ }
-%<utf8>    { title }
+    { author format.names.all }
+  if$
+}
+
+FUNCTION {format.editors.all}
+{ editor empty$
+    { "" }
+    { editor format.names.all }
+  if$
+}
+
+FUNCTION {format.authors.editors.all}
+{ author empty$
+    { editor empty$
+        { "" }
+        { editor format.names.all }
+      if$
+    }
+    { author format.names.all }
+  if$
+}
+
+FUNCTION {make.names.all}
+{ type$ "book" = type$ "inbook" = or
+    'format.authors.editors.all
+    { type$ "proceedings" =
+        'format.editors.all
+        'format.authors.all
+      if$
+    }
   if$
 }
 
 %    \end{macrocode}
 %
+%    \begin{macrocode}
+%</natbib>
+%    \end{macrocode}
 %
-%    \subsection{Formatting address, location, etc.}\label{s6.10}
+%
+%    \subsection{Aliases}\label{s6.10}
+%
+% Aliases to some fields are introduced with the help of
+% \emph{field1}|.or.|\emph{field2} functions.
 %
 % \DescribeFunction{address.or.location}
-% New function in version 1.2i. Pushes |address| field if not empty; otherwise
-% pushes |location| value even if it is is empty.
+% Pushes |address| field if not empty; otherwise pushes |location| value even
+% if it is empty.
 % \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
 %FUNCTION {address.or.location}
@@ -3170,7 +3283,7 @@ FUNCTION {address.or.location}
 %    \end{macrocode}
 %
 % \DescribeFunction{specialitycode.or.number}
-% New function in version 1.2i. Returns |specialitycode| value if not empty; otherwise
+% Pushed |specialitycode| value if not empty; otherwise
 % returns |number| value even if the latter is empty.
 % \changes{v1.2i}{13 Jan 2017}{\texttt{number} field is now alias to \texttt{specialitycode}}
 %    \begin{macrocode}
@@ -3185,7 +3298,7 @@ FUNCTION {specialitycode.or.number}
 %    \end{macrocode}
 %
 % \DescribeFunction{institution.or.school}
-% New function in version 1.2i. Returns |institution| value if not empty; otherwise
+% Pushes |institution| value if not empty; otherwise
 % returns |school| value even if the latter is empty.
 % \changes{v1.2i}{13 Jan 2017}{\texttt{school} field is now alias to \texttt{instituttion}}
 %    \begin{macrocode}
@@ -3198,7 +3311,13 @@ FUNCTION {institution.or.school}
 }
 %    \end{macrocode}
 %
+%
+%    \subsection{Output functions (continued)}\label{s6.11}
+%
 % \DescribeFunction{output.address.publisher}
+% Outputs |address| (or |location|) and |publisher| fields separated by colon
+% if both fields are available; otherwise outputs that field which is not
+% empty.
 %    \begin{macrocode}
 %<*!strict>
 %FUNCTION {output.address.publisher}
@@ -3235,15 +3354,15 @@ FUNCTION {output.address.publisher}
     {
       bbl.nnoaddress
       publisher empty$
-        { "~: " * bbl.nopublisher * enclose.square.brackets }
-        { enclose.square.brackets "~: " * publisher * }
+        { "~: " * bbl.nopublisher * bracketise }
+        { bracketise "~: " * publisher * }
       if$
     }
     {
       address output
       new.colon
       publisher empty$
-        { bbl.nopublisher enclose.square.brackets }
+        { bbl.nopublisher bracketise }
         { publisher }
       if$
     }
@@ -3255,14 +3374,13 @@ FUNCTION {output.address.publisher}
 
 %    \end{macrocode}
 % \DescribeFunction{output.bibitem}
+% Is called at the beginning of any entry. It sets |curlanguage|
+% string variable based on |langid| or |language| field.
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
 %    \begin{macrocode}
 %<*!natbib>
 FUNCTION {output.bibitem}
-{ newline$
-  "\bibitem" write$
-  cite$ bracify write$
-  newline$
+{
   langid empty$
     { language empty$
         { "english" 'curlanguage := }
@@ -3271,6 +3389,10 @@ FUNCTION {output.bibitem}
     }
     { langid  'curlanguage := }
   if$
+  newline$
+  "\bibitem" write$
+  cite$ bracify write$
+  newline$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
   ""
@@ -3279,112 +3401,11 @@ FUNCTION {output.bibitem}
 
 %</!natbib>
 %    \end{macrocode}
-% \DescribeFunction{format.full.names}
-% \DescribeFunction{author.full}
-% \DescribeFunction{editor.full}
-% \DescribeFunction{author.editor.full}
-% \DescribeFunction{make.full.names}
-% \DescribeFunction{output.bibitem}
-% In case of |natbib| option, we need |make.full.names| to compose
-% |output.bibitem|, and the latter in its turn requires some more functions.
+%
 %    \begin{macrocode}
 %<*natbib>
-FUNCTION {format.full.names}
-{'s :=
-  language empty$
-    { "english" 'curlanguage := }
-    { language  'curlanguage := }
-  if$
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      "{vv~}{ll}" format.name$ 't :=
-      nameptr #1 >
-        {
-          namesleft #1 >
-            { ", " * t * }
-            {
-              numnames #2 >
-              curlanguage "english" =
-              and
-                { "," * }
-                'skip$
-              if$
-              t "others" =
-	          %t "~others" =
-	          %or
-                %{ " et~al." * }
-                { " " bbl.etal * * }
-                %{ " and " * t * }
-                { " " bbl.and " " * * * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-
-FUNCTION {author.full}
-{ author empty$
-    { "" }
-    { author format.full.names }
-  if$
-}
-
-FUNCTION {editor.full}
-{ editor empty$
-    { "" }
-    { editor format.full.names }
-  if$
-}
-
-FUNCTION {author.editor.full}
-{ author empty$
-    { editor empty$
-        { "" }
-        { editor format.full.names }
-      if$
-    }
-    { author format.full.names }
-  if$
-}
-
-FUNCTION {make.full.names}
-{ type$ "book" =
-  type$ "inbook" =
-  or
-    'author.editor.full
-    { type$ "proceedings" =
-        'editor.full
-        'author.full
-      if$
-    }
-  if$
-}
-
-% =======================================
 FUNCTION {output.bibitem}
-{ newline$
-  "\bibitem[" write$
-  label write$
-  ")" make.full.names duplicate$ short.list =
-     { pop$ }
-     { * }
-   if$
-  "]{" * write$
-  cite$ write$
-  "}" write$
-%%  language empty$
-%%    { "english" 'curlanguage := }
-%%    {language  'curlanguage := }
-%%  if$
+{
   langid empty$
     { language empty$
         { "english" 'curlanguage := }
@@ -3393,21 +3414,30 @@ FUNCTION {output.bibitem}
     }
     { langid  'curlanguage := }
   if$
+  newline$
+  "\bibitem[" write$
+  label write$
+  ")" make.names.all duplicate$ short.list =
+     { pop$ }
+     { * }
+   if$
+  "]{" * write$
+  cite$ write$
+  "}" write$
   "\selectlanguageifdefined" curlanguage bracify * write$
   newline$
   ""
   before.all 'output.state :=
 }
-% =======================================
 %FUNCTION {output.bibitem}
 %{ newline$
 %  "\bibitem" write$
 %%  author.key.label
 %%  year parenthesify *
 %%  "; lbl:" label * *
-%%  "; mfn:"  make.full.names * *
+%%  "; mfn:"  make.names.all * *
 %  label
-%  make.full.names *
+%  make.names.all *
 %  bracketise write$
 %  cite$ bracify write$
 %  newline$
@@ -3420,10 +3450,45 @@ FUNCTION {output.bibitem}
 %  ""
 %  before.all 'output.state :=
 %}
-% =======================================
+
 %</natbib>
+%    \end{macrocode}
+%
+%
+% \subsection{Combining strings}\label{s6.12}
+%
+% \DescribeFunction{word.in}
+% Not used.
+%    \begin{macrocode}
+FUNCTION {word.in}
+{ bbl.iin " " *
+}
 
 %    \end{macrocode}
+%
+% \DescribeFunction{tie.connect}
+% Inserts unbreakable space before last literal in the stack.
+%    \begin{macrocode}
+FUNCTION {tie.connect}
+ {"~" swap$ * *
+ }
+
+%    \end{macrocode}
+%
+% \DescribeFunction{tie.or.space.connect}
+% Inserts space or unbreakable space before last literal in the stack depending on
+% its length.
+%    \begin{macrocode}
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
+  if$
+  swap$ * *
+}
+
+%    \end{macrocode}
+%
 % \DescribeFunction{n.dashify}
 %    \begin{macrocode}
 FUNCTION {n.dashify}
@@ -3452,51 +3517,81 @@ FUNCTION {n.dashify}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{word.in}
+%
+% \DescribeFunction{multi.page.check}
+% Returns 1 if the last literal (usually |page|) contains either   `|-|', `|,|'
+% or `|+|'; otherwise returns 0.
+% Used in connection with |n.dashify|.
+%
+% \textcolor{red}{Заметим несогласованность функций |multi.page.check| и
+% |n.dashify|. Последняя функция проверяет дефис, а первая ещё и минус и
+% запятую.}
+%
 %    \begin{macrocode}
-FUNCTION {word.in}
-{ bbl.iin
-  " " * }
+INTEGERS { multiresult }
+
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
+}
 
 %    \end{macrocode}
+%
+%
+% \subsection{Formatting title, booktitle, etc.}\label{s6.13}
+%
+% \textbf{Important note}
+%
+% Neither \file{bibtex.exe} nor \file{bibtex8.exe} can handle unicoded text without
+% troubles. In particular, \file{bibtex8} fails to change case of a string if it
+% contains Cyrillic letter. Therefore we avoid using |change.case$| when
+% option |utf8| is applied.
+%
+% \textcolor{red}{У нас 2 функции форматирования |title|. Одна из них аытается
+% менять регистр заголовка, другая нет. Какие правила в ГОСТе на этот счёт? }
+%
+% \DescribeFunction{format.title}
+% Форматирует |title| в |@article|, |@booklet|, |@incollection|, |@inproceedings|,
+% |@misc|, |@online|, |@report|, |@techreport|.
+%  и многих других записях.
+%    \begin{macrocode}
+FUNCTION {format.title}
+{ title empty$
+    { "" }
+%<!utf8>    { title "t" change.case$ }
+%<utf8>    { title }
+  if$
+}
+
+%    \end{macrocode}
+%
+%
 % \DescribeFunction{format.btitle}
+% Форматирует |title| в |@book|, |@inbook|, |@proceedings|, |@manual|,
+% |@unpublished|, |@thesis|, |@phdthesis|, |@mastersthesis|, |@docthesis|, где
+% поле |type| обязательно.
 %    \begin{macrocode}
 FUNCTION {format.btitle}
 { title
 }
 
 %    \end{macrocode}
-% \DescribeFunction{tie.or.space.connect}
-%    \begin{macrocode}
-FUNCTION {tie.or.space.connect}
-{ duplicate$ text.length$ #3 <
-    { "~" }
-    { " " }
-  if$
-  swap$ * *
-}
-
-%    \end{macrocode}
-% \DescribeFunction{tie.connect}
-% Declare function to insert unbreakable space before last word in stack.
-%    \begin{macrocode}
-FUNCTION {tie.connect}
- {"~"
-  swap$ * *
- }
-
-
-%    \end{macrocode}
-% \DescribeFunction{either.or.chec}
-%    \begin{macrocode}
-FUNCTION {either.or.check}
-{ empty$
-    'pop$
-    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
-  if$
-}
-
-%    \end{macrocode}
+%
 % \DescribeFunction{format.bvolume}
 %    \begin{macrocode}
 FUNCTION {format.bvolume}
@@ -3505,7 +3600,7 @@ FUNCTION {format.bvolume}
     { bbl.vvol volume tie.connect
       series empty$
         'skip$
-        { bbl.of space.word * series emphasize * }
+        { bbl.of spaces.around * series emphasize * }
       if$
       "volume and number" number either.or.check
     }
@@ -3539,6 +3634,7 @@ FUNCTION {format.number.series}
 
 %    \end{macrocode}
 % \DescribeFunction{is.num}
+% Is not currently used.
 %    \begin{macrocode}
 FUNCTION {is.num}
 { chr.to.int$
@@ -3548,6 +3644,7 @@ FUNCTION {is.num}
 
 %    \end{macrocode}
 % \DescribeFunction{extract.num}
+% Is not currently used.
 %    \begin{macrocode}
 FUNCTION {extract.num}
 { duplicate$ 't :=
@@ -3567,10 +3664,13 @@ FUNCTION {extract.num}
   if$
 }
 
-%<*debug>
 %    \end{macrocode}
 % \DescribeFunction{eng.ord}
+% Is not currently used.
+% \textcolor{red}{Note that |bbl.st|, |bbl.nd|, |bbl.rd|, |bbl.th|
+% are not defined.}
 %    \begin{macrocode}
+%<*debug>
 FUNCTION {eng.ord}
 { duplicate$ "1" swap$ *
   #-2 #1 substring$ "1" =
@@ -3642,45 +3742,11 @@ FUNCTION {format.edition}
   if$
 }
 
-INTEGERS { multiresult }
-
 %    \end{macrocode}
-% \DescribeFunction{multi.page.check}
-%    \begin{macrocode}
-FUNCTION {multi.page.check}
-{ 't :=
-  #0 'multiresult :=
-    { multiresult not
-      t empty$ not
-      and
-    }
-    { t #1 #1 substring$
-      duplicate$ "-" =
-      swap$ duplicate$ "," =
-      swap$ "+" =
-      or or
-        { #1 'multiresult := }
-        { t #2 global.max$ substring$ 't := }
-      if$
-    }
-  while$
-  multiresult
-}
-
-%    \end{macrocode}
+%
 % \DescribeFunction{format.pages}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 %    \begin{macrocode}
-%%FUNCTION {format.pages}
-%%{ pages empty$
-%%    { "" }
-%%    { pages multi.page.check
-%%        { bbl.ppages pages n.dashify tie.connect }
-%%        { bbl.ppage pages tie.connect }
-%%      if$
-%%    }
-%%  if$
-%%}
 FUNCTION {format.pages}
 { eid empty$
     {
@@ -3706,15 +3772,6 @@ FUNCTION {format.pages}
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{eid} added}
 % \changes{v1.2b}{19 Jan 2014}{entry field \texttt{numpages} renamed to \texttt{pagetotal}}
 %    \begin{macrocode}
-%%FUNCTION {format.pages.page}
-%%{ pages empty$
-%%    { pagetotal empty$
-%%      { "" }
-%%      { pagetotal bbl.pages tie.connect }
-%%    if$}
-%%    { format.pages}
-%%  if$
-%%}
 FUNCTION {format.pages.page}
 { eid empty$
     { pages empty$
@@ -4130,7 +4187,7 @@ FUNCTION {add.media}
     'skip$
     { media empty$
         'skip$
-        { " " * bbl.media enclose.square.brackets * }
+        { " " * bbl.media bracketise * }
       if$
     }
   if$
@@ -4142,11 +4199,11 @@ FUNCTION {add.media}
     'skip$
     { media empty$
       { type$ "online" =
-        { " " * bbl.media.online enclose.square.brackets * }
-        { " " * bbl.media.text   enclose.square.brackets * }
+          { " " * bbl.media.online bracketise * }
+          { " " * bbl.media.text   bracketise * }
         if$
       }
-      { " " * bbl.media enclose.square.brackets * }
+      { " " * bbl.media bracketise * }
     if$
     }
   if$
@@ -4155,7 +4212,7 @@ FUNCTION {add.media}
 
 %    \end{macrocode}
 %
-% \subsection{Electronic Publishing Information}
+% \subsection{Electronic Publishing Information}\label{s6.14}
 %
 % The biblatex package provides three fields for electronic publishing
 % information: |eprint|, |eprinttype|, and |eprintclass|. The |eprint| field
@@ -4731,7 +4788,7 @@ FUNCTION {patent}
 %  title output.nonnull
   title add.media output.nonnull
 %  add.blank
-%  media enclose.square.brackets output % S.Kruchinin's version
+%  media bracketise output % S.Kruchinin's version
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.colon
@@ -4743,7 +4800,7 @@ FUNCTION {patent}
   new.slash
   format.authors.after "author" output.check
   add.blank
-  authorcountry enclose.round.brackets output.nonnull
+  authorcountry paranthesify output.nonnull
 %<natbib>  author format.key output
   new.semicolon
   holder output.nonnull
@@ -4759,7 +4816,7 @@ FUNCTION {patent}
   new.semicolon
   format.prioritydate output
   prioritynumber output
-  prioritycountry enclose.round.brackets output
+  prioritycountry paranthesify output
   new.block
   note output
   new.sentence
@@ -4854,7 +4911,7 @@ FUNCTION {online}
 %  howpublished new.block.checka
   howpublished new.dblslash.checka
 %<!strict>  howpublished output
-%<strict>  howpublished enclose.square.brackets output
+%<strict>  howpublished bracketise output
   editor.organization.after
   new.sentence
   new.block
