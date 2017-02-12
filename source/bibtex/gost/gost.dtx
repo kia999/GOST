@@ -3226,17 +3226,15 @@ FUNCTION {format.compiler.rest}
 %<*natbib>
 %    \end{macrocode}
 %
-% \DescribeFunction{fmt.names.short}
-% Formats all names like |fmt.names.all| but uses short format of names (drops |ff| and |f.|
-% modifiers).
+% \DescribeFunction{fmt.names.brief}
+% Formats all names like |fmt.names.all| except that first name of every person is dropped
+% (dropped |ff| and |f.| modifiers).
 %
-% \note{Do we need all these variations in the name format? Why the
-% format is different in different \texttt{format.names...} functions. As to this particular
-% function it seems reasonable to drop first names as it is used to compose
-% natbib labels.}
-%
+% \note{Вероятно, нужно сократить число персон до 3х максимум. Что говорит ГОСТ?
+% Где используется это? В метке ссылки это расгиренный список авторов после
+% краткого списка и года в необязательном аргументе \cs{bibitem}.}
 %    \begin{macrocode}
-FUNCTION {fmt.names.short}
+FUNCTION {fmt.names.brief}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
@@ -3269,11 +3267,12 @@ FUNCTION {fmt.names.short}
 
 %    \end{macrocode}
 %
-% \DescribeFunction{format.lab.names}
-% Declares function to go to optional argument of |\bibitem| in
-% the bibstyles generated with the option |natbib|.
+% \DescribeFunction{format.names.key}
+% Declares function to go to left part of optional argument of |\bibitem| in
+% the bibstyles generated with the option |natbib|. It cuts the list of person
+% to 2 at most and drops first name of every person.
 %    \begin{macrocode}
-FUNCTION {format.lab.names}
+FUNCTION {format.names.key}
 { 's :=
   set.language %%% уже вызвана в output.bibitem, но вроде бы нужна и здесь
   s #1 "{vv~}{ll}" format.name$
@@ -3295,8 +3294,8 @@ FUNCTION {format.lab.names}
 %    \end{macrocode}
 %
 % \DescribeFunction{format.key}
-% Function to substitute empty field (usually, author's name) with the |key| field
-% if provided.
+% Substitute an empty last literal in the stack (usually, |author|) with the |key| field
+% if provided. Used as a heading of bibliographic record of |author| is empty.
 %    \begin{macrocode}
 FUNCTION {format.key}
 { empty$
@@ -3311,7 +3310,7 @@ FUNCTION {format.key}
 % Composes a key to be used as a reference label with natbib
 % styles. If |author| field is empty an attempt is made to retrieve |key| field.
 % If it is also empty 3 first letters are retreived from the citation key |cite$|.
-% If |author| field is not empty |format.lab.names| defined above is called.
+% If |author| field is not empty |format.names.key| defined above is called.
 %    \begin{macrocode}
 FUNCTION {author.key.label}
 { author empty$
@@ -3320,7 +3319,7 @@ FUNCTION {author.key.label}
         'key
       if$
     }
-    { author format.lab.names }
+    { author format.names.key }
   if$
 }
 %    \end{macrocode}
@@ -3329,7 +3328,7 @@ FUNCTION {author.key.label}
 % \DescribeFunction{author.key.organization.label}
 % \DescribeFunction{editor.key.organization.label}
 % These functions operate similarly but engage a different set of fields. They
-% are called below by |calc.short.authors|.
+% are called below by |calc.short.list|.
 %    \begin{macrocode}
 FUNCTION {author.editor.key.label}
 { author empty$
@@ -3340,10 +3339,10 @@ FUNCTION {author.editor.key.label}
             { "{}" key * } %% Bug in bibtex8 ??
           if$
         }
-        { editor format.lab.names }
+        { editor format.names.key }
       if$
     }
-    { author format.lab.names }
+    { author format.names.key }
   if$
 }
 
@@ -3358,7 +3357,7 @@ FUNCTION {author.key.organization.label}
         'key
       if$
     }
-    { author format.lab.names }
+    { author format.names.key }
   if$
 }
 
@@ -3373,19 +3372,20 @@ FUNCTION {editor.key.organization.label}
         'key
       if$
     }
-    { editor format.lab.names }
+    { editor format.names.key }
   if$
 }
 
 %    \end{macrocode}
 %
-% \DescribeFunction{calc.short.authors}
-% Calculates bibitem label in natbib styles depending on the type of entry.
+% \DescribeFunction{calc.short.list}
+% Calculates |short.list| for |\bibitem| label in natbib styles depending on the type of entry.
+%
+% \note{Нужна внимательная ревизия логики вычислений. В общем-то, она имеет значения  в особом
+% случае, когда поле |author| пустое. }
 %    \begin{macrocode}
-FUNCTION {calc.short.authors}
-{ type$ "book" =
-  type$ "inbook" =
-  or
+FUNCTION {calc.short.list}
+{ type$ "book" = type$ "inbook" = or
     'author.editor.key.label
     { type$ "proceedings" =
         'editor.key.organization.label
@@ -3400,8 +3400,16 @@ FUNCTION {calc.short.authors}
   'short.list :=
 }
 
+%    \end{macrocode}
+%
+% \DescribeFunction{calc.label}
+%
+% \note{Вопреки названию, вычисляет только часть метки в [] для
+% \cs{bibitem}. Скобка после года не закрыта, так как еще может
+% быть добавлено a, b, \dots. Лучше перенести весь код |output.bibitem|. }
+%    \begin{macrocode}
 FUNCTION {calc.label}
-{ calc.short.authors
+{ calc.short.list
   short.list
   "("
   *
@@ -3417,33 +3425,33 @@ FUNCTION {calc.label}
 
 %    \end{macrocode}
 %
-% \DescribeFunction{make.names.short}
-% In case of |natbib| option, we need |make.names.short| to compose
+% \DescribeFunction{calc.long.list}
+% In case of |natbib| option, we need |calc.long.list| to compose
 % |output.bibitem|, and the latter, in its turn, requires some more functions.
 %    \begin{macrocode}
-FUNCTION {make.names.short} %% called 1 time only
+FUNCTION {calc.long.list} %% called 1 time only
 { type$ "book" = type$ "inbook" = or
-    %'format.author.editor.short
+    %'format.author.editor.brief
     { author empty$
         { editor empty$
             { "" }
-            { editor fmt.names.short }
+            { editor fmt.names.brief }
           if$
         }
-        { author fmt.names.short }
+        { author fmt.names.brief }
       if$
     }
     { type$ "proceedings" =
-        %'format.editor.short
+        %'format.editor.brief
         { editor empty$
             { "" }
-            { editor fmt.names.short }
+            { editor fmt.names.brief }
           if$
         }
-        %'format.author.short
+        %'format.author.brief
         { author empty$
             { "" }
-            { author fmt.names.short }
+            { author fmt.names.brief }
           if$
         }
       if$
@@ -3517,8 +3525,8 @@ FUNCTION {output.bibitem}
   newline$
   "\bibitem" write$
 %<*natbib>
-  label ")" *
-  make.names.short *
+  label extra.label * ")" *
+  calc.long.list *
   bracketise write$
 %</natbib>
   cite$ bracify write$
@@ -3539,9 +3547,9 @@ FUNCTION {output.bibitem}
 %%  author.key.label
 %%  year parenthesify *
 %%  "; lbl:" label * *
-%%  "; mfn:"  make.names.short * *
+%%  "; mfn:"  calc.long.list * *
 %  label
-%  make.names.short *
+%  calc.long.list *
 %  bracketise write$
 %  cite$ bracify write$
 %  newline$
@@ -4326,7 +4334,7 @@ FUNCTION {article}
 {
   output.bibitem
   output.author.head
-  new.sentence
+  %new.sentence
 %<natbib>  author format.key output
   title add.media "title" output.check
   new.slash
@@ -5585,6 +5593,7 @@ FUNCTION {author.title.sort}
   if$
 }
 %    \end{macrocode}
+%
 % \DescribeFunction{author.editor.sort}
 % \DescribeFunction{author.organization.sort}
 % \DescribeFunction{editor.organization.sort}
@@ -5645,6 +5654,7 @@ FUNCTION {editor.organization.sort}
 }
 %</natbib>
 %    \end{macrocode}
+%
 % \DescribeFunction{presort}
 % Function to compute |sort.key$|.
 % What is the space string \verb*|"   "| for?
@@ -5842,7 +5852,7 @@ FUNCTION {reverse.pass}
     { "{\natexlab{" swap$ * "}}" * }
   if$
   'extra.label :=
-  label extra.label * 'label :=
+  %%%label extra.label * 'label :=
 }
 
 REVERSE {reverse.pass}
