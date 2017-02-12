@@ -1253,7 +1253,7 @@ FUNCTION {output.nonnull}
 %    \end{macrocode}
 %
 % \DescribeFunction{output}
-% Calls |output.nonnul| if the last literal string in the stack
+% Calls |output.nonnull| if the last literal string in the stack
 % is not empty; otherwise it discards the literal.
 %    \begin{macrocode}
 FUNCTION {output}
@@ -2710,122 +2710,70 @@ if$}
 %    \end{macrocode}
 %
 %
-% \subsection{Formatting names}\label{s6.6}
+%    \subsection{Aliases}\label{s6.10}
 %
-% Declare functions to format separate elements of a bibliographic reference.
+% Aliases to some fields are introduced with the help of
+% \emph{field1}|.or.|\emph{field2} functions.
 %
-% \textbf{Important note}
-%
-% Neither \file{bibtex} nor \file{bibtex8} can handle unicoded text without
-% troubles. In particular, they fail to reduce a Cyrillic name to initials.
-% Therefore we avoid using |f.| primitive (which trims first name to first letter)
-% when option |utf8| is in effect; in the latter caase |ff| primitive is called
-% instead.
-%
+% \DescribeFunction{address.or.location}
+% Pushes |address| field if not empty; otherwise pushes |location| value even
+% if it is empty.
+% \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
 %    \begin{macrocode}
-INTEGERS { nameptr namesleft numnames }
-
-%    \end{macrocode}
-%
-% \DescribeFunction{fmt.names.first}
-% \DescribeFunction{fmt.names.three}
-% \DescribeFunction{fmt.names.all}
-% New version of functions formating names. Function name indicates number
-% of persons printed. These functions look for last literal in the stack
-% which should not be empty; hence, they should be called by other functions
-% that checks if the last literal is empty.
-%    \begin{macrocode}
-FUNCTION {fmt.names.first}
-{ #1
-%<strict&!utf8>  "{vv~}{ll}{~jj}{,~f.}"
-%<strict&utf8>  "{vv~}{ll}{~jj}{,~ff}"
-%<!strict&!utf8>  "{vv~}{ll}{~jj}{~f.}"
-%<!strict&utf8>  "{vv~}{ll}{~jj}{~ff}"
-  format.name$
-}
-
-FUNCTION {fmt.names.three}
+%FUNCTION {address.or.location}
+%{
+%  address empty$
+%    { location empty$
+%      'skip$
+%      { location }
+%    if$ }
+%    { address }
+%  if$
+%}
+FUNCTION {address.or.location}
 {
-  's :=
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-  { namesleft #0 > }
-  { s nameptr
-%<strict&!utf8>      "{vv~}{ll}{~jj}{,~f.}"
-%<strict&utf8>      "{vv~}{ll}{~jj}{,~ff}"
-%<!strict&!utf8>      "{vv~}{ll}{~jj}{~f.}"
-%<!strict&utf8>      "{vv~}{ll}{~jj}{~ff}"
-    format.name$ 't :=
-    nameptr #1 >
-      { nameptr #4 = numnames #4 > and
-          { "others" 't :=
-            #1 'namesleft :=
-          }
-          'skip$
-        if$
-        namesleft #1 >
-          { ", " * t * }
-          { t "others" = t "~others" = or
-%<!strict>              { " " * bbl.etal * }
-%<strict>              { " " * bbl.etal bracketise *}
-              { ", " * t * }
-          if$
-          }
-        if$
-      }
-      't
-    if$
-    nameptr #1 + 'nameptr :=
-    namesleft #1 - 'namesleft :=
-  }
-  while$
-}
-
-FUNCTION {fmt.names.all}
-{ 's :=
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      %"{vv~}{ll}" format.name$ 't :=
-%<strict&!utf8>      "{vv~}{ll}{~jj}{,~f.}"
-%<strict&utf8>      "{vv~}{ll}{~jj}{,~ff}"
-%<!strict&!utf8>      "{vv~}{ll}{~jj}{~f.}"
-%<!strict&utf8>      "{vv~}{ll}{~jj}{~ff}"
-      format.name$ 't :=
-      nameptr #1 >
-        {
-          namesleft #1 >
-            { ", " * t * }
-            {
-              numnames #2 >  curlanguage "english" = and
-                { "," * }
-                'skip$
-              if$
-              t "others" = t "~others" = or
-%<!strict>                { " " * bbl.etal * }
-%<strict>                { " " * bbl.etal bracketise *}
-                { " " bbl.and " " * * * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
+  address empty$
+    { location }
+    { address }
+  if$
 }
 
 %    \end{macrocode}
 %
+% \DescribeFunction{specialitycode.or.number}
+% Pushed |specialitycode| value if not empty; otherwise
+% returns |number| value even if the latter is empty.
+% \changes{v1.2i}{13 Jan 2017}{\texttt{number} field is now alias to \texttt{specialitycode}}
+%    \begin{macrocode}
+FUNCTION {specialitycode.or.number}
+{
+  specialitycode empty$
+    { number }
+    { specialitycode }
+  if$
+}
+
+%    \end{macrocode}
 %
-%    \subsection{Formatting dates}\label{s6.7}
+% \DescribeFunction{institution.or.school}
+% Pushes |institution| value if not empty; otherwise
+% returns |school| value even if the latter is empty.
+% \changes{v1.2i}{13 Jan 2017}{\texttt{school} field is now alias to \texttt{instituttion}}
+%    \begin{macrocode}
+FUNCTION {institution.or.school}
+{
+  institution empty$
+    { school}
+    { institution }
+  if$
+}
+%    \end{macrocode}
 %
-%    \note{NEEDS to be located before natbib labels.}
+%
+% \subsection{Formatting dates}\label{s6.7}
+%
+% \note{NEEDS to be located before natbib labels. This is experimental section.
+% Needs to be upgraded.}
 %
 % \DescribeFunction{date.to.year}
 % New in version 1.3. Extracts year from date. Currently, only the date
@@ -3019,23 +2967,276 @@ FUNCTION {format.date}
 %    \end{macrocode}
 %
 %
-% \subsection{Formatting natbib labels}\label{s6.8}
+% \subsection{Formatting names}\label{s6.6}
+%
+% Declare functions to format separate elements of a bibliographic reference.
+%
+% \textbf{Important note}
+%
+% Neither \file{bibtex} nor \file{bibtex8} can handle unicoded text without
+% troubles. In particular, they fail to reduce a Cyrillic name to initials.
+% Therefore we avoid using |f.| primitive (which trims first name to first letter)
+% when option |utf8| is in effect; in the latter caase |ff| primitive is called
+% instead.
+%
+%    \begin{macrocode}
+INTEGERS { nameptr namesleft numnames }
+
+%    \end{macrocode}
+%
+% \DescribeFunction{fmt.names.first}
+% \DescribeFunction{fmt.names.three}
+% \DescribeFunction{fmt.names.all}
+% New version of functions formating names. Function name indicates number
+% of persons printed. These functions look for last literal in the stack
+% which should not be empty; hence, they should be called by other functions
+% that checks if the last literal is empty.
+%    \begin{macrocode}
+FUNCTION {fmt.names.first}
+{ #1
+%<strict&!utf8>  "{vv~}{ll}{~jj}{,~f.}"
+%<strict&utf8>  "{vv~}{ll}{~jj}{,~ff}"
+%<!strict&!utf8>  "{vv~}{ll}{~jj}{~f.}"
+%<!strict&utf8>  "{vv~}{ll}{~jj}{~ff}"
+  format.name$
+}
+
+FUNCTION {fmt.names.three}
+{
+  's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+  { namesleft #0 > }
+  { s nameptr
+%<strict&!utf8>      "{vv~}{ll}{~jj}{,~f.}"
+%<strict&utf8>      "{vv~}{ll}{~jj}{,~ff}"
+%<!strict&!utf8>      "{vv~}{ll}{~jj}{~f.}"
+%<!strict&utf8>      "{vv~}{ll}{~jj}{~ff}"
+    format.name$ 't :=
+    nameptr #1 >
+      { nameptr #4 = numnames #4 > and
+          { "others" 't :=
+            #1 'namesleft :=
+          }
+          'skip$
+        if$
+        namesleft #1 >
+          { ", " * t * }
+          { t "others" = t "~others" = or
+%<!strict>              { " " * bbl.etal * }
+%<strict>              { " " * bbl.etal bracketise *}
+              { ", " * t * }
+          if$
+          }
+        if$
+      }
+      't
+    if$
+    nameptr #1 + 'nameptr :=
+    namesleft #1 - 'namesleft :=
+  }
+  while$
+}
+
+FUNCTION {fmt.names.all}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      %"{vv~}{ll}" format.name$ 't :=
+%<strict&!utf8>      "{vv~}{ll}{~jj}{,~f.}"
+%<strict&utf8>      "{vv~}{ll}{~jj}{,~ff}"
+%<!strict&!utf8>      "{vv~}{ll}{~jj}{~f.}"
+%<!strict&utf8>      "{vv~}{ll}{~jj}{~ff}"
+      format.name$ 't :=
+      nameptr #1 >
+        { namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >  curlanguage "english" = and
+                { "," * }
+                'skip$
+              if$
+              t "others" = t "~others" = or
+%<!strict>                { " " * bbl.etal * }
+%<strict>                { " " * bbl.etal bracketise *}
+                { " " bbl.and " " * * * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+%    \end{macrocode}
+%
+%
+% \subsection{Formatting names (cont.)}\label{s6.9}
+%
+% \DescribeFunction{format.author}
+% Formats a list of authors for the heading part of a bibliographic record
+% by appying either |fmt.names.first|, |fmt.names.three| or |fmt.names.all| to
+% the field |author|, if it is not empty; % otherwise it pushes empty |author|.
+% This allows making a check as in the case of
+% |format.author "author" output.check|.
+%
+% \note{Однако заметим, что все другие
+% функции |format....| пустое поле замещают пустой строкой.}
+%    \begin{macrocode}
+%FUNCTION {format.author}
+%{ author empty$
+%    %%%{ "" }  % < v.1.3
+%    { author } % v.1.3
+%    %{ author format.names emphasize} % 1st if strict, <=3 otherwise
+%%<long>    { author fmt.names.all emphasize}
+%%<!long&strict>    { author fmt.names.first emphasize}
+%%<!long&!strict>    { author fmt.names.three emphasize}
+%  if$
+%}
+FUNCTION {format.author}
+{
+  author empty$
+    { author } %%%'skip$
+%<*long>
+    { author fmt.names.all }
+%</long>
+%<*!long>
+    {author num.names$ #4 <
+      {
+%<strict>       author fmt.names.first
+%<!strict>       author fmt.names.three
+      }
+      { "" } %%%'skip$
+    if$}
+%</!long>
+  if$
+}
+
+%    \end{macrocode}
+%
+% \DescribeFunction{format.bookauthors}
+% Is used only once by |bookauthor.head| called in |inbook| entry.
+% \note{Not used anymore!}
+%    \begin{macrocode}
+%<*debug>
+%FUNCTION {format.bookauthors}
+%{ bookauthor empty$
+%    { "" }
+%    { bookauthor format.names}% cuts to 4 persons if |!strict| option
+%  if$
+%}
+%
+%</debug>
+%    \end{macrocode}
+%
+% \DescribeFunction{format.author.rest}
+% Formats |author| to be placed after a slash in the zone of responsibiloty of
+% a bibliographic record. In contrast to |output.author.rest| does not check
+% number of items in the |author| field; it is recommended to use
+% |output.author.rest| instead whenever possible.
+% \note{Not used any more.}
+%    \begin{macrocode}
+%<*debug>
+FUNCTION {format.author.rest}
+{
+%<*long>
+  %%% Does this work?
+  %%%skip$     % this seemed to work
+  %%% ""       % this seemed to work
+%</long>
+%<*!long>
+  author empty$
+    %%%{ "" } % < v.1.3
+    { author } % v.1.3
+    { author fmt.names.three }
+  if$
+%</!long>
+}
+
+%</debug>
+%    \end{macrocode}
+% \DescribeFunction{format.bookauthors.rest}
+%    \begin{macrocode}
+FUNCTION {format.bookauthors.rest}
+{ bookauthor empty$
+    { "" }
+%<long>    { bookauthor fmt.names.all emphasize }
+%<!long>    { bookauthor fmt.names.three emphasize }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.editors.rest}
+%    \begin{macrocode}
+FUNCTION {format.editors.rest}
+{ editor empty$
+    { "" }
+%<long>    { bbl.edby "\ " * editor fmt.names.all * }
+%<!long>    { bbl.edby "\ " * editor fmt.names.three * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.chief.rest}
+% Formats |editor| field for |report| and |techreport| entries.
+%    \begin{macrocode}
+FUNCTION {format.chief.rest}
+{ editor empty$
+    { "" }
+%<long>    { bbl.chief "\ " * editor fmt.names.all * }
+%<!long>    { bbl.chief "\ " * editor fmt.names.three * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.executor.rest}
+%    \begin{macrocode}
+FUNCTION {format.executor.rest}
+{ author empty$
+    { "" }
+%<long>    { bbl.executor ": " * author fmt.names.all * }
+%<!long>    { bbl.executor ": " * author fmt.names.three * }
+  if$
+}
+
+%    \end{macrocode}
+% \DescribeFunction{format.compiler.rest}
+%    \begin{macrocode}
+FUNCTION {format.compiler.rest}
+{ compiler empty$
+    { "" }
+%<long>    { bbl.compiler "\ " * compiler fmt.names.all * }
+%<!long>    { bbl.compiler "\ " * compiler fmt.names.three * }
+  if$
+}
+
+%    \end{macrocode}
+%
+%
+% \subsection{Formatting natbib keys}\label{s6.8}
 %
 %    \begin{macrocode}
 %<*natbib>
 %    \end{macrocode}
 %
-% \DescribeFunction{format.names.all}
-% Formats all names in a field even if their number exceeds 4; note that it drops
-% first name in every name.
+% \DescribeFunction{fmt.names.short}
+% Formats all names like |fmt.names.all| but uses short format of names (drops |ff| and |f.|
+% modifiers).
 %
 % \note{Do we need all these variations in the name format? Why the
-% format is different in different |format.names...| functions. As to this particular
+% format is different in different \texttt{format.names...} functions. As to this particular
 % function it seems reasonable to drop first names as it is used to compose
 % natbib labels.}
 %
 %    \begin{macrocode}
-FUNCTION {format.names.all}
+FUNCTION {fmt.names.short}
 { 's :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
@@ -3071,32 +3272,18 @@ FUNCTION {format.names.all}
 % \DescribeFunction{format.lab.names}
 % Declares function to go to optional argument of |\bibitem| in
 % the bibstyles generated with the option |natbib|.
-%
-% \note{THIS CODE NEEDS TO BE UPDATED TO ALLOW FOR |langid| field
-% instead of |language|!}
-%
-% Вероятно, нужно будет перенести функцию |langid.or.language| вперёд.
 %    \begin{macrocode}
 FUNCTION {format.lab.names}
 { 's :=
-%  language empty$
-%    { "english" 'curlanguage := }
-%    { language  'curlanguage := }
-%  if$
-  set.language %%% На самом деле эта функция уже вызвана в output.bibuten
+  set.language %%% уже вызвана в output.bibitem, но вроде бы нужна и здесь
   s #1 "{vv~}{ll}" format.name$
   s num.names$ duplicate$
   #2 >
-    %{ pop$ " et~al." * }
     { pop$ " " bbl.etal * * }
     { #2 <
         'skip$
-        %%% суббота, Февраль 11, 2017  18:07
-        %%%{ s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-        { s #2 "{vv }{ll}{ jj}" format.name$ "others" =
-            %{ " et~al." * }
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
             { " " bbl.etal * * }
-            %{ " and " * s #2 "{vv~}{ll}" format.name$ * }
             { " " bbl.and " " * * * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
@@ -3230,174 +3417,35 @@ FUNCTION {calc.label}
 
 %    \end{macrocode}
 %
-%    \begin{macrocode}
-%</natbib>
-%    \end{macrocode}
-%
-%
-% \subsection{Formatting names of authors, editors, etc. (cont.)}\label{s6.9}
-%
-% \DescribeFunction{format.authors}
-% Formats a list of authors by appying either function |fmt.names.first|,
-% |fmt.names.three| or |fmt.names.all| to the field |author|, if it is not empty;
-% otherwise it pushes empty |author|. This allows making checks as in case of
-% |format.authors "author" output.check|.
-%    \begin{macrocode}
-FUNCTION {format.authors}
-{ author empty$
-    %%%{ "" }  % < v.1.3
-    { author } % v.1.3
-    %{ author format.names emphasize} % 1st if strict, <=3 otherwise
-%<long>    { author fmt.names.all emphasize}
-%<!long&strict>    { author fmt.names.first emphasize}
-%<!long&!strict>    { author fmt.names.three emphasize}
-  if$
-}
-
-%    \end{macrocode}
-%
-% \DescribeFunction{format.bookauthors}
-% Is used only once by |bookauthor.before| called in |inbook| entry.
-% \note{Not used anymore!}
-%    \begin{macrocode}
-%<*debug>
-%FUNCTION {format.bookauthors}
-%{ bookauthor empty$
-%    { "" }
-%    { bookauthor format.names}% cuts to 4 persons if |!strict| option
-%  if$
-%}
-%
-%</debug>
-%    \end{macrocode}
-%
-% \DescribeFunction{format.authors.after}
-%    \begin{macrocode}
-FUNCTION {format.authors.after}
-{
-%<long>  ""
-%<*!long>
-  author empty$
-    %%%{ "" } % < v.1.3
-    { author } % v.1.3
-    %{ author format.names.after}% always cuts to 4 persons
-    { author fmt.names.three }
-  if$
-%</!long>
-}
-
-%    \end{macrocode}
-% \DescribeFunction{format.bookauthors.after}
-%    \begin{macrocode}
-FUNCTION {format.bookauthors.after}
-{ bookauthor empty$
-    { "" }
-    %{ bookauthor format.names.after}% always cuts to 4 persons
-%<long>    { bookauthor fmt.names.all emphasize }
-%<!long>    { bookauthor fmt.names.three emphasize }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{format.editors.after}
-%    \begin{macrocode}
-FUNCTION {format.editors.after}
-{ editor empty$
-    { "" }
-    %{ bbl.edby "\ " * editor format.names.after * }
-%<long>    { bbl.edby "\ " * editor fmt.names.all * }
-%<!long>    { bbl.edby "\ " * editor fmt.names.three * }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{format.chief.after}
-% Formats |editor| field for |report| and |techreport| entries.
-%    \begin{macrocode}
-FUNCTION {format.chief.after}
-{ editor empty$
-    { "" }
-    %{ bbl.chief "\ " * editor format.names.after * }
-%<long>    { bbl.chief "\ " * editor fmt.names.all * }
-%<!long>    { bbl.chief "\ " * editor fmt.names.three * }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{format.executor.after}
-%    \begin{macrocode}
-FUNCTION {format.executor.after}
-{ author empty$
-    { "" }
-    %{ bbl.executor ": " * author format.names.after * }
-%<long>    { bbl.executor ": " * author fmt.names.all * }
-%<!long>    { bbl.executor ": " * author fmt.names.three * }
-  if$
-}
-
-%    \end{macrocode}
-% \DescribeFunction{format.compiler.after}
-%    \begin{macrocode}
-FUNCTION {format.compiler.after}
-{ compiler empty$
-    { "" }
-    %{ bbl.compiler "\ " * compiler format.names.after * }
-%<long>    { bbl.compiler "\ " * compiler fmt.names.all * }
-%<!long>    { bbl.compiler "\ " * compiler fmt.names.three * }
-  if$
-}
-
-%    \end{macrocode}
-%
-%
-%
-%
-%    \begin{macrocode}
-%<*natbib>
-%    \end{macrocode}
-%
-%
-% \DescribeFunction{format.authors.all}
-% \DescribeFunction{format.editors.all}
-% \DescribeFunction{format.authors.editors.all}
-% \DescribeFunction{make.names.all}
-% In case of |natbib| option, we need |make.names.all| to compose
+% \DescribeFunction{make.names.short}
+% In case of |natbib| option, we need |make.names.short| to compose
 % |output.bibitem|, and the latter, in its turn, requires some more functions.
-%
-% \note{ПОДОЗРЕВАЮ, ЧТО НИЖЕСЛЕДУЮЩИЕ ФУНКЦИИ ДУБЛИРУЮТ ФУНКЦИИ,
-% ОПРЕДЕЛЕННЫЕ ВЫШЕ.}
 %    \begin{macrocode}
-FUNCTION {format.authors.all}
-{ author empty$
-    { "" }
-    { author format.names.all }
-  if$
-}
-
-FUNCTION {format.editors.all}
-{ editor empty$
-    { "" }
-    { editor format.names.all }
-  if$
-}
-
-FUNCTION {format.authors.editors.all}
-{ author empty$
-    { editor empty$
-        { "" }
-        { editor format.names.all }
+FUNCTION {make.names.short} %% called 1 time only
+{ type$ "book" = type$ "inbook" = or
+    %'format.author.editor.short
+    { author empty$
+        { editor empty$
+            { "" }
+            { editor fmt.names.short }
+          if$
+        }
+        { author fmt.names.short }
       if$
     }
-    { author format.names.all }
-  if$
-}
-
-FUNCTION {make.names.all}
-{ type$ "book" = type$ "inbook" = or
-    'format.authors.editors.all
     { type$ "proceedings" =
-        'format.editors.all
-        'format.authors.all
+        %'format.editor.short
+        { editor empty$
+            { "" }
+            { editor fmt.names.short }
+          if$
+        }
+        %'format.author.short
+        { author empty$
+            { "" }
+            { author fmt.names.short }
+          if$
+        }
       if$
     }
   if$
@@ -3407,66 +3455,6 @@ FUNCTION {make.names.all}
 %
 %    \begin{macrocode}
 %</natbib>
-%    \end{macrocode}
-%
-%
-%    \subsection{Aliases}\label{s6.10}
-%
-% Aliases to some fields are introduced with the help of
-% \emph{field1}|.or.|\emph{field2} functions.
-%
-% \DescribeFunction{address.or.location}
-% Pushes |address| field if not empty; otherwise pushes |location| value even
-% if it is empty.
-% \changes{v1.2i}{02 Jan 2017}{\texttt{location} field added as alias to \texttt{address} field}
-%    \begin{macrocode}
-%FUNCTION {address.or.location}
-%{
-%  address empty$
-%    { location empty$
-%      'skip$
-%      { location }
-%    if$ }
-%    { address }
-%  if$
-%}
-FUNCTION {address.or.location}
-{
-  address empty$
-    { location }
-    { address }
-  if$
-}
-
-%    \end{macrocode}
-%
-% \DescribeFunction{specialitycode.or.number}
-% Pushed |specialitycode| value if not empty; otherwise
-% returns |number| value even if the latter is empty.
-% \changes{v1.2i}{13 Jan 2017}{\texttt{number} field is now alias to \texttt{specialitycode}}
-%    \begin{macrocode}
-FUNCTION {specialitycode.or.number}
-{
-  specialitycode empty$
-    { number }
-    { specialitycode }
-  if$
-}
-
-%    \end{macrocode}
-%
-% \DescribeFunction{institution.or.school}
-% Pushes |institution| value if not empty; otherwise
-% returns |school| value even if the latter is empty.
-% \changes{v1.2i}{13 Jan 2017}{\texttt{school} field is now alias to \texttt{instituttion}}
-%    \begin{macrocode}
-FUNCTION {institution.or.school}
-{
-  institution empty$
-    { school}
-    { institution }
-  if$
-}
 %    \end{macrocode}
 %
 %
@@ -3478,19 +3466,6 @@ FUNCTION {institution.or.school}
 % empty.
 %    \begin{macrocode}
 %<*!strict>
-%FUNCTION {output.address.publisher}
-%{
-%  address empty$
-%    'skip$
-%    { address output
-%      publisher empty$
-%        'skip$
-%        { new.colon }
-%      if$
-%    }
-%  if$
-%  publisher output
-%}
 FUNCTION {output.address.publisher}
 {
   address empty$ location empty$ and
@@ -3536,12 +3511,16 @@ FUNCTION {output.address.publisher}
 % string variable based on |langid| or |language| field.
 % \changes{v1.2c}{18 Jan 2015}{entry field \texttt{langid} added}
 %    \begin{macrocode}
-%<*!natbib>
 FUNCTION {output.bibitem}
 {
   set.language
   newline$
   "\bibitem" write$
+%<*natbib>
+  label ")" *
+  make.names.short *
+  bracketise write$
+%</natbib>
   cite$ bracify write$
   newline$
   "\selectlanguageifdefined" curlanguage bracify * write$
@@ -3550,38 +3529,19 @@ FUNCTION {output.bibitem}
   before.all 'output.state :=
 }
 
-%</!natbib>
 %    \end{macrocode}
 %
 %    \begin{macrocode}
 %<*natbib>
-FUNCTION {output.bibitem}
-{
-  set.language
-  newline$
-  "\bibitem[" write$
-  label write$
-  ")" make.names.all duplicate$ short.list =
-     { pop$ }
-     { * }
-   if$
-  "]{" * write$
-  cite$ write$
-  "}" write$
-  "\selectlanguageifdefined" curlanguage bracify * write$
-  newline$
-  ""
-  before.all 'output.state :=
-}
 %FUNCTION {output.bibitem}
 %{ newline$
 %  "\bibitem" write$
 %%  author.key.label
 %%  year parenthesify *
 %%  "; lbl:" label * *
-%%  "; mfn:"  make.names.all * *
+%%  "; mfn:"  make.names.short * *
 %  label
-%  make.names.all *
+%  make.names.short *
 %  bracketise write$
 %  cite$ bracify write$
 %  newline$
@@ -3926,7 +3886,7 @@ FUNCTION {format.techreport.type}
 
 %    \end{macrocode}
 %
-% \DescribeFunction{output.author.before}
+% \DescribeFunction{output.author.head}
 % Formats and writes list of authors in the heading of a bibliographic record.
 % The GOST bibstyles skip the list of authors in the beginning of the
 % bibliographic record if the number of authors is 4 or larger except for the
@@ -3934,12 +3894,12 @@ FUNCTION {format.techreport.type}
 % heading. The bibstyles compiled with the option |struct| print at most 1 person
 % name in the heading.
 %    \begin{macrocode}
-FUNCTION {output.author.before}
+FUNCTION {output.author.head}
 {
   author empty$
     'skip$
 %<*long>
-    { author fmt.names.all output
+    { author fmt.names.all output.nonnull
       %new.sentence
     }
 %</long>
@@ -3948,39 +3908,40 @@ FUNCTION {output.author.before}
       {
 %<strict>       author fmt.names.first output
 %<!strict>       author fmt.names.three output
-       %new.sentence
+       new.sentence
       }
       'skip$
     if$}
 %</!long>
   if$
 }
+
 %    \end{macrocode}
 %
-% \DescribeFunction{bookauthor.before}
-% There are also 2 version of the function |bookauthor.before|.
+% \DescribeFunction{bookauthor.head}
+% There are also 2 version of the function |bookauthor.head|.
 % Not used anymore!
 %    \begin{macrocode}
 %    \end{macrocode}
 %
-% \DescribeFunction{output.author.after}
-% Writes authors list after the entry title followed by a slash.
-% In modern styles, compiled without option |strict|, the list of authors is
-% always cut to at most 4 persons. The cut is performed first by
-% |format.names.after|, which is called by |format.authors.after|. For old styles,
-% |author.after| just outputs formatted string whereas for new style it
-% skips the string if the number of authors exceeds 3 (and author list is not
-% printed before the title).
+% \DescribeFunction{output.author.rest}
+% Writes the rest of authors list after the entry title followed by a slash.
+% In modern bibstyles, the list of authors in the heading part of a bibliographic
+% record is cut to either 3 persons (if no |!strict| option is applied) or 1
+% person (if |strict| option). By idea, |output.author.rest| should print the rest
+% of the authors in the |author| field but currently it also repeats the persons
+% printed in the heading part. |output.author.rest| returns a null string (|""|)
+% if all persons are printed in the heading part of the record. Note that all
+% persons are alwats printed in the heading part if |long| option is applied.
 %    \begin{macrocode}
-FUNCTION {output.author.after}
+FUNCTION {output.author.rest}
 {
 %<*!long>
   author empty$
     'skip$
-    {author num.names$ #3 >
-      {
-%<strict>        author fmt.names.all output
-%<!strict>        author fmt.names.three output
+%<strict>    {author num.names$ #1 >
+%<!strict>    {author num.names$ #3 >
+      { author fmt.names.all output
         new.semicolon
       }
       'skip$
@@ -3990,11 +3951,12 @@ FUNCTION {output.author.after}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{bookauthor.after}
+%
+% \DescribeFunction{bookauthor.rest}
 % This function is used only in |inbook| entry. It always cuts list to 4 persons
-% since |format.bookauthors.after| does that.
+% since |format.bookauthors.rest| does that.
 %    \begin{macrocode}
-FUNCTION {bookauthor.after}
+FUNCTION {bookauthor.rest}
 {
   bookauthor empty$
     'skip$
@@ -4007,25 +3969,25 @@ FUNCTION {bookauthor.after}
 }
 
 %    \end{macrocode}
-% \DescribeFunction{editor.organization.after}
+% \DescribeFunction{editor.organization.rest}
 %    \begin{macrocode}
-FUNCTION {editor.organization.after}
+FUNCTION {editor.organization.rest}
 {
   compiler empty$
     {}
-    { format.compiler.after  output
+    { format.compiler.rest  output
     new.semicolon
     }
   if$
   editor empty$
     {}
-    { format.editors.after  output
+    { format.editors.rest  output.nonnull
     new.semicolon
     }
   if$
   organization empty$
     {}
-    {organization output
+    {organization output.nonnull
     new.semicolon
     }
   if$
@@ -4363,12 +4325,12 @@ FUNCTION {format.prioritydate}
 FUNCTION {article}
 {
   output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   title add.media "title" output.check
   new.slash
-  output.author.after
+  output.author.rest
   new.dblslash
   journal emphasize add.doi "journal" output.check % new in v1.2
   new.block
@@ -4406,15 +4368,15 @@ FUNCTION {article}
 FUNCTION {book}
 {
   output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   title add.doi add.media "title" output.check
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.sentence
   format.number.series output
   new.block
@@ -4454,15 +4416,15 @@ FUNCTION {book}
 FUNCTION {booklet}
 {
   output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   title add.doi add.media "title" output.check
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.block
   howpublished output
   address.or.location output
@@ -4494,20 +4456,20 @@ FUNCTION {booklet}
 FUNCTION {inbook}
 {
   output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   title add.doi add.media "title" output.check
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
+  output.author.rest
   new.dblslash
-%  bookauthor.before
+%  bookauthor.head
   booktitle "booktitle" output.check
   new.slash
-  bookauthor.after
-  editor.organization.after
+  bookauthor.rest
+  editor.organization.rest
   new.block
   format.edition output
   new.block
@@ -4549,7 +4511,7 @@ FUNCTION {inbook}
 FUNCTION {incollection}
 {
   output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   new.sentence
@@ -4557,11 +4519,11 @@ FUNCTION {incollection}
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
+  output.author.rest
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   output.address.publisher
   format.date "year/date" output.check
@@ -4602,7 +4564,7 @@ FUNCTION {proceedings}
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   format.bvolume output
   format.number.series output
@@ -4634,7 +4596,7 @@ FUNCTION {proceedings}
 %    \begin{macrocode}
 FUNCTION {inproceedings}
 { output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   new.sentence
@@ -4642,11 +4604,11 @@ FUNCTION {inproceedings}
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
+  output.author.rest
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   format.bvolume output
   format.number.series output
@@ -4696,7 +4658,7 @@ FUNCTION {manual}
         }
       if$
     }
-    { format.authors output.nonnull }
+    { format.author output.nonnull }
   if$
 %<natbib>  author format.key output
   new.block
@@ -4756,7 +4718,7 @@ FUNCTION {patent}
   new.colon
   ipc output
   new.slash
-  format.authors "author" output.check
+  format.author "author" output.check
   add.blank
   authorcountry paranthesify output.nonnull
 %<natbib>  author format.key output
@@ -4796,8 +4758,8 @@ FUNCTION {patent}
 %    \begin{macrocode}
 FUNCTION {misc}
 { output.bibitem
-  %format.authors output  % < v.1.3
-  output.author.before    % v.1.3
+  %format.author output  % < v.1.3
+  output.author.head    % v.1.3
   %new.sentence            % v.1.3
 %<natbib>  author format.key output
   title howpublished new.sentence.checkb
@@ -4829,15 +4791,15 @@ FUNCTION {misc}
 %    \begin{macrocode}
 FUNCTION {unpublished}
 { output.bibitem
-  output.author.before
+  output.author.head
   new.sentence
 %<natbib>  author format.key output
   title "title" output.check
   new.colon          % added in v.1.3
   titleaddon output  % added in v.1.3
   new.slash
-  output.author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.block
   format.date "year/date" output.check
   new.block
@@ -4866,7 +4828,7 @@ FUNCTION {unpublished}
 %    \begin{macrocode}
 FUNCTION {online}
 { output.bibitem
-  format.authors output
+  format.author output
 %<natbib>  author format.key output
   title howpublished new.sentence.checkb
   title add.doi add.media "title" output.check
@@ -4876,7 +4838,7 @@ FUNCTION {online}
   howpublished new.dblslash.checka
 %<!strict>  howpublished output
 %<strict>  howpublished bracketise output
-  editor.organization.after
+  editor.organization.rest
   new.sentence
   new.block
   output.address.publisher
@@ -4920,7 +4882,7 @@ FUNCTION {electronic} {online}
 %    \begin{macrocode}
 FUNCTION {thesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
 %<natbib>  author format.key output
   new.sentence
   title add.doi add.media "title" output.check
@@ -4931,8 +4893,8 @@ FUNCTION {thesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  %%%format.authors.after output %% dupplicates athours
-  output.author.after            %% prints if num.names$ > 3
+  %%%format.author.rest output %% dupplicates athours from the head zone
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -4968,15 +4930,15 @@ FUNCTION {thesis}
 %FUNCTION {report}
 %{
 %  output.bibitem
-%  output.author.before
+%  output.author.head
 %  new.sentence
 %  title add.doi add.media "title" output.check
 %  new.colon
 %%  format.techrep.type.number output.nonnull
 %  type "type" output.check
 %  new.slash
-%  output.author.after
-%  editor.organization.after
+%  output.author.rest
+%  editor.organization.rest
 %  new.block
 %  address output
 %  new.colon
@@ -4995,7 +4957,7 @@ FUNCTION {thesis}
 FUNCTION {report}
 {
   output.bibitem
-%  output.author.before
+%  output.author.head
 %  new.sentence
   title add.doi add.media "title" output.check
 %<natbib>  title format.key output
@@ -5012,9 +4974,9 @@ FUNCTION {report}
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
   new.semicolon
-  format.chief.after output % from editor field
+  format.chief.rest output % from editor field
   new.semicolon
-  format.executor.after output % from author field
+  format.executor.rest output % from author field
   new.block
   address.or.location output
   new.colon
@@ -5045,7 +5007,7 @@ FUNCTION {report}
 %    \begin{macrocode}
 FUNCTION {phdthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
 %<natbib>  author format.key output
   new.sentence
   title add.doi add.media "title" output.check
@@ -5057,8 +5019,8 @@ FUNCTION {phdthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  %%%format.authors.after output %% dupplicates athours
-  output.author.after            %% prints if num.names$ > 3
+  %%%format.author.rest output %% dupplicates athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -5083,7 +5045,7 @@ FUNCTION {phdthesis}
 %    \begin{macrocode}
 FUNCTION {mastersthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
 %<natbib>  author format.key output
   new.sentence
   title add.doi add.media "title" output.check
@@ -5095,8 +5057,8 @@ FUNCTION {mastersthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  %%%format.authors.after output %% dupplicates athours
-  output.author.after            %% prints if num.names$ > 3
+  %%%format.author.rest output %% dupplicates athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -5121,7 +5083,7 @@ FUNCTION {mastersthesis}
 %    \begin{macrocode}
 FUNCTION {docthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
 %<natbib>  author format.key output
   new.sentence
   title add.doi add.media "title" output.check
@@ -5133,8 +5095,8 @@ FUNCTION {docthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  %%%format.authors.after output %% dupplicate athours
-  output.author.after            %% prints if num.names$ > 3
+  %%%format.author.rest output %% dupplicate athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -5166,14 +5128,14 @@ FUNCTION {conference} { inproceedings }
 %FUNCTION {techreport}
 %{
 %  output.bibitem
-%  output.author.before
+%  output.author.head
 %  new.sentence
 %  title add.doi add.media "title" output.check
 %  new.colon
 %  format.techrep.type.number output.nonnull
 %  new.slash
-%  output.author.after
-%  editor.organization.after
+%  output.author.rest
+%  editor.organization.rest
 %  new.block
 %  address output
 %  new.colon
@@ -5193,7 +5155,7 @@ FUNCTION {conference} { inproceedings }
 FUNCTION {techreport}
 {
   output.bibitem
-%  output.author.before
+%  output.author.head
 %  new.sentence
   title add.doi add.media "title" output.check
 %<natbib>  title format.key output
@@ -5209,9 +5171,9 @@ FUNCTION {techreport}
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
   new.semicolon
-  format.chief.after output % from editor field
+  format.chief.rest output % from editor field
   new.semicolon
-  format.executor.after output % from author field
+  format.executor.rest output % from author field
   new.block
   address.or.location output
   new.colon
@@ -5949,6 +5911,6 @@ EXECUTE {end.bib}
 %</bst>
 %    \end{macrocode}
 %
-%\CheckSum{803}
+%\CheckSum{798}
 %
 %\Finale
