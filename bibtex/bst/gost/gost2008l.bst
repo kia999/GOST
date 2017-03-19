@@ -1143,9 +1143,9 @@ FUNCTION {bbl.googlebooks}
 { curlanguage "english" =
    { "Google Books" }
    { curlanguage "ukrainian" =
-      {"Google \CYRK\cyrn\ciri\cyrg\cyri"}
+      {"Google \CYRK\cyrn\cyri\cyrg\cyri"}
       { curlanguage "russian" =
-         { "Google \CYRK\cyrn\ciri\cyrg\cyri" }
+         { "Google \CYRK\cyrn\cyri\cyrg\cyri" }
          { curlanguage "german" =
             { "Google Books" }
             { "language is not defined: bbl.googlebooks for " curlanguage * warning$ "Google Books" }
