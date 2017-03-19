@@ -168,7 +168,7 @@ titles and other parts of bibliographic record while 8-bit styles
 do the case change where appropriate.
 
 8.
-Either `bibtex8` or `Bibtex8` fail to cut Cyrillic names to
+Either `bibtex.exe` or `bibtex8.exe` fail to cut Cyrillic names to
 initials. Therefore `ugost2008*` styles do not modify name of
 authors.
 
