@@ -515,8 +515,17 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 % \DoNotIndex{\CYRCH, \CYRG, \CYRL, \CYRZH}
 % \DoNotIndex{\z@skip,\z@}
 % \DoNotIndex{\|,\~,\ ,\,}
-% \DoNotIndex{\ }
-% \DoNotIndex{\\&,\',\(,\),\`,\\,\/,\.}
+%
+% \begingroup
+%   \makeatletter
+%   \lccode`9=32\relax
+%   \lowercase{%^^A
+%     \edef\x{\noexpand\DoNotIndex{\@backslashchar9}}%^^A
+%   }%^^A
+% \expandafter\endgroup\x
+% \expandafter\DoNotIndex\expandafter{\string\&}
+%
+% \DoNotIndex{\',\(,\),\`,\\,\/,\.}
 % \DoNotIndex{\begin,\DeclareUTFcharacter}
 % \DoNotIndex{\csname,\def}
 % \DoNotIndex{\else,\endcsname,\end}
