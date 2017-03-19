@@ -167,22 +167,19 @@ In addition, BibTeX8 distribution comes with few more CSFs.
 
 ## How to use
 
-1.
-Select bibliography style by adding appropriate `\bibliographystyle`
+1. Select bibliography style by adding appropriate `\bibliographystyle`
 declaration to your source file \file{<filename>.tex}, e.g.
 ```tex
 \bibliographystyle{gost2008}
 \bibliography{database}
 ```
 
-2.
-Add the field `language="ukrainian"` or `language="russian"` to the
+2. Add the field `language="ukrainian"` or `language="russian"` to the
 bibliographic entries in Ukrainian or Russian languages in your
 database; English is the default language. German, Italian and
 French are partially supported.
 
-3.
-To compile list of references from your database use `bibtex8.exe`
+3. To compile list of references from your database use `bibtex8.exe`
 rather than `bibtex.exe`. Depending on the codepage of your
 bibliographic database, indicate one of the CS files
 listed above as option to `bibtex8.exe`. Run LaTeX, then run
@@ -193,35 +190,29 @@ bibtex8 -B -c <csf_file>.csf <filename>.aux
 latex <filename>.tex
 ```
 
-4.
-For details on preparing bibliographic database see examples in
+4. For details on preparing bibliographic database see examples in
 `gost*.pdf` and `ugost*.pdf`.
 
-5.
-`ugost*` styles are primarily intended for use
+5. `ugost*` styles are primarily intended for use
 with unicode compilers (`xelatex` and `lualatex`). They
 should be preferred as well when using 8bit compilers
 (`latex` and `pdflatex`) if source file is in `utf8` encoding.
 
-6.
-Neither `bibtex.exe` nor `bibtex8.exe` provides
+6. Neither `bibtex.exe` nor `bibtex8.exe` provides
 correct sorting order of unicode text. It means that using
 `ugost2008s` or `ugost2008ns` may produce unexpected result
 for documents in `utf8` encoding.
 
-7.
-`Bibtex8` fails to change case of a string if it contains Cyrillic
+7. `Bibtex8` fails to change case of a string if it contains Cyrillic
 letter in unicode. Therefore `ugost2008*` styles do not change case of
 titles and other parts of bibliographic record while 8-bit styles
 do the case change where appropriate.
 
-8.
-Either `bibtex8` or `Bibtex8` fail to cut Cyrillic names to
+8. Either `bibtex.exe` or `bibtex8.exe` fail to cut Cyrillic names to
 initials. Therefore `ugost2008*` styles do not modify name of
 authors.
 
-9.
-Package `natbib` is required when choosing styles with
+9. Package `natbib` is required when choosing styles with
 suffix `n` in their names.
 
 ## Customization
@@ -275,46 +266,35 @@ to produce .bst styles and documentation.
 ## Version history
 
 ### Version 1.3 (2017.02.25)
-1.
-All stuff is now generated from `gost.dtx`.
+1. All stuff is now generated from `gost.dtx`.
 
-2.
-Limited support of the `date` field added.
+2. Limited support of the `date` field added.
 
-3.
-Formatting of `doi` field updated: `http://dx.doi.org` changed
+3. Formatting of `doi` field updated: `http://dx.doi.org` changed
 to `https://doi.org`.
 
-4.
-Restricted support of `date` field added.
+4. Restricted support of `date` field added.
 
-5.
-Documentation and examples update (thanks to Leonid Sinev).
+5. Documentation and examples update (thanks to Leonid Sinev).
 
 %</readmemd|readme>
 %<*readmemd>
 
 ### Version 1.2i (2017.01.12)
 
-1.
-Documentation and examples update (thanks to Leonid Sinev).
+1. Documentation and examples update (thanks to Leonid Sinev).
 
-2.
-Restored `@MastersThesis` instead of `@MasterThesis` (thanks to Leonid Sinev).
+2. Restored `@MastersThesis` instead of `@MasterThesis` (thanks to Leonid Sinev).
 
-3.
-`media="eresource"` is introduced in addition to `media="online"` and
+3. `media="eresource"` is introduced in addition to `media="online"` and
 `media="text"`; if present, the `media` field is not ignored any more in
 modern bst-styles compiled without the `strict` option.
 
-4.
-`location` field is introduced as an alias of `address` field.
+4. `location` field is introduced as an alias of `address` field.
 
-5.
-`@DSCISTHESIS` entry renamed to `@DOCTHESIS`.
+5. `@DSCISTHESIS` entry renamed to `@DOCTHESIS`.
 
-6.
-`school` field in `@THESIS` and similar entries is replaced by
+6. `school` field in `@THESIS` and similar entries is replaced by
 `institution` to comply with `biblatex-gost` style.
 
 ### Older versions
@@ -326,7 +306,7 @@ Please, send feature requests and bug reports via e-mail:
   `kia999@mail.ru`     <Igor Kotelnikov>,
   `polyama@yahoo.com`  <Maksym Polyakov>,
 or submit an issue on
-  `https://github.com/kia999/GOST/issues`.
+  [https://github.com/kia999/GOST/issues](https://github.com/kia999/GOST/issues).
 
 Happy BibTeXing!
 %</readmemd>
@@ -751,7 +731,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 %   do the case change where appropriate.
 %
 %   \item
-%   Either \file{bibtex8} or \file{Bibtex8} fail to cut Cyrillic names to
+%   Either \file{bibtex.exe} or \file{bibtex8.exe} fail to cut Cyrillic names to
 %   initials. Therefore \file{ugost2008*} styles do not modify name of
 %   authors.
 %
