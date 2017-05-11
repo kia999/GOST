@@ -1380,7 +1380,7 @@ FUNCTION {fmt.names.all}
               if$
               t "others" = t "~others" = or
                 { " " * bbl.etal bracketise *}
-                { " " bbl.and " " * * * t * }
+                { ", " * t * }
               if$
             }
           if$

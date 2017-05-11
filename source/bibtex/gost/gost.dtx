@@ -3051,7 +3051,7 @@ FUNCTION {fmt.names.all}
               t "others" = t "~others" = or
 %<!strict>                { " " * bbl.etal * }
 %<strict>                { " " * bbl.etal bracketise *}
-                { " " bbl.and " " * * * t * }
+                { ", " * t * }
               if$
             }
           if$
@@ -3241,7 +3241,7 @@ FUNCTION {fmt.names.brief}
               if$
               t "others" =  t "~others" =  or
                 { " " bbl.etal * * }
-                { " " bbl.and " " * * * t * }
+                { ", " * t * }
               if$
             }
           if$
