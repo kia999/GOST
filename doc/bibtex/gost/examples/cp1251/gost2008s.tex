@@ -1,0 +1,331 @@
+\newcommand*{\mybibstyle}{gost2008s}
+
+ % cmap надо грузить до inputenc, чтобы работал поиск
+\RequirePackage{cmap}
+\RequirePackage[cp1251]{inputenc}
+
+\newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
+\newcommand{\mydescription}{
+   Example of a bibliography using the style \texttt{\mybibstyle.bst} 
+   and \texttt{natbib} package.
+   No customization is applied.
+
+   Пример оформления списка литературы с помощью стиля 
+   \texttt{\mybibstyle.bst} и пакета \texttt{natbib}.
+   Команды форматирования не изменены.
+}
+
+\documentclass[a4paper]{article}
+\usepackage[T2A]{fontenc}
+\usepackage[ukrainian,russian]{babel}
+\usepackage{geometry,ifpdf}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {\mytitle},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {GOST, BibTeX},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother		
+		
+\begin{document}
+
+\title{\mytitle}
+\maketitle
+\begin{abstract}
+  \mydescription
+\end{abstract}
+
+%\verb|\cite{*}| \cite{*}
+%
+%\verb|\citep{*}| \citep{*}
+%
+%\verb|\citet{*}| \citet{*}
+
+\newcommand{\allrefs}{Vasylenko92,
+Afanasyev92,
+Makilov91,
+Ponomarenko86,
+Belousova81,
+BibOp91,
+Poems82,
+HistLit82,
+Landau:eldin,
+BRLS94,
+Grosse80,
+ObchTech93,
+Bibdelo86,
+Ponomarenko79,
+Zeyts70,
+Ponoomarenko76,
+Malikov92,
+Ponomarenko86a,
+dixit.pindyck:options,
+RosGaz-article,
+Dolmatovskiy88,
+Ponomarenko88,
+Melikov95,
+Gojchuk98,
+Polyakov98a,
+TranskSpivrob99:Purich,
+Selikov95,
+Selikov+95,
+GOST7184,
+Luus82,
+KIA95-default,
+mastersthesis-minimal,
+mastersthesis-full,
+KIA85-autoref,
+vishnyakov:thesis1,
+vishnyakov:thesis2,
+Skvortsov:2008,
+Ponomarenko76,
+Report81-rep,
+Report81b-rep-notype,
+Report81-techrep,
+CatalogMamals81,
+Instr86,
+patent1,
+patent2,
+EXFOR,
+IsaacNewton,
+IsaacNewton-sl:sn,
+Encyclopedia,
+Nasirova,
+kremlincd,
+PhysRevLett.101.085006,
+wiki:latex,
+wiki:latex-2,
+phys:moodle,
+1998PhRvE..57.7111K,
+1998UFN,
+cs.SE:30073,
+CS:30073,
+nos_weeralarm_2009,
+gibbard,
+Williams2002,
+kruse,
+tmma,
+dekart:soch,
+moraux,
+mc:lfcn-400,
+scpi-99,
+scpi-04,
+Drake1948,
+geer,
+loh,
+Duebner1878,
+Bussemaker1878,
+Deluz1972,
+GuilielmusdeBoldensele,
+veilahti:abm,
+wassenberg,
+Lisi1995}
+
+\cite{\allrefs}
+
+\bibliographystyle{\mybibstyle}  
+\bibliography{bib/ex01,%
+bib/ex02,%
+bib/ex03,%
+bib/ex04,%
+bib/ex05,%
+bib/ex06,%
+bib/ex07,%
+bib/ex08,%
+bib/ex09,%
+bib/ex10,%
+bib/ex11,%
+bib/ex12,%
+bib/ex13,%
+bib/ex14,%
+bib/ex15,%
+bib/ex16,%
+bib/ex17,%
+bib/ex18,%
+bib/ex19,%
+bib/ex20,%
+bib/ex21,%
+bib/ex22,%
+bib/ex23,%
+bib/ex24,%
+bib/ex25,%
+bib/ex26,%
+bib/ex27,%
+bib/ex28,%
+bib/ex29,%
+bib/ex30,%
+bib/ex31,%
+bib/ex32,%
+bib/ex33,%
+bib/ex34,%
+bib/ex35,%
+bib/ex36,%
+bib/ex37,%
+bib/ex38,%
+bib/ex39,%
+bib/ex40,%
+bib/ex41,%
+bib/ex42,%
+bib/ex43,%
+bib/ex44,%
+bib/ex45,%
+bib/ex46,%
+bib/ex47,%
+bib/ex48,%
+bib/ex49,%
+bib/ex50,%
+bib/ex51,%
+bib/ex52,%
+bib/ex53,%
+bib/ex54,%
+bib/ex55,%
+bib/ex56,%
+bib/ex57,%
+bib/ex58,%
+bib/ex59,%
+bib/ex60,%
+bib/ex61,%
+bib/ex62,%
+bib/ex63,%
+bib/ex64,%
+bib/ex65,%
+bib/ex66,%
+bib/ex67,%
+bib/ex68,%
+bib/ex69,%
+bib/ex70,%
+bib/ex71,%
+bib/ex72,%
+bib/ex73,%
+bib/ex74,%
+bib/ex75,%
+bib/ex76}
+
+\end{document} 
+
+
+
+
+
+\newcommand*{\mybibstyle}{gost2008s}
+
+\RequirePackage[cp1251]{inputenc}
+
+\newcommand*{\mytitle}{The GOST bundle: \mybibstyle.bst}
+\newcommand{\mydescription}{
+   Example of a bibliography using the style \texttt{\mybibstyle.bst}. 
+   No customization is applied.
+
+   Пример оформления списка литературы с помощью стиля 
+   \texttt{\mybibstyle.bst}.
+   Команды форматирования не изменены.
+}
+
+\documentclass[a4paper]{article}
+\usepackage[cp1251]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[ukrainian,russian]{babel}
+%\usepackage{natbib}
+\usepackage{geometry,ifpdf}
+\ifpdf
+  \usepackage[pdftex,hyperindex,unicode]{hyperref}
+  \usepackage{cmap}
+\else
+  \usepackage[hypertex]{hyperref}
+\fi
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0,0,.6}
+\hypersetup{
+  pdftitle           = {\mytitle},
+  pdfauthor          = {Igor A. Kotelnikov},
+  pdfsubject         = {GOST, BibTeX},
+  pdfstartview       = {FitH},
+%  pdfborder          = {0 0 0},
+%  bookmarksopen      = true,
+  bookmarksnumbered  = true,
+%  bookmarksopenlevel = 2,
+  colorlinks = true,     linkcolor  = darkblue,
+  citecolor  = darkblue, filecolor  = darkblue,
+  menucolor  = darkblue, urlcolor   = darkblue
+}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{#1.}
+\makeatother		
+		
+\begin{document}
+
+\title{\mytitle}
+\maketitle
+\begin{abstract}
+  \mydescription
+\end{abstract}
+
+\newcommand{\allrefs}{Vasylenko92,
+Afanasyev92,
+Makilov91,
+Ponomarenko86,
+Belousova81,
+BibOp91,
+Poems82,
+HistLit82,
+Landau:eldin,
+BRLS94,
+Grosse80,
+GOST7184,
+ObchTech93,
+Bibdelo86,
+Ponomarenko79,
+Zeyts70,
+Ponoomarenko76,
+Malikov92,
+Ponomarenko86a,
+dixit.pindyck:options,
+RosGaz-article,
+Dolmatovskiy88,
+Ponomarenko88,
+Melikov95,
+Gojchuk98,
+Polyakov98a,
+TranskSpivrob99:Purich,
+Luus82,
+KIA95-default,
+KIA85-autoref,
+Ponomarenko76,
+Report81-rep,
+Report81b-rep-notype,
+Report81-techrep,
+CatalogMamals81,
+Instr86,
+wiki:latex,
+wiki:latex-2,
+phys:moodle,
+EXFOR,
+IsaacNewton,
+IsaacNewton-sl:sn,
+PhysRevLett.101.085006}
+
+\nocite{*}
+\cite{\allrefs}
+
+\bibliographystyle{\mybibstyle}  
+\bibliography{bib/examples}     
+
+\end{document} 

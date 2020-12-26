@@ -5,28 +5,20 @@
 %% The original source files were:
 %%
 %% gost.dtx  (with options: `bst,natbib,eprint')
+%% -------------------------------------------------------------------
+%% This file is a part of GOST package, which is a bundle of BibTEX
+%% styles to format bibliographic references according to the State
+%% Standards on information, librarianship and publishing (GOST)
+%% issued by The Russian Federation and Interstate Committee of former
+%% USSR States.
 %% 
-%% This file may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version 1.3
-%% of this license or (at your option) any later version.
-%% The latest version of this license is in
-%%   http://www.latex-project.org/lppl.txt
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 2005/12/01 or later.
+%% Current version is 1.2k, 2020.12.25.
 %% 
-%% This file has the LPPL maintenance status "maintained".
-%% Maintained by Igor A. Kotelnikov.
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
 %% 
-%% Current version: 1.2j, 2017.01.12
-%% 
-%% Please, send bug report via e-mail:
-%%   kia999 at mail dot ru <Igor Kotelnikov>
-%% or
-%%   polyama at yahoo dot com <Maksym Polyakov>
-%% 
-
-
-
+%% E-mail: kia999@mail.ru
+%% -------------------------------------------------------------------
 %% This bibstyle attempts to format bibliography according to
 %% GOST 7.0.5-2008 for bibliographic reference.
 %%-------------------------------------------------------------------
@@ -36,7 +28,7 @@
 %% The form of the \bibitem entries is
 %%   \bibitem[Jones et al.(1990)]{key}...
 %%   \bibitem[Jones et al.(1990)Jones, Baker, and Smith]{key}...
-%% where the label part (in brackets) consists of the author names,
+%% where the label part [in brackets] consists of the author names,
 %% as they should appear in the citation, with the year in parentheses following.
 %% There must be no space before the opening parenthesis!
 %% A full list of authors may also follow the year.
@@ -46,11 +38,11 @@
 %% The \cite command functions as follows:
 %%   \citet{key}              => Jones et al. (1990)
 %%   \citet*{key}             => Jones, Baker, and Smith (1990)
-%%   \cite{key}              => (Jones et al., 1990)
-%%   \cite*{key}             => (Jones, Baker, and Smith, 1990)
-%%   \cite[chap. 2]{key}     => (Jones et al., 1990, chap. 2)
-%%   \cite[e.g.][]{key}      => (e.g. Jones et al., 1990)
-%%   \cite[e.g.][p. 32]{key} => (e.g. Jones et al., p. 32)
+%%   \cite{key}               => (Jones et al., 1990)
+%%   \cite*{key}              => (Jones, Baker, and Smith, 1990)
+%%   \cite[chap. 2]{key}      => (Jones et al., 1990, chap. 2)
+%%   \cite[e.g.][]{key}       => (e.g. Jones et al., 1990)
+%%   \cite[e.g.][p. 32]{key}  => (e.g. Jones et al., p. 32)
 %%   \citeauthor{key}         => Jones et al.
 %%   \citeauthor*{key}        => Jones, Baker, and Smith
 %%   \citeyear{key}           => 1990
@@ -92,15 +84,15 @@ ENTRY
     language
     langid          % new in v1.2c
     booklanguage
-    date            % new in v1.2j
+    date            % new in v1.2i
     pagetotal
     url
     urldate
     isbn
     doi
+    eprint
     eprinttype      % = archivePrefix
     eprintclass     % = primaryClass
-    eprint
     % new in v1.2f:
     % appear in biblatex:
     %addendum       % not implemented yet...
@@ -125,8 +117,23 @@ ENTRY
   {}
   { label extra.label sort.label short.list }
 
-INTEGERS { output.state before.all mid.sentence after.sentence after.block
-after.dblslash after.slash after.colon after.semicolon }
+INTEGERS {
+    output.state
+    before.all
+    mid.sentence
+    after.sentence
+    after.block
+    after.dblslash
+    after.slash
+    after.colon
+    after.semicolon
+}
+
+STRINGS { curlanguage }
+
+STRINGS { s t }
+
+STRINGS { y m d }   % new in v.1.2j
 
 FUNCTION {init.state.consts}
 { #0 'before.all :=
@@ -139,13 +146,18 @@ FUNCTION {init.state.consts}
   #7 'after.semicolon :=
 }
 
-STRINGS { s t }
+FUNCTION {set.language}
+{ langid empty$
+    { language empty$
+        { "english" 'curlanguage := }
+        { language  'curlanguage := }
+      if$
+    }
+    { langid  'curlanguage := }
+  if$
+}
 
-STRINGS { curlanguage }
-
-STRINGS { y m d }   % new in v.1.2j
-
-FUNCTION {change.language}
+FUNCTION {reset.language}
 { booklanguage empty$
     { "" }
     { booklanguage  'curlanguage :=
@@ -170,7 +182,7 @@ FUNCTION {output.nonnull}
         { output.state before.all =
             'write$
             { output.state after.dblslash =
-                { "~//" * change.language * " " * write$ }
+                { "~//" * reset.language * " " * write$ }
                 { output.state after.slash =
                     { "~/ " * write$ }
                     { output.state after.colon =
@@ -204,7 +216,9 @@ FUNCTION {output}
 FUNCTION {output.check}
 { 't :=
   duplicate$ empty$
-    { pop$ "empty " t * " in " * cite$ * warning$ }
+    { pop$
+      "empty " t * " in " * cite$ * warning$
+    }
     'output.nonnull
   if$
 }
@@ -283,23 +297,6 @@ FUNCTION {or}
   if$
 }
 
-INTEGERS { len }
-
-FUNCTION {chop.word}
-{ 's :=
-  'len :=
-  s #1 len substring$ =
-    { s len #1 + global.max$ substring$ }
-    's
-  if$
-}
-
-FUNCTION {non.stop}
-{ duplicate$
-   "}" * add.period$
-   #-1 #1 substring$ "." =
-}
-
 FUNCTION {new.block.checka}
 { empty$
     'skip$
@@ -346,9 +343,21 @@ FUNCTION {field.or.null}
   if$
 }
 
+%%
+FUNCTION {either.or.check}
+{ empty$
+    'pop$
+    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+  if$
+}
+
+FUNCTION {spaces.around}
+{ " " swap$ * " " * }
+
 FUNCTION {emphasize}
 { duplicate$ empty$
-    { pop$ "" }
+    %{ pop$ "" }
+    'skip$       % v.1.2k
     { "\BibEmph{" swap$ * "}" * }
   if$
 }
@@ -360,7 +369,7 @@ FUNCTION {bracify}
   if$
 }
 
-FUNCTION {enclose.square.brackets}
+FUNCTION {bracketise}
 {
   duplicate$ empty$
     { pop$ "" }
@@ -368,7 +377,7 @@ FUNCTION {enclose.square.brackets}
   if$
 }
 
-FUNCTION {enclose.round.brackets}
+FUNCTION {paranthesify}
 {
   duplicate$ empty$
     { pop$ "" }
@@ -376,1055 +385,28 @@ FUNCTION {enclose.round.brackets}
   if$
 }
 
-FUNCTION {space.word}
-{ " " swap$ * " " * }
+INTEGERS { len }
 
-FUNCTION {bbl.edby}    %  { "\bbledby{}" }
-{ curlanguage "english" =
-   {"Ed.\ by"}
-   { curlanguage "ukrainian" =
-      {"{\cyr\CYRP\cyrii\cyrd\ \cyrr\cyre\cyrd.}"}
-      { curlanguage "russian" =
-         {"{\cyr\CYRP\cyro\cyrd\ \cyrr\cyre\cyrd.}"}
-         { curlanguage "german" =
-            { "ed." }
-            {"language is not defined: " language "edby" * * warning$ "Ed.\ by"}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.cmplr}
-{ curlanguage "english" =
-   { "Compiler"}
-   { curlanguage "german" =
-      { "Hrsg." }
-      { curlanguage "ukrainian" =
-         {"{\cyr\CYRU\cyrk\cyrl.}"}
-         { curlanguage "russian" =
-            {"{\cyr\CYRS\cyro\cyrs\cyrt.}"}
-            {"language is not defined: " language  "cmplr" * * warning$ "Compiler"}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.edition} %  { "\bbledition{}" }
-{ curlanguage "english" =
-   {"edition"}
-   { curlanguage "ukrainian" =
-      {"{\cyr\cyrv\cyri\cyrd.}"}
-      { curlanguage "russian" =
-         {"{\cyr\cyri\cyrz\cyrd.}"}
-         { curlanguage "german" =
-            {" {aus.}" } %%%% { "Aufl." } ??
-            { curlanguage "italian" =
-               {"edizione"}
-               { curlanguage "french" =
-                  {"\'{e}dition"}
-                  {"language is not defined: " language  "edition" * * warning$ "edition"}
-               if$}
-            if$}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.vvolume} %  { "\bblVolume{}" }
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"Volume"}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      { "\CYRT\cyro\cyrm" }
-      { curlanguage "german" =
-         {"{Band}"} %%%% { "Volumen" }
-         {"language is not defined: " language  "vvolume" * * warning$ "Volume"}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.vvol}    %  { "\bblVol{}" }
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"Vol."}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"\CYRT."}
-      { curlanguage "german" =
-         {"{Bd.}"} %%%% { "Vol." }
-         {"language is not defined: " language  "vvol" * * warning$ "Vol."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.iissue}  %  { "\bblIssue{}" }
-{ curlanguage "english" =
-   {"Issue"}
-   { curlanguage "ukrainian" =
-      {"\CYRV\cyri\cyrp\cyru\cyrs\cyrk"}
-      { curlanguage "russian" =
-         {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
-         { curlanguage "german" =
-            {"{Heft}"} %%%% { "Ausgabe" }
-            {"language is not defined: " language "iissue" * * warning$ "Issue"}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.iiss}  %  { "\bblIss{}" }
-{ curlanguage "english" =
-   {"Iss."}
-   { curlanguage "ukrainian" =
-      {"\CYRV\cyri\cyrp."}
-      { curlanguage "russian" =
-         {"\CYRV\cyrery\cyrp."}
-         { curlanguage "german" =
-            {"{H.}"}
-            {"language is not defined: " language "iiss" * * warning$ "Iss."}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.of}      %  { "\bblof{}" }
-{ curlanguage "english" =
-   {"of"}
-   { curlanguage "german" =
-      { "von" }
-      { curlanguage "ukrainian" =
-         { "{\cyr\cyrii\cyrz}" }
-         { curlanguage "russian" =
-            { "{\cyr\cyri\cyrz}" }
-            {"language is not defined: " language "of" * * warning$ "of"}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.etal}      %  { "\bblof{}" }
-{ curlanguage "english" =
-   {"et~al."}
-   { curlanguage "german" =
-      { "u.~a." }
-      { curlanguage "ukrainian" =
-         {"{\cyr\cyrt\cyra~\cyrii\cyrn.}"}
-         { curlanguage "russian" =
-            {"{\cyr\cyri~\cyrd\cyrr.}"}
-            {"language is not defined: " language  "et~al" * * warning$ "et~al."}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.and}      %  { "\bbland{}" }
-{ curlanguage "english" =
-   {"and"}
-   { curlanguage "german" =
-      { "und" }
-      { curlanguage "ukrainian" =
-         {"{\cyrii}"}
-         { curlanguage "russian" =
-            {"{\cyri}"}
-            {"language is not defined: " language  "and" * * warning$ "and"}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.nnumber} %  { "\bblNumber{}" }
-{ curlanguage "english" =
-   {"Number"}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      { "\CYRN\cyro\cyrm\cyre\cyrr" }
-      { curlanguage "german" =
-         {"{Heft}"} %%% { "Anzahl" }
-         {"language is not defined: " language  "nnumber" * * warning$ "Number"}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.number}  %  { "\bblnumber{}" }
-{ curlanguage "english" =
-   {"number"}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
-      { curlanguage "german" =
-         {"{Heft}"} %%% { "anzahl" }???
-         {"language is not defined: " language  "number" * * warning$ "number"}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.nr}     %   { "\bblno{}" }
-{ curlanguage "english" =
-   {"no."}
-   { curlanguage "italian" =
-      { "no" }
-      { curlanguage "ukrainian" = curlanguage "russian" = or
-         { "{\cyr\textnumero}" }
-         { curlanguage "german" =
-            {"{H.}"} %%% { "an." }
-            {"language is not defined: " language "nr" * * warning$ "no."}
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.nnr}     %   { "\bblno{}" }
-{ curlanguage "english" =
-   {"No."}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      { "{\cyr\textnumero}" }
-      { curlanguage "german" =
-         {"{H.}"} %%% { "an." }
-         {"language is not defined: " language  "nnr" * * warning$ "No."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.in}    %    { "\bblin{}" }
-{ curlanguage "english" = curlanguage "german" = or
-   {"in"}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      { "{\cyr\cyrv}" }
-      {"language is not defined: " language  "in" * * warning$ "in"}
-   if$}
-if$}
-
-FUNCTION {bbl.iin}  %     { "\bblIn{}" }
-{ curlanguage "english" = curlanguage "german" = or
-   {"In"}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      { "\CYRV" }
-      {"language is not defined: " language  "iin" * * warning$ "In"}
-   if$}
-if$}
-
-FUNCTION {bbl.pages}    % { "\bblpp." }
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"p."} %%% {"pp."}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"{\cyr\cyrs.}"}
-      { curlanguage "german" =
-         {"S."} %%%% { "s." }
-         {"language is not defined: " language  "pages" * * warning$ "p."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.page}   %   { "\bblp."
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"p."}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"{\cyr\cyrs.}"}
-      { curlanguage "german" =
-         {"S."} %%%% { "s." }
-         {"language is not defined: " language  "page" * * warning$ "p."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.ppages}%    { "\bblPp." }
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"P."} %%%% { "Pp." }
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"{\cyr\CYRS.}"}
-      { curlanguage "german" =
-         {"S."}
-         {"language is not defined: " language "ppages" * * warning$ "P."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.ppage}  %   { "\bblP." }
-{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
-   {"P."}
-   { curlanguage "ukrainian" = curlanguage "russian" = or
-      {"{\cyr\CYRS.}"}
-      { curlanguage "german" =
-         {"S."}
-         {"language is not defined: " language  "ppage" * * warning$ "P."}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.url}
-{ curlanguage "english" =
-   {"Access mode"}
-   { curlanguage "ukrainian" =
-      { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyru}" }
-      { curlanguage "russian" =
-         { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyra}" }
-         { curlanguage "german" =
-            { "{online; abgerufen}" }
-            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
-         if$}
-      if$}
-   if$}
-if$}
-FUNCTION {bbl.urldate}
-{ curlanguage "english" =
-   {"online; accessed"}
-   { curlanguage "ukrainian" =
-      { "{\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyrn\cyre\cyrn\cyrn\cyrya}" }
-      { curlanguage "russian" =
-         { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya}" }
-         { curlanguage "german" =
-            { "{online; abgerufen}" }
-            { "language is not defined: " language "urldate" * * warning$ "online; accessed" }
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.techreport} % rename to bbl.techreport
-{ curlanguage "english" =
-   { "Rep." }
-   { curlanguage "german" =
-      { "Bericht" }
-      { curlanguage "russian" =
-         { "{\cyr\CYRO\cyrt\cyrch\cyre\cyrt}" }
-         { "language is not defined: " language "techrep" * * warning$ "Rep." }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.mathesis}
-{ curlanguage "english" =
-   { "Master's thesis" }
-   { curlanguage "german" =
-      { "Diss.~Mag." }
-      { curlanguage "russian" =
-        { "{\cyr\CYRK\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
-          "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
-          "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
-         { "language is not defined: " language "mthesis" * * warning$ "Master's thesis" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.phdthesis}
-{ curlanguage "english" =
-   { "Ph.\,D. thesis" }
-   { curlanguage "german" =
-      { "Diss.~Ph.\,D." }
-      { curlanguage "russian" =
-         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrk\cyra\cyrn\cyrd. "
-           "\cyrn\cyra\cyru\cyrk}" * }
-         { curlanguage "french" =
-           { "Th\`{e}se de doctorat" }
-           { "language is not defined: " language "phdthesis" * * warning$ "Ph.\,D. thesis" }
-         if$}
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.docthesis}
-{ curlanguage "english" =
-   { "Dr.\,Sci. dissertation" }
-   { curlanguage "german" =
-      { "Diss.~Dr." }
-      { curlanguage "russian" =
-         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
-           "\cyrn\cyra\cyru\cyrk}" * }
-         { "language is not defined: " language "docthesis" * * warning$ "Dr.\,Sci. dissertation" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.thesis.type}
-{ type "mathesis" =
-  { bbl.mathesis }
-  { type "phdthesis" =
-    { bbl.phdthesis }
-    { type "docthesis" =
-      { bbl.docthesis }
-      %%{ "!!!" type * "t" change.case$ }
-      { type "t" change.case$ }
-    if$}
-  if$}
-if$}
-
-FUNCTION {bbl.nnoaddress}
-{ curlanguage "english" =
-   { "S.\ l." }
-   { curlanguage "russian" =
-      { "{\cyr\CYRB.\ \cyrm.}" }
-      { "language is not defined: " language "nnoaddress" * * warning$ "S.\ l." }
-   if$}
-if$}
-
-FUNCTION {bbl.nopublisher}
-{ curlanguage "english" =
-   { "s.\ n." }
-   { curlanguage "russian" =
-      { "{\cyr\cyrb.\ \cyri.}" }
-      { "language is not defined: " language "nnopublisher" * * warning$ "s.\ n." }
-   if$}
-if$}
-
-FUNCTION {bbl.nnopublisher}
-{ curlanguage "english" =
-   { "S.\ n." }
-   { curlanguage "russian" =
-      { "{\cyr\CYRB.\ \cyri.}" }
-      { "language is not defined: " language "nnopublisher" * * warning$ "S.\ n." }
-   if$}
-if$}
-
-FUNCTION {bbl.media.text}
-{ curlanguage "english" =
-   { "Text" }
-   { curlanguage "russian" = curlanguage "ukrainian" = or
-      { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
-      { "language is not defined: " language "media" * * warning$ "Text" }
-   if$}
-if$}
-
-FUNCTION {bbl.media.eresource}
-{ curlanguage "english" =
-   { "Electronic resource" }
-   { curlanguage "russian" =
-      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
-        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
-      { curlanguage "ukrainian" =
-        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
-          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
-        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.media.online}
-{ curlanguage "english" =
-   { "Electronic resource online" }
-   { curlanguage "russian" =
-      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
-        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" * }
-      { curlanguage "ukrainian" =
-        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
-          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
-        { "language is not defined: " language "media" * * warning$ "Electronic resource" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.chief}
-{ curlanguage "english" =
-   { "chief" }
-   { curlanguage "russian" =
-      { "\cyrr\cyru\cyrk." }
-      { curlanguage "ukrainian" =
-        { "\cyrr\cyru\cyrk." }
-        { "language is not defined: " language "chief" * * warning$ "chief" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.executor}
-{ curlanguage "english" =
-   { "Executor" }
-   { curlanguage "russian" =
-      { "{\cyr\cyri\cyrs\cyrp\cyro\cyrl\cyrn.}" }
-      { curlanguage "ukrainian" =
-        { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
-        { "language is not defined: " language "executor" * * warning$ "executor" }
-      if$}
-   if$}
-if$}
-
-FUNCTION {bbl.media}
-{ media "online" =
-   { bbl.media.online }
-   { media "eresource" =
-     { bbl.media.eresource }
-     { bbl.media.text }
-   if$}
-if$}
-
-FUNCTION {bbl.req}
-{
-  curlanguage "english" =
-    { "req." }
-    { curlanguage "german" =
-      { "ang." }
-      { curlanguage "russian" =
-        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
-        { "language is not defined: " language "req" * * warning$ "req" }
-      if$
-      }
-    if$
-    }
-  if$
-}
-
-FUNCTION {bbl.publ}
-{
-  curlanguage "english" =
-    { "publ." }
-    { curlanguage "german" =
-      { "ausg." }
-      { curlanguage "russian" =
-        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
-        { "language is not defined: " language "publication" * * warning$ "publication" }
-      if$
-      }
-    if$
-    }
-  if$
-}
-
-FUNCTION {bbl.priority}
-{
-  curlanguage "english" =
-    { "priority" }
-    { curlanguage "german" =
-      { "Prioritat" }
-      { curlanguage "russian" =
-        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
-        { "language is not defined: " language "priority" * * warning$ "priority" }
-      if$
-      }
-    if$
-    }
-  if$
-}
-
-INTEGERS { nameptr namesleft numnames }
-
-
-FUNCTION {format.names}
-{
-  's :=
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      "{vv~}{ll}{~jj}{~f.}" format.name$ 't :=
-      nameptr #1 >
-        { nameptr #4 =
-          numnames #4 > and
-            { "others" 't :=
-              #1 'namesleft := }
-            'skip$
-          if$
-          namesleft #1 >
-            { ", " * t * }
-            { t "others" =
-          t "~others" =
-          or
-                { " " * bbl.etal * }
-                %%%%{ " " * bbl.etal enclose.square.brackets *}
-                { ", " * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-
-FUNCTION {format.lab.names}
+FUNCTION {chop.word}
 { 's :=
-  language empty$
-    { "english" 'curlanguage := }
-    { language  'curlanguage := }
-  if$
-  s #1 "{vv~}{ll}" format.name$
-  s num.names$ duplicate$
-  #2 >
-    %{ pop$ " et~al." * }
-    { pop$ " " bbl.etal * * }
-    { #2 <
-        'skip$
-        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
-            %{ " et~al." * }
-            { " " bbl.etal * * }
-            %{ " and " * s #2 "{vv~}{ll}" format.name$ * }
-            { " " bbl.and " " * * * s #2 "{vv~}{ll}" format.name$ * }
-          if$
-        }
-      if$
-    }
+  'len :=
+  s #1 len substring$ =
+    { s len #1 + global.max$ substring$ }
+    's
   if$
 }
 
-FUNCTION {format.names.rev}
-{
-  's :=
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      %"{f.}{~vv}{~ll}{, jj}" format.name$ 't :=
-      "{ff}{~vv}{~ll}{, jj}" format.name$ 't :=
-      nameptr #1 >
-        { nameptr #4 =
-          numnames #4 > and
-            { "others" 't :=
-              #1 'namesleft := }
-            'skip$
-          if$
-          namesleft #1 >
-            { ", " * t * }
-            { t "others" =
-          t "~others" =
-          or
-                { " " * bbl.etal * }
-                { ", " * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
+FUNCTION {tie.connect}
+ {"~" swap$ * *
+ }
 
-FUNCTION {format.key}
-{ empty$
-    { key field.or.null }
-    { "" }
+FUNCTION {tie.or.space.connect}
+{ duplicate$ text.length$ #3 <
+    { "~" }
+    { " " }
   if$
+  swap$ * *
 }
-
-FUNCTION {format.authors}
-{ author empty$
-    { "" }
-    { author format.names emphasize}
-  if$
-}
-
-FUNCTION {author.key.label}
-{ author empty$
-    { key empty$
-        { cite$ #1 #3 substring$ }
-        'key
-      if$
-    }
-    { author format.lab.names }
-  if$
-}
-
-FUNCTION {author.editor.key.label}
-{ author empty$
-    { editor empty$
-        { key empty$
-            { cite$ #1 #3 substring$ }
-            %'key          %% causes lost of year
-            { "{}" key * } %% Bug in bibtex8 ??
-          if$
-        }
-        { editor format.lab.names }
-      if$
-    }
-    { author format.lab.names }
-  if$
-}
-
-FUNCTION {author.key.organization.label}
-{ author empty$
-    { key empty$
-        { organization empty$
-            { cite$ #1 #3 substring$ }
-            { "The " #4 organization chop.word #3 text.prefix$ }
-          if$
-        }
-        'key
-      if$
-    }
-    { author format.lab.names }
-  if$
-}
-
-FUNCTION {editor.key.organization.label}
-{ editor empty$
-    { key empty$
-        { organization empty$
-            { cite$ #1 #3 substring$ }
-            { "The " #4 organization chop.word #3 text.prefix$ }
-          if$
-        }
-        'key
-      if$
-    }
-    { editor format.lab.names }
-  if$
-}
-
-FUNCTION {calc.short.authors}
-{ type$ "book" =
-  type$ "inbook" =
-  or
-    'author.editor.key.label
-    { type$ "proceedings" =
-        'editor.key.organization.label
-        { type$ "manual" =
-            'author.key.organization.label
-            'author.key.label
-          if$
-        }
-      if$
-    }
-  if$
-  'short.list :=
-}
-
-FUNCTION {calc.label}
-{ calc.short.authors
-  short.list
-  "("
-  *
-  year duplicate$ empty$
-  short.list key field.or.null = or
-     { pop$ "" }
-     'skip$
-  if$
-  *
-  'label :=
-}
-
-
-FUNCTION {format.bookauthors}
-{ bookauthor empty$
-    { "" }
-    { bookauthor format.names}
-  if$
-}
-
-FUNCTION {format.authors.after}
-{ author empty$
-    { "" }
-    { author format.names.rev}
-  if$
-}
-
-FUNCTION {format.bookauthors.after}
-{ bookauthor empty$
-    { "" }
-    { bookauthor format.names.rev}% always cuts to 4 persons
-  if$
-}
-
-FUNCTION {format.editors.after}
-{ editor empty$
-    { "" }
-    { bbl.edby "\ " * editor format.names.rev * }
-  if$
-}
-
-FUNCTION {format.chief.after}
-{ editor empty$
-    { "" }
-    { bbl.chief "\ " * editor format.names.rev * }
-  if$
-}
-
-FUNCTION {format.executor.after}
-{ author empty$
-    { "" }
-    { bbl.executor ": " * author format.names.rev * }
-  if$
-}
-
-FUNCTION {format.compiler.after}
-{ compiler empty$
-    { "" }
-    { bbl.cmplr "\ " * compiler format.names.rev * }
-  if$
-}
-
-FUNCTION {format.title}
-{ title empty$
-    { "" }
-    { title "t" change.case$ }
-  if$
-}
-
-FUNCTION {date.to.year}
-{
-  date empty$
-    { date }
-    {
-      "date.to.year::: date in " cite$ * " =" * date * warning$
-      "date.to.year::: length of date is " date text.length$ int.to.str$ * warning$
-      date text.length$ #10 =
-        {
-          date #1 #4 substring$ 'y :=
-          ":::::: y=" y * warning$
-          y
-        }
-        {
-          "wrong format of date in " cite$ * ": date=" * date * warning$
-          date
-        }
-      if$
-    }
-  if$
-}
-
-FUNCTION {date.to.month}
-{
-  date empty$
-    { date }
-    {
-      "date.to.month::: date in " cite$ * " =" * date * warning$
-      "date.to.month::: length of date is " date text.length$ int.to.str$ * warning$
-      date text.length$ #10 =
-        {
-          date #6 #2 substring$ 'm :=
-          ":::::: m=" m * warning$
-          m
-        }
-        {
-          "wrong format of date in " cite$ * ": date=" * date * warning$
-          date
-        }
-      if$
-    }
-  if$
-}
-
-FUNCTION {date.to.day}
-{
-  date empty$
-    { date }
-    {
-      "date.to.day::: date in " cite$ * " =" * date * warning$
-      "date.to.day::: length of date is " date text.length$ int.to.str$ * warning$
-      date text.length$ #10 =
-        {
-          date #9 #2 substring$ 'd :=
-          ":::::: d=" d * warning$
-          d
-        }
-        {
-          "wrong format of date in " cite$ * ": date=" * date * warning$
-          date
-        }
-      if$
-    }
-  if$
-}
-
-FUNCTION {year.or.date.to.year}
-{
-  year empty$
-    {
-      "year.or.date.to.year::: empty year in " cite$ * warning$
-      date.to.year
-    }
-    { year }
-  if$
-}
-
-FUNCTION {format.month}
-{ month empty$
-    { "" }
-    { curlanguage "russian" =
-        { month "Jan." =
-            { "\CYRYA\cyrn\cyrv." }
-        { month "Feb." =
-            { "\CYRF\cyre\cyrv\cyrr." }
-        { month "Mar." =
-            { "\CYRM\cyra\cyrr\cyrt" }
-        { month "Apr." =
-            { "\CYRA\cyrp\cyrr." }
-        { month "May" =
-            { "\CYRM\cyra\cyrishrt" }
-        { month "Jun." =
-            { "\CYRI\cyryu\cyrn\cyrsftsn" }
-        { month "Jul." =
-            { "\CYRI\cyryu\cyrl\cyrsftsn" }
-        { month "Aug." =
-            { "\CYRA\cyrv\cyrg\." }
-        { month "Sep." =
-            { "\CYRS\cyre\cyrn\cyrt." }
-        { month "Oct." =
-            { "\CYRO\cyrk\cyrt." }
-        { month "Nov." =
-            { "\CYRN\cyro\cyrya\cyrb." }
-        { month "Dec." =
-            { "\CYRD\cyre\cyrk." }
-            { month }
-            if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
-        { month }
-        if$}
-    if$
-}
-FUNCTION {format.date}
-{ year.or.date.to.year empty$
-    { month empty$
-        { "" }
-        { "there's a month but no year in " cite$ * warning$
-          format.month
-        }
-      if$
-    }
-    { month empty$
-        'year.or.date.to.year
-        { year.or.date.to.year ". \BibDash " format.month * * }
-      if$
-    }
-  if$
-}
-
-FUNCTION {address.or.location}
-{
-  address empty$
-    { location }
-    { address }
-  if$
-}
-
-FUNCTION {specialitycode.or.number}
-{
-  specialitycode empty$
-    { number }
-    { specialitycode }
-  if$
-}
-
-FUNCTION {institution.or.school}
-{
-  institution empty$
-    { school}
-    { institution }
-  if$
-}
-FUNCTION {output.address.publisher}
-{
-  address empty$ location empty$ and
-    'skip$
-    { address.or.location output
-      publisher empty$
-        'skip$
-        { new.colon }
-      if$
-    }
-  if$
-  publisher output
-}
-
-FUNCTION {format.full.names}
-{'s :=
-  language empty$
-    { "english" 'curlanguage := }
-    { language  'curlanguage := }
-  if$
-  #1 'nameptr :=
-  s num.names$ 'numnames :=
-  numnames 'namesleft :=
-    { namesleft #0 > }
-    { s nameptr
-      "{vv~}{ll}" format.name$ 't :=
-      nameptr #1 >
-        {
-          namesleft #1 >
-            { ", " * t * }
-            {
-              numnames #2 >
-              curlanguage "english" =
-              and
-                { "," * }
-                'skip$
-              if$
-              t "others" =
-          %t "~others" =
-          %or
-                %{ " et~al." * }
-                { " " bbl.etal * * }
-                %{ " and " * t * }
-                { " " bbl.and " " * * * t * }
-              if$
-            }
-          if$
-        }
-        't
-      if$
-      nameptr #1 + 'nameptr :=
-      namesleft #1 - 'namesleft :=
-    }
-  while$
-}
-
-FUNCTION {author.full}
-{ author empty$
-    { "" }
-    { author format.full.names }
-  if$
-}
-
-FUNCTION {editor.full}
-{ editor empty$
-    { "" }
-    { editor format.full.names }
-  if$
-}
-
-FUNCTION {author.editor.full}
-{ author empty$
-    { editor empty$
-        { "" }
-        { editor format.full.names }
-      if$
-    }
-    { author format.full.names }
-  if$
-}
-
-FUNCTION {make.full.names}
-{ type$ "book" =
-  type$ "inbook" =
-  or
-    'author.editor.full
-    { type$ "proceedings" =
-        'editor.full
-        'author.full
-      if$
-    }
-  if$
-}
-
-FUNCTION {output.bibitem}
-{ newline$
-  "\bibitem[" write$
-  label write$
-  ")" make.full.names duplicate$ short.list =
-     { pop$ }
-     { * }
-   if$
-  "]{" * write$
-  cite$ write$
-  "}" write$
-%%  language empty$
-%%    { "english" 'curlanguage := }
-%%    {language  'curlanguage := }
-%%  if$
-  langid empty$
-    { language empty$
-        { "english" 'curlanguage := }
-        { language  'curlanguage := }
-      if$
-    }
-    { langid  'curlanguage := }
-  if$
-  "\selectlanguageifdefined" curlanguage bracify * write$
-  newline$
-  ""
-  before.all 'output.state :=
-}
-%%  author.key.label
-%%  year parenthesify *
-%%  "; lbl:" label * *
-%%  "; mfn:"  make.full.names * *
 
 FUNCTION {n.dashify}
 { 't :=
@@ -1451,33 +433,1249 @@ FUNCTION {n.dashify}
   while$
 }
 
-FUNCTION {word.in}
-{ bbl.iin
-  " " * }
+INTEGERS { multiresult }
 
-FUNCTION {format.btitle}
-{ title
+FUNCTION {multi.page.check}
+{ 't :=
+  #0 'multiresult :=
+    { multiresult not
+      t empty$ not
+      and
+    }
+    { t #1 #1 substring$
+      duplicate$ "-" =
+      swap$ duplicate$ "," =
+      swap$ "+" =
+      or or
+        { #1 'multiresult := }
+        { t #2 global.max$ substring$ 't := }
+      if$
+    }
+  while$
+  multiresult
 }
 
-FUNCTION {tie.or.space.connect}
-{ duplicate$ text.length$ #3 <
-    { "~" }
-    { " " }
+FUNCTION {bbl.edby}
+{ curlanguage "english" =
+   {"ed.\ by"}
+   { curlanguage "ukrainian" =
+      {"{\cyr\cyrp\cyrii\cyrd\ \cyrr\cyre\cyrd.}"}
+      { curlanguage "russian" =
+         {"{\cyr\cyrp\cyro\cyrd\ \cyrr\cyre\cyrd.}"}
+         { curlanguage "german" =
+            { "ed." }
+            {"language is not defined: " curlanguage " in bbl.edby" * * warning$ "Ed.\ by"}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.compiler}
+{ curlanguage "english" =
+   { "Compiler"}
+   { curlanguage "german" =
+      { "Hrsg." }
+      { curlanguage "ukrainian" =
+         {"{\cyr\CYRU\cyrk\cyrl.}"}
+         { curlanguage "russian" =
+            {"{\cyr\CYRS\cyro\cyrs\cyrt.}"}
+            {"language is not defined: " curlanguage  " in bbl.compiler" * * warning$ "Compiler"}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.edition}
+{ curlanguage "english" =
+   {"edition"}
+   { curlanguage "ukrainian" =
+      {"{\cyr\cyrv\cyri\cyrd.}"}
+      { curlanguage "russian" =
+         {"{\cyr\cyri\cyrz\cyrd.}"}
+         { curlanguage "german" =
+            {" {aus.}" } %%%% { "Aufl." } ??
+            { curlanguage "italian" =
+               {"edizione"}
+               { curlanguage "french" =
+                  {"\'{e}dition"}
+                  {"language is not defined: " curlanguage  " in bbl.edition" * * warning$ "edition"}
+               if$}
+            if$}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.vvolume}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"Volume"}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      { "\CYRT\cyro\cyrm" }
+      { curlanguage "german" =
+         {"{Band}"} %%%% { "Volumen" }
+         {"language is not defined: " curlanguage  " in bbl.vvolume" * * warning$ "Volume"}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.vvol}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"Vol."}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"\CYRT."}
+      { curlanguage "german" =
+         {"{Bd.}"} %%%% { "Vol." }
+         {"language is not defined: " curlanguage  " in bbl.vvol" * * warning$ "Vol."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.iissue}
+{ curlanguage "english" =
+   {"Issue"}
+   { curlanguage "ukrainian" =
+      {"\CYRV\cyri\cyrp\cyru\cyrs\cyrk"}
+      { curlanguage "russian" =
+         {"\CYRV\cyrery\cyrp\cyru\cyrs\cyrk"}
+         { curlanguage "german" =
+            {"{Heft}"} %%%% { "Ausgabe" }
+            {"language is not defined: " curlanguage " in bbl.iissue" * * warning$ "Issue"}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.iiss}
+{ curlanguage "english" =
+   {"Iss."}
+   { curlanguage "ukrainian" =
+      {"\CYRV\cyri\cyrp."}
+      { curlanguage "russian" =
+         {"\CYRV\cyrery\cyrp."}
+         { curlanguage "german" =
+            {"{H.}"}
+            {"language is not defined: " curlanguage " in bbl.iiss" * * warning$ "Iss."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.of}
+{ curlanguage "english" =
+   {"of"}
+   { curlanguage "german" =
+      { "von" }
+      { curlanguage "ukrainian" =
+         { "{\cyr\cyrii\cyrz}" }
+         { curlanguage "russian" =
+            { "{\cyr\cyri\cyrz}" }
+            {"language is not defined: " curlanguage " in bbl.of" * * warning$ "of"}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.etal}
+{ curlanguage "english" =
+   {"et~al."}
+   { curlanguage "german" =
+      { "u.~a." }
+      { curlanguage "ukrainian" =
+         {"{\cyr\cyrt\cyra~\cyrii\cyrn.}"}
+         { curlanguage "russian" =
+            {"{\cyr\cyri~\cyrd\cyrr.}"}
+            {"language is not defined: " curlanguage  " in bbl.etal" * * warning$ "et~al."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.and}
+{ curlanguage "english" =
+   {"and"}
+   { curlanguage "german" =
+      { "und" }
+      { curlanguage "ukrainian" =
+         {"{\cyrii}"}
+         { curlanguage "russian" =
+            {"{\cyri}"}
+            {"language is not defined: " curlanguage  " in bbl.and" * * warning$ "and"}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nnumber}
+{ curlanguage "english" =
+   {"Number"}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      { "\CYRN\cyro\cyrm\cyre\cyrr" }
+      { curlanguage "german" =
+         {"{Heft}"} %%% { "Anzahl" }
+         {"language is not defined: " curlanguage  " in bbl.nnumber" * * warning$ "Number"}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.number}
+{ curlanguage "english" =
+   {"number"}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\cyrn\cyro\cyrm\cyre\cyrr}"}
+      { curlanguage "german" =
+         {"{Heft}"} %%% { "anzahl" }???
+         {"language is not defined: " curlanguage  " in bbl.number" * * warning$ "number"}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nr}
+{ curlanguage "english" =
+   {"no."}
+   { curlanguage "italian" =
+      { "no." }
+      { curlanguage "ukrainian" = curlanguage "russian" = or
+         { "{\cyr\textnumero}" }
+         { curlanguage "german" =
+            {"{H.}"} %%% { "an." }
+            {"language is not defined: " curlanguage " in bbl.nr" * * warning$ "no."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nnr}
+{ curlanguage "english" =
+   {"No."}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      { "{\cyr\textnumero}" }
+      { curlanguage "german" =
+         {"{H.}"} %%% { "an." }
+         {"language is not defined: " curlanguage  " in bbl.nnr" * * warning$ "No."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.in}
+{ curlanguage "english" = curlanguage "german" = or
+   {"in"}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      { "{\cyr\cyrv}" }
+      {"language is not defined: " curlanguage  " in bbl.in" * * warning$ "in"}
+   if$}
+if$}
+
+FUNCTION {bbl.iin}
+{ curlanguage "english" = curlanguage "german" = or
+   {"In"}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      { "\CYRV" }
+      {"language is not defined: " curlanguage  " in bbl.iin" * * warning$ "In"}
+   if$}
+if$}
+
+FUNCTION {bbl.pages}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"p."} %%% {"pp."}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\cyrs.}"}
+      { curlanguage "german" =
+         {"S."} %%%% { "s." }
+         {"language is not defined: " curlanguage  " in bbl.pages" * * warning$ "p."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.page}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"p."}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\cyrs.}"}
+      { curlanguage "german" =
+         {"S."} %%%% { "s." }
+         {"language is not defined: " curlanguage  " in bbl.page" * * warning$ "p."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.ppages}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"P."} %%%% { "Pp." }
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\CYRS.}"}
+      { curlanguage "german" =
+         {"S."}
+         {"language is not defined: " curlanguage " in bbl.ppages" * * warning$ "P."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.ppage}
+{ curlanguage "english" = curlanguage "french" = or curlanguage "italian" = or
+   {"P."}
+   { curlanguage "ukrainian" = curlanguage "russian" = or
+      {"{\cyr\CYRS.}"}
+      { curlanguage "german" =
+         {"S."}
+         {"language is not defined: " curlanguage  " in bbl.ppage" * * warning$ "P."}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.url}
+{ curlanguage "english" =
+   {"Access mode"}
+   { curlanguage "ukrainian" =
+      { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyru}" }
+      { curlanguage "russian" =
+         { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyra}" }
+         { curlanguage "german" =
+            { "{online; abgerufen}" }
+            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
+         if$}
+      if$}
+   if$}
+if$}
+FUNCTION {bbl.urldate}
+{ curlanguage "english" =
+   {"online; accessed"}
+   { curlanguage "ukrainian" =
+      { "{\cyrd\cyra\cyrt\cyra\ \cyrz\cyrv\cyre\cyrr\cyrn\cyre\cyrn\cyrn\cyrya}" }
+      { curlanguage "russian" =
+         { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya}" }
+         { curlanguage "german" =
+            { "{online; abgerufen}" }
+            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.techreport}
+{ curlanguage "english" =
+   { "Rep." }
+   { curlanguage "german" =
+      { "Bericht" }
+      { curlanguage "russian" =
+         { "{\cyr\CYRO\cyrt\cyrch\cyre\cyrt}" }
+         { "language is not defined: " curlanguage " in bbl.techrep" * * warning$ "Rep." }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.mathesis}
+{ curlanguage "english" =
+   { "Master's thesis" }
+   { curlanguage "german" =
+      { "Diss.~Mag." }
+      { curlanguage "russian" =
+        { "{\cyr\CYRK\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
+          "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
+          "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
+         { "language is not defined: " curlanguage " in bbl.mthesis" * * warning$ "Master's thesis" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.phdthesis}
+{ curlanguage "english" =
+   { "Ph.\,D. thesis" }
+   { curlanguage "german" =
+      { "Diss.~Ph.\,D." }
+      { curlanguage "russian" =
+         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrk\cyra\cyrn\cyrd. "
+           "\cyrn\cyra\cyru\cyrk}" * }
+         { curlanguage "french" =
+           { "Th\`{e}se de doctorat" }
+           { "language is not defined: " curlanguage " in bbl.phdthesis" * * warning$ "Ph.\,D. thesis" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.docthesis}
+{ curlanguage "english" =
+   { "Dr.\,Sci. dissertation" }
+   { curlanguage "german" =
+      { "Diss.~Dr." }
+      { curlanguage "russian" =
+         { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
+           "\cyrn\cyra\cyru\cyrk}" * }
+         { "language is not defined: " curlanguage " in bbl.docthesis" * * warning$ "Dr.\,Sci. dissertation" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nnoaddress}
+{ curlanguage "english" =
+   { "S.\ l." }
+   { curlanguage "russian" =
+      { "{\cyr\CYRB.\ \cyrm.}" }
+      { "language is not defined: " curlanguage " in bbl.nnoaddress" * * warning$ "S.\ l." }
+   if$}
+if$}
+
+FUNCTION {bbl.nopublisher}
+{ curlanguage "english" =
+   { "s.\ n." }
+   { curlanguage "russian" =
+      { "{\cyr\cyrb.\ \cyri.}" }
+      { "language is not defined: " curlanguage " in bbl.nnopublisher" * * warning$ "s.\ n." }
+   if$}
+if$}
+
+FUNCTION {bbl.nnopublisher}
+{ curlanguage "english" =
+   { "S.\ n." }
+   { curlanguage "russian" =
+      { "{\cyr\CYRB.\ \cyri.}" }
+      { "language is not defined: " curlanguage " in bbl.nnopublisher" * * warning$ "S.\ n." }
+   if$}
+if$}
+
+FUNCTION {bbl.media.text}
+{ curlanguage "english" =
+   { "Text" }
+   { curlanguage "russian" = curlanguage "ukrainian" = or
+      { "{\cyr\CYRT\cyre\cyrk\cyrs\cyrt}" }
+      { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Text" }
+   if$}
+if$}
+
+FUNCTION {bbl.media.eresource}
+{ curlanguage "english" =
+   { "Electronic resource" }
+   { curlanguage "russian" =
+      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
+      { curlanguage "ukrainian" =
+        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs}" * }
+        { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Electronic resource" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.media.online}
+{ curlanguage "english" =
+   { "Electronic resource online" }
+   { curlanguage "russian" =
+      { "{\cyr\CYREREV\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyrery\cyrishrt\ "
+        "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyrn}" * }
+      { curlanguage "ukrainian" =
+        { "{\cyr\CYRE\cyrl\cyre\cyrk\cyrt\cyrr\cyro\cyrn\cyrn\cyri\cyrishrt\ "
+          "\cyrr\cyre\cyrs\cyru\cyrr\cyrs\ \cyro\cyrn\cyrl\cyra\cyrishrt\cyr}" * }
+        { "language is not defined: " curlanguage " in bbl.media" * * warning$ "Electronic resource" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.chief}
+{ curlanguage "english" =
+   { "chief" }
+   { curlanguage "russian" =
+      { "\cyrr\cyru\cyrk." }
+      { curlanguage "ukrainian" =
+        { "\cyrr\cyru\cyrk." }
+        { "language is not defined: " curlanguage " in bbl.chief" * * warning$ "chief" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.executor}
+{ curlanguage "english" =
+   { "executor" }
+   { curlanguage "russian" =
+      { "{\cyr\cyri\cyrs\cyrp\cyro\cyrl\cyrn.}" }
+      { curlanguage "ukrainian" =
+        { "{\cyr\cyrv\cyri\cyrk\cyro\cyrn\cyra\cyrv\cyre\cyrc\cyrsftsn}" }
+        { "language is not defined: " curlanguage " in bbl.executor" * * warning$ "executor" }
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.media}
+{ media "online" =
+   { bbl.media.online }
+   { media "eresource" =
+     { bbl.media.eresource }
+     { bbl.media.text }
+   if$}
+if$}
+
+FUNCTION {bbl.req}
+{
+  curlanguage "english" =
+    { "req." }
+    { curlanguage "german" =
+      { "ang." }
+      { curlanguage "russian" =
+        { "{\cyr\cyrz\cyra\cyrya\cyrv\cyrl.}" }
+        { "language is not defined: " curlanguage " in bbl.req" * * warning$ "req" }
+      if$
+      }
+    if$
+    }
   if$
-  swap$ * *
 }
 
-FUNCTION {tie.connect}
- {"~"
-  swap$ * *
- }
+FUNCTION {bbl.publ}
+{
+  curlanguage "english" =
+    { "publ." }
+    { curlanguage "german" =
+      { "ausg." }
+      { curlanguage "russian" =
+        { "{\cyr\cyro\cyrp\cyru\cyrb\cyrl.}" }
+        { "language is not defined: " curlanguage " in bbl.publication" * * warning$ "publication" }
+      if$
+      }
+    if$
+    }
+  if$
+}
 
-FUNCTION {either.or.check}
+FUNCTION {bbl.priority}
+{
+  curlanguage "english" =
+    { "priority" }
+    { curlanguage "german" =
+      { "Prioritat" }
+      { curlanguage "russian" =
+        { "{\cyr\cyrp\cyrr\cyri\cyro\cyrr\cyri\cyrt\cyre\cyrt}" }
+        { "language is not defined: " curlanguage " in bbl.priority" * * warning$ "priority" }
+      if$
+      }
+    if$
+    }
+  if$
+}
+
+FUNCTION {bbl.jan}
+{ curlanguage "english" =
+   {"Jan."}
+   { curlanguage "ukrainian" =
+      {"\CYRS\cyrii\cyrch."}
+      { curlanguage "russian" =
+         { "\CYRYA\cyrn\cyrv." }
+         { curlanguage "german" =
+            { "Jan." } % Januar
+            { "language is not defined: bbl.jan for " curlanguage * warning$ "Jan." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.feb}
+{ curlanguage "english" =
+   {"Feb."}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyryu\cyrt."}
+      { curlanguage "russian" =
+         { "\CYRF\cyre\cyrv\cyrr." }
+         { curlanguage "german" =
+            {"Feb."} % Februar
+            {"language is not defined: bbl.feb for " curlanguage * warning$ "Feb."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.mar}
+{ curlanguage "english" =
+   {"Mar."}
+   { curlanguage "ukrainian" =
+      {"\CYRB\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRM\cyra\cyrr\cyrt" }
+         { curlanguage "german" =
+            {"März"} % März
+            {"language is not defined: bbl.mar for " curlanguage * warning$ "Mar."}
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.apr}
+{ curlanguage "english" =
+   {"Apr."}
+   { curlanguage "ukrainian" =
+      {"\CYRK\cyrv\cyrii\cyrt."}
+      { curlanguage "russian" =
+            { "\CYRA\cyrp\cyrr." }
+         { curlanguage "german" =
+            {"Apr."} % April
+            { "language is not defined: bbl.apr for " curlanguage * warning$ "Apr." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.may}
+{ curlanguage "english" =
+   {"May"}
+   { curlanguage "ukrainian" =
+      {"\CYRT\cyrr\cyra\cyrv."}
+      { curlanguage "russian" =
+            { "\CYRM\cyra\cyrishrt" }
+         { curlanguage "german" =
+            {"Mai"}
+            { "language is not defined: bbl.may for " curlanguage * warning$ "May" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jun}
+{ curlanguage "english" =
+   {"June"}
+   { curlanguage "ukrainian" =
+      {"\CYRCH\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRI\cyryu\cyrn\cyrsftsn" }
+         { curlanguage "german" =
+            {"Juni"}
+            { "language is not defined: bbl.jun for " curlanguage * warning$ "June" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jul}
+{ curlanguage "english" =
+   {"July"}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyri\cyrp."}
+      { curlanguage "russian" =
+            { "\CYRI\cyryu\cyrl\cyrsftsn" }
+         { curlanguage "german" =
+            {"Juli"}
+            { "language is not defined: bbl.jul for " curlanguage * warning$ "July" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.aug}
+{ curlanguage "english" =
+   {"Aug."}
+   { curlanguage "ukrainian" =
+      {"\CYRS\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRA\cyrv\cyrg\." }
+         { curlanguage "german" =
+            {"Aug."} % August
+            { "language is not defined: bbl.aug for " curlanguage * warning$ "Aug." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.sep}
+{ curlanguage "english" =
+   {"Sep."}
+   { curlanguage "ukrainian" =
+      {"\CYRV\cyre\cyrr."}
+      { curlanguage "russian" =
+            { "\CYRS\cyre\cyrn\cyrt." }
+         { curlanguage "german" =
+            {"Sep."} % September
+            { "language is not defined: bbl.sep for " curlanguage * warning$ "Sep." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.oct}
+{ curlanguage "english" =
+   {"Oct."}
+   { curlanguage "ukrainian" =
+      {"\CYRZH\cyro\cyrn."}
+      { curlanguage "russian" =
+            { "\CYRO\cyrk\cyrt." }
+         { curlanguage "german" =
+            {"Okt."} % Oktober
+            { "language is not defined: bbl.oct for " curlanguage * warning$ "Oct." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.nov}
+{ curlanguage "english" =
+   {"Nov."}
+   { curlanguage "ukrainian" =
+      {"\CYRL\cyri\cyrs."}
+      { curlanguage "russian" =
+            { "\CYRN\cyro\cyrya\cyrb." }
+         { curlanguage "german" =
+            {"Nov."} % November
+            { "language is not defined: bbl.nov for " curlanguage * warning$ "Nov." }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.dec}
+{ curlanguage "english" =
+   {"Dec."}
+   { curlanguage "ukrainian" =
+      {"\CYRG\cyrr\cyru\cyrd."}
+      { curlanguage "russian" =
+            { "\CYRD\cyre\cyrk." }
+         { curlanguage "german" =
+            {"Dez."} % Dezember
+            { "language is not defined: bbl.dec for " curlanguage * warning$ "Dec." }
+         if$}
+      if$}
+   if$}
+if$}
+FUNCTION {bbl.arxiv}
+{ curlanguage "english" =
+   { "ArXiv" }
+   { curlanguage "ukrainian" =
+      {"ArXiv"}
+      { curlanguage "russian" =
+         { "ArXiv" }
+         { curlanguage "german" =
+            { "ArXiv" }
+            { "language is not defined: bbl.arxiv for " curlanguage * warning$ "ArXiv" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.jstor}
+{ curlanguage "english" =
+   { "JSTOR" }
+   { curlanguage "ukrainian" =
+      {"JSTOR"}
+      { curlanguage "russian" =
+         { "JSTOR" }
+         { curlanguage "german" =
+            { "JSTOR" }
+            { "language is not defined: bbl.jstor for " curlanguage * warning$ "JSTOR" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.pubmed}
+{ curlanguage "english" =
+   { "PubMed" }
+   { curlanguage "ukrainian" =
+      {"PubMed"}
+      { curlanguage "russian" =
+         { "PubMed" }
+         { curlanguage "german" =
+            { "PubMed" }
+            { "language is not defined: bbl.pubmed for " curlanguage * warning$ "PubMed" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.googlebooks}
+{ curlanguage "english" =
+   { "Google Books" }
+   { curlanguage "ukrainian" =
+      {"Google \CYRK\cyrn\cyri\cyrg\cyri"}
+      { curlanguage "russian" =
+         { "Google \CYRK\cyrn\cyri\cyrg\cyri" }
+         { curlanguage "german" =
+            { "Google Books" }
+            { "language is not defined: bbl.googlebooks for " curlanguage * warning$ "Google Books" }
+         if$}
+      if$}
+   if$}
+if$}
+
+FUNCTION {bbl.hdl}
+{ curlanguage "english" =
+   { "Handle.Net" }
+   { curlanguage "ukrainian" =
+      {"Handle.Net"}
+      { curlanguage "russian" =
+         { "Handle.Net" }
+         { curlanguage "german" =
+            { "Handle.Net" }
+            { "language is not defined: bbl.hdl for " curlanguage * warning$ "Handle.Net" }
+         if$}
+      if$}
+   if$}
+if$}
+FUNCTION {address.or.location}
+{
+  address empty$
+    { location }
+    { address }
+  if$
+}
+
+FUNCTION {specialitycode.or.number}
+{
+  specialitycode empty$
+    { number }
+    { specialitycode }
+  if$
+}
+
+FUNCTION {institution.or.school}
+{
+  institution empty$
+    { school}
+    { institution }
+  if$
+}
+FUNCTION {date.to.year}
+{
+  date empty$
+    { date }
+    {
+      date text.length$ #3 >
+        {
+          date #1 #4 substring$ 'y :=
+          y
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {date.to.month}
+{
+  date empty$
+    { date }
+    {
+      date text.length$ #6 >
+        {
+          date #6 #2 substring$ 'm :=
+          m
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {date.to.day}
+{
+  date empty$
+    { date }
+    {
+      date text.length$ #10 =
+        {
+          date #9 #2 substring$ 'd :=
+          d
+        }
+        {
+          "wrong format of date in " cite$ * ": date=" * date * warning$
+          date
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {year.or.date.to.year}
+{
+  year empty$
+    {
+      date.to.year
+    }
+    { year }
+  if$
+}
+
+FUNCTION {format.month}
+{ month empty$
+    { "" }
+    { month "Jan." =
+        { bbl.jan }
+    { month "Feb." =
+        { bbl.feb }
+    { month "Mar." =
+        { bbl.mar }
+    { month "Apr." =
+        { bbl.apr }
+    { month "May" =
+        { bbl.may }
+    { month "Jun." =
+        { bbl.jun }
+    { month "Jul." =
+        { bbl.jul }
+    { month "Aug." =
+        { bbl.aug }
+    { month "Sep." =
+        { bbl.sep }
+    { month "Oct." =
+        { "Окт." }
+    { month "Nov." =
+        { bbl.nov }
+    { month "Dec." =
+        { bbl.dec }
+        {
+          "unknown month in " cite$ * warning$
+          month
+        }
+        if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}if$}
+    if$
+}
+FUNCTION {format.date}
+{ year.or.date.to.year empty$
+    { month empty$
+        { "" }
+        { "there's a month but no year in " cite$ * warning$
+          format.month
+        }
+      if$
+    }
+    { month empty$
+        'year.or.date.to.year
+        { year.or.date.to.year ". \BibDash " format.month * * }
+      if$
+    }
+  if$
+}
+
+INTEGERS { nameptr namesleft numnames }
+
+FUNCTION {fmt.names.first}
+{ #1
+  "{vv~}{ll}{~jj}{~f.}"
+  format.name$
+}
+
+FUNCTION {fmt.names.three}
+{
+  's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+  { namesleft #0 > }
+  { s nameptr
+      "{vv~}{ll}{~jj}{~f.}"
+    format.name$ 't :=
+    nameptr #1 >
+      { nameptr #4 = numnames #4 > and
+          { "others" 't :=
+            #1 'namesleft :=
+          }
+          'skip$
+        if$
+        namesleft #1 >
+          { ", " * t * }
+          { t "others" = t "~others" = or
+              { " " * bbl.etal * }
+              { ", " * t * }
+          if$
+          }
+        if$
+      }
+      't
+    if$
+    nameptr #1 + 'nameptr :=
+    namesleft #1 - 'namesleft :=
+  }
+  while$
+}
+
+FUNCTION {fmt.names.all}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr
+      %"{vv~}{ll}" format.name$ 't :=
+      "{vv~}{ll}{~jj}{~f.}"
+      format.name$ 't :=
+      nameptr #1 >
+        { namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >  curlanguage "english" = and
+                { "," * }
+                'skip$
+              if$
+              t "others" = t "~others" = or
+                { " " * bbl.etal * }
+                { " " bbl.and " " * * * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+%%<long>    { author fmt.names.all emphasize}
+%%<!long&strict>    { author fmt.names.first emphasize}
+%%<!long&!strict>    { author fmt.names.three emphasize}
+FUNCTION {format.author}
+{
+  author empty$
+    { author } %%%'skip$
+    {author num.names$ #4 <
+      {
+       author fmt.names.three
+      }
+      { "" } %%%'skip$
+    if$}
+  if$
+}
+
+FUNCTION {format.bookauthors.rest}
+{ bookauthor empty$
+    { "" }
+    { bookauthor fmt.names.three emphasize }
+  if$
+}
+
+FUNCTION {format.editors.rest}
+{ editor empty$
+    { "" }
+    { bbl.edby "\ " * editor fmt.names.three * }
+  if$
+}
+
+FUNCTION {format.chief.rest}
+{ editor empty$
+    { "" }
+    { bbl.chief "\ " * editor fmt.names.three * }
+  if$
+}
+
+FUNCTION {format.executor.rest}
+{ author empty$
+    { "" }
+    { bbl.executor ": " * author fmt.names.three * }
+  if$
+}
+
+FUNCTION {format.compiler.rest}
+{ compiler empty$
+    { "" }
+    { bbl.compiler "\ " * compiler fmt.names.three * }
+  if$
+}
+
+FUNCTION {fmt.names.brief}
+{ 's :=
+  #1 'nameptr :=
+  s num.names$ 'numnames :=
+  numnames 'namesleft :=
+    { namesleft #0 > }
+    { s nameptr "{vv~}{ll}" format.name$ 't :=
+      nameptr #1 >
+        {
+          namesleft #1 >
+            { ", " * t * }
+            {
+              numnames #2 >  curlanguage "english" = and
+                { "," * }
+                'skip$
+              if$
+              t "others" =  t "~others" =  or
+                { " " bbl.etal * * }
+                { " " bbl.and " " * * * t * }
+              if$
+            }
+          if$
+        }
+        't
+      if$
+      nameptr #1 + 'nameptr :=
+      namesleft #1 - 'namesleft :=
+    }
+  while$
+}
+
+FUNCTION {format.names.key}
+{ 's :=
+  set.language %%% уже вызвана в output.bibitem, но вроде бы нужна и здесь
+  s #1 "{vv~}{ll}" format.name$
+  s num.names$ duplicate$
+  #2 >
+    { pop$ " " bbl.etal * * }
+    { #2 <
+        'skip$
+        { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
+            { " " bbl.etal * * }
+            { " " bbl.and " " * * * s #2 "{vv~}{ll}" format.name$ * }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {format.key}
 { empty$
-    'pop$
-    { "can't use both " swap$ * " fields in " * cite$ * warning$ }
+    { key field.or.null }
+    { "" }
   if$
 }
+
+FUNCTION {author.key.label}
+{ author empty$
+    { key empty$
+        { cite$ #1 #3 substring$ }
+        'key
+      if$
+    }
+    { author format.names.key }
+  if$
+}
+FUNCTION {author.editor.key.label}
+{ author empty$
+    { editor empty$
+        { key empty$
+            { cite$ #1 #3 substring$ }
+            %'key          %% causes lost of year
+            { "{}" key * } %% Bug in bibtex8 ??
+          if$
+        }
+        { editor format.names.key }
+      if$
+    }
+    { author format.names.key }
+  if$
+}
+
+FUNCTION {author.key.organization.label}
+{ author empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { author format.names.key }
+  if$
+}
+
+FUNCTION {editor.key.organization.label}
+{ editor empty$
+    { key empty$
+        { organization empty$
+            { cite$ #1 #3 substring$ }
+            { "The " #4 organization chop.word #3 text.prefix$ }
+          if$
+        }
+        'key
+      if$
+    }
+    { editor format.names.key }
+  if$
+}
+
+FUNCTION {calc.short.list}
+{ type$ "book" = type$ "inbook" = or
+    'author.editor.key.label
+    { type$ "proceedings" =
+        'editor.key.organization.label
+        { type$ "manual" =
+            'author.key.organization.label
+            'author.key.label
+          if$
+        }
+      if$
+    }
+  if$
+  'short.list :=
+}
+
+FUNCTION {calc.label}
+{ calc.short.list
+  short.list
+  "("
+  *
+  year.or.date.to.year duplicate$ empty$
+  short.list key field.or.null = or
+     { pop$ "" }
+     'skip$
+  if$
+  *
+  'label :=
+}
+
+FUNCTION {calc.long.list} %% called 1 time only
+{ type$ "book" = type$ "inbook" = or
+    %'format.author.editor.brief
+    { author empty$
+        { editor empty$
+            { "" }
+            { editor fmt.names.brief }
+          if$
+        }
+        { author fmt.names.brief }
+      if$
+    }
+    { type$ "proceedings" =
+        %'format.editor.brief
+        { editor empty$
+            { "" }
+            { editor fmt.names.brief }
+          if$
+        }
+        %'format.author.brief
+        { author empty$
+            { "" }
+            { author fmt.names.brief }
+          if$
+        }
+      if$
+    }
+  if$
+}
+
+FUNCTION {output.address.publisher}
+{
+  address empty$ location empty$ and
+    'skip$
+    { address.or.location output
+      publisher empty$
+        'skip$
+        { new.colon }
+      if$
+    }
+  if$
+  publisher output
+}
+FUNCTION {output.bibitem}
+{
+  set.language
+  newline$
+  "\bibitem" write$
+  label extra.label * ")" *
+  calc.long.list *
+  bracketise write$
+  cite$ bracify write$
+  newline$
+  "\selectlanguageifdefined" curlanguage bracify * write$
+  newline$
+  ""
+  before.all 'output.state :=
+}
+
+%%  author.key.label
+%%  year parenthesify *
+%%  "; lbl:" label * *
+%%  "; mfn:"  calc.long.list * *
 
 FUNCTION {format.bvolume}
 { volume empty$
@@ -1485,7 +1683,7 @@ FUNCTION {format.bvolume}
     { bbl.vvol volume tie.connect
       series empty$
         'skip$
-        { bbl.of space.word * series emphasize * }
+        { bbl.of spaces.around * series emphasize * }
       if$
       "volume and number" number either.or.check
     }
@@ -1514,30 +1712,6 @@ FUNCTION {format.number.series}
   if$
 }
 
-FUNCTION {is.num}
-{ chr.to.int$
-  duplicate$ "0" chr.to.int$ < not
-  swap$ "9" chr.to.int$ > not and
-}
-
-FUNCTION {extract.num}
-{ duplicate$ 't :=
-  "" 's :=
-  { t empty$ not }
-  { t #1 #1 substring$
-    t #2 global.max$ substring$ 't :=
-    duplicate$ is.num
-      { s swap$ * 's := }
-      { pop$ "" 't := }
-    if$
-  }
-  while$
-  s empty$
-    'skip$
-    { pop$ s }
-  if$
-}
-
 
 FUNCTION {convert.edition}
 { edition
@@ -1554,38 +1728,6 @@ FUNCTION {format.edition}
   if$
 }
 
-INTEGERS { multiresult }
-
-FUNCTION {multi.page.check}
-{ 't :=
-  #0 'multiresult :=
-    { multiresult not
-      t empty$ not
-      and
-    }
-    { t #1 #1 substring$
-      duplicate$ "-" =
-      swap$ duplicate$ "," =
-      swap$ "+" =
-      or or
-        { #1 'multiresult := }
-        { t #2 global.max$ substring$ 't := }
-      if$
-    }
-  while$
-  multiresult
-}
-
-%%FUNCTION {format.pages}
-%%{ pages empty$
-%%    { "" }
-%%    { pages multi.page.check
-%%        { bbl.ppages pages n.dashify tie.connect }
-%%        { bbl.ppage pages tie.connect }
-%%      if$
-%%    }
-%%  if$
-%%}
 FUNCTION {format.pages}
 { eid empty$
     {
@@ -1606,15 +1748,6 @@ FUNCTION {format.pages}
   if$
 }
 
-%%FUNCTION {format.pages.page}
-%%{ pages empty$
-%%    { pagetotal empty$
-%%      { "" }
-%%      { pagetotal bbl.pages tie.connect }
-%%    if$}
-%%    { format.pages}
-%%  if$
-%%}
 FUNCTION {format.pages.page}
 { eid empty$
     { pages empty$
@@ -1677,6 +1810,19 @@ FUNCTION {empty.misc.check}
   if$
 }
 
+FUNCTION {bbl.thesis.type}
+{ type "mathesis" =
+  { bbl.mathesis }
+  { type "phdthesis" =
+    { bbl.phdthesis }
+    { type "docthesis" =
+      { bbl.docthesis }
+      %%{ "!!!" type * "t" change.case$ }
+      { type "t" change.case$ }
+    if$}
+  if$}
+if$}
+
 %%<!utf8>      bbl.thesis.type "t" change.case$
 %%<utf8>      bbl.thesis.type
 FUNCTION {format.thesis.type}
@@ -1697,81 +1843,61 @@ FUNCTION {format.techreport.type}
   if$
 }
 
-FUNCTION {author.before}
+FUNCTION {output.author.head}
 {
   author empty$
     'skip$
     {author num.names$ #4 <
-      {format.authors output
-       new.sentence}
+      {
+       author fmt.names.three output
+       new.sentence
+      }
       'skip$
     if$}
   if$
 }
 
-%%<*!long>
-%%FUNCTION {bookauthor.before}
-%%{
-%%  bookauthor empty$
-%%    'skip$
-%%    {bookauthor num.names$ #4 <
-%%      {format.bookauthors output
-%%       new.sentence}
-%%      'skip$
-%%    if$}
-%%  if$
-%%}
-%%</!long>
-%%<*long>
-%%FUNCTION {bookauthor.before}
-%%{
-%%  bookauthor empty$
-%%    'skip$
-%%    { format.bookauthors output
-%%      new.sentence
-%%    }
-%%  if$
-%%}
-%%</long>
-
-FUNCTION {author.after}
+FUNCTION {output.author.rest}
 {
   author empty$
     'skip$
     {author num.names$ #3 >
-      {format.authors.after output
-       new.semicolon }
+      { author fmt.names.all output
+        new.semicolon
+      }
       'skip$
     if$}
   if$
 }
 
-FUNCTION {bookauthor.after}
+FUNCTION {bookauthor.rest}
 {
   bookauthor empty$
     'skip$
-    {format.bookauthors.after output
-       new.semicolon }
+    {
+      bookauthor fmt.names.three output
+      new.semicolon
+    }
   if$
 }
 
-FUNCTION {editor.organization.after}
+FUNCTION {editor.organization.rest}
 {
   compiler empty$
     {}
-    { format.compiler.after  output
+    { format.compiler.rest  output
     new.semicolon
     }
   if$
   editor empty$
     {}
-    { format.editors.after  output
+    { format.editors.rest  output.nonnull
     new.semicolon
     }
   if$
   organization empty$
     {}
-    {organization output
+    {organization output.nonnull
     new.semicolon
     }
   if$
@@ -1822,7 +1948,7 @@ FUNCTION {add.doi}
     'skip$
     { doi empty$
         'skip$
-        { "\href{http://dx.doi.org/" doi * "}{" * swap$ * "}" * }
+        { "\href{https://doi.org/" doi * "}{" * swap$ * "}" * }
       if$
     }
   if$
@@ -1833,7 +1959,7 @@ FUNCTION {add.media}
     'skip$
     { media empty$
         'skip$
-        { " " * bbl.media enclose.square.brackets * }
+        { " " * bbl.media bracketise * }
       if$
     }
   if$
@@ -1914,13 +2040,14 @@ FUNCTION {format.prioritydate}
 FUNCTION {article}
 {
   output.bibitem
-  author.before
+  output.author.head
+  %new.sentence
   author format.key output
-  format.title add.media "title" output.check
+  title add.media "title" output.check
   new.slash
-  author.after
+  output.author.rest
   new.dblslash
-  journal emphasize add.doi "journal" output.check % new in v.2
+  journal emphasize add.doi "journal" output.check % new in v1.2
   new.block
   format.date "year/date" output.check
   new.block
@@ -1939,14 +2066,15 @@ FUNCTION {article}
 FUNCTION {book}
 {
   output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
-  format.btitle add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.sentence
   format.number.series output
   new.block
@@ -1971,14 +2099,15 @@ FUNCTION {book}
 FUNCTION {booklet}
 {
   output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
-  format.title add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.block
   howpublished output
   address.or.location output
@@ -1994,18 +2123,19 @@ FUNCTION {booklet}
 FUNCTION {inbook}
 {
   output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
-  format.btitle add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
+  output.author.rest
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
-  bookauthor.after
-  editor.organization.after
+  bookauthor.rest
+  editor.organization.rest
   new.block
   format.edition output
   new.block
@@ -2030,18 +2160,19 @@ FUNCTION {inbook}
 FUNCTION {incollection}
 {
   output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
   new.sentence
-  format.title add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
+  output.author.rest
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   output.address.publisher
   format.date "year/date" output.check
@@ -2062,11 +2193,11 @@ FUNCTION {proceedings}
 {
   output.bibitem
   editor format.key output
-  format.btitle add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   format.bvolume output
   format.number.series output
@@ -2082,18 +2213,19 @@ FUNCTION {proceedings}
 
 FUNCTION {inproceedings}
 { output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
   new.sentence
-  format.title add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
+  output.author.rest
   new.dblslash
   booktitle "booktitle" output.check
   new.slash
-  editor.organization.after
+  editor.organization.rest
   new.block
   format.bvolume output
   format.number.series output
@@ -2120,13 +2252,13 @@ FUNCTION {manual}
         }
       if$
     }
-    { format.authors output.nonnull }
+    { format.author output.nonnull }
   if$
   author format.key output
   new.block
-  format.btitle add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   author empty$
     { organization empty$
     {
@@ -2156,8 +2288,8 @@ FUNCTION {patent}
 {
   output.bibitem
   title add.media output.nonnull
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.colon
   format.type.number output
   add.blank
@@ -2165,9 +2297,9 @@ FUNCTION {patent}
   new.colon
   ipc output
   new.slash
-  format.authors.after "author" output.check
+  format.author "author" output.check
   add.blank
-  authorcountry enclose.round.brackets output.nonnull
+  authorcountry paranthesify output.nonnull
   author format.key output
   new.semicolon
   holder output.nonnull
@@ -2183,7 +2315,7 @@ FUNCTION {patent}
   new.semicolon
   format.prioritydate output
   prioritynumber output
-  prioritycountry enclose.round.brackets output
+  prioritycountry paranthesify output
   new.block
   note output
   new.sentence
@@ -2196,10 +2328,12 @@ FUNCTION {patent}
 
 FUNCTION {misc}
 { output.bibitem
-  format.authors output
+  %format.author output  % < v.1.2k
+  output.author.head    % v.1.2k
+  %new.sentence            % v.1.2k
   author format.key output
   title howpublished new.sentence.checkb
-  format.title add.media output
+  title add.media output
   howpublished new.block.checka
   howpublished output
   new.block
@@ -2214,14 +2348,15 @@ FUNCTION {misc}
 
 FUNCTION {unpublished}
 { output.bibitem
-  author.before
+  output.author.head
+  new.sentence
   author format.key output
-  format.btitle "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.slash
-  author.after
-  editor.organization.after
+  output.author.rest
+  editor.organization.rest
   new.block
   format.date "year/date" output.check
   new.block
@@ -2234,15 +2369,15 @@ FUNCTION {unpublished}
 
 FUNCTION {online}
 { output.bibitem
-  format.authors output
+  format.author output
   author format.key output
   title howpublished new.sentence.checkb
-  format.title add.doi add.media "title" output.check
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  title add.doi add.media "title" output.check
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   howpublished new.dblslash.checka
   howpublished output
-  editor.organization.after
+  editor.organization.rest
   new.sentence
   new.block
   output.address.publisher
@@ -2261,10 +2396,10 @@ FUNCTION {webpage}    {online}
 FUNCTION {electronic} {online}
 FUNCTION {thesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
   author format.key output
   new.sentence
-  format.btitle add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
@@ -2272,7 +2407,8 @@ FUNCTION {thesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  format.authors.after output
+  %%%format.author.rest output %% dupplicates athours from the head zone
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -2293,10 +2429,10 @@ FUNCTION {thesis}
 FUNCTION {report}
 {
   output.bibitem
-  format.title add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   title format.key output
-  new.colon          % added in v.1.3
-  titleaddon output  % added in v.1.3
+  new.colon          % added in v.1.2k
+  titleaddon output  % added in v.1.2k
   new.colon
   type "type" output.check
   new.colon
@@ -2305,9 +2441,9 @@ FUNCTION {report}
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
   new.semicolon
-  format.chief.after output % from editor field
+  format.chief.rest output % from editor field
   new.semicolon
-  format.executor.after output % from author field
+  format.executor.rest output % from author field
   new.block
   address.or.location output
   new.colon
@@ -2325,10 +2461,10 @@ FUNCTION {report}
 
 FUNCTION {phdthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
   author format.key output
   new.sentence
-  format.btitle add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   new.colon
   bbl.phdthesis format.thesis.type output.nonnull
   new.colon
@@ -2337,7 +2473,8 @@ FUNCTION {phdthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  format.authors.after output
+  %%%format.author.rest output %% dupplicates athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -2355,10 +2492,10 @@ FUNCTION {phdthesis}
 }
 FUNCTION {mastersthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
   author format.key output
   new.sentence
-  format.btitle add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   new.colon
   bbl.mathesis format.thesis.type output.nonnull
   new.colon
@@ -2367,7 +2504,8 @@ FUNCTION {mastersthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  format.authors.after output
+  %%%format.author.rest output %% dupplicates athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -2385,10 +2523,10 @@ FUNCTION {mastersthesis}
 }
 FUNCTION {docthesis}
 { output.bibitem
-  format.authors "author" output.check
+  format.author "author" output.check
   author format.key output
   new.sentence
-  format.btitle add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   new.colon
   bbl.docthesis format.thesis.type output.nonnull
   new.colon
@@ -2397,7 +2535,8 @@ FUNCTION {docthesis}
   new.colon
   titleaddon output % date of defence and approvement; new in v.1.2i
   new.slash
-  format.authors.after output
+  %%%format.author.rest output %% dupplicate athours
+  output.author.rest            %% prints if num.names$ > 3 or > 1
   new.semicolon
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
@@ -2420,7 +2559,7 @@ FUNCTION {conference} { inproceedings }
 FUNCTION {techreport}
 {
   output.bibitem
-  format.title add.doi add.media "title" output.check
+  title add.doi add.media "title" output.check
   title format.key output
   new.colon
   format.techreport.type output
@@ -2430,9 +2569,9 @@ FUNCTION {techreport}
   %institution "institution" output.check
   institution.or.school "institution/school" output.check
   new.semicolon
-  format.chief.after output % from editor field
+  format.chief.rest output % from editor field
   new.semicolon
-  format.executor.after output % from author field
+  format.executor.rest output % from author field
   new.block
   address.or.location output
   new.colon
@@ -2462,96 +2601,96 @@ MACRO {sep} {"Sep."}
 MACRO {oct} {"Oct."}
 MACRO {nov} {"Nov."}
 MACRO {dec} {"Dec."}
-MACRO {aa}{"Astron. \& Astrophys."}
-MACRO {aasup}{"Astron. \& Astrophys. Suppl. Ser."}
-MACRO {aj} {"Astron. J."}
+MACRO {aa}{"Astron.\ \& Astrophys."}
+MACRO {aasup}{"Astron.\ \& Astrophys.\ Suppl.\ Ser."}
+MACRO {aj} {"Astron.\ J."}
 MACRO {aph} {"Acta Phys."}
-MACRO {advp} {"Adv. Phys."}
-MACRO {ajp} {"Amer. J. Phys."}
-MACRO {ajm} {"Amer. J. Math."}
-MACRO {amsci} {"Amer. Sci."}
-MACRO {anofd} {"Ann. Fluid Dyn."}
-MACRO {am} {"Ann. Math."}
-MACRO {ap} {"Ann. Phys. (NY)"}
-MACRO {adp} {"Ann. Phys. (Leipzig)"}
-MACRO {ao} {"Appl. Opt."}
-MACRO {apl} {"Appl. Phys. Lett."}
+MACRO {advp} {"Adv.\ Phys."}
+MACRO {ajp} {"Amer.\ J.\ Phys."}
+MACRO {ajm} {"Amer.\ J.\ Math."}
+MACRO {amsci} {"Amer.\ Sci."}
+MACRO {anofd} {"Ann.\ Fluid Dyn."}
+MACRO {am} {"Ann.\ Math."}
+MACRO {ap} {"Ann.\ Phys.\ (NY)"}
+MACRO {adp} {"Ann.\ Phys.\ (Leipzig)"}
+MACRO {ao} {"Appl.\ Opt."}
+MACRO {apl} {"Appl.\ Phys.\ Lett."}
 MACRO {app} {"Astroparticle Phys."}
-MACRO {apj} {"Astrophys. J."}
-MACRO {apjsup} {"Astrophys. J. Suppl."}
-MACRO {apss} {"Astrophys. Space Sci."}
-MACRO {araa} {"Ann. Rev. Astron. Astrophys."}
-MACRO {baas} {"Bull. Amer. Astron. Soc."}
-MACRO {baps} {"Bull. Amer. Phys. Soc."}
-MACRO {cmp} {"Comm. Math. Phys."}
-MACRO {cpam} {"Commun. Pure Appl. Math."}
-MACRO {cppcf} {"Comm. Plasma Phys. \& Controlled Fusion"}
-MACRO {cpc} {"Comp. Phys. Comm."}
-MACRO {cqg} {"Class. Quant. Grav."}
-MACRO {cra} {"C. R. Acad. Sci. A"}
-MACRO {fed} {"Fusion Eng. \& Design"}
+MACRO {apj} {"Astrophys.\ J."}
+MACRO {apjsup} {"Astrophys.\ J.\ Suppl."}
+MACRO {apss} {"Astrophys.\ Space Sci."}
+MACRO {araa} {"Ann.\ Rev.\ Astron.\ Astrophys."}
+MACRO {baas} {"Bull.\ Amer.\ Astron.\ Soc."}
+MACRO {baps} {"Bull.\ Amer.\ Phys.\ Soc."}
+MACRO {cmp} {"Comm.\ Math.\ Phys."}
+MACRO {cpam} {"Commun.\ Pure Appl.\ Math."}
+MACRO {cppcf} {"Comm.\ Plasma Phys.\ \& Controlled Fusion"}
+MACRO {cpc} {"Comp.\ Phys.\ Comm."}
+MACRO {cqg} {"Class.\ Quant.\ Grav."}
+MACRO {cra} {"C.\ R.\ Acad.\ Sci.\ A"}
+MACRO {fed} {"Fusion Eng.\ \& Design"}
 MACRO {ft} {"Fusion Tech."}
-MACRO {grg} {"Gen. Relativ. Gravit."}
-MACRO {ieeens} {"IEEE Trans. Nucl. Sci."}
-MACRO {ieeeps} {"IEEE Trans. Plasma Sci."}
-MACRO {ijimw} {"Interntl. J. Infrared \& Millimeter Waves"}
+MACRO {grg} {"Gen.\ Relativ.\ Gravit."}
+MACRO {ieeens} {"IEEE Trans.\ Nucl.\ Sci."}
+MACRO {ieeeps} {"IEEE Trans.\ Plasma Sci."}
+MACRO {ijimw} {"Interntl.\ J.\ Infrared \& Millimeter Waves"}
 MACRO {ip} {"Infrared Phys."}
 MACRO {irp} {"Infrared Phys."}
-MACRO {jap} {"J. Appl. Phys."}
-MACRO {jasa} {"J. Acoust. Soc. America"}
-MACRO {jcp} {"J. Comp. Phys."}
-MACRO {jchp} {"J. Chem. Phys."}
-MACRO {jetp} {"Sov. Phys.--JETP"}
-MACRO {jfe} {"J. Fusion Energy"}
-MACRO {jfm} {"J. Fluid Mech."}
-MACRO {jmp} {"J. Math. Phys."}
-MACRO {jne} {"J. Nucl. Energy"}
-MACRO {jnec} {"J. Nucl. Energy, C: Plasma Phys., Accelerators, Thermonucl. Res."}
-MACRO {jnm} {"J. Nucl. Mat."}
-MACRO {jpc} {"J. Phys. Chem."}
-MACRO {jpp} {"J. Plasma Phys."}
-MACRO {jpsj} {"J. Phys. Soc. Japan"}
-MACRO {jsi} {"J. Sci. Instrum."}
-MACRO {jvst} {"J. Vac. Sci. \& Tech."}
+MACRO {jap} {"J.\ Appl.\ Phys."}
+MACRO {jasa} {"J.\ Acoust.\ Soc.\ America"}
+MACRO {jcp} {"J.\ Comp.\ Phys."}
+MACRO {jchp} {"J.\ Chem.\ Phys."}
+MACRO {jetp} {"Sov.\ Phys.--JETP"}
+MACRO {jfe} {"J.\ Fusion Energy"}
+MACRO {jfm} {"J.\ Fluid Mech."}
+MACRO {jmp} {"J.\ Math.\ Phys."}
+MACRO {jne} {"J.\ Nucl.\ Energy"}
+MACRO {jnec} {"J.\ Nucl.\ Energy, C: Plasma Phys., Accelerators, Thermonucl.\ Res."}
+MACRO {jnm} {"J.\ Nucl.\ Mat."}
+MACRO {jpc} {"J.\ Phys.\ Chem."}
+MACRO {jpp} {"J.\ Plasma Phys."}
+MACRO {jpsj} {"J.\ Phys.\ Soc.\ Japan"}
+MACRO {jsi} {"J.\ Sci.\ Instrum."}
+MACRO {jvst} {"J.\ Vac.\ Sci.\ \& Tech."}
 MACRO {nat} {"Nature"}
 MACRO {nature} {"Nature"}
-MACRO {nedf} {"Nucl. Eng. \& Design/Fusion"}
-MACRO {nf} {"Nucl. Fusion"}
-MACRO {nim} {"Nucl. Inst. \& Meth."}
-MACRO {nimpr} {"Nucl. Inst. \& Meth. in Phys. Res."}
-MACRO {np} {"Nucl. Phys."}
-MACRO {npb} {"Nucl. Phys. B"}
-MACRO {nt/f} {"Nucl. Tech./Fusion"}
-MACRO {npbpc} {"Nucl. Phys. B (Proc. Suppl.)"}
+MACRO {nedf} {"Nucl.\ Eng.\ \& Design/Fusion"}
+MACRO {nf} {"Nucl.\ Fusion"}
+MACRO {nim} {"Nucl.\ Inst.\ \& Meth."}
+MACRO {nimpr} {"Nucl.\ Inst.\ \& Meth.\ in Phys.\ Res."}
+MACRO {np} {"Nucl.\ Phys."}
+MACRO {npb} {"Nucl.\ Phys.\ B"}
+MACRO {nt/f} {"Nucl.\ Tech./Fusion"}
+MACRO {npbpc} {"Nucl.\ Phys.\ B (Proc.\ Suppl.)"}
 MACRO {inc} {"Nuovo Cimento"}
 MACRO {nc} {"Nuovo Cimento"}
-MACRO {pf} {"Phys. Fluids"}
-MACRO {pfa} {"Phys. Fluids A: Fluid Dyn."}
-MACRO {pfb} {"Phys. Fluids B: Plasma Phys."}
-MACRO {pl} {"Phys. Lett."}
-MACRO {pla} {"Phys. Lett. A"}
-MACRO {plb} {"Phys. Lett. B"}
-MACRO {prep} {"Phys. Rep."}
-MACRO {pnas} {"Proc. Nat. Acad. Sci. USA"}
-MACRO {pp} {"Phys. Plasmas"}
-MACRO {pop} {"Phys. Plasmas"}
-MACRO {ppcf} {"Plasma Phys. \& Controlled Fusion"}
-MACRO {phitrsl} {"Philos. Trans. Roy. Soc. London"}
-MACRO {prl} {"Phys. Rev. Lett."}
-MACRO {pr} {"Phys. Rev."}
-MACRO {physrev} {"Phys. Rev."}
-MACRO {pra} {"Phys. Rev. A"}
-MACRO {prb} {"Phys. Rev. B"}
-MACRO {prc} {"Phys. Rev. C"}
-MACRO {prd} {"Phys. Rev. D"}
-MACRO {pre} {"Phys. Rev. E"}
-MACRO {ps} {"Phys. Scripta"}
-MACRO {procrsl} {"Proc. Roy. Soc. London"}
-MACRO {rmp} {"Rev. Mod. Phys."}
-MACRO {rsi} {"Rev. Sci. Inst."}
+MACRO {pf} {"Phys.\ Fluids"}
+MACRO {pfa} {"Phys.\ Fluids A: Fluid Dyn."}
+MACRO {pfb} {"Phys.\ Fluids B: Plasma Phys."}
+MACRO {pl} {"Phys.\ Lett."}
+MACRO {pla} {"Phys.\ Lett.\ A"}
+MACRO {plb} {"Phys.\ Lett.\ B"}
+MACRO {prep} {"Phys.\ Rep."}
+MACRO {pnas} {"Proc.\ Nat.\ Acad.\ Sci.\ USA"}
+MACRO {pp} {"Phys.\ Plasmas"}
+MACRO {pop} {"Phys.\ Plasmas"}
+MACRO {ppcf} {"Plasma Phys.\ \& Controlled Fusion"}
+MACRO {phitrsl} {"Philos.\ Trans.\ Roy.\ Soc.\ London"}
+MACRO {prl} {"Phys.\ Rev.\ Lett."}
+MACRO {pr} {"Phys.\ Rev."}
+MACRO {physrev} {"Phys.\ Rev."}
+MACRO {pra} {"Phys.\ Rev.\ A"}
+MACRO {prb} {"Phys.\ Rev.\ B"}
+MACRO {prc} {"Phys.\ Rev.\ C"}
+MACRO {prd} {"Phys.\ Rev.\ D"}
+MACRO {pre} {"Phys.\ Rev.\ E"}
+MACRO {ps} {"Phys.\ Scripta"}
+MACRO {procrsl} {"Proc.\ Roy.\ Soc.\ London"}
+MACRO {rmp} {"Rev.\ Mod.\ Phys."}
+MACRO {rsi} {"Rev.\ Sci.\ Inst."}
 MACRO {science} {"Science"}
-MACRO {sciam} {"Sci. Am."}
-MACRO {sam} {"Stud. Appl. Math."}
+MACRO {sciam} {"Sci.\ Am."}
+MACRO {sam} {"Stud.\ Appl.\ Math."}
 MACRO {st} {"Sky and Telesc."}
 MACRO {cjp} {"Czech. J. Phys."}
 MACRO {el} {"Europhys. Lett."}
@@ -2594,49 +2733,47 @@ MACRO {sst} {"Semicond. Sci. Technol."}
 MACRO {suplatt} {"Superlatt. Microstr."}
 MACRO {sust} {"Supercond. Sci. Technol."}
 MACRO {znat} {"Z. Naturforsch."}
-MACRO {appopt} {"Appl. Opt."}
-MACRO {bell}   {"Bell Syst. Tech. J."}
-MACRO {ell}    {"Electron. Lett."}
-MACRO {jasp}   {"J. Appl. Spectr."}
-MACRO {jqe}    {"IEEE J. Quantum Electron."}
-MACRO {jlwt}   {"J. Lightwave Technol."}
-MACRO {jmo}    {"J. Mod. Opt."}
-MACRO {josa}   {"J. Opt. Soc. America"}
-MACRO {josaa}  {"J. Opt. Soc. Amer.~A"}
-MACRO {josab}  {"J. Opt. Soc. Amer.~B"}
-MACRO {jdp}    {"J. Phys. (Paris)"}
-MACRO {oc}     {"Opt. Commun."}
-MACRO {ol}     {"Opt. Lett."}
-MACRO {os}     {"Opt. Spectrosc."}
+MACRO {appopt} {"Appl.\ Opt."}
+MACRO {bell}   {"Bell Syst.\ Tech.\ J."}
+MACRO {ell}    {"Electron.\ Lett."}
+MACRO {jasp}   {"J.\ Appl.\ Spectr."}
+MACRO {jqe}    {"IEEE J.\ Quantum Electron."}
+MACRO {jlwt}   {"J.\ Lightwave Technol."}
+MACRO {jmo}    {"J.\ Mod.\ Opt."}
+MACRO {josa}   {"J.\ Opt.\ Soc.\ America"}
+MACRO {josaa}  {"J.\ Opt.\ Soc.\ Amer.~A"}
+MACRO {josab}  {"J.\ Opt.\ Soc.\ Amer.~B"}
+MACRO {jdp}    {"J.\ Phys.\ (Paris)"}
+MACRO {oc}     {"Opt.\ Commun."}
+MACRO {ol}     {"Opt.\ Lett."}
+MACRO {os}     {"Opt.\ Spectrosc."}
 MACRO {phtl}   {"IEEE Photon. Technol. Lett."}
-MACRO {pspie}  {"Proc. Soc. Photo-Opt. Instrum. Eng."}
+MACRO {pspie}  {"Proc.\ Soc.\ Photo-Opt.\ Instrum. Eng."}
 MACRO {vr}     {"Vision Res."}
-MACRO {zph}    {"Z. f. Physik"}
-MACRO {zphb}   {"Z. f. Physik~B"}
-MACRO {zphd}   {"Z. f. Physik~D"}
+MACRO {zph}    {"Z.\ f.\ Physik"}
+MACRO {zphb}   {"Z.\ f.\ Physik~B"}
+MACRO {zphd}   {"Z.\ f.\ Physik~D"}
 MACRO {sse} {"Solid-State Electron."}
 MACRO {pss} {"Phys. Sol. State"}
 MACRO {nl}  {"Nano Lett."}
-MACRO {sjpp} {"Sov. J. Plasma Phys."}
-MACRO {spd}  {"Sov. Phys.--Doklady"}
-MACRO {sptp} {"Sov. Phys.--Tech. Phys."}
-MACRO       {spu}  {"Sov. Phys.--Uspekhi"}
+MACRO {sjpp} {"Sov.\ J.\ Plasma Phys."}
+MACRO {spd}  {"Sov.\ Phys.--Doklady"}
+MACRO {sptp} {"Sov.\ Phys.--Tech. Phys."}
+MACRO {spu}  {"Sov.\ Phys.--Uspekhi"}
 MACRO {ufn}  {"\CYRU\CYRF\CYRN"}
 MACRO {pu}  {"Phys.--Uspekhi"}
-MACRO {sjot} {"Sov. J. Opt. Technol."}
-MACRO {sjqe} {"Sov. J. Quantum Electron."}
-MACRO {sleb} {"Sov. Phys.--Leb. Inst. Rep."}
-MACRO {stph} {"Sov. Phys.--Techn. Phys."}
-MACRO {stphl}{"Sov. Techn. Phys. Lett."}
+MACRO {sjot} {"Sov.\ J.\ Opt.\ Technol."}
+MACRO {sjqe} {"Sov.\ J.\ Quantum Electron."}
+MACRO {sleb} {"Sov.\ Phys.--Leb.\ Inst.\ Rep."}
+MACRO {stph} {"Sov.\ Phys.--Techn.\ Phys."}
+MACRO {stphl}{"Sov.\ Techn.\ Phys.\ Lett."}
 
 READ
-
 
 FUNCTION {sortify}
 { purify$
   "l" change.case$
 }
-
 
 INTEGERS { seq.num }
 
@@ -2711,7 +2848,7 @@ FUNCTION {reverse.pass}
     { "{\natexlab{" swap$ * "}}" * }
   if$
   'extra.label :=
-  label extra.label * 'label :=
+  %%%label extra.label * 'label :=
 }
 
 REVERSE {reverse.pass}
@@ -2758,5 +2895,31 @@ FUNCTION {end.bib}
 
 EXECUTE {end.bib}
 
+%% -------------------------------------------------------------------
+%% Copyright 2012-2020 Igor A. Kotelnikov.
+%% Copyright 2017      Leonid Sinev.
+%% Version 1.2k*
+%% 
+%% Copyright 1996-2005 Maksym Polyakov.
+%% Version 2005.08.12
+%% 
+%% Released under the LaTeX Project Public License v1.3c or later
+%% See http://www.latex-project.org/lppl.txt
+%% 
+%% This work is "maintained" (as per LPPL maintenance status) by
+%% Igor A. Kotelnikov.
+%% 
+%% Current version is 1.2k, 2020.12.25.
+%% 
+%% Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
+%% -------------------------------------------------------------------
+%% This work consists of the file  gost.dtx
+%% and the derived files           gost.ins,
+%%                                 gost.pdf,
+%%                                 gost*.bst  (8 files),
+%%                                 ugost*.bst (8 files),
+%%                                 README.md.
+%% It also contains a lot of examples (*.tex, *.pdf, *.bib files).
+%% -------------------------------------------------------------------
 %%
 %% End of file `gost2008n.bst'.
