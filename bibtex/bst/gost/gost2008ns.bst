@@ -487,7 +487,7 @@ if$}
 
 FUNCTION {bbl.edition}
 { curlanguage "english" =
-   {"edition"}
+   {"ed."}
    { curlanguage "ukrainian" =
       {"{\cyr\cyrv\cyri\cyrd.}"}
       { curlanguage "russian" =
@@ -498,7 +498,7 @@ FUNCTION {bbl.edition}
                {"edizione"}
                { curlanguage "french" =
                   {"\'{e}dition"}
-                  {"language is not defined: " curlanguage  " in bbl.edition" * * warning$ "edition"}
+                  {"language is not defined: " curlanguage  " in bbl.edition" * * warning$ "ed."}
                if$}
             if$}
          if$}
@@ -592,14 +592,17 @@ if$}
 
 FUNCTION {bbl.and}
 { curlanguage "english" =
-   {"and"}
+  {"and"}
    { curlanguage "german" =
       { "und" }
       { curlanguage "ukrainian" =
          {"{\cyrii}"}
          { curlanguage "russian" =
             {"{\cyri}"}
-            {"language is not defined: " curlanguage  " in bbl.and" * * warning$ "and"}
+            { curlanguage "french" =
+                {"et"}
+                {"language is not defined: " curlanguage  " in bbl.and" * * warning$ "and"}
+            if$}
          if$}
       if$}
    if$}
@@ -637,8 +640,11 @@ FUNCTION {bbl.nr}
       { curlanguage "ukrainian" = curlanguage "russian" = or
          { "{\cyr\textnumero}" }
          { curlanguage "german" =
-            {"{H.}"} %%% { "an." }
-            {"language is not defined: " curlanguage " in bbl.nr" * * warning$ "no."}
+            {"{nu.}"} %%% { "an." }
+            { curlanguage "french" =
+                { "no." }
+                {"language is not defined: " curlanguage " in bbl.nr" * * warning$ "no."}
+            if$}
          if$}
       if$}
    if$}
@@ -731,7 +737,10 @@ FUNCTION {bbl.url}
          { "{\CYRR\cyre\cyrzh\cyri\cyrm\ \cyrd\cyro\cyrs\cyrt\cyru\cyrp\cyra}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
+            { curlanguage "french" =
+                { "Mode d'acc\`{e}s" }
+                { "language is not defined: " curlanguage " in bbl.url" * * warning$ "online; accessed" }
+            if$}
          if$}
       if$}
    if$}
@@ -745,7 +754,10 @@ FUNCTION {bbl.urldate}
          { "{\cyrd\cyra\cyrt\cyra\ \cyro\cyrb\cyrr\cyra\cyrshch\cyre\cyrn\cyri\cyrya}" }
          { curlanguage "german" =
             { "{online; abgerufen}" }
-            { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
+            { curlanguage "french" =
+                { "{en ligne; acc\'{e}d\'{e}}" }
+                { "language is not defined: " curlanguage " in bbl.urldate" * * warning$ "online; accessed" }
+            if$}
          if$}
       if$}
    if$}
@@ -767,9 +779,9 @@ FUNCTION {bbl.mathesis}
 { curlanguage "english" =
    { "Master's thesis" }
    { curlanguage "german" =
-      { "Diss.~Mag." }
+      { "diss.~mag." }
       { curlanguage "russian" =
-        { "{\cyr\CYRK\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
+        { "{\cyr\cyrk\cyrv\cyra\cyrl\cyri\cyrf\cyri\cyrk\cyra\cyrc\cyri"
           "\cyro\cyrn\cyrn\cyra\cyrya\ \cyrr\cyra\cyrb\cyro\cyrt\cyra\ " *
           "\cyrm\cyra\cyrg\cyri\cyrs\cyrt\cyrr\cyra}" * }
          { "language is not defined: " curlanguage " in bbl.mthesis" * * warning$ "Master's thesis" }
@@ -781,12 +793,12 @@ FUNCTION {bbl.phdthesis}
 { curlanguage "english" =
    { "Ph.\,D. thesis" }
    { curlanguage "german" =
-      { "Diss.~Ph.\,D." }
+      { "diss.~Ph.\,D." }
       { curlanguage "russian" =
          { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrk\cyra\cyrn\cyrd. "
            "\cyrn\cyra\cyru\cyrk}" * }
          { curlanguage "french" =
-           { "Th\`{e}se de doctorat" }
+           { "th\`{e}se de doctorat" }
            { "language is not defined: " curlanguage " in bbl.phdthesis" * * warning$ "Ph.\,D. thesis" }
          if$}
       if$}
@@ -795,9 +807,9 @@ if$}
 
 FUNCTION {bbl.docthesis}
 { curlanguage "english" =
-   { "Dr.\,Sci. dissertation" }
+   { "dr.\,sci. dissertation" }
    { curlanguage "german" =
-      { "Diss.~Dr." }
+      { "diss.~dr." }
       { curlanguage "russian" =
          { "{\cyr\cyrd\cyri\cyrs.\ \ldots\ \cyrd-\cyrr\cyra\ "
            "\cyrn\cyra\cyru\cyrk}" * }
@@ -2194,15 +2206,20 @@ FUNCTION {proceedings}
   output.bibitem
   editor format.key output
   title add.doi add.media "title" output.check
-  new.colon          % added in v.1.2k
-  titleaddon output  % added in v.1.2k
+  new.colon                   % added in v.1.2k
+  titleaddon output           % added in v.1.2k
   new.slash
   editor.organization.rest
   new.block
+  output.address.publisher    % 1.2k moved from below
+  new.block                   % added in v.1.2k
+  format.date "year/date" output.check
+  new.block
   format.bvolume output
   format.number.series output
-  output.address.publisher
-  format.date "year/date" output.check
+  new.block
+  format.pages.page output
+  %%%output.address.publisher  % 1.2k moved upper
   new.block
   note output
   new.sentence
@@ -2218,8 +2235,8 @@ FUNCTION {inproceedings}
   author format.key output
   new.sentence
   title add.doi add.media "title" output.check
-  new.colon          % added in v.1.2k
-  titleaddon output  % added in v.1.2k
+  new.colon                % added in v.1.2k
+  titleaddon output        % added in v.1.2k
   new.slash
   output.author.rest
   new.dblslash
@@ -2227,11 +2244,12 @@ FUNCTION {inproceedings}
   new.slash
   editor.organization.rest
   new.block
+  output.address.publisher    % 1.2k moved from below
+  new.block                   % added in v.1.2k
+  format.date "year/date" output.check
+  new.block
   format.bvolume output
   format.number.series output
-  new.block
-  output.address.publisher
-  format.date "year/date" output.check
   new.block
   format.pages.page output
   new.block

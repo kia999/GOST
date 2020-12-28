@@ -242,7 +242,7 @@ which is 20 % shorter then ordinary LaTeX dash (`---`), and puts
 unbreakable space before `\cyrdash` so that dash never appears
 in the beginning of a line.
 
-## Where to get
+## Where to get from
 
 1. [http://ctan.org/pkg/gost](http://ctan.org/pkg/gost).
 
@@ -277,6 +277,8 @@ to `https://doi.org`.
 
 5. Documentation and examples update (thanks to Leonid Sinev).
 
+6. Formatting of @inproceedings and @proceedings improved.
+
 %</readmemd|readme>
 %<*readmemd>
 
@@ -297,15 +299,99 @@ modern bst-styles compiled without the `strict` option.
 6. `school` field in `@THESIS` and similar entries is replaced by
 `institution` to comply with `biblatex-gost` style.
 
+7. `specialitycode` is added for `@THESIS` and similar entries;
+   number is treated as alias of specialitycode.
+
+8. `type` field in `@THESIS` and similar entries can now accept three values
+   (`mathesis`, `phdthesis`, `docthesis`) which are translated to built-in
+   language-sensitive strings; any other value is reproduced literally.
+
+
+### Version 1.2h (2016.08.21)
+
+1. Minor changes in documentation.
+
+
+### Version 1.2g (2016.07.25)
+
+1. Minor changes in documentation.
+
+
+### Version 1.2f (2016.07.11)
+
+1. Support for `@patent` entry added (thanks to Stanislav Kruchinin).
+2. medium field renamed to media field.
+
+
+### Version 1.2e (2016.07.07)
+
+1. Hard coded "URL" string replaced with a language sensitive string
+   (thanks to Roman Budnyi).
+
+
+### Version 1.2d (2016.02.18)
+
+1. jan, feb, mar, e.t.c. month macros fixed;
+2. New macro format.month.
+3. \cyrdash is now faked via \ProvideTextCommandDefault if not defined.
+
+
+### Version 1.2c (2015.01.10)
+
+1. langid field added; language field supported for backward compatibility.
+2. eid field added, it has priority over pages field;
+3. Fix Gost2003: "--- replaced by \BibDash;
+4. Spacing around \BibDash improved.
+
+
+### Version 1.2b (2014.01.19)
+
+1. numpages renamed to pagetotal.
+
+
+### Version 1.2a (2012.08.31)
+
+1. \cyrdash is now defined via \ProvideTextCommand rather than \providecommand.
+
+
+### Version 1.2 (2012.02.22)
+
+1. Code refactoring. All styles are now generated from single source file.
+2. Support for GOST-7.1-2003. The field `medium` is added to reflect type
+   of material. For most entry types `medium` defaults to `text`.
+3. Support for `natbib` package.
+4. All modern styles are now compiled with the `eprint` option.
+
+
+### Version 1.1 (2012.01.21)
+
+1. Support for GOST 7.0.5-2008 and GOST 7.1-2003 is provided.
+2. `@Online` entry is added to format a reference to electronic
+   resource on Internet.
+3. `@MastersThesis` entry is added to format a reference to master's thesis.
+   `@DSciThesis` entry is added to format a reference to doctor of
+   sciences thesis.
+4. `Urldate`, `eprint`, `eprintclass`, `eprinttype` fields are added.
+
+
+### Earlier version history
+
+2012.08.31 \cyrdash is now defined via \ProvideTextCommand.
+2012.02.22 Support for |natbib| package.
+2012.02.02 Adaptation to GOST 7.0.5, electronic publishing.
+2005.08.12 First version uploaded to CTAN.
+2003.06.06 First public version.
+
+
+
 ### Older versions
 
 See `gost.pdf`.
 
----------------------------------------------------------
-Please, send feature requests and bug reports via e-mail:
-  `kia999@mail.ru`     <Igor Kotelnikov>,
-  `polyama@yahoo.com`  <Maksym Polyakov>,
-or submit an issue on
+
+### Bug reports
+
+Please, submit feature requests and issue reports via
   [https://github.com/kia999/GOST/issues](https://github.com/kia999/GOST/issues).
 
 Happy BibTeXing!
@@ -365,6 +451,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 \endpostamble
 %</internal>
 %<*install>
+\input docstrip
 \usedir{source/bibtex/gost}
 \askonceonly
 \ProvidesFile{gost.ins}[2020/12/25 1.2k Russian support for the Babel system]
@@ -4069,7 +4156,7 @@ FUNCTION {format.isbn}
 % including where to find it, but its DOI name will not change.
 %
 % Function |add.doi| embraces last string in stack into hyperlink
-% that links it to specified |doi| identificator at http://dx.doi.org/ web-site.
+% that links it to specified |doi| identificator at https://doi.org/ web-site.
 % \changes{v1.2k}{25 Dec 2020}{formatting of \texttt{doi} field updated}
 %    \begin{macrocode}
 %<*eprint>
@@ -5929,6 +6016,6 @@ EXECUTE {end.bib}
 %</bst>
 %    \end{macrocode}
 %
-%\CheckSum{799}
+%\CheckSum{802}
 %
 %\Finale

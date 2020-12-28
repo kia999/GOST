@@ -9,7 +9,9 @@
 @echo Переход в подпапку с gost.dtx
 @cd /d "%~dp0source\bibtex\gost\"
 @echo Запуск сборки *.bst из *.dtx
+	@pause
 latex gost.ins
+	@pause
 @echo Чистка папки от ненужных файлов
 @del *.log
 @echo Перемещение созданных *.bst в предусмотренное для них место
