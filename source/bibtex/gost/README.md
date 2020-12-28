@@ -225,11 +225,9 @@ to produce .bst styles and documentation.
 3. Formatting of `doi` field updated: `http://dx.doi.org` changed
 to `https://doi.org`.
 
-4. Restricted support of `date` field added.
+4. Documentation and examples update (thanks to Leonid Sinev).
 
-5. Documentation and examples update (thanks to Leonid Sinev).
-
-6. Formatting of @inproceedings and @proceedings improved.
+5. Formatting of @inproceedings and @proceedings improved.
 
 
 ### Version 1.2i (2017.01.12)

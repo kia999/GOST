@@ -15,9 +15,9 @@ setlocal enableextensions enabledelayedexpansion
 @copy /V source\bibtex\gost\README    gost\
 @copy /V bibtex\csf\gost\*.csf gost\bibtex\csf\
 @copy /V bibtex\bst\gost\*.bst gost\bibtex\bst\
-@pause
+
 @copy /V doc\bibtex\gost\gost.pdf gost\doc\
-@pause
+
 @copy /V doc\bibtex\gost\examples\cp1251\bib\* gost\doc\examples\cp1251\bib\*
 @copy /V doc\bibtex\gost\examples\cp1251\* gost\doc\examples\cp1251\*
 @copy /V doc\bibtex\gost\examples\utf8\bib\* gost\doc\examples\utf8\bib\*
