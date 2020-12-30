@@ -1,10 +1,12 @@
+# GOST
+BibTEX support for GOST standard bibliographies
 -------------------------------------------------------------------
 GOST is a bundle of BibTEX styles to format references according to
 the State Standards on information, librarianship and publishing
 (GOST) issued by The Russian Federation and Interstate Committee
 of former USSR States.
 
-Current version is 1.2k, 2020.12.25.
+Current version is 1.2k, 2020.12.29.
 
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
@@ -203,7 +205,7 @@ in the beginning of a line.
 2. [http://github.com/kia999/gost](http://github.com/kia999/gost)
 
 Run
-```tex.exe gost.dtx```
+```tex.exe gost.ins```
    to produce .bst styles.
 
 Run
@@ -213,11 +215,13 @@ makeindex -r -s gglo.ist -o gost.gls gost.glo
 pdflatex gost.dtx
 pdflatex gost.dtx
 ```
-to produce .bst styles and documentation.
+to produce .bst styles and documentation. To succeed, you have to install
+LH or cm-super fonts. Alternatively, run `xelatex` instead of `pdflatex`.
+To succeed, you have to install cm-unicode fonts.
 
 ## Version history
 
-### Version 1.2k (2020.12.25)
+### Version 1.2k (2020.12.29)
 1. All stuff is now generated from `gost.dtx`.
 
 2. Limited support of the `date` field added.

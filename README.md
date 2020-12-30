@@ -205,8 +205,8 @@ in the beginning of a line.
 2. [http://github.com/kia999/gost](http://github.com/kia999/gost)
 
 Run
-```tex.exe gost.dtx```
-   to produce .bst styles.
+```pdflatex.exe gost.ins```
+   to produce .bst styles. You might need to install LH or cm-super fonts.
 
 Run
 ```pdllatex.exe gost.dtx

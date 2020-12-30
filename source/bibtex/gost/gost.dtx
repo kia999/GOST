@@ -4,7 +4,7 @@
 %
 % This is the source file for the GOST bundle used with BibTeX.
 %
-% Current version is 1.2k, 2020.12.25.
+% Current version is 1.2k, 2020.12.29.
 %
 % It contains set of bibliographic style that
 % attempt to format the bibliography according to
@@ -29,7 +29,7 @@
 %  http://ctan.org/pkg/gost
 %
 % To unpack run
-%   tex gost.dtx
+%    tex gost.ins
 %
 % To produce the documentation run
 %    pdflatex gost.dtx
@@ -37,18 +37,21 @@
 %    makeindex -r -s gglo.ist -o gost.gls gost.glo
 %    pdflatex gost.dtx
 %    pdflatex gost.dtx
+% To succeed you must have Cyrillic fonts (LH of cm-super) installed.
 %
 %<*internal>
 \iffalse
 %</internal>
 %<*readmemd|readme>
+# GOST
+BibTEX support for GOST standard bibliographies
 -------------------------------------------------------------------
 GOST is a bundle of BibTEX styles to format references according to
 the State Standards on information, librarianship and publishing
 (GOST) issued by The Russian Federation and Interstate Committee
 of former USSR States.
 
-Current version is 1.2k, 2020.12.25.
+Current version is 1.2k, 2020.12.29.
 
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
@@ -249,7 +252,7 @@ in the beginning of a line.
 2. [http://github.com/kia999/gost](http://github.com/kia999/gost)
 
 Run
-```tex.exe gost.dtx```
+```tex.exe gost.ins```
    to produce .bst styles.
 
 Run
@@ -259,13 +262,15 @@ makeindex -r -s gglo.ist -o gost.gls gost.glo
 pdflatex gost.dtx
 pdflatex gost.dtx
 ```
-to produce .bst styles and documentation.
+to produce .bst styles and documentation. To succeed, you have to install
+LH or cm-super fonts. Alternatively, run `xelatex` instead of `pdflatex`.
+To succeed, you have to install cm-unicode fonts.
 %</readmemd>
 %<*readmemd|readme>
 
 ## Version history
 
-### Version 1.2k (2020.12.25)
+### Version 1.2k (2020.12.29)
 1. All stuff is now generated from `gost.dtx`.
 
 2. Limited support of the `date` field added.
@@ -411,7 +416,7 @@ Standards on information, librarianship and publishing (GOST)
 issued by The Russian Federation and Interstate Committee of former
 USSR States.
 
-Current version is 1.2k, 2020.12.25.
+Current version is 1.2k, 2020.12.29.
 
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
@@ -434,7 +439,7 @@ See http://www.latex-project.org/lppl.txt
 This work is "maintained" (as per LPPL maintenance status) by
 Igor A. Kotelnikov.
 
-Current version is 1.2k, 2020.12.25.
+Current version is 1.2k, 2020.12.29.
 
 Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
 -------------------------------------------------------------------
@@ -452,7 +457,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 \input docstrip
 \usedir{source/bibtex/gost}
 \askonceonly
-\ProvidesFile{gost.ins}[2020/12/25 1.2k Russian support for the Babel system]
+%%\ProvidesFile{gost.ins}[2020.12.29 1.2k Russian support for the Babel system]
 \generate{%
 %%
 %% BST styles that mimics GOST 7.1-2003 for bibliographic *catalogs*.
@@ -867,7 +872,7 @@ It also contains a lot of examples (*.tex, *.pdf, *.bib files).
 %
 %   \section{Version history}\label{s5}
 %
-%   \subsection*{Version 1.2k (2020.12.25)}
+%   \subsection*{Version 1.2k (2020.12.29)}
 %
 %   \begin{enumerate}
 %   \item

@@ -12,7 +12,7 @@
 %% issued by The Russian Federation and Interstate Committee of former
 %% USSR States.
 %% 
-%% Current version is 1.2k, 2020.12.25.
+%% Current version is 1.2k, 2020.12.29.
 %% 
 %% Released under the LaTeX Project Public License v1.3c or later
 %% See http://www.latex-project.org/lppl.txt
@@ -3027,7 +3027,7 @@ EXECUTE {end.bib}
 %% This work is "maintained" (as per LPPL maintenance status) by
 %% Igor A. Kotelnikov.
 %% 
-%% Current version is 1.2k, 2020.12.25.
+%% Current version is 1.2k, 2020.12.29.
 %% 
 %% Please, send bug report via e-mail: kia999@mail.ru <Igor Kotelnikov>
 %% -------------------------------------------------------------------

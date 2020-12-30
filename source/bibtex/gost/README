@@ -1,10 +1,12 @@
+# GOST
+BibTEX support for GOST standard bibliographies
 -------------------------------------------------------------------
 GOST is a bundle of BibTEX styles to format references according to
 the State Standards on information, librarianship and publishing
 (GOST) issued by The Russian Federation and Interstate Committee
 of former USSR States.
 
-Current version is 1.2k, 2020.12.25.
+Current version is 1.2k, 2020.12.29.
 
 Released under the LaTeX Project Public License v1.3c or later
 See http://www.latex-project.org/lppl.txt
@@ -14,7 +16,7 @@ E-mail: kia999@mail.ru
 
 ## Version history
 
-### Version 1.2k (2020.12.25)
+### Version 1.2k (2020.12.29)
 1. All stuff is now generated from `gost.dtx`.
 
 2. Limited support of the `date` field added.
